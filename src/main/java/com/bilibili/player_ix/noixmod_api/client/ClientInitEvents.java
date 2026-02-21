@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
-import com.github.NineAbyss9.ix_api.ix_api.api.client.renderer.BaseEntityRenderer;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import com.github.NineAbyss9.ix_api.api.client.renderer.BaseEntityRenderer;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
 import com.bilibili.player_ix.noixmod_api.client.gui.screen.AltarContainerScreen;

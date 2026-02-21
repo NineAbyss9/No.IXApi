@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;

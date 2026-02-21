@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.particle;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;

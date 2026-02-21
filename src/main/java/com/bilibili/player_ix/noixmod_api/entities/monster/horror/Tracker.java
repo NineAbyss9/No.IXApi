@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.horror;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

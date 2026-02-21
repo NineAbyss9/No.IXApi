@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.item.util;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;

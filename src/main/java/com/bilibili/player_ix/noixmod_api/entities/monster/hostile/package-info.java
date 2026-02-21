@@ -2,4 +2,4 @@
 @PAMAreNonnullByDefault
 package com.bilibili.player_ix.noixmod_api.entities.monster.hostile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;

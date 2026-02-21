@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.sculk.warden;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.servant.sculk.SculkZombie;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.phys.Vec3;
 
-import static com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob.ownerOrThis;
+import static com.github.NineAbyss9.ix_api.api.mobs.OwnableMob.ownerOrThis;
 
 public class Roar<E extends WardenServant> extends Behavior<E> {
    public Roar() {

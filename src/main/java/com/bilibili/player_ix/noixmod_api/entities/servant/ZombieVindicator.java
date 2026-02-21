@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiMobType;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IConversion;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
+import com.github.NineAbyss9.ix_api.api.mobs.IConversion;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.OwnableNihilist;
@@ -160,7 +160,7 @@ implements Ownable, IConversion {
         this.entityData.set(CONVERSION_TICK, tick);
     }
 
-    public void onConvert() {
+    public void performConvert() {
         if (!this.level().isClientSide) {
             Mob mob;
             ServerLevel serverLevel = this.serverLevel();

@@ -1,12 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.*;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.mobs.*;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 //import com.bilibili.player_ix.noixmod_api.api.entity.IX;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.bilibili.player_ix.noixmod_api.compat.bo.BlueOceansCompat;

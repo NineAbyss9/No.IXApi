@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.util.Option;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.org.NineAbyss9.util.Option;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;

@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticServant;

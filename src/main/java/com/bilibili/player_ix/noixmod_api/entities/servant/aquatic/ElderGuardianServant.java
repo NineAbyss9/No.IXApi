@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.aquatic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;

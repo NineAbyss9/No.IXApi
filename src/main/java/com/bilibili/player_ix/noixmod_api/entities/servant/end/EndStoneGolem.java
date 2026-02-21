@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.end;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.UnmodifiableList;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NoAttackMeleeGoal;
 import net.minecraft.network.syncher.EntityDataAccessor;

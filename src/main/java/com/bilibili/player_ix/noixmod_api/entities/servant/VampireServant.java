@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiVillager;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;

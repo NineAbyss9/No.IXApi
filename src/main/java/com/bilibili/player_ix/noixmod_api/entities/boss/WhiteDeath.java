@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.SpellCasterMob;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
+import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.AbstractUseSpellGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NormalCastingSpellGoal;

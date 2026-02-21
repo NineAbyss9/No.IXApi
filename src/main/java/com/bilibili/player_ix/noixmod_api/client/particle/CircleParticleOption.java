@@ -2,8 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.particle;
 
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.CodeFrom;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vector9f;
+import com.github.NineAbyss9.ix_api.util.Vector9f;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
@@ -15,7 +14,6 @@ import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.Locale;
 
-@CodeFrom(from = "Polarice:Goety:CircleExplosionParticleOption")
 public class CircleParticleOption implements ParticleOptions {
     public static final Codec<CircleParticleOption> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.hostile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.BeeQueen;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.world.BossEvent;

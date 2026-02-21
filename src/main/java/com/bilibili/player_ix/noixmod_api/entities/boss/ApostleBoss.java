@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNihilisticBoss;
-import com.github.NineAbyss9.ix_api.ix_api.util.Option;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
+import com.org.NineAbyss9.util.Option;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.ChatFormatting;

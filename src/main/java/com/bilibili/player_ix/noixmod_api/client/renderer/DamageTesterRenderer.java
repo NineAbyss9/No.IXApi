@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.DamageTester;
+import com.github.NineAbyss9.ix_api.api.mobs.DamageTester;
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
 import com.bilibili.player_ix.noixmod_api.client.model.AbstractPlayerModel;
 import net.minecraft.client.model.HumanoidModel;

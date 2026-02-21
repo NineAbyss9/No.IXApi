@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.model;
 
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.DeadIllagerSkull;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;

@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IAllay;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.IAllay;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;

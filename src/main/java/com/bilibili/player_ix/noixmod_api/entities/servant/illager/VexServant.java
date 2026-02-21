@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.control.FlyingVexMoveControl;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

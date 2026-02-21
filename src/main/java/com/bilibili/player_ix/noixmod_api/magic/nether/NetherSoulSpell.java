@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.magic.nether;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.MobOnly;
+import com.github.NineAbyss9.ix_api.api.annotation.MobOnly;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nether.NetherSoul;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;

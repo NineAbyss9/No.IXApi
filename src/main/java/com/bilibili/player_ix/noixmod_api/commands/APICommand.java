@@ -5,7 +5,7 @@ import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.monster.nihilist.NihilisticOrderSpawner;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.Spells;
-import com.github.NineAbyss9.ix_api.ix_api.util.IXList;
+import com.github.NineAbyss9.ix_api.util.IXList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;

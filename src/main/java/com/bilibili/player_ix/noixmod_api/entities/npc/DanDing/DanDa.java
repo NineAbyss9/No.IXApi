@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.npc.DanDing;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNeutralMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNeutralMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIAttributes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;

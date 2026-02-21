@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.resources.ResourceLocation;

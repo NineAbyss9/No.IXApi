@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiMobType;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
 import com.bilibili.player_ix.noixmod_api.entities.mod.APIMonster;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;

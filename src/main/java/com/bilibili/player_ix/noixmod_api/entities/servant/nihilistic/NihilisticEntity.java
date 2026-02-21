@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

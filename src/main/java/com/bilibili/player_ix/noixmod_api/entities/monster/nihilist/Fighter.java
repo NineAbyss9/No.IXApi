@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNeutralMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IActive;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNeutralMob;
+import com.github.NineAbyss9.ix_api.api.mobs.IActive;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

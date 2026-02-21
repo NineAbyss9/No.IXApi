@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.friendly;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.AbstractUseSpellGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NormalCastingSpellGoal;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;

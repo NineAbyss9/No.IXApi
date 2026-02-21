@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.item;
 
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.villager.VillagerGolemSpell;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

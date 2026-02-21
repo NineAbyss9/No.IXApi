@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IShieldUser;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIAttributesConfig;
@@ -258,8 +258,8 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
             }
         }
         if (this.getFlag() == 0) {
-            plusAttackTick();
-            if (this.getAttackTick() == 15) {
+            increaseAniTick();
+            if (this.getAniTick() == 15) {
                 if (target != null && this.distanceToSqr(target) <= Maths.square(4)) {
                     List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox()
                             .inflate(1, 2, 1), living -> MobUtils
@@ -279,14 +279,14 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() >= 35) {
-                this.resetAttackTick();
+            if (this.getAniTick() >= 35) {
+                this.resetAniTick();
                 resetFlag();
             }
         }
         if (this.getFlag() == 3) {
-            plusAttackTick();
-            if (this.getAttackTick() == 15 || this.getAttackTick() == 30 || this.getAttackTick() == 40) {
+            increaseAniTick();
+            if (this.getAniTick() == 15 || this.getAniTick() == 30 || this.getAniTick() == 40) {
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class,
                         this.getBoundingBox().inflate(3, 0.2, 3),
                         living -> MobUtils.canHurt(living, this));
@@ -309,7 +309,7 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                             0);
                 }
             }
-            if (this.getAttackTick() == 40) {
+            if (this.getAniTick() == 40) {
                 for (int i = 0;i < 5;i++) {
                     HeadHunterSword sword = new HeadHunterSword(NoixmodAPIEntities.HHS.get(), this.level());
                     sword.setOwner(this);
@@ -352,13 +352,13 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     sword.moveTo(this.blockPosition().offset(0, 0, -i), 0, 0);
                     this.level().addFreshEntity(sword);
                 }
-                this.resetAttackTick();
+                this.resetAniTick();
                 resetFlag();
             }
         }
         if (this.getFlag() == 5) {
-            plusAttackTick();
-            if (this.getAttackTick() > 40 && this.getAttackTick() < 90) {
+            increaseAniTick();
+            if (this.getAniTick() > 40 && this.getAniTick() < 90) {
                 if (this.tickCount % 10 == 0) {
                     this.playAttackSound();
                     List<LivingEntity> livingEntities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox()
@@ -380,34 +380,34 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() >= 120) {
-                this.resetAttackTick();
+            if (this.getAniTick() >= 120) {
+                this.resetAniTick();
                 this.setBossPhase(2);
                 resetFlag();
             }
         }
         if (this.getFlag() == 6) {
-            plusAttackTick();
+            increaseAniTick();
             if (target != null) {
                 this.lookControl.setLookAt(target);
             }
-            if (this.getAttackTick() == 10) {
+            if (this.getAniTick() == 10) {
                 this.shootArrow();
             }
-            if (this.getAttackTick() == 15) {
+            if (this.getAniTick() == 15) {
                 this.shootArrow();
             }
-            if (this.getAttackTick() == 20) {
+            if (this.getAniTick() == 20) {
                 this.shootArrow();
             }
-            if (this.getAttackTick() == 30) {
-                this.resetAttackTick();
+            if (this.getAniTick() == 30) {
+                this.resetAniTick();
                 resetFlag();
             }
         }
         if (this.getFlag() == 7) {
-            plusAttackTick();
-            if (this.getAttackTick() == 30) {
+            increaseAniTick();
+            if (this.getAniTick() == 30) {
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class,
                         this.getBoundingBox().inflate(10), living -> MobUtils.canHurt(living, this));
                 for (LivingEntity living : list) {
@@ -427,7 +427,7 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                             this.position(), 120, 8, 8, 8, 0);
                 }
             }
-            if (this.getAttackTick() >= 60) {
+            if (this.getAniTick() >= 60) {
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox()
                                 .inflate(8, 0.2, 8),
                         living -> !living.isAlive() || living.getHealth() <= 1);
@@ -435,13 +435,13 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     level().broadcastEntityEvent(living, (byte)3);
                 }
                 this.expositionAttackTick = 3000;
-                this.resetAttackTick();
+                this.resetAniTick();
                 resetFlag();
             }
         }
         if (this.getFlag() == 8) {
-            plusAttackTick();
-            if (getAttackTick() == 10) {
+            increaseAniTick();
+            if (getAniTick() == 10) {
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(
                         6, 0.3, 6
                 ), living -> MobUtils.canHurt(living, this));
@@ -484,14 +484,14 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     this.level().addFreshEntity(ball);
                 }
             }
-            if (getAttackTick() >= 50) {
-                this.resetAttackTick();
+            if (getAniTick() >= 50) {
+                this.resetAniTick();
                 this.setFlag(99);
             }
         }
         if (this.getFlag() == 9) {
-            plusAttackTick();
-            if (getAttackTick() == 43) {
+            increaseAniTick();
+            if (getAniTick() == 43) {
                 if (!level().isClientSide) {
                     playExplodeSound();
                     ParticleUtil.sendParticles(getServerLevel(), ParticleTypes.EXPLOSION_EMITTER, position(), 1,
@@ -550,14 +550,14 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (getAttackTick() >= 80) {
-                resetAttackTick();
+            if (getAniTick() >= 80) {
+                resetAniTick();
                 resetFlag();
             }
         }
         if (this.getFlag() == 10) {
-            plusAttackTick();
-            if (getAttackTick() == Maths.toTick(0.75f)) {
+            increaseAniTick();
+            if (getAniTick() == Maths.toTick(0.75f)) {
                 if (!level().isClientSide) {
                     playSound(SoundEvents.FIRE_EXTINGUISH, 2f, 0.5f);
                     EvokerFangs fangs = EntityType.EVOKER_FANGS.create(level());
@@ -569,7 +569,7 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (getAttackTick() == Maths.toTick(1.25)) {
+            if (getAniTick() == Maths.toTick(1.25)) {
                 playExplodeSound();
                 for (int i = 0;i < 5;i++) {
                     if (!level().isClientSide) {
@@ -606,7 +606,7 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (getAttackTick() == Maths.toTick(1.75)) {
+            if (getAniTick() == Maths.toTick(1.75)) {
                 playExplodeSound();
                 for (int i = 0;i < 7;i++) {
                     if (!level().isClientSide) {
@@ -652,8 +652,8 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (getAttackTick() >= Maths.toTick(2.25f)) {
-                resetAttackTick();
+            if (getAniTick() >= Maths.toTick(2.25f)) {
+                resetAniTick();
                 resetFlag();
             } else {
                 for (int i = 0;i < 13;i++) {
@@ -692,16 +692,16 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
             }
         }
         if (this.getFlag() == 11) {
-            plusAttackTick();
-            if (getAttackTick() == 10) {
+            increaseAniTick();
+            if (getAniTick() == 10) {
                 playSound(SoundEvents.ILLUSIONER_MIRROR_MOVE);
                 attack();
             }
-            if (getAttackTick() == 20) {
+            if (getAniTick() == 20) {
                 MobUtils.rangeHurt(3, 0.3, 3, this, damageSources().mobAttack(this),
                         9f);
             }
-            if (getAttackTick() == 35) {
+            if (getAniTick() == 35) {
                 playExplodeSound();
                 for (int i = 0;i < 5;i++) {
                     if (!level().isClientSide) {
@@ -738,8 +738,8 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (getAttackTick() >= 55) {
-                resetAttackTick();
+            if (getAniTick() >= 55) {
+                resetAniTick();
                 resetFlag();
             }
         }
@@ -902,15 +902,15 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
         this.setFlag(99);
     }
 
-    public void resetAttackTick() {
-        setAttackTick(0);
+    public void resetAniTick() {
+        setAniTick(0);
     }
     
-    public int getAttackTick() {
+    public int getAniTick() {
         return this.entityData.get(DATA_ATTACK_TICK);
     }
     
-    public void setAttackTick(int tick) {
+    public void setAniTick(int tick) {
         this.entityData.set(DATA_ATTACK_TICK, tick);
     }
 
@@ -1151,7 +1151,7 @@ public class HeadHunter extends Monster implements ApiBoss, IFlagMob {
         }
 
         public void start() {
-            this.hunter.resetAttackTick();
+            this.hunter.resetAniTick();
             this.hunter.setFlag(5);
         }
 

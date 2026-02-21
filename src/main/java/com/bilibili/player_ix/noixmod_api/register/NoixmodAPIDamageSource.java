@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;

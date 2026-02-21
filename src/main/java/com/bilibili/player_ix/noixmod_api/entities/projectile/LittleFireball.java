@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;

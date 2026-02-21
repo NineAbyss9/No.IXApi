@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNihilisticBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticWither;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableData;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableData;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 

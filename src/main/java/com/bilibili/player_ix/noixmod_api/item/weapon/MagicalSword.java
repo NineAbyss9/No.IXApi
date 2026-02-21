@@ -3,8 +3,8 @@ package com.bilibili.player_ix.noixmod_api.item.weapon;
 
 import com.bilibili.player_ix.noixmod_api.entities.servant.MagicalClone;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;

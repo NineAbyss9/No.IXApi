@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPathfinderMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.effect.EffectInstance;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.effect.EffectInstance;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.core.particles.ParticleTypes;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register.event;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.Synchronizer;
+import com.github.NineAbyss9.ix_api.api.Synchronizer;
 import net.minecraftforge.eventbus.api.Event;
 
 public class SyncEvent

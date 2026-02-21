@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

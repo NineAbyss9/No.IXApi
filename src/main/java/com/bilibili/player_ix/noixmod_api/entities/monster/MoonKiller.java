@@ -1,13 +1,13 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiRangedAttackMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.EvokerIllager;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;

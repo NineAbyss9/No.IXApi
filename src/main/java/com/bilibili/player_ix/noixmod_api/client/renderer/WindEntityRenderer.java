@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.client.renderer.BaseEntityRenderer;
+import com.github.NineAbyss9.ix_api.api.client.renderer.BaseEntityRenderer;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.WindEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 

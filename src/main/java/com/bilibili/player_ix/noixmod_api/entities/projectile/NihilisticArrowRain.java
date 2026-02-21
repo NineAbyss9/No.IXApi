@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IProjectile;
+import com.github.NineAbyss9.ix_api.api.mobs.IProjectile;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.arrow.NihilisticArrow;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;

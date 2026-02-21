@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.animal;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IAgeableMob;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.mobs.IAgeableMob;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.network.packet;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableData;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableData;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.ClientAgent;
 import net.minecraft.network.FriendlyByteBuf;

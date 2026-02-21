@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager.trades;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.EnchantedBookItem;

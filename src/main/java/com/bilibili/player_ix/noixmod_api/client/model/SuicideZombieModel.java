@@ -4,7 +4,7 @@ package com.bilibili.player_ix.noixmod_api.client.model;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.model.animations.SuicideZombieAnimations;
 import com.bilibili.player_ix.noixmod_api.entities.servant.SuicideZombie;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;

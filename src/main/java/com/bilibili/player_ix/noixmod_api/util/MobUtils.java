@@ -1,13 +1,13 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IShieldUser;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiVillager;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

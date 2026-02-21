@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.ai.goal;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ICreeper;
+import com.github.NineAbyss9.ix_api.api.mobs.ICreeper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;

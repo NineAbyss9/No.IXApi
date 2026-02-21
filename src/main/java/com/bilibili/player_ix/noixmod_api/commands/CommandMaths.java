@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.commands;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 

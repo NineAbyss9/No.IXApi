@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.mob_effects;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

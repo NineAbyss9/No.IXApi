@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.Prototype;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPathfinderMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.UnmodifiableList;
+import com.org.NineAbyss9.annotation.Prototype;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
+import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.bilibili.player_ix.noixmod_api.entities.ai.Player7AI;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;

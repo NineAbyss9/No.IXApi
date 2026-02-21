@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.magic.nether;
 
 import com.bilibili.player_ix.noixmod_api.entities.projectile.LavaTrap;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;

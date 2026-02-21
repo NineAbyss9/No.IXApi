@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.summon.SummonEntity;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;

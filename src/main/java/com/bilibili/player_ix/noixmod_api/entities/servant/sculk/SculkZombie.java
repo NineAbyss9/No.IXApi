@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.sculk;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractZombieServant;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPITags;
 import net.minecraft.core.particles.ParticleOptions;

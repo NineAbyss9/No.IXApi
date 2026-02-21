@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.item.armor;
 
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;

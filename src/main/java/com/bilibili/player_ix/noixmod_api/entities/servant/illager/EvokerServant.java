@@ -1,12 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.AbstractUseSpellGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiAvoidTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NormalCastingSpellGoal;

@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableData;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableData;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.nbt.CompoundTag;

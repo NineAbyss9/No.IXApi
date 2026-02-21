@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.gui.button;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 

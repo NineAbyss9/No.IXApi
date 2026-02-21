@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.client.model;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;

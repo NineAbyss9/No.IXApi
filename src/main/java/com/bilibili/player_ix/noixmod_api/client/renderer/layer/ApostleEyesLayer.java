@@ -4,7 +4,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer.layer;
 import com.bilibili.player_ix.noixmod_api.client.model.NihilistIllagerModel;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

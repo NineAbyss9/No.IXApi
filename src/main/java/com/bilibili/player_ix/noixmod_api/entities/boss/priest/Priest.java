@@ -1,13 +1,13 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss.priest;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNihilisticBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IShieldUser;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.UnmodifiableList;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NoAttackMeleeGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
@@ -111,8 +111,8 @@ implements ApiNihilisticBoss, IFlagMob {
             return;
         }
         if (this.isFlag(1)) {
-            plusAttackTick();
-            if (this.getAttackTick() == 15) {
+            increaseAniTick();
+            if (this.getAniTick() == 15) {
                 sweepSound();
                 AABB aabb = MobUtils.getRange(this, 2, 2, 0, 2, 2, 4, 2);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -122,15 +122,15 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() > 30) {
+            if (this.getAniTick() > 30) {
                 this.resetFlag();
-                this.resetAttackTick();
+                this.resetAniTick();
                 return;
             }
         }
         if (this.isFlag(2)) {
-            plusAttackTick();
-            if (this.getAttackTick() == 15) {
+            increaseAniTick();
+            if (this.getAniTick() == 15) {
                 sweepSound();
                 AABB aabb = MobUtils.getRange(this, 3, 3, 0, 3, 3, 4, 3);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -141,15 +141,15 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() > 35) {
+            if (this.getAniTick() > 35) {
                 this.resetFlag();
-                this.resetAttackTick();
+                this.resetAniTick();
                 return;
             }
         }
         if (this.getFlag() == 3) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 sweepSound();
                 AABB aabb = MobUtils.getRange(this, 2, 2, 0, 2, 2, 4, 2);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -160,7 +160,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() == 30) {
+            if (this.getAniTick() == 30) {
                 explodeSound();
                 AABB aabb = MobUtils.getRange(this, 3, 3, 0, 3, 3, 4, 3);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -189,15 +189,15 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }*/
             }
-            if (this.getAttackTick() > 45) {
+            if (this.getAniTick() > 45) {
                 this.resetFlag();
-                resetAttackTick();
+                resetAniTick();
                 return;
             }
         }
         if (this.getFlag() == 4) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 sweepSound();
                 AABB aabb = MobUtils.getRange(this, 3, 0, 3, 3, 3, 4, 3);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -207,15 +207,15 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() > 30) {
+            if (this.getAniTick() > 30) {
                 this.resetFlag();
-                this.resetAttackTick();
+                this.resetAniTick();
                 return;
             }
         }
         if (this.getFlag() == 5) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 attack();
                 sweepSound();
                 AABB aabb = MobUtils.getRange(this, 3, 3, 0, 3, 3, 4, 3);
@@ -227,19 +227,19 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() > 30) {
+            if (this.getAniTick() > 30) {
                 this.resetFlag();
-                this.resetAttackTick();
+                this.resetAniTick();
                 return;
             }
         }
         if (this.getFlag() == 6) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 this.teleport();
                 this.setDeltaMovement(this.getDeltaMovement().add(0, -0.3, 0));
             }
-            if (this.getAttackTick() == 15) {
+            if (this.getAniTick() == 15) {
                 this.playSound(SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR);
                 AABB aabb = this.getBoundingBox().inflate(2, 0.5, 2);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -254,15 +254,15 @@ implements ApiNihilisticBoss, IFlagMob {
                             position(), 40, 2, 0.3, 2, 0);
                 }
             }
-            if (this.getAttackTick() > 35) {
+            if (this.getAniTick() > 35) {
                 this.resetFlag();
-                this.resetAttackTick();
+                this.resetAniTick();
                 return;
             }
         }
         if (this.getFlag() == 7) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 sweepSound();
                 AABB aabb = this.getBoundingBox().inflate(4, 4, 4);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -273,7 +273,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() == 15) {
+            if (this.getAniTick() == 15) {
                 sweepSound();
                 AABB aabb = this.getBoundingBox().inflate(4, 4, 4);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -284,7 +284,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() == 20) {
+            if (this.getAniTick() == 20) {
                 sweepSound();
                 AABB aabb = this.getBoundingBox().inflate(4, 4, 4);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -295,7 +295,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() == 25) {
+            if (this.getAniTick() == 25) {
                 sweepSound();
                 AABB aabb = this.getBoundingBox().inflate(4, 4, 4);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -306,7 +306,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() == 30) {
+            if (this.getAniTick() == 30) {
                 sweepSound();
                 AABB aabb = this.getBoundingBox().inflate(4, 4, 4);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -317,14 +317,14 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() > 45) {
+            if (this.getAniTick() > 45) {
                 this.resetFlag();
-                this.resetAttackTick();
+                this.resetAniTick();
                 return;
             }
         }
         if (this.getFlag() == 8) {
-            plusAttackTick();
+            increaseAniTick();
             if (this.level().isClientSide) {
                 double x = this.getX() + Maths.randomInt(5);
                 double y = this.getY();
@@ -340,7 +340,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     this.doHeal(0.5F);
                 }
             }
-            if (this.getAttackTick() == 30) {
+            if (this.getAniTick() == 30) {
                 totemSound();
                 AABB aabb = this.getBoundingBox().inflate(6);
                 List<LivingEntity> entities = this.makeList(aabb);
@@ -356,9 +356,9 @@ implements ApiNihilisticBoss, IFlagMob {
                             15, 1, 0.2, 1, 0);
                 }
             }
-            if (this.getAttackTick() > 45) {
+            if (this.getAniTick() > 45) {
                 resetFlag();
-                resetAttackTick();
+                resetAniTick();
             }
         }
     }
@@ -527,11 +527,11 @@ implements ApiNihilisticBoss, IFlagMob {
                 this));
     }
 
-    public int getAttackTick() {
+    public int getAniTick() {
         return this.entityData.get(DATA_ATTACK_TICK);
     }
 
-    public void setAttackTick(int tick) {
+    public void setAniTick(int tick) {
         this.entityData.set(DATA_ATTACK_TICK, tick);
     }
 

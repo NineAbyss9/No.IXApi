@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.summon.SummonEntity;

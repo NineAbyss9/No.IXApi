@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.item.weapon;
 
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;

@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiMobType;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.control.FlyingVexMoveControl;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 
-import static com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob.DEFAULT_LIFE_TICKS;
+import static com.github.NineAbyss9.ix_api.api.mobs.OwnableMob.DEFAULT_LIFE_TICKS;
 
 public class NihilisticServant
 extends OwnableNihilist

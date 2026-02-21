@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.particle;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Vector9f;
+import com.github.NineAbyss9.ix_api.util.Vector9f;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;

@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.DamageTester;
+import com.github.NineAbyss9.ix_api.api.mobs.DamageTester;
 import com.bilibili.player_ix.noixmod_api.entities.boss.*;
 import com.bilibili.player_ix.noixmod_api.entities.boss.abyss.Abyss;
 import com.bilibili.player_ix.noixmod_api.entities.boss.priest.Priest;

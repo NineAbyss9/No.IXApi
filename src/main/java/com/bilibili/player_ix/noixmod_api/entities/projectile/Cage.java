@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiTargeting;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiTargeting;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.world.entity.EntityType;

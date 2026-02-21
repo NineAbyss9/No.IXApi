@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPathfinderMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFireball;
 import com.bilibili.player_ix.noixmod_api.entities.servant.WrongedSoul;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;

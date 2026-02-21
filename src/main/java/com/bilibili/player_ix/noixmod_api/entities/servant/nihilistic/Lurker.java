@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiMobType;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.core.particles.ParticleTypes;

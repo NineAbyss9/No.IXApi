@@ -1,15 +1,15 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss.abyss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNihilisticBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IShieldUser;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.effect.EffectInstance;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.UnmodifiableList;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.effect.EffectInstance;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.api.entity.IX;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.star_guardian.StarGuardian;
@@ -165,8 +165,8 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             }
         }
         if (this.getFlag() == 1) {
-            plusAttackTick();
-            if (this.getAttackTick() == 15) {
+            increaseAniTick();
+            if (this.getAniTick() == 15) {
                 AABB aabb = MobUtils.getRange(this, 3, 3, 3, 3, 3, 2, 3);
                 List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, aabb, predicate);
                 attackSound();
@@ -182,28 +182,28 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() == 25) {
-                resetAttackTick();
+            if (this.getAniTick() == 25) {
+                resetAniTick();
                 resetFlag();
             }
         }
         if (this.getFlag() == 2) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 this.clap();
             }
-            if (this.getAttackTick() == 20) {
+            if (this.getAniTick() == 20) {
                 this.clap();
             }
-            if (this.getAttackTick() == 25) {
-                this.resetAttackTick();
+            if (this.getAniTick() == 25) {
+                this.resetAniTick();
                 this.resetFlag();
             }
             return;
         }
         if (this.getFlag() == 3) {
-            plusAttackTick();
-            if (this.getAttackTick() == TimeSelector.ONE_SEC) {
+            increaseAniTick();
+            if (this.getAniTick() == TimeSelector.ONE_SEC) {
                 List<LivingEntity> entities = this.abyssData.entities(2, 0.3, 2);
                 if (!entities.isEmpty()) {
                     for (LivingEntity living : entities) {
@@ -213,15 +213,15 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 }
                 this.summon();
             }
-            if (this.getAttackTick() == 35) {
-                resetAttackTick();
+            if (this.getAniTick() == 35) {
+                resetAniTick();
                 resetFlag();
             }
             return;
         }
         if (this.getFlag() == 4) {
-            plusAttackTick();
-            if (this.getAttackTick() == 13) {
+            increaseAniTick();
+            if (this.getAniTick() == 13) {
                 AABB aabb = MobUtils.getRange(this, 3, 3, 3, 3, 3, 2, 3);
                 List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, aabb, predicate);
                 attackSound();
@@ -237,15 +237,15 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() >= 25) {
-                resetAttackTick();
+            if (this.getAniTick() >= 25) {
+                resetAniTick();
                 resetFlag();
             }
             return;
         }
         if (this.getFlag() == 6) {
-            plusAttackTick();
-            if (this.getAttackTick() == 25) {
+            increaseAniTick();
+            if (this.getAniTick() == 25) {
                 this.playSound(SoundEvents.TRIDENT_THUNDER, 2f, 1f);
                 AABB aabb = MobUtils.getRange(this,  2.5, 5, 5, 5,5, 5, 5);
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, aabb, predicate);
@@ -266,15 +266,15 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     }
                 }
             }
-            if (this.getAttackTick() >= 35) {
-                resetAttackTick();
+            if (this.getAniTick() >= 35) {
+                resetAniTick();
                 resetFlag();
             }
             return;
         }
         if (this.getFlag() == 7) {
-            plusAttackTick();
-            if (this.getAttackTick() == 15) {
+            increaseAniTick();
+            if (this.getAniTick() == 15) {
                 LivingEntity target = this.getTarget();
                 if (target != null) {
                     if (target.isBlocking()) {
@@ -285,29 +285,29 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 }
                 this.setSummonTick(100);
             }
-            if (this.getAttackTick() >= 30) {
-                resetAttackTick();
+            if (this.getAniTick() >= 30) {
+                resetAniTick();
                 resetFlag();
             }
             return;
         }
         if (this.getFlag() == 8) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 this.clap();
             }
-            if (this.getAttackTick() == 20) {
+            if (this.getAniTick() == 20) {
                 this.clap();
             }
-            if (this.getAttackTick() == 25) {
-                this.resetAttackTick();
+            if (this.getAniTick() == 25) {
+                this.resetAniTick();
                 this.resetFlag();
             }
             return;
         }
         if (this.getFlag() == 10) {
-            plusAttackTick();
-            if (this.getAttackTick() == 10) {
+            increaseAniTick();
+            if (this.getAniTick() == 10) {
                 LivingEntity target = this.getTarget();
                 if (target != null) {
                     Cage cage = new Cage(NoixmodAPIEntities.CAGE.get(), this.level());
@@ -317,8 +317,8 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     this.level().addFreshEntity(cage);
                 }
             }
-            if (this.getAttackTick() >= 25) {
-                resetAttackTick();
+            if (this.getAniTick() >= 25) {
+                resetAniTick();
                 resetFlag();
             }
         }
@@ -624,16 +624,16 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         this.entityData.set(DATA_BOSS_PHASE, Maths.clamp(phase, 1, 2));
     }
 
-    public int getAttackTick() {
+    public int getAniTick() {
         return this.entityData.get(DATA_ATTACK_TICK);
     }
 
-    public void setAttackTick(int tick) {
+    public void setAniTick(int tick) {
         this.entityData.set(DATA_ATTACK_TICK, tick);
     }
 
-    public void resetAttackTick() {
-        this.setAttackTick(0);
+    public void resetAniTick() {
+        this.setAniTick(0);
         this.setCooldown(20);
     }
 

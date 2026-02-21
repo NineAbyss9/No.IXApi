@@ -1,12 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss.star_guardian;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.ServerOnly;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNihilisticBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.UnmodifiableList;
+import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.bilibili.player_ix.noixmod_api.api.entity.IX;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NoAttackMeleeGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
@@ -135,7 +135,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         tag.putInt("Phase", this.getPhase());
         tag.putFloat("Power", this.getPower());
         tag.putInt("ShieldTick", this.getShieldTick());
-        tag.putInt("AttackTick", this.getAttackTick());
+        tag.putInt("AttackTick", this.getAniTick());
         super.addAdditionalSaveData(tag);
     }
 
@@ -213,27 +213,27 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         if (this.isFlag(0))
             return;
         if (this.isFlag(1)) {
-            plusAttackTick();
-            if (this.attackTickEquals(10)) {
+            increaseAniTick();
+            if (this.aniTickEquals(10)) {
                 sweepSound();
                 MobUtils.areaAttack(this, 3F, 3F, 90F, this.damageSources()
                                 .mobAttack(this), this.getAttackDamage(0.5F));
                 this.doHeal();
             }
-            if (this.attackTickMoreThan(20)) {
+            if (this.aniTick(20)) {
                 this.resetState();
             }
         } else if (this.isFlag(3)) {
-            plusAttackTick();
-            if (this.attackTickEquals(1)) {
+            increaseAniTick();
+            if (this.aniTickEquals(1)) {
                 this.avoid();
             }
-            if (this.attackTickMoreThan(25)) {
+            if (this.aniTick(25)) {
                 this.resetState();
             }
         } else if (this.isFlag(5)) {
-            plusAttackTick();
-            if (this.attackTickEquals(10)) {
+            increaseAniTick();
+            if (this.aniTickEquals(10)) {
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(
                         2, 0.2, 2
                 ), living -> MobUtils.canHurt(living, this));
@@ -249,7 +249,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     }
                 }
             }
-            if (this.attackTickEquals(15)) {
+            if (this.aniTickEquals(15)) {
                 List<LivingEntity> list = this.makeAttackList(4);
                 if (!list.isEmpty()) {
                     for (LivingEntity living : list) {
@@ -262,12 +262,12 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     }
                 }
             }
-            if (this.attackTickMoreThan(25)) {
+            if (this.aniTick(25)) {
                 this.resetState();
             }
         } else if (this.getFlag() == 6) {
-            plusAttackTick();
-            if (this.attackTickEquals(10)) {
+            increaseAniTick();
+            if (this.aniTickEquals(10)) {
                 for (int i = 0;i<4;++i) {
                     int n = Maths.randomInt(2);
                     int t = Maths.randomInt(2);
@@ -286,32 +286,32 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     }
                 }
             }
-            if (this.attackTickMoreThan(45)) {
+            if (this.aniTick(45)) {
                 this.resetState();
             }
         } else if (this.isFlag(7)) {
-            plusAttackTick();
+            increaseAniTick();
             if (target != null) {
                 GuardianTeleportAttack.trigger(this, target);
             }
-            if (this.attackTickMoreThan(75)) {
+            if (this.aniTick(75)) {
                 this.resetState();
             }
         } else if (this.isFlag(8)) {
-            plusAttackTick();
-            if (this.attackTickEquals(15)) {
+            increaseAniTick();
+            if (this.aniTickEquals(15)) {
                 trust();
                 this.doTrust();
             }
-            if (this.attackTickEquals(20) || this.attackTickEquals(25)) {
+            if (this.aniTickEquals(20) || this.aniTickEquals(25)) {
                 this.doTrust();
             }
-            if (this.attackTickMoreThan(25)) {
+            if (this.aniTick(25)) {
                 this.resetState();
             }
         } else if (this.isFlag(9)) {
-            plusAttackTick();
-            if (this.attackTickEquals(10)) {
+            increaseAniTick();
+            if (this.aniTickEquals(10)) {
                 sweepSound();
                 MobUtils.areaAttack(this, 3F, 3F, 90F, 20F + this.getPower() * 2F,
                         0, 0, this.damageSources().mobAttack(this), false,
@@ -320,23 +320,23 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     this.setPowerPlus();
                 }, false);
             }
-            if (this.attackTickMoreThan(25)) {
+            if (this.aniTick(25)) {
                 this.resetState();
             }
         } else if (isAttack1()) {
-            plusAttackTick();
-            if (this.attackTickEquals(10)) {
+            increaseAniTick();
+            if (this.aniTickEquals(10)) {
                 sweepSound();
                 MobUtils.areaAttack(this, 3F, 3F, 90F, this.damageSources()
                         .mobAttack(this), this.getAttackDamage(0.5F));
                 this.doHeal();
             }
-            if (this.attackTickMoreThan(35)) {
+            if (this.aniTick(35)) {
                 this.resetState();
             }
         } else if (isGround()) {
-            plusAttackTick();
-            if (this.attackTickEquals(15)) {
+            increaseAniTick();
+            if (this.aniTickEquals(15)) {
                 groundSound();
                 if (!level().isClientSide) {
                     List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(6, 0.5,
@@ -350,16 +350,16 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                     spell.castSpell(serverLevel(), this);
                 }
             }
-            if (this.attackTickMoreThan(40)) {
+            if (this.aniTick(40)) {
                 resetState();
             }
         } else if (isTrust1()) {
-            plusAttackTick();
-            if (attackTickEquals(15)) {
+            increaseAniTick();
+            if (aniTickEquals(15)) {
                 sweepSound();
                 trust();
             }
-            if (attackTickEquals(15) || attackTickEquals(20)) {
+            if (aniTickEquals(15) || aniTickEquals(20)) {
                 MobUtils.areaAttack(this, 3F, 3F, 90F, this.getAttackDamage(4F),
                         0, 0, this.damageSources().mobAttack(this), false,
                         pEntity -> {
@@ -367,7 +367,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                             this.setPowerPlus();
                         }, false);
             }
-            if (attackTickMoreThan(45)) {
+            if (aniTick(45)) {
                 resetState();
             }
         }
@@ -466,10 +466,10 @@ implements ApiNihilisticBoss, IX, IFlagMob {
 
     public boolean isInvisible() {
         if (this.isFlag(7)) {
-            return this.getAttackTick() >= 10 && this.getAttackTick() < 15
-                    || this.getAttackTick() >= 20 && this.getAttackTick() < 25
-                    || this.getAttackTick() >= 30 && this.getAttackTick() < 35
-                    || this.getAttackTick() >= 40 && this.getAttackTick() < 45;
+            return this.getAniTick() >= 10 && this.getAniTick() < 15
+                    || this.getAniTick() >= 20 && this.getAniTick() < 25
+                    || this.getAniTick() >= 30 && this.getAniTick() < 35
+                    || this.getAniTick() >= 40 && this.getAniTick() < 45;
         }
         return super.isInvisible();
     }
@@ -667,11 +667,11 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         this.entityData.set(GUARDIAN_FLAG, flag);
     }
 
-    public int getAttackTick() {
+    public int getAniTick() {
         return this.entityData.get(DATA_ATTACK_TICK);
     }
 
-    public void setAttackTick(int attackTick) {
+    public void setAniTick(int attackTick) {
         this.entityData.set(DATA_ATTACK_TICK, attackTick);
     }
 

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.blocks.horror;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.HuntedVillager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;

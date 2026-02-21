@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.client.model.SummonEntityModel;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.summon.SummonEntity;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

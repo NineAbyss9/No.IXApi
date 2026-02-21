@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IProjectile;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.Vec9;
+import com.github.NineAbyss9.ix_api.api.mobs.IProjectile;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFire;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;

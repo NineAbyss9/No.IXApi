@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.Prototype;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.org.NineAbyss9.annotation.Prototype;
 import com.bilibili.player_ix.noixmod_api.api.entity.IX;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
@@ -13,7 +13,10 @@ import com.bilibili.player_ix.noixmod_api.entities.villager.VillagerFighter;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.*;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilityMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.google.common.base.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

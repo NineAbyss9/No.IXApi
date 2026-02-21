@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.item.util;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;

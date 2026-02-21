@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.model;
 
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

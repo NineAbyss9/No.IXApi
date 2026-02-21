@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.VillagerFangs;
 import com.bilibili.player_ix.noixmod_api.entities.villager.trades.ApiVillagerTrades;
 import com.bilibili.player_ix.noixmod_api.magic.villager.VillagerGolemSpell;

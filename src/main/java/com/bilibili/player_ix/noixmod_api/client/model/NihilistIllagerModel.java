@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.client.model;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.*;

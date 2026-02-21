@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.blocks.horror;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.block.ApiBlockProperties;
+import com.bilibili.player_ix.noixmod_api.api.block.ApiBlockProperties;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import net.minecraft.core.BlockPos;
 //import net.minecraft.core.Direction;

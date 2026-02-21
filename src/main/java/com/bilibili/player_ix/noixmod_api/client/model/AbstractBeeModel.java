@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.model;
 
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractBee;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;

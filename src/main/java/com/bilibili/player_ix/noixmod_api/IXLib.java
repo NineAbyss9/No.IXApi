@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

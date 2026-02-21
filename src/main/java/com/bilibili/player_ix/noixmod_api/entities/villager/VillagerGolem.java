@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.BlockPos;

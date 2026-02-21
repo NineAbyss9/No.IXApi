@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.ai.goal;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IAgeableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.IAgeableMob;
 import com.bilibili.player_ix.noixmod_api.entities.servant.animal.MushroomSpider;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.PathfinderMob;

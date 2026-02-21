@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiVillager;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.bilibili.player_ix.noixmod_api.entities.boss.NihilisticLord;
 import com.bilibili.player_ix.noixmod_api.entities.villager.VillagerGolem;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;

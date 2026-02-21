@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiIllagerBoss;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiIllagerBoss;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

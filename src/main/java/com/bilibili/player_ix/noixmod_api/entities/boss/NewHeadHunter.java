@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiBoss;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IFlagMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NoAttackMeleeGoal;
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
@@ -131,7 +131,7 @@ implements ApiBoss, IFlagMob {
             this.selectFlags(this.getTarget());
         }
         if (isHalfHealth() && !isSecondPhase() && getFlag() != CHANGING_PHASE) {
-            resetAttackTick();
+            resetAniTick();
             setFlag(CHANGING_PHASE);
         }
         if (isSwordAttacking()) {
@@ -332,11 +332,11 @@ implements ApiBoss, IFlagMob {
         this.entityData.set(DATA_BOSS_FLAG, flag);
     }
 
-    public int getAttackTick() {
+    public int getAniTick() {
         return this.entityData.get(DATA_ATTACK_TICK);
     }
 
-    public void setAttackTick(int tick) {
+    public void setAniTick(int tick) {
         this.entityData.set(DATA_ATTACK_TICK, tick);
     }
 
@@ -429,8 +429,8 @@ implements ApiBoss, IFlagMob {
     }
 
     public void swordExplode(@Nullable LivingEntity target) {
-        plusAttackTick();
-        if (getAttackTick() == Maths.toTick(0.75f)) {
+        increaseAniTick();
+        if (getAniTick() == Maths.toTick(0.75f)) {
             if (!level().isClientSide) {
                 playSound(SoundEvents.FIRE_EXTINGUISH, 2f, 0.5f);
                 EvokerFangs fangs = EntityType.EVOKER_FANGS.create(level());
@@ -442,7 +442,7 @@ implements ApiBoss, IFlagMob {
                 }
             }
         }
-        if (getAttackTick() == Maths.toTick(1.25)) {
+        if (getAniTick() == Maths.toTick(1.25)) {
             Skills.normalExplode(this);
             for (int i = 0;i < 5;i++) {
                 if (!level().isClientSide) {
@@ -479,7 +479,7 @@ implements ApiBoss, IFlagMob {
                 }
             }
         }
-        if (getAttackTick() == Maths.toTick(1.75)) {
+        if (getAniTick() == Maths.toTick(1.75)) {
             Skills.normalExplode(this);
             for (int i = 0;i < 7;i++) {
                 if (!level().isClientSide) {
@@ -525,7 +525,7 @@ implements ApiBoss, IFlagMob {
                 }
             }
         }
-        if (getAttackTick() >= Maths.toTick(2.25f)) {
+        if (getAniTick() >= Maths.toTick(2.25f)) {
             resetState();
         } else {
             for (int i = 0;i < 13;i++) {
@@ -565,8 +565,8 @@ implements ApiBoss, IFlagMob {
     }
 
     public void summon(@Nullable LivingEntity target) {
-        plusAttackTick();
-        if (getAttackTick() == 10) {
+        increaseAniTick();
+        if (getAniTick() == 10) {
             List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(
                     6, 0.3, 6
             ), living -> MobUtils.canHurt(living, this));
@@ -609,7 +609,7 @@ implements ApiBoss, IFlagMob {
                 this.level().addFreshEntity(ball);
             }
         }
-        if (getAttackTick() >= 50) {
+        if (getAniTick() >= 50) {
             resetState();
         }
     }
@@ -767,51 +767,51 @@ implements ApiBoss, IFlagMob {
 
     private static final class Skills {
         public static void swordAttack(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(15)) {
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(15)) {
                 attackSound(pHunter);
                 MobUtils.areaAttack(pHunter, 2, 2, 90,
                         12F, 0, 6, pHunter.damageSources().mobAttack(pHunter),
                         false, entity -> pHunter.heal(1F), false);
             }
-            if (pHunter.attackTickMoreThan(35)) {
+            if (pHunter.aniTick(35)) {
                 pHunter.resetState();
             }
         }
 
         public static void avoid(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(1)) {
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(1)) {
                 onAvoid(pHunter);
             }
-            if (pHunter.attackTickMoreThan(15)) {
+            if (pHunter.aniTick(15)) {
                 pHunter.resetState();
                 pHunter.setAvoidCooldown(10);
             }
         }
 
         public static void shootArrows(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
+            pHunter.increaseAniTick();
             if (pHunter.getTarget() != null) {
                 pHunter.lookControl.setLookAt(pHunter.getTarget());
             }
-            if (pHunter.attackTickEquals(10) || pHunter.attackTickEquals(15) ||
-                    pHunter.attackTickEquals(20))
+            if (pHunter.aniTickEquals(10) || pHunter.aniTickEquals(15) ||
+                    pHunter.aniTickEquals(20))
                 pHunter.shootArrow();
-            if (pHunter.attackTickMoreThan(30))
+            if (pHunter.aniTick(30))
                 pHunter.resetState();
         }
 
         public static void changePhase(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (!pHunter.level().isClientSide && pHunter.attackTickEquals(15) ||
-                    pHunter.attackTickEquals(20)) {
+            pHunter.increaseAniTick();
+            if (!pHunter.level().isClientSide && pHunter.aniTickEquals(15) ||
+                    pHunter.aniTickEquals(20)) {
                 LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, pHunter.level());
                 bolt.setVisualOnly(true);
                 bolt.moveTo(pHunter.position());
                 pHunter.level().addFreshEntity(bolt);
             }
-            if (pHunter.attackTickEquals(30)) {
+            if (pHunter.aniTickEquals(30)) {
                 explodeSound(pHunter);
                 areaAttack(pHunter, 10.0F, 2.0F, 10.0F, 0.1F,
                         4, pHunter.damageSources().mobAttack(pHunter), entity -> {
@@ -820,15 +820,15 @@ implements ApiBoss, IFlagMob {
                                 entity.setHealth(entity.getHealth() - f);
                         });
             }
-            if (pHunter.attackTickMoreThan(50)) {
+            if (pHunter.aniTick(50)) {
                 pHunter.setPhase(2);
                 pHunter.resetState();
             }
         }
 
         public static void charge(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(45))
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(45))
             {
                 if (pHunter.isEffectiveAi()) {
                     explodeSound(pHunter);
@@ -844,7 +844,7 @@ implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (pHunter.attackTickMoreThan(65))
+            if (pHunter.aniTick(65))
             {
                 pHunter.resetState();
             }
@@ -852,8 +852,8 @@ implements ApiBoss, IFlagMob {
 
         public static void groundExplode(NewHeadHunter pHunter)
         {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(20) && pHunter.isEffectiveAi()) {
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(20) && pHunter.isEffectiveAi()) {
                 explodeSound(pHunter);
                 ParticleUtil.explode(pHunter.serverLevel(), pHunter.position());
                 ParticleUtil.sendParticles(pHunter.serverLevel(), ParticleTypes.LARGE_SMOKE, pHunter.position(),
@@ -866,26 +866,26 @@ implements ApiBoss, IFlagMob {
                             pHunter.heal(0.5F);
                     });
             }
-            if (pHunter.attackTickMoreThan(45))
+            if (pHunter.aniTick(45))
             {
                 pHunter.resetState();
             }
         }
 
         public static void attackExplode(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(10))
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(10))
             {
                 pHunter.playSound(SoundEvents.ILLUSIONER_MIRROR_MOVE);
                 Vec3 vec3 = pHunter.getLookAngle();
                 pHunter.setDeltaMovement(vec3.x * 3, pHunter.getDeltaMovement().y,
                         vec3.z * 3);
             }
-            if (pHunter.attackTickEquals(20))
+            if (pHunter.aniTickEquals(20))
             {
                 areaAttack(pHunter, 2, 2, 14.0F, 10, null);
             }
-            if (pHunter.attackTickEquals(30) && pHunter.isEffectiveAi()) {
+            if (pHunter.aniTickEquals(30) && pHunter.isEffectiveAi()) {
                 normalExplode(pHunter);
                 for (int i = 0;i < 5;i++) {
                     Vec3 vec3 = pHunter.position();
@@ -920,15 +920,15 @@ implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (pHunter.attackTickMoreThan(45))
+            if (pHunter.aniTick(45))
                 pHunter.resetState();
         }
 
         public static void circleAttack(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(10) || pHunter.attackTickEquals(20)
-                || pHunter.attackTickEquals(23) || pHunter.attackTickEquals(26)
-                || pHunter.attackTickEquals(30)) {
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(10) || pHunter.aniTickEquals(20)
+                || pHunter.aniTickEquals(23) || pHunter.aniTickEquals(26)
+                || pHunter.aniTickEquals(30)) {
                 attackSound(pHunter);
                 List<LivingEntity> entities = pHunter.level().getEntitiesOfClass(LivingEntity.class,
                         pHunter.getBoundingBox().inflate(4, 3, 4), e->
@@ -941,7 +941,7 @@ implements ApiBoss, IFlagMob {
                     }
                 }
             }
-            if (pHunter.attackTickEquals(40)) {
+            if (pHunter.aniTickEquals(40)) {
                 explodeSound(pHunter, 3.0F);
                 if (!pHunter.level().isClientSide) {
                     ParticleUtil.explode(pHunter.serverLevel(), pHunter.position());
@@ -955,20 +955,20 @@ implements ApiBoss, IFlagMob {
                                 entity.setHealth(entity.getHealth() - f);
                         });
             }
-            if (pHunter.attackTickMoreThan(60)) {
+            if (pHunter.aniTick(60)) {
                 pHunter.resetState();
             }
         }
 
         public static void attack1(NewHeadHunter pHunter) {
-            pHunter.plusAttackTick();
-            if (pHunter.attackTickEquals(15)) {
+            pHunter.increaseAniTick();
+            if (pHunter.aniTickEquals(15)) {
                 attackSound(pHunter);
                 MobUtils.areaAttack(pHunter, 2, 2, 90,
                         12F, 0, 6, pHunter.damageSources().mobAttack(pHunter),
                         false, entity -> pHunter.heal(1F), false);
             }
-            if (pHunter.attackTickEquals(30))
+            if (pHunter.aniTickEquals(30))
             {
                 explodeSound(pHunter);
                 areaAttack(pHunter, 3.0F, 2.0F, 5.0F, 0.1F,
@@ -978,7 +978,7 @@ implements ApiBoss, IFlagMob {
                                 entity.setHealth(entity.getHealth() - f);
                         });
             }
-            if (pHunter.attackTickMoreThan(45))
+            if (pHunter.aniTick(45))
                 pHunter.resetState();
         }
 

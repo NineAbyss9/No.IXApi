@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.sculk.warden;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.Synchronizer;
+import com.github.NineAbyss9.ix_api.api.Synchronizer;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.servant.sculk.AbstractSculkServant;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;

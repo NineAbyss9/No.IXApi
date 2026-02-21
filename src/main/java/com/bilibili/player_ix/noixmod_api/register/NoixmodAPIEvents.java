@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
@@ -15,8 +15,8 @@ import com.bilibili.player_ix.noixmod_api.entities.servant.worm.Worm;
 import com.bilibili.player_ix.noixmod_api.entities.villager.*;
 import com.bilibili.player_ix.noixmod_api.magic.Spell;
 import com.bilibili.player_ix.noixmod_api.register.event.SpellCastEvent;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiVillager;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.ObjectUtil;
 import net.minecraft.core.particles.ParticleTypes;

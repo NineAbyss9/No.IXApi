@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.mixin;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.PAMAreNonnullByDefault;
+import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.world.damagesource.DamageSource;

@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.friendly;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.SpellCasterMob;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

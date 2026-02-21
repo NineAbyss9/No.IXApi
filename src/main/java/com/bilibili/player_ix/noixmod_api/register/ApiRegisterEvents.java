@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.register;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.bilibili.player_ix.noixmod_api.commands.APICommand;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;

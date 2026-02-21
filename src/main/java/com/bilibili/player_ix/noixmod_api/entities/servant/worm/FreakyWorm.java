@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.worm;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilityMobs;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilityMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.SmokeTrap;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;

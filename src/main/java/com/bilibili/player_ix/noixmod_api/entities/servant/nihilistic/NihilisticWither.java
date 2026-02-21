@@ -1,12 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiMobType;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilityMobs;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.NihilitySummonedMobs;
-import com.github.NineAbyss9.ix_api.ix_api.util.Colors;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilityMobs;
+import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
+import com.github.NineAbyss9.ix_api.util.Colors;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticWitherSkull;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;

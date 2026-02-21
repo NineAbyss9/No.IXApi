@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.item.magic;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.item.BaseItem;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.item.BaseItem;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.servant.Healing;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.world.InteractionHand;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.item.ritual;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

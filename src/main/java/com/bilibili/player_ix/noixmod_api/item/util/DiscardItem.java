@@ -4,7 +4,7 @@ package com.bilibili.player_ix.noixmod_api.item.util;
 import com.bilibili.player_ix.noixmod_api.client.BossBar;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.entities.boss.NihilisticLord;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

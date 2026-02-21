@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.item.enchantment;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiMobType;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;

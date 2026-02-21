@@ -6,7 +6,7 @@ package com.bilibili.player_ix.noixmod_api.client.model;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.model.animations.HeadHunterAnimations;
 import com.bilibili.player_ix.noixmod_api.entities.boss.HeadHunter;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ArmedModel;

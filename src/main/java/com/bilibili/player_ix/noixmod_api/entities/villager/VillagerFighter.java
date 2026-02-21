@@ -1,10 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.*;
-import com.github.NineAbyss9.ix_api.ix_api.util.ItemUtil;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.mobs.*;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.compat.goety.GoetyCompat;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiTradeWithPlayerGoal;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;

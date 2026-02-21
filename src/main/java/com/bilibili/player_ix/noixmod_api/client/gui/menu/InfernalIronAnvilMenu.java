@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.gui.menu;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.crafting.SubDataSlot;
+import com.github.NineAbyss9.ix_api.api.crafting.SubDataSlot;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIBlocks;
 import net.minecraft.SharedConstants;

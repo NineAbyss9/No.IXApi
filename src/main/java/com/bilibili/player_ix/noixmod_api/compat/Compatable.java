@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.compat;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.item.ItemStacks;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;

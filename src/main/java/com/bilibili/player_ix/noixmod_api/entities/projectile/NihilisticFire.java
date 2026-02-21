@@ -1,9 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IProjectile;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Nihilistic;
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.api.mobs.IProjectile;
+import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.particles.ParticleTypes;

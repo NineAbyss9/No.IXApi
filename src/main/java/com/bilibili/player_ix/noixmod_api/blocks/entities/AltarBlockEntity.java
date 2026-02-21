@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.blocks.entities;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 //import com.bilibili.player_ix.noixmod_api.client.gui.menu.AltarContainer;
 import com.bilibili.player_ix.noixmod_api.register.ApiBlockEntities;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;

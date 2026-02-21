@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.model;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.OnlyInClient;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.ApiSpells;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

@@ -1,16 +1,16 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.IShieldUser;
-import com.github.NineAbyss9.ix_api.ix_api.util.Option;
+import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import com.org.NineAbyss9.util.Option;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
-import com.github.NineAbyss9.ix_api.ix_api.api.annotation.ServerOnly;
+import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.Mourner;
 import com.bilibili.player_ix.noixmod_api.register.ErrorCodes;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;

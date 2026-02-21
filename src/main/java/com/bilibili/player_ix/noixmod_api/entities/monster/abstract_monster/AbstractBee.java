@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiNeutralMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiNeutralMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.APIBreedGoal;
 import com.bilibili.player_ix.noixmod_api.entities.servant.animal.AgeableAnimalServant;
 import com.google.common.collect.Lists;

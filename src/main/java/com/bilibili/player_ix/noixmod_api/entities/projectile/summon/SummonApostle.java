@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile.summon;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.Maths;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.boss.ApostleBoss;
 import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.ApostleServant;

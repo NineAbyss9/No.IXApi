@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss.star_guardian;
 
-import com.github.NineAbyss9.ix_api.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.server.level.ServerLevel;
@@ -16,44 +16,44 @@ public class GuardianTeleportAttack {
     }
 
     static void trigger(StarGuardian pGuardian, LivingEntity target) {
-        if (pGuardian.attackTickEquals(15)) {
+        if (pGuardian.aniTickEquals(15)) {
             sound(pGuardian);
             sendParticles(pGuardian);
             teleport(pGuardian, target);
         }
-        if (pGuardian.attackTickEquals(20)) {
+        if (pGuardian.aniTickEquals(20)) {
             doAttack(pGuardian);
         }
-        if (pGuardian.attackTickEquals(25)) {
+        if (pGuardian.aniTickEquals(25)) {
             sound(pGuardian);
             sendParticles(pGuardian);
             teleport(pGuardian, target);
         }
-        if (pGuardian.attackTickEquals(30)) {
+        if (pGuardian.aniTickEquals(30)) {
             doAttack(pGuardian);
         }
-        if (pGuardian.attackTickEquals(35)) {
+        if (pGuardian.aniTickEquals(35)) {
             sound(pGuardian);
             sendParticles(pGuardian);
             teleport(pGuardian, target);
         }
-        if (pGuardian.attackTickEquals(40)) {
+        if (pGuardian.aniTickEquals(40)) {
             doAttack(pGuardian);
         }
-        if (pGuardian.attackTickEquals(45)) {
+        if (pGuardian.aniTickEquals(45)) {
             sound(pGuardian);
             sendParticles(pGuardian);
             teleport(pGuardian, target);
         }
-        if (pGuardian.attackTickEquals(50)) {
+        if (pGuardian.aniTickEquals(50)) {
             pGuardian.finalVec = target.position();
             doAttack(pGuardian);
         }
-        if (pGuardian.attackTickEquals(55)) {
+        if (pGuardian.aniTickEquals(55)) {
             sound(pGuardian);
             teleport(pGuardian, target);
         }
-        if (pGuardian.attackTickEquals(60)) {
+        if (pGuardian.aniTickEquals(60)) {
             pGuardian.groundSound();
             cloud(pGuardian);
             List<LivingEntity> entities = pGuardian.level().getEntitiesOfClass(LivingEntity.class,

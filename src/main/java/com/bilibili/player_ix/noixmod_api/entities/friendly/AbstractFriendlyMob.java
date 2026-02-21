@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.friendly;
 
-import com.github.NineAbyss9.ix_api.ix_api.api.mobs.ApiPathfinderMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
