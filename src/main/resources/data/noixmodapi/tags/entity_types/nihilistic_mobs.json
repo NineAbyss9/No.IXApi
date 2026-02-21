@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "noixmodapi:nihilistic_zombie",
+    "noixmodapi:nihilistic_blaze",
+    "noixmodapi:nihilistic_wither",
+    "noixmodapi:nihilistic_wither_boss",
+    "noixmodapi:nihilistic_ghast",
+    "noixmodapi:cursed_nihilistic_evoker",
+    "noixmodapi:lurker",
+    "noixmodapi:apostle",
+    "noixmodapi:apostle_servant",
+    "noixmodapi:apostle_shadow",
+    "noixmodapi:abyss",
+    "noixmodapi:shadow_walker",
+    "noixmodapi:wronged_soul"
+  ]
+}

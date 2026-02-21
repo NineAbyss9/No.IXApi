@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "noixmodapi:blocks/infernal_iron_anvil",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "noixmodapi:infernal_iron_anvil"
+        }
+      ]
+    }
+  ]
+}

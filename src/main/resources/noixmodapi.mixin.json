@@ -1,0 +1,13 @@
+{
+  "package": "com.bilibili.player_ix.noixmod_api.mixin",
+  "mixins": [
+    "CompassItemMixin",
+    "LivingEntityMixin",
+    "MobileEntityMixin",
+    "PlayerMixin",
+    "ServerLevelMixin"
+  ],
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17"
+}

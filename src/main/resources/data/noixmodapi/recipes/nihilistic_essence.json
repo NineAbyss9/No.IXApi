@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "xxx",
+    "xxx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "noixmodapi:nihilistic_ash"
+    }
+  },
+  "result": {
+    "item": "noixmodapi:nihilistic_essence",
+    "count": 1
+  }
+}

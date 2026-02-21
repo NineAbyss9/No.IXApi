@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "noixmodapi:item/ritual_supplies/vampire_soul"
+  }
+}

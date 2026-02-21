@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "noixmodapi:item/weapon/infernal_iron_axe"
+  }
+}

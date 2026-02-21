@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "render_type": "solid",
+  "textures": {
+    "all": "noixmodapi:block/worm_block"
+  }
+}

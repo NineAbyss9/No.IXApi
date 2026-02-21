@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "noixmodapi:armorer",
+    "noixmodapi:biologist",
+    "noixmodapi:evoker_illager",
+    "noixmodapi:flagman",
+    "noixmodapi:grave_keeper",
+    "noixmodapi:hunter",
+    "noixmodapi:mourner",
+    "noixmodapi:bugler"
+  ]
+}

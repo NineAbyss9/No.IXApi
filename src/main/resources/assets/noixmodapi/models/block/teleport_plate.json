@@ -1,0 +1,6 @@
+{
+  "parent": "noixmodapi:block/model_teleport_plate",
+  "textures": {
+    "texture": "noixmodapi:block/teleport_plate"
+  }
+}

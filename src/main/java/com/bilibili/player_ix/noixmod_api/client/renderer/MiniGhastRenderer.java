@@ -1,0 +1,26 @@
+
+package com.bilibili.player_ix.noixmod_api.client.renderer;
+
+import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
+import com.bilibili.player_ix.noixmod_api.client.model.APIGhastModel;
+import com.bilibili.player_ix.noixmod_api.entities.servant.MiniGhast;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+
+public class MiniGhastRenderer<T extends MiniGhast>
+extends MobRenderer<T, APIGhastModel<T>> {
+    public MiniGhastRenderer(EntityRendererProvider.Context p_174304_) {
+        super(p_174304_, new APIGhastModel<>(p_174304_.bakeLayer(NoixmodAPIModelLayer.API_GHAST)), 0.5f);
+    }
+
+    @NotNull
+    @Override
+    public ResourceLocation getTextureLocation(@NotNull T t) {
+        if (t.isCharging()) {
+            return new ResourceLocation("noixmodapi:textures/entities/servants/mini_ghast/mini_ghast_charging.png");
+        }
+        return new ResourceLocation("noixmodapi:textures/entities/servants/mini_ghast/mini_ghast.png");
+    }
+}

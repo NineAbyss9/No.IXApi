@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "noixmodapi:item/utils/copper_pickaxe"
+  }
+}

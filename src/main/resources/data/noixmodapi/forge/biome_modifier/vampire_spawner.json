@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "minecraft:dark_forest",
+  "spawners": {
+    "type": "noixmodapi:bloodsucker",
+    "minCount": 1,
+    "maxCount": 1,
+    "weight": 7
+  }
+}

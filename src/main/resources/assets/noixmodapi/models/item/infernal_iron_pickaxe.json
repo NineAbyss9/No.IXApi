@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "noixmodapi:item/utils/infernal_iron_pickaxe"
+  }
+}

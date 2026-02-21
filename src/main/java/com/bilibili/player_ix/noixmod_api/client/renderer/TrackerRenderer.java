@@ -1,0 +1,23 @@
+
+package com.bilibili.player_ix.noixmod_api.client.renderer;
+
+import com.bilibili.player_ix.noixmod_api.entities.monster.horror.Tracker;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+
+public class TrackerRenderer<T extends Tracker>
+extends MobRenderer<T, HumanoidModel<T>> {
+    public TrackerRenderer(EntityRendererProvider.Context pContext) {
+        super(pContext, new HumanoidModel<>(pContext.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);
+    }
+
+    /**
+     * Returns the location of an entity's texture.
+     */
+    public ResourceLocation getTextureLocation(T pEntity) {
+        return new ResourceLocation("noixmodapi:textures/entities/monsters/horror/tracker.png");
+    }
+}

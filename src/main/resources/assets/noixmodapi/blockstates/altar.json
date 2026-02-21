@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "noixmodapi:block/model_altar"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"particle": "noixmodapi:block/teleport_plate",
+		"texture": "noixmodapi:block/teleport_plate"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 0.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 6, 0]},
+			"faces": {
+				"north": {"uv": [7, 7, 0, 14], "texture": "#texture"},
+				"east": {"uv": [7, 1.5, 14, 2], "rotation": 270, "texture": "#texture"},
+				"south": {"uv": [7, 7, 0, 0], "rotation": 180, "texture": "#texture"},
+				"west": {"uv": [7, 0.5, 14, 1], "rotation": 90, "texture": "#texture"},
+				"up": {"uv": [7, 1, 14, 1.5], "rotation": 180, "texture": "#texture"},
+				"down": {"uv": [7, 0, 14, 0.5], "texture": "#texture"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, -1.5, 3.75],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 0, 3.75],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [1, 0.75, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"fixed": {
+			"translation": [0, 0, 8.75]
+		}
+	},
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

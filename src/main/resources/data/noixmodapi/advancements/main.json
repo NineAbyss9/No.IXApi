@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "noixmodapi:halo_of_apostle"
+    },
+    "title": {
+      "translate": "advancements.noixmodapi.to_be_the_strongest_spellcaster"
+    },
+    "description": {
+      "translate": "advancements.noixmodapi.to_be_the_strongest_spellcaster.description"
+    },
+    "background": "minecraft:textures/block/stone.png",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden" : false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

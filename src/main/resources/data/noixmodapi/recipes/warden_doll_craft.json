@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "9x9",
+    "ini",
+    "xix"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:sculk"
+    },
+    "x": {
+      "item": "minecraft:sculk_catalyst"
+    },
+    "n": {
+      "item": "minecraft:sculk_shrieker"
+    },
+    "9": {
+      "item": "minecraft:sculk_sensor"
+    }
+  },
+  "result": {
+    "item": "noixmodapi:warden_doll",
+    "count": 1
+  }
+}

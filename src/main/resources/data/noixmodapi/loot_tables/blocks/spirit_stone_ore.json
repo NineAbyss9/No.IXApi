@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "noixmodapi:blocks/spirit_stone_ore",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "noixmodapi:spirit_stone"
+        }
+      ]
+    }
+  ]
+}

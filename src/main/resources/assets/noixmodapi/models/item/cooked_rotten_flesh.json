@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "noixmodapi:item/food/cooked_rotten_flesh"
+  }
+}

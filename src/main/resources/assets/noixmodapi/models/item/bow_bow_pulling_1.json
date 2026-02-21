@@ -1,0 +1,6 @@
+{
+  "parent": "noixmodapi:item/bow_bow",
+  "textures": {
+    "layer0": "item/bow_pulling_1"
+  }
+}

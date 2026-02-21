@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "texture=0": {
+      "model": "noixmodapi:block/blood_0"
+    },
+    "texture=1": {
+      "model": "noixmodapi:block/blood_1"
+    },
+    "texture=2": {
+      "model": "noixmodapi:block/blood_2"
+    },
+    "texture=3": {
+      "model": "noixmodapi:block/blood_3"
+    },
+    "texture=4": {
+      "model": "noixmodapi:block/blood_4"
+    }
+  }
+}

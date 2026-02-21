@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "ixi",
+    " i "
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:wither_skeleton_skull"
+    },
+    "i": {
+      "item": "minecraft:soul_sand"
+    },
+    "x": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "result": {
+    "item": "noixmodapi:wither_doll",
+    "count": 1
+  }
+}

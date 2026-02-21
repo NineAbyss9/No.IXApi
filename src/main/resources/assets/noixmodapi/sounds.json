@@ -1,0 +1,290 @@
+{
+  "clap": {
+    "subtitle": "subtitles.clap",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/abyss/clap"
+      }
+    ]
+  },
+  "apostle_cast_spell": {
+    "subtitle": "subtitles.apostle_cast_spell",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/apostle_cast_spell"
+      },
+      {
+        "name": "noixmodapi:entities/apostle/apostle_cast_spell1"
+      },
+      {
+        "name": "noixmodapi:entities/apostle/apostle_cast_spell2"
+      }
+    ]
+  },
+  "apostle_death": {
+    "subtitle": "subtitles.apostle_death",
+    "sounds": [
+      {
+        "name": "mob/blaze/death",
+        "pitch": 0.25
+      }
+    ]
+  },
+  "apostle_hurt": {
+    "subtitle": "subtitles.apostle_hurts",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/apostle_hurt_new",
+        "pitch": 1
+      },
+      {
+        "name": "noixmodapi:entities/apostle/apostle_hurt_new1",
+        "pitch": 1
+      }
+    ]
+  },
+  "apostle_hurt_horror": {
+    "subtitle": "subtitles.apostle_screams",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/apostle_hurt_horror",
+        "pitch": 1
+      }
+    ]
+  },
+  "apostle_idle": {
+    "subtitle": "subtitles.apostle_mutters",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/apostle_idle"
+      }
+    ]
+  },
+  "apostle_prepare_spell": {
+    "subtitle": "subtitles.apostle_prepare_spell",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/apostle_prepare_spell"
+      },
+      {
+        "name": "noixmodapi:entities/apostle/apostle_prepare_spell1"
+      }
+    ]
+  },
+  "apostle_summon": {
+    "subtitle": "subtitles.apostle_summons",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/apostle_summon"
+      },
+      {
+        "name": "noixmodapi:entities/apostle/apostle_summon1"
+      }
+    ]
+  },
+  "cry": {
+    "subtitle": "subtitles.cry",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/cry"
+      }
+    ]
+  },
+  "cultist_idle": {
+    "subtitle": "subtitles.cultist_idle",
+    "sounds": [
+      {
+        "name": "mob/vindication_illager/idle1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/idle2",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/idle3",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/ambient4",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/ambient3",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/ambient2",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/ambient1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/idle1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/idle2",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/idle3",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/idle4",
+        "pitch": 0.85
+      }
+    ]
+  },
+  "cultist_hurt": {
+    "subtitle": "subtitles.cultist_hurt",
+    "sounds": [
+      {
+        "name": "entity/witch/hurt1",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/hurt2",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/hurt3",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/hurt1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/hurt2",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/hurt3",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/hurt1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/hurt2",
+        "pitch": 0.85
+      }
+    ]
+  },
+  "cultist_death": {
+    "subtitle": "subtitles.cultist_death",
+    "sounds": [
+      {
+        "name": "entity/witch/death1",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/death2",
+        "pitch": 0.85
+      },
+      {
+        "name": "entity/witch/death3",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/death1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/vindication_illager/death2",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/death1",
+        "pitch": 0.85
+      },
+      {
+        "name": "mob/evocation_illager/death2",
+        "pitch": 0.85
+      }
+    ]
+  },
+  "ei_music": {
+    "subtitle": "subtitles.evoker_illager_music",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/ei_music"
+      }
+    ]
+  },
+  "evoker_illager_death": {
+    "subtitle": "subtitles.evoker_illager_death",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/evoker_illager_death_0"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_death_1"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_death_2"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_death_3"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_death_4"
+      }
+    ]
+  },
+  "evoker_illager_hurts": {
+    "subtitle": "subtitles.evoker_illager_hurts",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/evoker_illager_hurt_0"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_hurt_1"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_hurt_2"
+      }
+    ]
+  },
+  "evoker_illager_idle": {
+    "subtitle": "subtitles.evoker_illager_idle",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/evoker_illager_idle_0"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_idle_1"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_idle_2"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_idle_3"
+      }
+    ]
+  },
+  "evoker_illager_shoot_fireball": {
+    "subtitle": "subtitles.evoker_illager_shoot_fireball",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/evoker_illager_summon_fireball_0"
+      },
+      {
+        "name": "noixmodapi:entities/evoker_illager_summon_fireball_1"
+      }
+    ]
+  },
+  "glitch": {
+    "subtitle": "subtitles.glitch",
+    "sounds": [
+      {
+        "name": "noixmodapi:entities/apostle/glitch"
+      }
+    ]
+  }
+}

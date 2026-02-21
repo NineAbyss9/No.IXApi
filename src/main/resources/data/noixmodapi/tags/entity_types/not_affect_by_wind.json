@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "noixmodapi:hostile_wind_zombie",
+    "noixmodapi:wind_entity",
+    "noixmodapi:wind_zombie"
+  ]
+}

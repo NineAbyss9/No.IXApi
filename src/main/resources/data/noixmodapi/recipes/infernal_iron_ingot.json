@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "iii",
+    "ixx",
+    "xx "
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "x": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "noixmodapi:infernal_iron_ingot",
+    "count": 1
+  }
+}

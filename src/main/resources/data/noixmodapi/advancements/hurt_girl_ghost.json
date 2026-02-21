@@ -1,0 +1,40 @@
+{
+  "parent": "noixmodapi:main",
+  "criteria": {
+    "hurt_girl_ghost": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "noixmodapi:girl_ghost"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_hurt_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.noixmodapi.hurt_girl_ghost.description"
+    },
+    "frame": "goal",
+    "hidden": true,
+    "icon": {
+      "item": "noixmodapi:fresh_soul"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.noixmodapi.hurt_girl_ghost"
+    }
+  },
+  "requirements": [
+    [
+      "hurt_girl_ghost"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

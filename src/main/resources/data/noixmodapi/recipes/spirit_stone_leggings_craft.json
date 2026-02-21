@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "iii",
+    "i i",
+    "i i"
+  ],
+  "key": {
+    "i": {
+      "item": "noixmodapi:spirit_stone"
+    }
+  },
+  "result": {
+    "item": "noixmodapi:spirit_stone_leggings",
+    "count": 1
+  }
+}

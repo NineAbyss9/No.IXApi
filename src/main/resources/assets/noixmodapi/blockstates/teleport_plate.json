@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "noixmodapi:block/model_teleport_plate",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "noixmodapi:block/model_teleport_plate",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "noixmodapi:block/model_teleport_plate",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "noixmodapi:block/model_teleport_plate"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "noixmodapi:block/blood",
+  "textures": {
+    "blood": "noixmodapi:block/blood_3"
+  }
+}

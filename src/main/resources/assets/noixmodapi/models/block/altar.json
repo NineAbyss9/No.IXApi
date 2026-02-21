@@ -1,0 +1,6 @@
+{
+  "parent": "noixmodapi:block/model_altar",
+  "textures": {
+    "0": "noixmodapi:block/altar"
+  }
+}

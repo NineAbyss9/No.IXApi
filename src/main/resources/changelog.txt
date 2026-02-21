@@ -1,0 +1,41 @@
+1.1.5 Bug fix : add a new entity named "Power", fix some bug
+1.3.1 Bug fix : Fixed a bug about spawning mobs;
+Change : Makes the fight with HeadHunter less difficult;Weakened apostles;
+Nihilistic statue do not make their owners Invulnerable now;
+Added : Vampire soul, Vampire servant, Uninvited sword, some commands, etc.;
+Warning : There is a bug about items in Altar, do not put your items in it.
+1.3.2 Change : NihilisticEffect now hurts entities by 4.9 damage;Made NihilisticWither more powerful.
+Changed apostles' boss bars and some textures.Optimized some animations.The range of some skills
+of HeadHunter is no longer as extensive. Most of his skills no longer ignore shields.
+Added : NihilisticWitherBoss, VillagerAmulet, Smoke Trap Spell, HeadHunter's crossbow(WIP), the HorrorMode command,
+Infernal iron ingot, Infernal iron sword, Infernal iron pickaxe, Infernal iron axe, Banned book,
+the No.IXModMoreTextures in resourcepacks.
+1.3.3 Change:Apostles will not ownerSummon ApostleServants when the HorrorMode does not enable.HeadHunter can break shields now.
+Changed Apostle, HaloOfApostle, and CopperUtils' textures.Revised the attack range of certain entities to make changeling them
+easier.
+Added:NihilisticOrder(It is WIP, but you can use commands to spawn).
+1.3.5 : Added:SilverfishServant, WormReagent.
+Change:Apostles ownerSummon Golem now but not ZombieVindicator.
+Fixed a bug.
+1.3.6:Stop using ClientConfig.
+Added:Many illager servants.HeadHunter has a new skill now.
+Fixed some bugs.
+1.3.62 : Fix a bug about config(hopefully).
+1.3.7 : Added : Wind essence, Wind sword, Wind zombie(You can meet them in overworld), Wind entity,
+Teleporter(Creative only), Healling, Healling doll, Ominous head, Grave axe, Grave sword;
+NihilisticOrder will spawn in survival now;
+You can meet HeadHunter in survival now(By challenging NihilisticWither).
+There is a bug about OminousHead, Manifested as unable to render, but this does not make your game crash.
+Tips : Right-click the WindSword to move forward a certain distance (about 7 blocks). There is no cooldown, but it will consume
+ 1 durability point (if enchanted with Enchantments: Unbreaking at any level above 0, durability will not be consumed).
+The Potent Enchantment allows you to move even farther.
+Wind Sword can craft using Wind Essence.
+If there are any bugs, please report them in the mod comments or under my issues.
+1.3.8 : Added : Nihilistic Essence, Nihilistic Ash, Priest(WIP).
+Fixed some bugs.
+This may be the last version for quite some time,
+ as I have decided to work on another mod.
+  If there are any bugs, please report them in the mod comments or under my issues.
+   I will release patch versions to fix any errors. Please be assured that I have not abandoned this project.
+1.3.9: Added : Warden doll, Warden servant, NeoIllager.
+Changes : Drunkenness, flagmen and GraveKeepers will join raids now.Remastered headhunter.

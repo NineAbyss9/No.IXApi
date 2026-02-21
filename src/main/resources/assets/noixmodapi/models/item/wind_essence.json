@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "noixmodapi:item/ritual_supplies/wind_essence"
+  }
+}

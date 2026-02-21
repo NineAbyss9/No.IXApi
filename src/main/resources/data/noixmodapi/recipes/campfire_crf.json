@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "experience": 1,
+  "ingredient": {
+    "item": "minecraft:rotten_flesh"
+  },
+  "result": "noixmodapi:cooked_rotten_flesh"
+}

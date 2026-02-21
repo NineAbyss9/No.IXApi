@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 1,
+  "cookingtime": 120,
+  "ingredient": {
+    "item": "noixmodapi:copper_axe"
+  },
+  "result": "noixmodapi:copper_nugget"
+}

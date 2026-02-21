@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": {
+    "type": "forge:any"
+  },
+  "spawners": {
+    "type": "noixmodapi:worm",
+    "minCount": 1,
+    "maxCount": 2,
+    "weight": 10
+  }
+}

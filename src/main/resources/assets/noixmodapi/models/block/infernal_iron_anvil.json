@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_anvil",
+  "textures": {
+    "body": "noixmodapi:block/infernal_iron_anvil",
+    "top": "noixmodapi:block/infernal_iron_anvil_top"
+  }
+}
