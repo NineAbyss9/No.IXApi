@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss.abyss;
 
+import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
@@ -343,7 +344,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 flag = this.getY() > target.getY() + 6;
                 this.targetBYO = target.getBoundingBox().getYsize();
             } else {
-                flag = worldUtil.low() > targetBYO + 5;
+                flag = WorldUtil.low(this) > targetBYO + 5;
             }
             if (flag) {
                 this.setDeltaMovement(Vec9.of(0, -0.15, 0));

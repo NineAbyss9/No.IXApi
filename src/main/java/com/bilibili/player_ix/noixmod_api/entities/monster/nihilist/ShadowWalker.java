@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
@@ -227,8 +227,8 @@ implements Enemy {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
     }
 }

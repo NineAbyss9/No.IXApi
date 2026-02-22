@@ -105,7 +105,7 @@ extends OwnableMob {
     }
 
     public boolean hasLife() {
-        return TRUE;
+        return true;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
@@ -169,8 +169,8 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.FIRE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.FIRE;
         }
     }
 }

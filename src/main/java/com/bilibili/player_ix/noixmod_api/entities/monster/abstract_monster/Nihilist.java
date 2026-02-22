@@ -1,6 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
+import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
+import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
@@ -17,13 +19,16 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.awt.*;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class Nihilist
 extends ApiPathfinderMob
 implements PowerableMob, Nihilistic
 {
+    private final OwnerSummon summon = new OwnerSummon(this);
     protected Nihilist(EntityType<? extends Nihilist> type, Level supered) {
         super(type, supered);
     }
@@ -84,6 +89,15 @@ implements PowerableMob, Nihilistic
         return NihilistArmPose.CROSSED;
     }
 
+    public OwnerSummon getSummon() {
+        return summon;
+    }
+
+    public List<LivingEntity> getLord() {
+        return this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(32),
+                entity -> entity instanceof IX);
+    }
+
     public boolean canBeLeader() {
         return !this.isAlive();
     }
@@ -96,6 +110,10 @@ implements PowerableMob, Nihilistic
         if (!this.level().isClientSide()) {
             WorldUtil.sendParticles(ParticleTypes.WITCH, this, 12, 2, 0, 2, 0);
         }
+    }
+
+    public boolean isHorror() {
+        return NoixmodAPIMainConfig.HorrorMode.get();
     }
 
     public static AttributeSupplier.Builder createMonsterAttributes() {

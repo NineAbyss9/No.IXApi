@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.api.mobs.effect.EffectInstance;
@@ -16,7 +16,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Illusioner;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 public class IllusionerServant
 extends OwnableIllager
 implements ApiRangedAttackMob {
-    Illusioner illusioner;
     private int clientSideIllusionTicks;
     private final Vec3[][] clientSideIllusionOffsets;
     public IllusionerServant(EntityType<? extends IllusionerServant> entityType, Level level) {
@@ -158,7 +156,7 @@ implements ApiRangedAttackMob {
         }
 
         protected void castSpell() {
-            illusionerServant.addEffect(EffectInstance.create(MobEffects.INVISIBILITY, 1200));
+            illusionerServant.addEffect(EffectInstance.create(() -> MobEffects.INVISIBILITY, 1200));
         }
 
         protected int getCastingTime() {
@@ -174,8 +172,8 @@ implements ApiRangedAttackMob {
             return SoundEvents.ILLUSIONER_PREPARE_MIRROR;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.WATER;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.WATER;
         }
     }
 }

@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.api.mobs.APIEntityDataSerializers;
+import com.github.NineAbyss9.ix_api.api.APISpells;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiEntityDataSerializers;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
@@ -31,8 +31,8 @@ implements SpellCasterMob {
     protected int spellCastingTickCount;
     protected static final EntityDataAccessor<Integer> SPELL_TICKS = SynchedEntityData.defineId(
             SpellcasterNihilist.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<ApiSpells.ApiSpell> CURRENT_SPELL;
-    protected ApiSpells.ApiSpell lastSpell = ApiSpells.ApiSpell.NONE;
+    protected static final EntityDataAccessor<APISpells.APISpell> CURRENT_SPELL;
+    protected APISpells.APISpell lastSpell = APISpells.APISpell.NONE;
     protected SpellcasterNihilist(EntityType<? extends SpellcasterNihilist> type, Level world) {
         super(type, world);
     }
@@ -58,11 +58,11 @@ implements SpellCasterMob {
         tag.putInt("TestSpellTicks", this.getSpellTick());
     }
 
-    protected ApiSpells.ApiSpell getSpellId() {
+    protected APISpells.APISpell getSpellId() {
         if (!this.level().isClientSide) {
             return this.entityData.get(CURRENT_SPELL);
         }
-        return ApiSpells.ApiSpell.getById(this.entityData.get(SPELL));
+        return APISpells.APISpell.getById(this.entityData.get(SPELL));
     }
 
     @Override
@@ -85,7 +85,7 @@ implements SpellCasterMob {
     }
 
     protected void spellTick() {
-        ApiSpells.ApiSpell spellId = this.getSpellId() == ApiSpells.ApiSpell.NONE ? this.lastSpell : this.getSpellId();
+        APISpells.APISpell spellId = this.getSpellId() == APISpells.APISpell.NONE ? this.lastSpell : this.getSpellId();
         double $$1 = spellId.spellColor[0];
         double $$2 = spellId.spellColor[1];
         double $$3 = spellId.spellColor[2];
@@ -206,7 +206,7 @@ implements SpellCasterMob {
         @Nullable
         protected abstract SoundEvent getSpellPrepareSound();
 
-        protected abstract ApiSpells.ApiSpell getSpell();
+        protected abstract APISpells.APISpell getSpell();
     }
 
     protected abstract class UseSpellGoal
@@ -297,7 +297,7 @@ implements SpellCasterMob {
         @Nullable
         protected abstract SoundEvent getSpellPrepareSound();
 
-        protected abstract ApiSpells.ApiSpell getSpell();
+        protected abstract APISpells.APISpell getSpell();
 
         protected boolean customCastSound() {
             return false;
@@ -339,7 +339,7 @@ implements SpellCasterMob {
         return this.getSpellTick() > 0;
     }
 
-    public void setSpellType(ApiSpells.ApiSpell spell) {
+    public void setSpellType(APISpells.APISpell spell) {
         this.entityData.set(CURRENT_SPELL, spell);
         this.entityData.set(SPELL, (byte)spell.id);
     }
@@ -357,7 +357,7 @@ implements SpellCasterMob {
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CURRENT_SPELL, ApiSpells.ApiSpell.NONE);
+        this.entityData.define(CURRENT_SPELL, APISpells.APISpell.NONE);
         this.entityData.define(SPELL, Maths.ZERO_BYTE);
         this.entityData.define(SPELL_TICKS, 0);
     }
@@ -374,6 +374,6 @@ implements SpellCasterMob {
     }
 
     static {
-        CURRENT_SPELL = SynchedEntityData.defineId(SpellcasterNihilist.class, APIEntityDataSerializers.API_SPELL);
+        CURRENT_SPELL = SynchedEntityData.defineId(SpellcasterNihilist.class, ApiEntityDataSerializers.API_SPELL);
     }
 }

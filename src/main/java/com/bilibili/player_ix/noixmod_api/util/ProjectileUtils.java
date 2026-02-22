@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;

@@ -4,7 +4,7 @@ license="GPL"
 
 [[mods]]
 modId="noixmodapi"
-version="1.3.902-pre1"
+version="1.3.902-pre3"
 displayName="No.IXAPI"
 displayURL="https://github.com/noixmod"
 logoFile="logo.png"
@@ -18,3 +18,10 @@ mandatory=true
 versionRange="[1.20.1]"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.noixmodapi]]
+modId = "ix_api"
+mandatory = true
+versionRange = "[1.,)"
+ordering = "AFTER"
+side = "BOTH"

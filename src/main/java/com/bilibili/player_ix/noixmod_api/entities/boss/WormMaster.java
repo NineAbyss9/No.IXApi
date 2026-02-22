@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
@@ -187,8 +187,8 @@ implements ApiBoss {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.FIRE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.FIRE;
         }
     }
 }

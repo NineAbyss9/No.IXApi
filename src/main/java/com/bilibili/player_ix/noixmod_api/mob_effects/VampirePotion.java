@@ -1,12 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.mob_effects;
 
-import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 
@@ -19,7 +19,7 @@ extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {
-        if (!ApiMobType.isUndead(p_19467_.getMobType())) {
+        if (p_19467_.getMobType() != MobType.UNDEAD) {
             p_19467_.hurt(p_19467_.level().damageSources().wither(), 1f);
             if (p_19467_ instanceof Player player) {
                 player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 1));

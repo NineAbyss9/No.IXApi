@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
-import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
-import com.github.NineAbyss9.ix_api.api.client.renderer.BaseEntityRenderer;
+import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import com.github.NineAbyss9.ix_api.api.renderer.BaseEntityRenderer;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
 import com.bilibili.player_ix.noixmod_api.client.gui.screen.AltarContainerScreen;
@@ -237,7 +237,7 @@ public class ClientInitEvents {
         IEventBus bus = MinecraftForge.EVENT_BUS;
         bus.addListener(BossBar::renderBossBar);
         BlockEntityRenderers.register(ApiBlockEntities.ALTAR.get(), AltarRenderer::new);
-        createApiPacket();
+        //createApiPacket();
         ItemProperties.register(NoixmodAPIItems.BOW_BOW.get(), new ResourceLocation("pull"),
                 (stack, level, living, i) -> {
             if (living == null) {

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
-import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.sound.BossLoopMusic;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;

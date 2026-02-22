@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 public class RedSkullParticle extends TextureSheetParticle {
     private final SpriteSet set;
     public RedSkullParticle(ClientLevel client, double x, double y, double z, double vx, double p_108333_, double vz, SpriteSet spriteSets) {
-        super(client, x, y, z, 0.5 - Maths.RANDOM.nextDouble(), p_108333_, 0.5 - Maths.RANDOM.nextDouble());
+        super(client, x, y, z, 0.5 - Maths.random.nextDouble(), p_108333_, 0.5 - Maths.random.nextDouble());
         this.friction = 0.96F;
         this.gravity = -0.1F;
         this.speedUpWhenYMotionIsBlocked = true;

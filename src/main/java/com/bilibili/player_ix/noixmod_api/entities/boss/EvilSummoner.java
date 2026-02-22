@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
@@ -248,8 +248,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
             return SoundEvents.BELL_RESONATE;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
     }
 
@@ -287,8 +287,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
     }
 
@@ -350,8 +350,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.UNKNOWN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.UNKNOWN;
         }
     }
 
@@ -399,8 +399,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
             return SoundEvents.ILLUSIONER_PREPARE_BLINDNESS;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
     }
 
@@ -427,8 +427,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
             return SoundEvents.BELL_RESONATE;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.REGEN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.REGEN;
         }
 
         public boolean canUse() {
@@ -474,8 +474,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
     }
 }

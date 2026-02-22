@@ -89,11 +89,11 @@ extends AbstractWorm {
     }
 
     public boolean canBreatheUnderwater() {
-        return TRUE;
+        return true;
     }
 
     public boolean isPushedByFluid(FluidType type) {
-        return FALSE;
+        return false;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EnderSpellCaster
-extends ApiSpellcaster {
+extends APISpellcaster {
     public EnderSpellCaster(EntityType<EnderSpellCaster> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
         this.xpReward = 10;

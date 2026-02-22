@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.friendly;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class FriendlyCaster extends AbstractFriendlyMob implements SpellCasterMob {
-    protected ApiSpells.ApiSpell spell;
+    protected APISpells.APISpell spell;
     private int spellTick;
     public FriendlyCaster(EntityType<? extends FriendlyCaster> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -21,7 +21,7 @@ public class FriendlyCaster extends AbstractFriendlyMob implements SpellCasterMo
     public void tick() {
         super.tick();
         if (this.level().isClientSide && this.isCastingSpell()) {
-            ApiSpells.ApiSpell pSpell = this.spell;
+            APISpells.APISpell pSpell = this.spell;
             double d = pSpell.spellColor[0];
             double d1 = pSpell.spellColor[1];
             double d2 = pSpell.spellColor[2];
@@ -41,7 +41,7 @@ public class FriendlyCaster extends AbstractFriendlyMob implements SpellCasterMo
         return spellTick;
     }
 
-    public void setSpellType(ApiSpells.ApiSpell spell) {
+    public void setSpellType(APISpells.APISpell spell) {
         this.spell = spell;
     }
 

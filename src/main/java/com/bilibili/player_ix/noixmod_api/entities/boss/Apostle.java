@@ -1,13 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.*;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.github.NineAbyss9.ix_api.util.Vec9;
-//import com.bilibili.player_ix.noixmod_api.api.entity.IX;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.bilibili.player_ix.noixmod_api.compat.bo.BlueOceansCompat;
 import com.bilibili.player_ix.noixmod_api.compat.goety.GoetyCompat;
@@ -863,7 +862,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     public void summonRangedServant() {
-        int i = this.enabledHorrorMode ? 2 : 0;
+        int i = this.isHorror() ? 2 : 0;
         this.summonRangedServant(1 + i, 4 + i);
     }
 
@@ -1192,7 +1191,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     protected void spellTick() {
-        ApiSpells.ApiSpell spellId = this.getSpellId() == ApiSpells.ApiSpell.NONE ? this.lastSpell : this.getSpellId();
+        APISpells.APISpell spellId = this.getSpellId() == APISpells.APISpell.NONE ? this.lastSpell : this.getSpellId();
         double $$1 = spellId.spellColor[0];
         double $$2 = spellId.spellColor[1];
         double $$3 = spellId.spellColor[2];
@@ -1257,7 +1256,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     public boolean isInOverworld() {
-        return this.getMobData().isInOverworld();
+        return this.level().dimension() == Level.OVERWORLD;
     }
 
     public boolean isInOtherDimensions() {
@@ -2414,11 +2413,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.DARK;
+            return APISpells.APISpell.DARK;
         }
 
         protected float getSpellPower() {
@@ -2475,8 +2474,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return false;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
 
         protected int getSpells() {
@@ -2543,11 +2542,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return true;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.ZOMBIE;
+            return APISpells.APISpell.ZOMBIE;
         }
 
         protected float getSpellPower() {
@@ -2609,8 +2608,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_PREPARE_SPELL.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         protected int getSpells() {
@@ -2659,11 +2658,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.ZOMBIE;
+            return APISpells.APISpell.ZOMBIE;
         }
 
         protected int getSpells() {
@@ -2718,8 +2717,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
 
         protected int getSpells() {
@@ -2819,11 +2818,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_PREPARE_SPELL.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.NIHILISTIC;
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         protected int getSpells() {
@@ -2870,8 +2869,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return super.canUse();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
     }
 
@@ -2918,8 +2917,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_PREPARE_SPELL.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         protected int getSpells() {
@@ -2965,11 +2964,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.NIHILISTIC;
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         public boolean canUse() {
@@ -3030,11 +3029,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.NIHILISTIC;
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         public boolean canUse() {
@@ -3089,8 +3088,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.WATER;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.WATER;
         }
 
         protected float getSpellPower() {
@@ -3148,11 +3147,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.NIHILISTIC;
+            return APISpells.APISpell.NIHILISTIC;
         }
     }
 
@@ -3194,11 +3193,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return true;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
+        protected APISpells.APISpell getSpell() {
             if (this.apostle.isHorror()) {
-                return ApiSpells.ApiSpell.BLOOD;
+                return APISpells.APISpell.BLOOD;
             }
-            return ApiSpells.ApiSpell.NIHILISTIC;
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         protected float getSpellPower() {
@@ -3309,8 +3308,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return 5.0F;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.UNKNOWN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.UNKNOWN;
         }
     }
 

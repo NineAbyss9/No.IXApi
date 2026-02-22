@@ -5,7 +5,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiAvoidTargetGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPISounds;
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Mourner extends ApiSpellcaster {
+public class Mourner extends APISpellcaster {
     @Nullable
     private Sheep wlTarget;
     private int dead = 0;

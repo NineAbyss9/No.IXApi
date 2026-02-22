@@ -2,8 +2,8 @@
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
-import com.github.NineAbyss9.ix_api.api.mobs.APIEntityDataSerializers;
+import com.github.NineAbyss9.ix_api.api.APISpells;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiEntityDataSerializers;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
@@ -33,7 +33,7 @@ OwnableIllager
 extends OwnableMob
 implements ApiPoseMob, SpellCasterMob {
     protected static final EntityDataAccessor<Integer> SPELL_TICK;
-    protected static final EntityDataAccessor<ApiSpells.ApiSpell> SPELL;
+    protected static final EntityDataAccessor<APISpells.APISpell> SPELL;
     protected OwnableIllager(EntityType<? extends OwnableIllager> entityType, Level level) {
         super(entityType, level);
     }
@@ -41,13 +41,13 @@ implements ApiPoseMob, SpellCasterMob {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SPELL_TICK, 0);
-        this.entityData.define(SPELL, ApiSpells.ApiSpell.NONE);
+        this.entityData.define(SPELL, APISpells.APISpell.NONE);
     }
 
     public void tick() {
         super.tick();
         if (this.level().isClientSide && this.isCastingSpell()) {
-            ApiSpells.ApiSpell spellType = this.getSpellType();
+            APISpells.APISpell spellType = this.getSpellType();
             double d = spellType.spellColor[0];
             double d1 = spellType.spellColor[1];
             double d2 = spellType.spellColor[2];
@@ -105,11 +105,11 @@ implements ApiPoseMob, SpellCasterMob {
         return super.hurt(pSource, pAmount);
     }
 
-    public ApiSpells.ApiSpell getSpellType() {
+    public APISpells.APISpell getSpellType() {
         return this.entityData.get(SPELL);
     }
 
-    public void setSpellType(ApiSpells.ApiSpell spell) {
+    public void setSpellType(APISpells.APISpell spell) {
         this.entityData.set(SPELL, spell);
     }
 
@@ -171,6 +171,6 @@ implements ApiPoseMob, SpellCasterMob {
 
     static {
         SPELL_TICK = SynchedEntityData.defineId(OwnableIllager.class, EntityDataSerializers.INT);
-        SPELL = SynchedEntityData.defineId(OwnableIllager.class, APIEntityDataSerializers.API_SPELL);
+        SPELL = SynchedEntityData.defineId(OwnableIllager.class, ApiEntityDataSerializers.API_SPELL);
     }
 }

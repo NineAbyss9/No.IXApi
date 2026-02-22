@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.friendly;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.AbstractUseSpellGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NormalCastingSpellGoal;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
@@ -76,8 +76,8 @@ public class FriendlyEvoker extends FriendlyCaster {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
     }
 
@@ -89,8 +89,8 @@ public class FriendlyEvoker extends FriendlyCaster {
         @Override
         protected void castSpell() {
             if (!this.mob.level().isClientSide) {
-                Spell apiSpell = new TargetFangsSpell();
-                apiSpell.castSpell((ServerLevel)this.mob.level(), this.mob);
+                Spell APISpell = new TargetFangsSpell();
+                APISpell.castSpell((ServerLevel)this.mob.level(), this.mob);
             }
         }
 
@@ -111,8 +111,8 @@ public class FriendlyEvoker extends FriendlyCaster {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
     }
 }

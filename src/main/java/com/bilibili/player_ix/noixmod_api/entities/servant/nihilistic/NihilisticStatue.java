@@ -248,7 +248,8 @@ implements Nihilistic {
                 }
             }
             BlockPos pos = this.blockPosition();
-            BlockPos d = pos.offset(Maths.randomInteger(3, this.random), 0, Maths.randomInteger(3, this.random));
+            BlockPos d = pos.offset(Maths.randomInteger(3, this.randomUtil), 0,
+                    Maths.randomInteger(3, this.randomUtil));
             if (ownable != null) {
                 if (ownable instanceof Mob mob) {
                     SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), p_21684_);

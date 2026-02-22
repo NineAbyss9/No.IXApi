@@ -43,7 +43,7 @@ extends AbstractHurtingProjectile {
             WorldUtil.sendParticles(ParticleTypes.FALLING_LAVA, this, 10, 0.15, 1, 0.15, 0, level);
         }
         MobUtils.rangeHurtAndFire(3, 3, 3, this, this.damageSources().indirectMagic(this,
-                this.getOwner()), 3f, Maths.randomBetweenInclusive(Maths.random, 8, 12));
+                this.getOwner()), 3f, Maths.randomBetweenInclusive(this.random, 8, 12));
         this.discard();
     }
 

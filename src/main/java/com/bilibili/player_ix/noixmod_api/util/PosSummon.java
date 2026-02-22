@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.util.Vec9;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

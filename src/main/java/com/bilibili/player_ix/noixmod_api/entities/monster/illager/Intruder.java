@@ -5,10 +5,10 @@ import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
-import com.org.NineAbyss9.util.Option;
+import org.NineAbyss9.util.Option;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.util.BlockUtil;
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
@@ -49,7 +49,7 @@ import net.minecraft.world.level.pathfinder.Node;
 import javax.annotation.Nullable;
 
 public class Intruder
-extends ApiSpellcaster {
+extends APISpellcaster {
     protected int attackTicks = 0;
     protected int escapeTicks = 0;
     protected int hurtCount = 0;

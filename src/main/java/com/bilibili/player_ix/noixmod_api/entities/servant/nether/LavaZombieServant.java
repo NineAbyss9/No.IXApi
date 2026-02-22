@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.servant.nether;
 
 import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractZombieServant;
+import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.core.BlockPos;
@@ -25,8 +26,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 public class LavaZombieServant
 extends AbstractZombieServant {
+    private final MobUtils mobUtils = new MobUtils(this);
     protected final OwnerSummon ownerSummon = new OwnerSummon(this);
     public LavaZombieServant(EntityType<? extends AbstractZombieServant> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -54,13 +58,13 @@ extends AbstractZombieServant {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType
             pReason, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag pDataTag) {
-        this.populateDefaultEquipment();
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, p_21437_, pDataTag);
     }
 
-    protected void populateDefaultEquipmentSlots(RandomSource p_217055_, DifficultyInstance p_217056_) {
-        if (p_217055_.nextFloat() > 0.6) {
-            int $$2 = p_217055_.nextInt(16);
+    protected void populateDefaultItems() {
+        Random rand = new Random();
+        if (rand.nextFloat() > 0.6F) {
+            int $$2 = rand.nextInt(16);
             if ($$2 < 10) {
                 this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
             } else {
@@ -122,6 +126,10 @@ extends AbstractZombieServant {
             return 12;
         }
         return 8;
+    }
+
+    public MobUtils getMobUtils() {
+        return mobUtils;
     }
 
     public void affect(LivingEntity living) {

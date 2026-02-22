@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.ai.goal;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,5 +71,5 @@ public abstract class AbstractUseSpellGoal extends Goal {
     @Nullable
     protected abstract SoundEvent getSpellPrepareSound();
 
-    protected abstract ApiSpells.ApiSpell getSpell();
+    protected abstract APISpells.APISpell getSpell();
 }

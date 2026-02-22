@@ -10,7 +10,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.EvokerIllager;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import net.minecraft.nbt.CompoundTag;
@@ -39,7 +39,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class MoonKiller
-extends ApiSpellcaster
+extends APISpellcaster
 implements ApiBoss, ApiRangedAttackMob, ApiPoseMob {
     private final OwnerSummon ownerSummon;
     private static final String aya = "aya";

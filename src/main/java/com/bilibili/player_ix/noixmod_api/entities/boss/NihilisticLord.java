@@ -1,8 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
-import com.org.NineAbyss9.annotation.Prototype;
+import com.github.NineAbyss9.ix_api.api.APISpells;
+import org.NineAbyss9.annotation.Prototype;
 import com.bilibili.player_ix.noixmod_api.api.entity.IX;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
@@ -508,8 +508,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
     }
 
@@ -560,8 +560,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.FIRE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.FIRE;
         }
 
     }
@@ -586,8 +586,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         @Override
@@ -646,8 +646,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         @Override
@@ -696,8 +696,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
 
         @Override
@@ -804,8 +804,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.REGEN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.REGEN;
         }
     }
 
@@ -877,8 +877,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.WATER;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.WATER;
         }
     }
 
@@ -928,8 +928,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
     }
 
@@ -962,8 +962,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
             $$0.push(x / z * 0, 3, y / z * 0);
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
 
         @Override
@@ -1067,8 +1067,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
     }
 
@@ -1126,8 +1126,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
     }
 
@@ -1204,8 +1204,8 @@ implements RangedAttackMob, ApiNihilisticBoss, IX {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.FIRE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.FIRE;
         }
     }
 

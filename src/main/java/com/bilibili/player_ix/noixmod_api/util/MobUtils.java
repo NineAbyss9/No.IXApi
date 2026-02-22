@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
@@ -40,6 +40,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import org.NineAbyss9.math.AbyssMath;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -419,7 +420,7 @@ public record MobUtils(Entity entity) {
             if (!player.level().isClientSide) {
                 player.getCooldowns().addCooldown(player.getUseItem().getItem(), pTicks);
                 player.stopUsingItem();
-                player.level().broadcastEntityEvent(player, Maths.toByte(30));
+                player.level().broadcastEntityEvent(player, AbyssMath.toByte(30));
             }
         } else if (pEntity instanceof IShieldUser user) {
             user.disableShield(true);

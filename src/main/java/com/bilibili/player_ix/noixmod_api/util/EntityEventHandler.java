@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.util;
 
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
-import com.org.NineAbyss9.util.Option;
+import org.NineAbyss9.util.Option;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;

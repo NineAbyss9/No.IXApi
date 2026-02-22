@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.org.NineAbyss9.annotation.PFMAreNonnullByDefault;
+import org.NineAbyss9.annotation.PFMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.particle.*;
 import com.mojang.serialization.Codec;

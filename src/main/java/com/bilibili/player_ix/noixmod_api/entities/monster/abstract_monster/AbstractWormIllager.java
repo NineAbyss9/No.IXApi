@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IWormMob;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
@@ -24,7 +24,7 @@ extends ApiPathfinderMob
 implements SpellCasterMob, IWormMob {
     protected static final EntityDataAccessor<Byte> WORM_SPELL;
     private static final EntityDataAccessor<Integer> DATA_SPELL_TICKS;
-    protected ApiSpells.ApiSpell wormSpellType = ApiSpells.ApiSpell.NONE;
+    protected APISpells.APISpell wormSpellType = APISpells.APISpell.NONE;
     public AbstractWormIllager(EntityType<? extends ApiPathfinderMob> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
     }
@@ -48,7 +48,7 @@ implements SpellCasterMob, IWormMob {
     public void tick() {
         super.tick();
         if (this.level().isClientSide && this.isCastingSpell()) {
-            ApiSpells.ApiSpell spellType = this.getSpellType();
+            APISpells.APISpell spellType = this.getSpellType();
             double d = spellType.spellColor[0];
             double d1 = spellType.spellColor[1];
             double d2 = spellType.spellColor[2];
@@ -67,7 +67,7 @@ implements SpellCasterMob, IWormMob {
         if (!MobUtils.canHurt(p_21171_, this)) {
             return false;
         }
-        return NO_WORM_PREDICATE.test(p_21171_) && super.canAttack(p_21171_);
+        return !(p_21171_ instanceof IWormMob) && super.canAttack(p_21171_);
     }
 
     public int getSpellTick() {
@@ -88,15 +88,15 @@ implements SpellCasterMob, IWormMob {
         return SoundEvents.EVOKER_CAST_SPELL;
     }
 
-    protected ApiSpells.ApiSpell getSpellType() {
+    protected APISpells.APISpell getSpellType() {
         if (!this.level().isClientSide) {
             return this.wormSpellType;
         }
-        return ApiSpells.ApiSpell.getById(this.entityData.get(WORM_SPELL));
+        return APISpells.APISpell.getById(this.entityData.get(WORM_SPELL));
     }
 
     @Override
-    public void setSpellType(ApiSpells.ApiSpell spell) {
+    public void setSpellType(APISpells.APISpell spell) {
         this.wormSpellType = spell;
         this.entityData.set(WORM_SPELL, (byte)spell.id);
     }

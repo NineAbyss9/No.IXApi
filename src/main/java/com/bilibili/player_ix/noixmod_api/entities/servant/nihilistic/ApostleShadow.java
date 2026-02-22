@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
+import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
@@ -129,7 +130,7 @@ extends Apostle {
     }
 
     public SimpleParticleType getParticleType() {
-        if (this.enabledHorrorMode) {
+        if (NoixmodAPIMainConfig.HorrorMode.get()) {
             return NoixmodAPIParticleTypes.BLOOD_SPELL.get();
         }
         return NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get();

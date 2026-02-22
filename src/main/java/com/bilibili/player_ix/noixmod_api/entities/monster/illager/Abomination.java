@@ -4,7 +4,7 @@ package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -21,8 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class Abomination
-extends ApiSpellcaster {
-    public Abomination(EntityType<? extends ApiSpellcaster> p_32105_, Level p_32106_) {
+extends APISpellcaster {
+    public Abomination(EntityType<? extends APISpellcaster> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
         this.setItemInHand(InteractionHand.MAIN_HAND, ItemStacks.of(Items.IRON_SWORD));
         this.setItemInHand(InteractionHand.OFF_HAND, ItemStacks.of(Items.TOTEM_OF_UNDYING));

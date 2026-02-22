@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
+import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.github.NineAbyss9.ix_api.api.mobs.IProjectile;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
@@ -104,7 +105,7 @@ implements IProjectile {
     }
 
     public float getDamage() {
-        return this.isHorror() ? 19F : 12F;
+        return NoixmodAPIMainConfig.HorrorMode.get() ? 19F : 12F;
     }
 
     public void addAdditionalSaveData(CompoundTag tag) {
@@ -170,7 +171,7 @@ implements IProjectile {
             if (this.getLifeTick() == 50) {
                 if (lie != null) {
                     this.playSound(SoundEvents.RAVAGER_ROAR);
-                    double q = this.isHorror() ? 0.4 : 0.3;
+                    double q = NoixmodAPIMainConfig.HorrorMode.get() ? 0.4 : 0.3;
                     Vec3 vec3 = this.getVec3(lie, q);
                     this.setChasing(vec3);
                     this.setAggressive(true);

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
@@ -140,8 +140,8 @@ public class Superstitious extends SpellcasterNihilist implements ApiBoss {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
 
         @Override
@@ -206,8 +206,8 @@ public class Superstitious extends SpellcasterNihilist implements ApiBoss {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
     }
 

@@ -6,7 +6,7 @@ import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.compat.bo.BlueOceansCompat;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.entities.servant.FreakySpider;
 import com.bilibili.player_ix.noixmod_api.entities.servant.RainbowphobiaPatients;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticZombie;
@@ -64,6 +64,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.PlayMessages;
+import org.NineAbyss9.math.AbyssMath;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -74,7 +75,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class Biologist
-extends ApiSpellcaster
+extends APISpellcaster
 implements RangedAttackMob,
         ApiIllagerBoss {
     private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
@@ -412,7 +413,7 @@ implements RangedAttackMob,
             this.spawnAtLocation(BlueOceansCompat.getItemStack("gravy_bottle"), 3);
             this.spawnAtLocation(BlueOceansCompat.getItemStack("test_tube"), 2);
         }
-        int j = Maths.toInteger();
+        int j = AbyssMath.randomBetween(0, 3);
         for (int i = 0;i < j;i++) {
             this.spawnAtLocation(NoixmodAPIItems.WORM_REAGENT.get());
         }

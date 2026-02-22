@@ -19,14 +19,14 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public abstract class ApiSpellcaster
+public abstract class APISpellcaster
 extends AbstractIllager {
     protected static final EntityDataAccessor<Byte> SPELL =
-            SynchedEntityData.defineId(ApiSpellcaster.class, EntityDataSerializers.BYTE);
+            SynchedEntityData.defineId(APISpellcaster.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Integer> SPELL_TICKS =
-            SynchedEntityData.defineId(ApiSpellcaster.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(APISpellcaster.class, EntityDataSerializers.INT);
     protected IllagerSpellType currentSpell = IllagerSpellType.NONE;
-    protected ApiSpellcaster(EntityType<? extends ApiSpellcaster> p_32105_, Level p_32106_) {
+    protected APISpellcaster(EntityType<? extends APISpellcaster> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
     }
 
@@ -195,15 +195,15 @@ extends AbstractIllager {
         }
 
         public boolean canUse() {
-            LivingEntity lie = ApiSpellcaster.this.getTarget();
+            LivingEntity lie = APISpellcaster.this.getTarget();
             if (this.needTarget() && lie == null) {
                 return false;
             }
-            return ApiSpellcaster.this.tickCount > this.nextAttackTickCount;
+            return APISpellcaster.this.tickCount > this.nextAttackTickCount;
         }
 
         public boolean canContinueToUse() {
-            if (this.needTarget() && ApiSpellcaster.this.getTarget() == null) {
+            if (this.needTarget() && APISpellcaster.this.getTarget() == null) {
                 return false;
             }
             return this.attackWarmupDelay > 0;
@@ -211,22 +211,22 @@ extends AbstractIllager {
 
         public void start() {
             this.attackWarmupDelay = this.getCastWarmupTime();
-            ApiSpellcaster.this.setSpell(this.getSpellType());
-            ApiSpellcaster.this.setSpellTicks(this.getCastingTime());
+            APISpellcaster.this.setSpell(this.getSpellType());
+            APISpellcaster.this.setSpellTicks(this.getCastingTime());
             SoundEvent event = this.getPrepareSound();
             if (event != null) {
-                ApiSpellcaster.this.playSound(event);
+                APISpellcaster.this.playSound(event);
             }
         }
 
         public void tick() {
             --this.attackWarmupDelay;
             if (this.attackWarmupDelay == 0) {
-                this.nextAttackTickCount = ApiSpellcaster.this.tickCount + this.getCastingInterval();
+                this.nextAttackTickCount = APISpellcaster.this.tickCount + this.getCastingInterval();
                 this.castSpell();
-                ApiSpellcaster.this.stopSpell();
-                if (ApiSpellcaster.this.getCastSound() != null) {
-                    ApiSpellcaster.this.playSound(ApiSpellcaster.this.getCastSound());
+                APISpellcaster.this.stopSpell();
+                if (APISpellcaster.this.getCastSound() != null) {
+                    APISpellcaster.this.playSound(APISpellcaster.this.getCastSound());
                 }
             }
         }
@@ -258,22 +258,22 @@ extends AbstractIllager {
         }
 
         public boolean canUse() {
-            return ApiSpellcaster.this.getSpellTicks() > 0;
+            return APISpellcaster.this.getSpellTicks() > 0;
         }
 
         public void start() {
-            ApiSpellcaster.this.getNavigation().stop();
+            APISpellcaster.this.getNavigation().stop();
         }
 
         public void stop() {
-            ApiSpellcaster.this.stopSpell();
+            APISpellcaster.this.stopSpell();
         }
 
         public void tick() {
-            LivingEntity target = ApiSpellcaster.this.getTarget();
+            LivingEntity target = APISpellcaster.this.getTarget();
             if (target != null) {
-                ApiSpellcaster.this.lookControl.setLookAt(target, ApiSpellcaster.this.getMaxHeadYRot(),
-                        ApiSpellcaster.this.getMaxHeadXRot());
+                APISpellcaster.this.lookControl.setLookAt(target, APISpellcaster.this.getMaxHeadYRot(),
+                        APISpellcaster.this.getMaxHeadXRot());
             }
         }
     }

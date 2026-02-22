@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.NineAbyss9.code.Instance;
 
 @SuppressWarnings("all")
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -20,5 +21,5 @@ public class ApiBlockEntities {
             () -> BlockEntityType.Builder.of(AltarBlockEntity::new, NoixmodAPIBlocks.ALTAR.get()).build(null));
     public static final RegistryObject<BlockEntityType<CursedChestBlockEntity>> CURSED_CHEST
             = REGISTER.register("cursed_chest", ()-> BlockEntityType.Builder.of(CursedChestBlockEntity::new,
-            NoixmodAPIBlocks.SPIRIT_STONE_ORE.get()).build(Null.createNull()));
+            NoixmodAPIBlocks.SPIRIT_STONE_ORE.get()).build(Instance.nullOf()));
 }

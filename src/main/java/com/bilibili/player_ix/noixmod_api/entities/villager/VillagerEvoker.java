@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.VillagerFangs;
 import com.bilibili.player_ix.noixmod_api.entities.villager.trades.ApiVillagerTrades;
@@ -131,8 +131,8 @@ extends VillagerFighter {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
     }
     
@@ -234,8 +234,8 @@ extends VillagerFighter {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.POTION;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.POTION;
         }
     }
 }

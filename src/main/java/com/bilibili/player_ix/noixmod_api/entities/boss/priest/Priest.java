@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss.priest;
 
+import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
@@ -171,7 +172,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
                 if (!this.level().isClientSide) {
-                    ParticleUtil.darkCircle(this, 6, 0.3F);
+                    darkCircle(this, 6, 0.3F);
                 }
                 /*for (int k=0;k !=2;k++) {
                     for (int j = 1;j != 3;j++) {
@@ -332,7 +333,7 @@ implements ApiNihilisticBoss, IFlagMob {
                 this.clientLevel().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(), x, y, z,
                         0, 0, 0);
             } else if (this.tickCount % 10 == 0) {
-                ParticleUtil.darkCircle(this, 1.0F);
+                darkCircle(this, 1.0F);
             }
             List<LivingEntity> list = this.makeList(this.getBoundingBox().inflate(6));
             if (!list.isEmpty()) {
@@ -351,7 +352,7 @@ implements ApiNihilisticBoss, IFlagMob {
                     }
                 }
                 if (!this.level().isClientSide) {
-                    ParticleUtil.darkCircle(this);
+                    darkCircle(this);
                     ParticleUtil.sendParticles(this.serverLevel(), NoixmodAPIParticleTypes.DARK_SPELL.get(), position(),
                             15, 1, 0.2, 1, 0);
                 }
@@ -586,6 +587,19 @@ implements ApiNihilisticBoss, IFlagMob {
         for (AnimationState state : allAnimations()) {
             state.stop();
         }
+    }
+
+    public static void darkCircle(Entity pEntity) {
+        darkCircle(pEntity, 2.0F);
+    }
+
+    public static void darkCircle(Entity pEntity, float size) {
+        darkCircle(pEntity, size, 0.5F);
+    }
+
+    public static void darkCircle(Entity pEntity, float size, float speed) {
+        pEntity.level().addParticle(new CircleParticleOption(0, 0, 0, size, speed),
+                pEntity.getX(), pEntity.getY(), pEntity.getZ(), 0, 0, 0);
     }
 
     @Nullable

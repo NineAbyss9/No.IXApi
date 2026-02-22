@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 public class WhiteDeath
 extends TuberMob
 implements ApiBoss, ApiPoseMob, SpellCasterMob {
-    private ApiSpells.ApiSpell spell;
+    private APISpells.APISpell spell;
     protected static final EntityDataAccessor<Integer> SPELL_TICKS;
     public WhiteDeath(EntityType<? extends WhiteDeath> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -70,7 +70,7 @@ implements ApiBoss, ApiPoseMob, SpellCasterMob {
         return this.entityData.get(SPELL_TICKS);
     }
 
-    public void setSpellType(ApiSpells.ApiSpell spell) {
+    public void setSpellType(APISpells.APISpell spell) {
         this.spell = spell;
     }
 
@@ -138,8 +138,8 @@ implements ApiBoss, ApiPoseMob, SpellCasterMob {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
     }
 }

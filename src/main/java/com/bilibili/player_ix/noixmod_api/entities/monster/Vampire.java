@@ -6,7 +6,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.arrow.VampireArrow;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
@@ -38,7 +38,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
 public class Vampire
-extends ApiSpellcaster
+extends APISpellcaster
 implements ApiRangedAttackMob {
     public final OwnerSummon ownerSummon = new OwnerSummon(this);
     public Vampire(EntityType<? extends Vampire> p_32105_, Level p_32106_) {

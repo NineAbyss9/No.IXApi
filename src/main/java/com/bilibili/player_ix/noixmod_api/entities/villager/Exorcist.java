@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.VillagerFangs;
@@ -106,8 +106,8 @@ extends VillagerFighter {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.FIRE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.FIRE;
         }
     }
 
@@ -188,8 +188,8 @@ extends VillagerFighter {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.POTION;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.POTION;
         }
     }
 
@@ -224,8 +224,8 @@ extends VillagerFighter {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.FIRE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.FIRE;
         }
 
         @Override

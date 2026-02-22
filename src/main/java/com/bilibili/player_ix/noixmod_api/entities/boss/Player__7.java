@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.org.NineAbyss9.annotation.Prototype;
+import org.NineAbyss9.annotation.Prototype;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.bilibili.player_ix.noixmod_api.entities.ai.Player7AI;

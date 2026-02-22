@@ -69,7 +69,7 @@ implements Enemy {
 
     @Override
     public boolean fireImmune() {
-        return FALSE;
+        return false;
     }
 
     @Override

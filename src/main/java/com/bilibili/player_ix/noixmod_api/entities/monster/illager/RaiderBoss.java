@@ -5,7 +5,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.ApiIllagerBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -15,7 +15,7 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.Level;
 
 public class RaiderBoss
-extends ApiSpellcaster
+extends APISpellcaster
 implements ApiIllagerBoss {
     public RaiderBoss(EntityType<? extends RaiderBoss> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);

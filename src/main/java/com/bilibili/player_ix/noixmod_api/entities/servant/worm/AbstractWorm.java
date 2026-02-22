@@ -79,14 +79,14 @@ implements IWormMob {
     }
 
     public boolean canAttack(LivingEntity p_21171_) {
-        if (WORM_PREDICATE.test(p_21171_)) {
+        if (p_21171_ instanceof IWormMob) {
             return false;
         }
         return super.canAttack(p_21171_);
     }
 
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (WORM_PREDICATE.test(pSource.getEntity())) {
+        if (pSource.getEntity() instanceof IWormMob) {
             return false;
         }
         if (pSource.is(DamageTypeTags.IS_FALL)) {

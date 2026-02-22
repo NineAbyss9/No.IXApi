@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.magic.illager.SelfFangsSpell;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.BlockPos;
@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class FangsDancer extends ApiSpellcaster {
+public class FangsDancer extends APISpellcaster {
     private static final int DEFAULT_DANCE_TIME = Maths.toTick(6);
     private static final EntityDataAccessor<Integer> DATA_DANCE_TIME;
     public FangsDancer(EntityType<FangsDancer> p_32105_, Level p_32106_) {

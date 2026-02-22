@@ -2,7 +2,6 @@
 package com.bilibili.player_ix.noixmod_api.entities.npc.DanDing;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.mobs.ApiNeutralMob;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
@@ -47,9 +46,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @SuppressWarnings("ALL")
-public class DanDa extends PathfinderMob implements Merchant, Npc, ApiPoseMob, ApiNeutralMob {
+public class DanDa extends PathfinderMob implements Merchant, Npc, ApiPoseMob, NeutralMob {
     private int angryTick;
     private int hurtCount;
     @Nullable
@@ -191,6 +191,25 @@ public class DanDa extends PathfinderMob implements Merchant, Npc, ApiPoseMob, A
                 }
             }
         }
+    }
+
+
+    public int getRemainingPersistentAngerTime() {
+        return 0;
+    }
+
+    public void setRemainingPersistentAngerTime(int pRemainingPersistentAngerTime) {
+    }
+
+    @Nullable
+    public UUID getPersistentAngerTarget() {
+        return null;
+    }
+
+    public void setPersistentAngerTarget(@Nullable UUID uuid) {
+    }
+
+    public void startPersistentAngerTimer() {
     }
 
     @Override

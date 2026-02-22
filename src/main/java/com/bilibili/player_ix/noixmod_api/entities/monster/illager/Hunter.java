@@ -6,7 +6,7 @@ import com.github.NineAbyss9.ix_api.util.IXList;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Hunter
-extends ApiSpellcaster {
+extends APISpellcaster {
     public Hunter(EntityType<? extends Hunter> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
         this.xpReward = 5;

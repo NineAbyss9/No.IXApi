@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class FrostMage
-extends ApiSpellcaster {
+extends APISpellcaster {
     private final ServerBossEvent bossEvent;
     public FrostMage(EntityType<FrostMage> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);

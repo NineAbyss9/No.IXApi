@@ -57,6 +57,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.PlayMessages;
+import org.NineAbyss9.math.AbyssMath;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -459,7 +460,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                         this.spawnAtLocation(NoixmodAPIItems.STAR_SWORD.get());
                     }
                 }
-                level.broadcastEntityEvent(this, Maths.toByte(3));
+                level.broadcastEntityEvent(this, AbyssMath.toByte(3));
             }
         }
     }

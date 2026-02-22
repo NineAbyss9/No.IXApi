@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
@@ -76,12 +76,10 @@ extends OwnableIllager {
 
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        this.addSpellCasterAdditionalData(tag);
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.readSpellCasterAdditionalData(tag);
     }
 
     public boolean canCastSpell() {
@@ -133,8 +131,8 @@ extends OwnableIllager {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.RANGE;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.RANGE;
         }
     }
 
@@ -215,8 +213,8 @@ extends OwnableIllager {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
     }
 }

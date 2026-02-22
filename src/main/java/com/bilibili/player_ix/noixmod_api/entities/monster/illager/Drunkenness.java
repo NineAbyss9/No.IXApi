@@ -5,7 +5,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.IXList;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class Drunkenness extends ApiSpellcaster {
+public class Drunkenness extends APISpellcaster {
     public Drunkenness(EntityType<? extends Drunkenness> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
         this.xpReward = 5;

@@ -66,7 +66,6 @@ public class BlackHole extends OwnedEntity implements ApiTargeting, Nihilistic {
         this.target = living;
     }
 
-    @Override
     public UUID getTargetUuid() {
         return null;
     }

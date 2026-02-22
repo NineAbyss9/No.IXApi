@@ -78,7 +78,7 @@ public class APICommand {
                                         .executes(commandContext ->
                                                 CommandRemover.onRemove(commandContext.getSource(),
                                                         EntityArgument.getEntities(commandContext, "targets"))))))
-                .then(Commands.literal("apiSpell")
+                .then(Commands.literal("APISpell")
                         .then(Commands.argument("spell", StringArgumentType.string())
                                 .executes(commandContext ->
                                         castSpell(commandContext.getSource(),

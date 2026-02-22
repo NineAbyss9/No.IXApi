@@ -137,7 +137,7 @@ implements ApiRangedAttackMob {
         return flag;
     }
 
-    private void maybeDisableShield(Player p_21425_, ItemStack p_21426_, ItemStack p_21427_) {
+    public void maybeDisableShield(Player p_21425_, ItemStack p_21426_, ItemStack p_21427_) {
         if (!p_21426_.isEmpty() && !p_21427_.isEmpty() && p_21426_.getItem() instanceof AxeItem
                 && p_21427_.is(Items.SHIELD)) {
             float f = 0.25F + (float)EnchantmentHelper.getBlockEfficiency(this) * 0.05F;

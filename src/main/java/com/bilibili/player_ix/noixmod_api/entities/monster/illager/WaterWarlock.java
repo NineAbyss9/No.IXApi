@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.WaterTrap;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
@@ -33,7 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class WaterWarlock
-extends ApiSpellcaster
+extends APISpellcaster
 implements Enemy {
     public final OwnerSummon ownerSummon = new OwnerSummon(this);
     public WaterWarlock(EntityType<? extends WaterWarlock> e, Level l) {

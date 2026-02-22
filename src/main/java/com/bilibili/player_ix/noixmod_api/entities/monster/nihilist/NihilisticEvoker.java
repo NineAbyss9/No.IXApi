@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
@@ -172,8 +172,8 @@ implements Enemy {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
     }
 
@@ -215,8 +215,8 @@ implements Enemy {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.NIHILISTIC;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.NIHILISTIC;
         }
     }
 
@@ -248,8 +248,8 @@ implements Enemy {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.REGEN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.REGEN;
         }
 
         @Override
@@ -301,8 +301,8 @@ implements Enemy {
         }
 
         @Override
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
 
         @Override

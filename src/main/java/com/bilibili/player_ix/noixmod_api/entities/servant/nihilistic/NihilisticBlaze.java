@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
+import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFireball;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
@@ -226,9 +227,8 @@ extends NihilitySummonedMobs {
         }
     }
 
-    @Override
     public boolean isOnFire() {
-        return this.isCharged() && !this.getWorldUtil().isRainingAtSelf();
+        return this.isCharged() && !WorldUtil.isRainingAt(this);
     }
 
     private boolean isCharged() {

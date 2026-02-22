@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.VillagerFangs;
@@ -104,8 +104,8 @@ implements RangedAttackMob {
             return 300;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
 
         protected int getCastingTime() {
@@ -162,8 +162,8 @@ implements RangedAttackMob {
             return super.canUse();
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.DARK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.DARK;
         }
 
         protected int getCastingTime() {
@@ -219,8 +219,8 @@ implements RangedAttackMob {
             return SoundEvents.BELL_RESONATE;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.REGEN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.REGEN;
         }
     }
 }

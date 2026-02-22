@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.*;
 import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import com.github.NineAbyss9.ix_api.util.Maths;
@@ -59,7 +59,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
     protected static final EntityDataAccessor<Byte> SPELL = SynchedEntityData.defineId(
             VillagerFighter.class, EntityDataSerializers.BYTE);
     protected int spellCastingTickCount;
-    protected ApiSpells.ApiSpell currentSpell = ApiSpells.ApiSpell.NONE;
+    protected APISpells.APISpell currentSpell = APISpells.APISpell.NONE;
     protected MerchantOffers offers = new MerchantOffers();
     private final OwnableData ownableData;
     public VillagerFighter(EntityType<? extends VillagerFighter> type, Level level) {
@@ -128,11 +128,11 @@ implements ApiVillager, Merchant, Npc, Ownable {
         this.ownableData.addOwnableAdditionalSaveData(tag);
     }
 
-    protected ApiSpells.ApiSpell getSpellId() {
+    protected APISpells.APISpell getSpellId() {
         if (!this.level().isClientSide) {
             return this.currentSpell;
         }
-        return ApiSpells.ApiSpell.getById(this.entityData.get(SPELL));
+        return APISpells.APISpell.getById(this.entityData.get(SPELL));
     }
 
     @Nullable
@@ -143,7 +143,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
     public void updateTrades() {
         VillagerTrades.ItemListing[] listings = this.getTradeLists();
         if (listings != null) {
-            this.addOffersFromItemListings(this.getOffers(), listings);
+            this.addOffersFromItemListings(this.getOffers(), listings, 2);
         }
     }
 
@@ -156,7 +156,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
         return null;
     }
 
-    protected void restockAll() {
+    public void restockAll() {
         for (MerchantOffer merchantOffers : this.getOffers()) {
             merchantOffers.resetUses();
         }
@@ -327,7 +327,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
     public void tick() {
         super.tick();
         if (this.level().isClientSide && this.isCastingSpell()) {
-            ApiSpells.ApiSpell spellId = this.getSpellId();
+            APISpells.APISpell spellId = this.getSpellId();
             double $$1 = spellId.spellColor[0];
             double $$2 = spellId.spellColor[1];
             double $$3 = spellId.spellColor[2];
@@ -348,7 +348,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
         return this.spellCastingTickCount > 0;
     }
 
-    protected void setSpell(ApiSpells.ApiSpell spell) {
+    protected void setSpell(APISpells.APISpell spell) {
         this.currentSpell = spell;
         this.entityData.set(SPELL, (byte)spell.id);
     }
@@ -470,7 +470,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
         @Nullable
         protected abstract SoundEvent getSpellPrepareSound();
 
-        protected abstract ApiSpells.ApiSpell getSpell();
+        protected abstract APISpells.APISpell getSpell();
     }
 
     protected class CastingSpellGoal
@@ -488,7 +488,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
         }
 
         public void stop() {
-            VillagerFighter.this.setSpell(ApiSpells.ApiSpell.NONE);
+            VillagerFighter.this.setSpell(APISpells.APISpell.NONE);
         }
 
         public void tick() {
@@ -559,8 +559,8 @@ implements ApiVillager, Merchant, Npc, Ownable {
             return SoundEvents.BELL_RESONATE;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.REGEN;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.REGEN;
         }
 
         protected boolean needTarget() {

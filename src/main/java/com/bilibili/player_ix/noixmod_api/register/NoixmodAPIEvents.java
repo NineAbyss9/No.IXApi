@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
@@ -273,7 +273,6 @@ public class NoixmodAPIEvents {
     }
 
     public static final Map<ServerLevel, NihilisticOrderSpawner> ORDER_SPAWNER = new HashMap<>();
-    public static final List<Baldloon> TICKING_BALDLOON = new LinkedList<>();
 
     @SubscribeEvent
     public static void onWorldLoad(LevelEvent.Load event) {

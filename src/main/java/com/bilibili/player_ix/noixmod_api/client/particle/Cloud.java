@@ -18,7 +18,7 @@ public class Cloud extends TextureSheetParticle {
         this.xd = pXSpeed;
         this.yd = pYSpeed + (double)(this.random.nextFloat() / 500.0F);
         this.zd = pZSpeed;
-        Colors.setColor(this, pXSpeed, pYSpeed, pZSpeed);
+        this.setColor((float)pXSpeed, (float)pYSpeed, (float)pZSpeed);
     }
 
     public ParticleRenderType getRenderType() {

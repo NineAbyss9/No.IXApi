@@ -28,7 +28,7 @@ extends AbstractZombieServant {
     public WindZombie(EntityType<? extends WindZombie> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
         this.xpReward = 6;
-        this.populateDefaultEquipment();
+        this.populateDefaultEquipmentSlots(p_21684_.random, p_21684_.getCurrentDifficultyAt(blockPosition()));
     }
 
     protected void registerGoals() {

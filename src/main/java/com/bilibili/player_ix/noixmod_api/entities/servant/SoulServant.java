@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.api.ApiSpells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.api.mobs.SpellCasterMob;
@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 public class SoulServant
 extends OwnableMob
 implements ApiRangedAttackMob, SpellCasterMob {
-    private ApiSpells.ApiSpell currentSpell = ApiSpells.ApiSpell.NONE;
+    private APISpells.APISpell currentSpell = APISpells.APISpell.NONE;
     public final OwnerSummon ownerSummon = new OwnerSummon(this);
     protected int spellTicks;
 
@@ -35,7 +35,7 @@ implements ApiRangedAttackMob, SpellCasterMob {
         return spellTicks;
     }
 
-    public void setSpellType(ApiSpells.ApiSpell spell) {
+    public void setSpellType(APISpells.APISpell spell) {
         this.currentSpell = spell;
     }
 
@@ -113,8 +113,8 @@ implements ApiRangedAttackMob, SpellCasterMob {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        protected ApiSpells.ApiSpell getSpell() {
-            return ApiSpells.ApiSpell.ATTACK;
+        protected APISpells.APISpell getSpell() {
+            return APISpells.APISpell.ATTACK;
         }
     }
 }

@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
 import com.github.NineAbyss9.ix_api.api.mobs.ApiIllagerBoss;
 import com.github.NineAbyss9.ix_api.util.Maths;
-import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.ApiSpellcaster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Dragonborn
-extends ApiSpellcaster
+extends APISpellcaster
 implements ApiIllagerBoss {
     protected final ServerBossEvent bossEvent = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private static final EntityDataAccessor<Integer> DATA_BOSS_FLAGS;
