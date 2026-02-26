@@ -4,7 +4,6 @@ package com.bilibili.player_ix.noixmod_api.entities.villager;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
-import com.github.NineAbyss9.ix_api.util.Maths;
 import org.NineAbyss9.util.Option;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
@@ -192,7 +191,7 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
     private static class AmbusherMeleeGoal extends ApiMeleeAttackGoal {
         final Ambusher ambusher;
         public AmbusherMeleeGoal(Ambusher finder) {
-            super(finder, 1.2, Maths.square(2));
+            super(finder, 1.2, 4);
             this.ambusher = finder;
         }
 

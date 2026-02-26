@@ -933,7 +933,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     public static AttributeSupplier.Builder createAttributes() {
         return NoixmodAPIAttributes.baseAttributes(7, 0.35, 0.75)
                 .add(Attributes.ARMOR, 9).
-                add(Attributes.MAX_HEALTH, 242).add(Attributes.FOLLOW_RANGE, 120);
+                add(Attributes.MAX_HEALTH, 243).add(Attributes.FOLLOW_RANGE, 120);
     }
 
     {

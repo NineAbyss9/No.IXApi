@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ElderGuardianServant
 extends GuardianServant {
-    public static final float ELDER_SIZE_SCALE;
     public ElderGuardianServant(EntityType<? extends OwnableMob> entityType, Level level) {
         super(entityType, level);
         this.setPersistenceRequired();
@@ -62,9 +61,5 @@ extends GuardianServant {
         if (!this.hasRestriction()) {
             this.restrictTo(this.blockPosition(), 16);
         }
-    }
-
-    static {
-        ELDER_SIZE_SCALE = EntityType.ELDER_GUARDIAN.getWidth() / EntityType.GUARDIAN.getWidth();
     }
 }

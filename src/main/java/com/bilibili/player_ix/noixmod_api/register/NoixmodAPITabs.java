@@ -69,7 +69,6 @@ public class NoixmodAPITabs {
         output.accept(NoixmodAPIItems.DISCARD_ITEM.get());;
         output.accept(NoixmodAPIItems.ITEM_KILLER.get());
         output.accept(NoixmodAPIItems.NIHILISTIC_FIREBALL.get());
-        output.accept(NoixmodAPIItems.OWNER_SETTER.get());
         output.accept(NoixmodAPIItems.TELEPORTER.get());
         output.accept(NoixmodAPIItems.HEAD_HUNTERS_CROSSBOW.get());
         output.accept(NoixmodAPIItems.ICE_PICKAXE.get());

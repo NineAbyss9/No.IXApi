@@ -4,17 +4,17 @@ package com.bilibili.player_ix.noixmod_api.register;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.item.enchantment.NihilisticKillerEnchantment;
 import com.bilibili.player_ix.noixmod_api.item.enchantment.PotentEnchantment;
-import com.google.common.base.Predicates;
 import com.google.common.base.Supplier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.NineAbyss9.util.function.FunctionCollector;
 
 public class ApiEnchantments {
     public static final EnchantmentCategory ANY = EnchantmentCategory.create("API_ANY",
-            Predicates.alwaysTrue());
+            FunctionCollector.alwaysTrue());
     public static final DeferredRegister<Enchantment> REGISTER = DeferredRegister.create(
             ForgeRegistries.ENCHANTMENTS, NoixmodAPI.MOD_ID);
     public static final RegistryObject<Enchantment> NIHILISTIC_KILLER;

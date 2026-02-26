@@ -1,7 +1,8 @@
 
-package com.bilibili.player_ix.noixmod_api.client.renderer;
+package com.bilibili.player_ix.noixmod_api.client.renderer.servant;
 
 import com.bilibili.player_ix.noixmod_api.client.model.NihilistIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.renderer.NihilistRenderer;
 import com.bilibili.player_ix.noixmod_api.entities.servant.ZombieVindicator;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,7 +11,7 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class ZombieVindicatorRenderer<T extends ZombieVindicator>
-extends NihilistRenderer<T>{
+extends NihilistRenderer<T> {
     public ZombieVindicatorRenderer(EntityRendererProvider.Context $$0) {
         super($$0, new NihilistIllagerModel<>($$0.bakeLayer(NihilistIllagerModel.LAYER_LOCATION)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, $$0.getItemInHandRenderer()) {

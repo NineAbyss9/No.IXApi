@@ -28,10 +28,6 @@ extends Apostle {
         return NoixmodAPIEntities.APOSTLE_SERVANT.get();
     }
 
-    public void tick() {
-        super.tick();
-    }
-
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new LookAtLordGoal(this));
         this.goalSelector.addGoal(1, new CloneSettingSecondPhaseGoal(this));

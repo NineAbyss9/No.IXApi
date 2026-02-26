@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.*;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.api.renderer.BaseEntityRenderer;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
@@ -203,7 +204,6 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.SUPERSTITIOUS.get(), SuperstitiousRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SUPERSTITIOUS_CLONE.get(), SuperstitiousCloneRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SWORD_CULTIST.get(), SwordCultistRenderer::new);
-        event.registerEntityRenderer(NoixmodAPIEntities.TESTER.get(), DamageTesterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.THROWN_AXE.get(), ThrownAxeRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.BUGLER.get(), TrumpeterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.TRACKER.get(), TrackerRenderer::new);

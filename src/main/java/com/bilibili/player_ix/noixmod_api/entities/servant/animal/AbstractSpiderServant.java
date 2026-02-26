@@ -111,6 +111,7 @@ implements IAgeableMob {
         }
     }
 
+    @Nullable
     public IAgeableMob getBreedMob() {
         return null;
     }

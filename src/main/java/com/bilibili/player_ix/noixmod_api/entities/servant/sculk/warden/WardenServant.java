@@ -669,8 +669,8 @@ implements VibrationSystem {
         public void start() {
             super.start();
             LivingEntity entity = this.mob.getTarget();
-            if (entity != null)
-                ((WardenServant)this.mob).setAttackTarget(entity);
+            if (mob.getTarget() != null)
+                ((WardenServant)this.mob).setAttackTarget(targetMob);
         }
     }
 
@@ -685,8 +685,7 @@ implements VibrationSystem {
 
         public void start() {
             super.start();
-            //if (this.mob.getTarget() != null)
-            //    this.mob.setAttackTarget(this.mob.getTarget());
+            this.mob.setAttackTarget(this.mob.getTarget());
         }
     }
 }

@@ -37,7 +37,6 @@ extends SwordItem {
                     living.readAdditionalSaveData(tag);
                 }
             } catch (RuntimeException ignores) {
-                //Empty catch block
             }
             if (entity.level().isClientSide) {
                 if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {

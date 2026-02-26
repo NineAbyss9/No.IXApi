@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.model.IXIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.IllagerServantRenderer;
 import com.bilibili.player_ix.noixmod_api.entities.servant.illager.VindicatorServant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;

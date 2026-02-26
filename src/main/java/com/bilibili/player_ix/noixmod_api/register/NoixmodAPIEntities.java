@@ -3,7 +3,6 @@ package com.bilibili.player_ix.noixmod_api.register;
 
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
-import com.github.NineAbyss9.ix_api.api.mobs.DamageTester;
 import com.bilibili.player_ix.noixmod_api.entities.boss.*;
 import com.bilibili.player_ix.noixmod_api.entities.boss.abyss.Abyss;
 import com.bilibili.player_ix.noixmod_api.entities.boss.priest.Priest;
@@ -76,7 +75,6 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<Cultist>> CULTIST = NoixmodAPIEntities.register("cultist", EntityType.Builder.<Cultist>of(Cultist::new, MobCategory.MONSTER).updateInterval(2).sized(0.6f, 1.95f).setCustomClientFactory(Cultist::new));
     public static final RegistryObject<EntityType<CursedNihilisticEvoker>> CURSED_NIHILISTIC_EVOKER = NoixmodAPIEntities.register("cursed_nihilistic_evoker", EntityType.Builder.<CursedNihilisticEvoker>of(CursedNihilisticEvoker::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(CursedNihilisticEvoker::new).fireImmune().sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<DamageEntity>> DAMAGE_ENTITY = NoixmodAPIEntities.register("damage_entity", EntityType.Builder.of(DamageEntity::new, MobCategory.MISC).sized(0.7F, 0.2F).fireImmune().clientTrackingRange(8));
-    public static final RegistryObject<EntityType<DamageTester>> TESTER = NoixmodAPIEntities.register("damage_tester", EntityType.Builder.of(DamageTester::new, MobCategory.MISC));
     public static final RegistryObject<EntityType<DanDa>> DAN_ZHEN = NoixmodAPIEntities.register("dan_zhen", EntityType.Builder.of(DanDa::new, MobCategory.MISC).sized(0.6F, 1.95f).clientTrackingRange(8));
     public static final RegistryObject<EntityType<DeadIllagerSkull>> DEAD_ILLAGER_SKULL = NoixmodAPIEntities.register("dead_illager_skull", EntityType.Builder.of(DeadIllagerSkull::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<DrownedServant>> DROWNED_SERVANT = NoixmodAPIEntities.register("drowned_servant", EntityType.Builder.of(DrownedServant::new, MobCategory.MISC).sized(0.6f, 1.95f));
@@ -271,7 +269,6 @@ public class NoixmodAPIEntities {
         event.put(SUPERSTITIOUS.get(), NoixmodAPIAttributes.createSuperstitiousAttributes().build());
         event.put(SUPERSTITIOUS_CLONE.get(), NoixmodAPIAttributes.createSuperstitiousCloneAttributes().build());
         event.put(SWORD_CULTIST.get(), NoixmodAPIAttributes.createSwordCultistAttributes().build());
-        event.put(TESTER.get(), Bugler.createAttributes().build());
         event.put(TRACKER.get(), Tracker.createAttributes());
         event.put(BUGLER.get(), Bugler.createAttributes().build());
         event.put(VAMPIRE.get(), NoixmodAPIAttributes.createVampireAttributes().build());

@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.client.renderer;
+package com.bilibili.player_ix.noixmod_api.client.renderer.servant;
 
 import com.bilibili.player_ix.noixmod_api.client.model.WrongedSoulModel;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;

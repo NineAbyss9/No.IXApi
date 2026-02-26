@@ -163,7 +163,6 @@ public class NoixmodAPIItems {
 
     //CreativeOnly
     public static final RegistryObject<Item> DISCARD_ITEM = REGISTRY.register("discard_item", DiscardItem::new);
-    public static final RegistryObject<Item> OWNER_SETTER = REGISTRY.register("owner_setter", OwnerSetter::new);
     public static final RegistryObject<Item> TELEPORTER = REGISTRY.register("teleporter", Teleporter::new);
 
     //Food

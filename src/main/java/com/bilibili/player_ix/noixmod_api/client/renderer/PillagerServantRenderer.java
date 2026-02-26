@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.model.IXIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.IllagerServantRenderer;
 import com.bilibili.player_ix.noixmod_api.entities.servant.illager.PillagerServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;

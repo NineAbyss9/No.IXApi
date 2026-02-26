@@ -23,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 public class MushroomSpider
 extends AbstractSpiderServant {
     private int inLoveTime = 0;
@@ -120,8 +122,9 @@ extends AbstractSpiderServant {
         return super.mobInteract(pPlayer, pHand);
     }
 
+    @Nullable
     public IAgeableMob getBreedMob() {
-        return new MushroomSpider(NoixmodAPIEntities.MUSHROOM_SPIDER.get(), this.level());
+        return NoixmodAPIEntities.MUSHROOM_SPIDER.get().create(this.level());
     }
 
     public void spawnChildFromBreeding(ServerLevel p_27564_, IAgeableMob p_27565_) {

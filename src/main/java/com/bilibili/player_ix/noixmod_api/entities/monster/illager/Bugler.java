@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -102,7 +103,7 @@ extends AbstractIllager {
             this.playSound(SoundEvents.VILLAGER_NO);
         }
         if (target != null) {
-            if (this.distanceToSqr(target) <= Maths.square(6)) {
+            if (this.distanceToSqr(target) <= Mth.square(6)) {
                 if (!this.moveControl.hasWanted()) {
                     for (AbstractIllager illager : this.cheerTargets()) {
                         if (illager != this) {

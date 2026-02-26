@@ -1,8 +1,10 @@
 
-package com.bilibili.player_ix.noixmod_api.client.renderer;
+package com.bilibili.player_ix.noixmod_api.client.renderer.servant;
 
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
 import com.bilibili.player_ix.noixmod_api.client.model.ApostleModel;
+import com.bilibili.player_ix.noixmod_api.client.renderer.ApostleRenderer;
+import com.bilibili.player_ix.noixmod_api.client.renderer.NihilistRenderer;
 import com.bilibili.player_ix.noixmod_api.client.renderer.layer.NihilisticArmorLayer;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.ApostleServant;
