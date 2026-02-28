@@ -4,7 +4,7 @@ license="GPLv2"
 
 [[mods]]
 modId="noixmodapi"
-version="1.3.902-pre3"
+version="${mod_version}"
 displayName="No.IXAPI"
 displayURL="https://github.com/noixmod"
 logoFile="logo.png"

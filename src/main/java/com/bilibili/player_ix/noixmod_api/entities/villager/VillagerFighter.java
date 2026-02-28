@@ -143,7 +143,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
     public void updateTrades() {
         VillagerTrades.ItemListing[] listings = this.getTradeLists();
         if (listings != null) {
-            this.addOffersFromItemListings(this.getOffers(), listings, 2);
+            this.addOffersFromItemListings(this.getOffers(), listings, 10);
         }
     }
 

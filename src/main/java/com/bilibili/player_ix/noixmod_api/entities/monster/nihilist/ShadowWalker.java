@@ -2,7 +2,6 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
 import com.github.NineAbyss9.ix_api.api.APISpells;
-import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
@@ -59,7 +58,7 @@ implements Enemy {
         goalSelector.addGoal(1, new SummonSpellGoal());
         goalSelector.addGoal(2, new ApiMeleeAttackGoal(this, 1.25, Maths.square(2)));
         OwnableMob.addBehaviorGoals(this, 5, 0.6, 12f, true, false);
-        targetSelector.addGoal(1, new HurtByTargetGoal(this, Nihilistic.class));
+        targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }
 

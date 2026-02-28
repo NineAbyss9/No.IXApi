@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class FrostMage
 extends APISpellcaster {
@@ -24,7 +23,8 @@ extends APISpellcaster {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(3, new CastingSpellGoal());
+        this.goalSelector.addGoal(1, new CastingSpellGoal());
+        this.goalSelector.addGoal(2, new SummonSpellGoal());
         OwnableMob.addBehaviorGoals(this, 4, 0.7, 15F, true, true);
     }
 
@@ -52,29 +52,22 @@ extends APISpellcaster {
     }
 
     private class SummonSpellGoal extends UseSpellGoal {
-
-        @Override
         protected void castSpell() {
 
         }
 
-        @Override
         protected int getCastingTime() {
             return 60;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 600;
         }
 
-        @Nullable
-        @Override
         protected SoundEvent getPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        @Override
         protected IllagerSpellType getSpellType() {
             return IllagerSpellType.RANGE;
         }

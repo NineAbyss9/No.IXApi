@@ -5,6 +5,7 @@ import com.bilibili.player_ix.noixmod_api.register.event.SpellCastEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.MinecraftForge;
+import org.NineAbyss9.math.MathSupport;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
@@ -13,7 +14,7 @@ public abstract class Spell
 implements ISpell {
     protected final Random random;
     protected Spell() {
-        this.random = new Random();
+        this.random = MathSupport.random;
     }
 
     public abstract Type getSpellType();

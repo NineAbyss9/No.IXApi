@@ -117,7 +117,7 @@ public class FangsDancer extends APISpellcaster {
 
         protected void castSpell() {
             LivingEntity livingentity = FangsDancer.this.getTarget();
-            assert livingentity != null : "The target of " + FangsDancer.this.getClass().getSimpleName() + " is NULL";
+            assert livingentity != null;
             double d0 = Math.min(livingentity.getY(), FangsDancer.this.getY());
             double d1 = Math.max(livingentity.getY(), FangsDancer.this.getY()) + 1.0D;
             float f = (float)Mth.atan2(livingentity.getZ() - FangsDancer.this.getZ(), livingentity.getX() - FangsDancer.this.getX());
@@ -185,7 +185,6 @@ public class FangsDancer extends APISpellcaster {
     }
 
     private class RangedAttackGoal extends UseSpellGoal {
-
         protected void castSpell() {
             FangsDancer.this.spawnFangs();
             if (level() instanceof ServerLevel level) {

@@ -110,7 +110,7 @@ implements VibrationSystem {
         this.goalSelector.addGoal(3, new FollowOwnerGoal<>(this, 0.8,
                 25.0F, 7.0F, false));
         //this.targetSelector.addGoal(0, new WardenTargetGoal(this));
-        this.targetSelector.addGoal(1, new WardenAttackTargetGoal<>(this));
+        //this.targetSelector.addGoal(1, new WardenAttackTargetGoal<>(this));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -399,6 +399,7 @@ implements VibrationSystem {
         Objects.requireNonNull(var10001);
         var10000.resultOrPartial(var10001::error).ifPresent((p_219418_) -> p_219434_.put("listener",
                 (Tag)p_219418_));
+        p_219434_.putInt("PowerLevel", this.getPowerLevel());
     }
 
     public void readAdditionalSaveData(CompoundTag p_219415_) {
@@ -422,6 +423,7 @@ implements VibrationSystem {
             var10000.resultOrPartial(var10001::error).ifPresent((p_281093_) -> this.vibrationData =
                     (Data)p_281093_);
         }
+        this.setPowerLevel(p_219415_.getInt("PowerLevel"));
     }
 
     public boolean killedEntity(ServerLevel pLevel, LivingEntity pEntity) {
@@ -449,7 +451,7 @@ implements VibrationSystem {
     }
 
     public void increaseAngerAt(@Nullable Entity p_219442_) {
-        this.increaseAngerAt(p_219442_, 35, true);
+        this.increaseAngerAt(p_219442_, 80, true);
     }
 
     @VisibleForTesting
@@ -668,7 +670,6 @@ implements VibrationSystem {
 
         public void start() {
             super.start();
-            LivingEntity entity = this.mob.getTarget();
             if (mob.getTarget() != null)
                 ((WardenServant)this.mob).setAttackTarget(targetMob);
         }

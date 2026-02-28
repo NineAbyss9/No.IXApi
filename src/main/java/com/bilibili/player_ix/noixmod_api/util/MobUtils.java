@@ -427,6 +427,7 @@ public record MobUtils(Entity entity) {
         }
     }
 
+    //Based on L_Ender's code
     public static double calculateRange(LivingEntity livingEntity, DamageSource source) {
         return source.getEntity() != null ? livingEntity.distanceToSqr(source.getEntity()) : -1;
     }
@@ -512,6 +513,8 @@ public record MobUtils(Entity entity) {
         }
         return entityHitAngle - entityAttackingAngle;
     }
+
+    //To here
 
     public static void sweepAttack(LivingEntity attacker, Entity target, DamageSource damageSource, float damage){
         sweepAttack(attacker, target, damageSource, damage, 1.0D);

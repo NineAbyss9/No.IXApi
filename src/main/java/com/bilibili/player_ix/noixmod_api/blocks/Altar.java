@@ -102,10 +102,6 @@ implements SimpleWaterloggedBlock {
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState,
                                                                   BlockEntityType<T> pBlockEntityType) {
-        return null /* (level, blockPos, blockState, t) -> {
-            if (t instanceof AltarBlockEntity entity) {
-                entity.tick();
-            }
-        }*/;
+        return createTickerHelper(pBlockEntityType, null, AltarBlockEntity::tick);
     }
 }

@@ -2,11 +2,14 @@
 package com.bilibili.player_ix.noixmod_api.item.ritual;
 
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 
 public class HaloOfApostleItem
 extends RitualSupplies {
@@ -28,5 +31,9 @@ extends RitualSupplies {
             }
         }
         return super.onLeftClickEntity(stack, player, entity);
+    }
+
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        return super.use(pLevel, pPlayer, pUsedHand);
     }
 }

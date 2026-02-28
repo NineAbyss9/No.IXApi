@@ -27,7 +27,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 public class NihilisticDeath
@@ -38,12 +37,6 @@ implements Enemy {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_AXE));
     }
 
-    public NihilisticDeath(PlayMessages.SpawnEntity entity, Level world) {
-        this(NoixmodAPIEntities.NIHILISTIC_DEATH.get(), world);
-        entity.getEntity();
-    }
-
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new CastingSpellGoal());
@@ -57,13 +50,11 @@ implements Enemy {
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
     }
 
-    @Override
     public boolean doHurtTarget(Entity p_21372_) {
         this.heal(1f);
         return super.doHurtTarget(p_21372_);
     }
 
-    @Override
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
         this.heal(5f);
         return super.killedEntity(p_216988_, p_216989_);

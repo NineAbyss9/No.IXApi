@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.servant.aquatic;
 
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.ApiOwnerTargetGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Squid;
@@ -68,14 +68,15 @@ extends OwnableMob {
         this.randomStrollGoal = new RandomStrollGoal(this, 1.0, 80);
         this.goalSelector.addGoal(4, new GuardianAttackGoal(this));
         this.goalSelector.addGoal(5, $$0);
+        this.goalSelector.addGoal(6, new FollowOwnerGoal<>(this, 0.8, 30F,
+                4F, false));
         this.goalSelector.addGoal(7, this.randomStrollGoal);
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.randomStrollGoal.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         $$0.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this,
-                LivingEntity.class, 10, true, false,
-                new GuardianAttackSelector(this)));
+        this.targetSelector.addGoal(0, new ApiOwnerTargetGoal(this));
+        this.addTargetGoal();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -450,6 +451,7 @@ extends OwnableMob {
                         $$0.hurt(this.guardian.damageSources().indirectMagic(this.guardian, this.guardian), $$1);
                         $$0.hurt(this.guardian.damageSources().mobAttack(this.guardian), (float)this.guardian.getAttributeValue
                                 (Attributes.ATTACK_DAMAGE));
+                        this.guardian.heal(elder ? 2F : 1F);
                         this.guardian.setTarget(null);
                     }
                     super.tick();

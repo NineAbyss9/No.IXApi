@@ -46,7 +46,7 @@ implements GameEventListener, RecipeHolder, WorldlyContainer {
         //quickCheck = RecipeManager.createCheck(ApiRecipes.RITUAL);
     }
 
-    public void tick() {
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AltarBlockEntity pBlockEntity) {
     }
 
     public int getDisplayItemIndex() {

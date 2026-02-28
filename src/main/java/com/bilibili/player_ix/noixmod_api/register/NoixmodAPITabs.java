@@ -140,9 +140,11 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.AQUATIC_WORM_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.CREEPER_SERVANT_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.DROWNED_SERVANT_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.ELDER_G_S_E.get());
                 output.accept(NoixmodAPIItems.ENDERMAN_SERVANT_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.EVOKER_SERVANT_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.GIRL_GHOST_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.GUARDIAN_S_E.get());
                 output.accept(NoixmodAPIItems.HEALING_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.LAVA_ZOMBIE_SERVANT_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.NEO_ILLAGER_SPAWN_EGG.get());

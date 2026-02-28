@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.github.NineAbyss9.ix_api.api.item.ApiSpawnEgg;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.item.*;
@@ -34,13 +35,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 @PAMAreNonnullByDefault
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class NoixmodAPIItems {
+    public static Set<RegistryObject<? extends Item>> SPAWN_EGGS = new LinkedHashSet<>();
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, NoixmodAPI.MOD_ID);
 
     //Spawn eggs
@@ -70,6 +74,8 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> DEAD_ILLAGER_SKULL = spawnEggItem("dead_illager_skull", NoixmodAPIEntities.DEAD_ILLAGER_SKULL,
             12698049, 1001033);
     public static final RegistryObject<Item> DROWNED_SERVANT_SPAWN_EGG = REGISTRY.register("drowned_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.DROWNED_SERVANT, 9433559, 7969893, new Item.Properties()));
+    public static final RegistryObject<Item> ELDER_G_S_E = apiSpawnEgg("elder_guardian_servant", NoixmodAPIEntities.ELDER_G_S,
+            13552826, 7632531);
     public static final RegistryObject<Item> EVIL_SUMMONER_SPAWN_EGG = spawnEggItem("evil_summoner", NoixmodAPIEntities.EVIL_SUMMONER,
             -10092442, -10092544, Rarity.RARE);
     public static final RegistryObject<Item> EVOKER_ILLAGER_SPAWN_EGG = REGISTRY.register("evoker_illager_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.EVOKER_ILLAGER, -13421773, -6710887, new Item.Properties().rarity(Rarity.RARE)));
@@ -79,6 +85,8 @@ public class NoixmodAPIItems {
             9804699, 2580065);
     public static final RegistryObject<Item> FREAKY_WORM_SPAWN_EGG = spawnEggItem("freaky_worm", NoixmodAPIEntities.FREAKY_WORM,
             13421773, -10092442);
+    public static final RegistryObject<Item> GUARDIAN_S_E = apiSpawnEgg("guardian_servant", NoixmodAPIEntities.GUARDIAN_S,
+            5931634, 15826224);
     public static final RegistryObject<Item> HEAD_HUNTER_SPAWN_EGG = spawnEggItem("head_hunter", NoixmodAPIEntities.HEAD_HUNTER,
             10051367, 12623485, Rarity.RARE);
     public static final RegistryObject<Item> HEALING_SPAWN_EGG = spawnEggItem("healling", NoixmodAPIEntities.HEALING,
@@ -320,6 +328,19 @@ public class NoixmodAPIItems {
     public static RegistryObject<Item> spawnEggItem(String name, Supplier<? extends EntityType<? extends Mob>>
             supplier, int g, int b, Item.Properties properties) {
         return REGISTRY.register(name + spawnEgg(), ()-> new ForgeSpawnEggItem(supplier, g, b, properties));
+    }
+
+    public static RegistryObject<Item> apiSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>>
+            supplier, int g, int b) {
+        return apiSpawnEgg(name, supplier, g, b, properties());
+    }
+
+    public static RegistryObject<Item> apiSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>>
+                                                   supplier, int g, int b, Item.Properties properties) {
+        RegistryObject<Item> obj = REGISTRY.register(name + "_spawn_egg",
+                () -> new ApiSpawnEgg(supplier, g, b, properties));
+        SPAWN_EGGS.add(obj);
+        return obj;
     }
 
     public static String sword(String name) {

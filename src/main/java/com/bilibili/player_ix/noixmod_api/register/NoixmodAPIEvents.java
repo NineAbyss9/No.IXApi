@@ -43,6 +43,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.NineAbyss9.math.MathSupport;
 
 import java.util.*;
 
@@ -92,28 +93,26 @@ public class NoixmodAPIEvents {
         if (mob == null)
             return;
         Level level = mob.level();
-        if (mob instanceof Villager villager && Math.random() < 0.5) {
-            if (!level.isClientSide) {
-                ServerLevel serverLevel = (ServerLevel)level;
-                int i = serverLevel.random.nextInt(11);
-                VillagerFighter fighter;
-                if (i < 4) {
-                    fighter = new VillagerSpellcaster(NoixmodAPIEntities.VILLAGER_SPELLCASTER.get(), serverLevel);
-                } else if (i < 6) {
-                    fighter = new VillagerMaster(NoixmodAPIEntities.VILLAGER_MASTER.get(), serverLevel);
-                } else if (i < 8) {
-                    fighter = new VillagerEvoker(NoixmodAPIEntities.VILLAGER_EVOKER.get(), serverLevel);
-                } else {
-                    fighter = new Ambusher(NoixmodAPIEntities.AMBUSHER.get(), serverLevel);
-                }
-                fighter.moveTo(villager.blockPosition(), 0, 0);
-                fighter.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(villager.blockPosition()),
-                        MobSpawnType.BREEDING, null, null);
-                fighter.setBaby(true);
-                if (serverLevel.addFreshEntity(fighter)) {
-                    villager.discard();
-                    event.setCanceled(true);
-                }
+        if (!level.isClientSide && mob instanceof Villager villager && Math.random() < 0.5) {
+            ServerLevel serverLevel = (ServerLevel)level;
+            int i = MathSupport.random.nextInt(11);
+            VillagerFighter fighter;
+            if (i < 4) {
+                fighter = new VillagerSpellcaster(NoixmodAPIEntities.VILLAGER_SPELLCASTER.get(), serverLevel);
+            } else if (i < 6) {
+                fighter = new VillagerMaster(NoixmodAPIEntities.VILLAGER_MASTER.get(), serverLevel);
+            } else if (i < 8) {
+                fighter = new VillagerEvoker(NoixmodAPIEntities.VILLAGER_EVOKER.get(), serverLevel);
+            } else {
+                fighter = new Ambusher(NoixmodAPIEntities.AMBUSHER.get(), serverLevel);
+            }
+            fighter.moveTo(villager.blockPosition(), 0, 0);
+            fighter.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(villager.blockPosition()),
+                    MobSpawnType.BREEDING, null, null);
+            fighter.setBaby(true);
+            if (serverLevel.addFreshEntity(fighter)) {
+                villager.discard();
+                event.setCanceled(true);
             }
         }
     }
@@ -122,9 +121,9 @@ public class NoixmodAPIEvents {
     public static void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
         Mob mob = event.getEntity();
         ServerLevel serverLevel = event.getLevel().getLevel();
-        if (mob instanceof Villager villager && serverLevel.random.nextInt(3) == 0
+        if (mob instanceof Villager villager && MathSupport.random.nextFloat() < 0.25F
                 && !mob.isBaby() && event.getSpawnType().equals(MobSpawnType.STRUCTURE)) {
-            int i = serverLevel.random.nextInt(11);
+            int i = MathSupport.random.nextInt(11);
             VillagerFighter fighter;
             if (i < 4) {
                 fighter = new VillagerSpellcaster(NoixmodAPIEntities.VILLAGER_SPELLCASTER.get(), serverLevel);
@@ -142,7 +141,7 @@ public class NoixmodAPIEvents {
                 villager.discard();
                 event.setCanceled(true);
             }
-        } else if (mob instanceof WanderingTrader trader && serverLevel.random.nextInt(3) == 0
+        } else if (mob instanceof WanderingTrader trader && MathSupport.random.nextFloat() < 0.25F
                 && trader.getSpawnType() == MobSpawnType.EVENT && NoixmodAPIMainConfig.IntruderWillSpawn.get()) {
             Intruder intruder = NoixmodAPIEntities.INTRUDER.get().create(serverLevel);
             if (intruder != null) {

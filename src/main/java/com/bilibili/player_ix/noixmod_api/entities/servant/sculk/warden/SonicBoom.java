@@ -69,7 +69,7 @@ public class SonicBoom<E extends WardenServant> extends Behavior<E> {
                 living.hurt(pLevel.damageSources().sonicBoom(pOwner), pOwner.getSonicBoomDamage());
                 double d1 = 0.5D * (1.0D - living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                 double d0 = 2.5D * (1.0D - living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                living.push(vec32.x() * d0, vec32.y() * d1, vec32.z() * d0);
+                living.push(vec32.x * d0, vec32.y * d1, vec32.z * d0);
                 if (pOwner.isPowerful()) {
                     pOwner.heal(4F);
                     List<LivingEntity> targets = pLevel.getEntitiesOfClass(LivingEntity.class, living.getBoundingBox()
@@ -80,7 +80,7 @@ public class SonicBoom<E extends WardenServant> extends Behavior<E> {
                             target.hurt(pLevel.damageSources().sonicBoom(pOwner), pOwner.getSonicBoomDamage());
                             double d2 = 0.5D * (1.0D - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                             double d3 = 2.5D * (1.0D - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                            target.push(vec32.x() * d3, vec32.y() * d2, vec32.z() * d3);
+                            target.push(vec32.x * d3, vec32.y * d2, vec32.z * d3);
                         });
                     pLevel.sendParticles(ParticleTypes.SCULK_SOUL, living.getX(), living.getY() + 1, living.getZ(),
                             25, 0.75, 0.75, 0.75, 0.0);

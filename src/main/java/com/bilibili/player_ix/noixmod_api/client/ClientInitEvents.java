@@ -136,6 +136,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.DETRACTOR.get(), DetractorRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.DROWNED_SERVANT.get(), DrownedServantRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.DRUNKENNESS.get(), DrunkennessRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.ELDER_G_S.get(), GuardianRenderer.Elder::new);
         event.registerEntityRenderer(NoixmodAPIEntities.ENDER_MAN_SERVANT.get(), EnderManServantRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.EVIL_SUMMONER.get(), EvilSummonerRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.EVOKER_ILLAGER.get(), EvokerIllagerRenderer::new);
@@ -151,6 +152,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.GRAVE_GHOST.get(), GraveGhostRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.GRAVE_KEEPER.get(), GraveKeeperRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.GREEN_SINGER.get(), GreenSingerRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.GUARDIAN_S.get(), GuardianRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.OLD_HEAD_HUNTER.get(), HeadHunterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HEAD_HUNTER.get(), NewHeadhunterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HEALING.get(), HealingRenderer::new);
