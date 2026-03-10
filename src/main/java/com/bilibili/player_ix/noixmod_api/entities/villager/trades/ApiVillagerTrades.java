@@ -12,6 +12,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.BasicItemListing;
 
 public class ApiVillagerTrades {
+    public static final VillagerTrades.ItemListing[] SPELLCASTER_TRADES;
     public static final VillagerTrades.ItemListing[] MASTER_TRADES;
     public static final VillagerTrades.ItemListing[] EXORCIST_TRADES;
     public static final VillagerTrades.ItemListing[] EVOKER_TRADES;
@@ -19,6 +20,13 @@ public class ApiVillagerTrades {
     public static final VillagerTrades.ItemListing[] AMBUSHER_TRADES;
 
     static {
+        var mending = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(Enchantments.MENDING,
+                1));
+        SPELLCASTER_TRADES = new VillagerTrades.ItemListing[] {
+                new BasicItemListing(2, new ItemStack(Items.BOOK), 200, 1, 0),
+                new BasicItemListing(4, new ItemStack(Items.BOOKSHELF), 100, 2, 0),
+                new BasicItemListing(30, mending, 10, 10, 0.05F)
+        };
         MASTER_TRADES = new VillagerTrades.ItemListing[] {
                 new BasicItemListing(new ItemStack(Items.IRON_INGOT, 3), new ItemStack(Items.EMERALD),
                         10, 1, 0.01f),

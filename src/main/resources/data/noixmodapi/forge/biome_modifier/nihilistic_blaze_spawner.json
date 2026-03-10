@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#minecraft:is_overworld",
+  "spawners": {
+    "type": "noixmodapi:hostile_nihilistic_blaze",
+    "minCount": 1,
+    "maxCount": 1,
+    "weight": 10
+  }
+}

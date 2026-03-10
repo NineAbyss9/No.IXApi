@@ -93,7 +93,6 @@ public class NoixmodAPIItems {
             56063, 44543);
     public static final RegistryObject<Item> HEALING_DOLL = REGISTRY.register("healling_doll", HealingDoll::new);
     public static final RegistryObject<Item> INTRUDER_SPAWN_EGG = REGISTRY.register("intruder_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.INTRUDER, 9804677, 1973267, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> ITEM_KILLER = REGISTRY.register("item_killer", ItemKiller::new);
     public static final RegistryObject<Item> ENDERMAN_SERVANT_SPAWN_EGG = REGISTRY.register("enderman_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.ENDER_MAN_SERVANT,
             1447446, 0, new Item.Properties()));
     public static final RegistryObject<Item> LAVA_ZOMBIE_SERVANT_SPAWN_EGG = REGISTRY.register("lava_zombie_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.LAVA_ZOMBIE_SERVANT, 12623485, 10051392, new Item.Properties()));

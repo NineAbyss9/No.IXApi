@@ -45,10 +45,11 @@ extends AbstractIllager {
 
     public void tick() {
         super.tick();
-        List<AbstractIllager> illagers = this.level().getEntitiesOfClass(AbstractIllager.class, this.getBoundingBox().inflate(4),
-                illager -> MobUtils.areAllies(illager, this) && !(illager instanceof Armorer) && !isArmorFilled(illager));
-        if (!illagers.isEmpty()) {
-            if (this.getRandom().nextInt(10) == 0) {
+        if (Math.random() < 0.1 && this.isAlive()) {
+            List<AbstractIllager> illagers = this.level().getEntitiesOfClass(AbstractIllager.class, this.getBoundingBox()
+                            .inflate(4), illager -> MobUtils.areAllies(illager, this) &&
+                    !(illager instanceof Armorer) && !isArmorFilled(illager));
+            if (!illagers.isEmpty()) {
                 for (AbstractIllager illager : illagers) {
                     if (illager.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
                         this.distribute(EquipmentSlot.HEAD, illager);

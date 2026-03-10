@@ -34,7 +34,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, IF
     public void setHealth(float p_21154_, CallbackInfo ci) {
         float delta = p_21154_ - this.getHealth();
         if (delta > 0) {
-            List<ApostleBoss> bosses = this.self().level().getEntitiesOfClass(ApostleBoss.class, this.self().getBoundingBox()
+            List<ApostleBoss> bosses = this.level().getEntitiesOfClass(ApostleBoss.class, this.getBoundingBox()
                             .inflate(64), boss -> MobUtils.canHurt(this.self(), boss));
             if (!bosses.isEmpty() && NoixmodAPIMainConfig.HorrorMode.get()) {
                 for (ApostleBoss boss : bosses) {
@@ -45,7 +45,9 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, IF
                         }
                     }
                 }
-            } else if (this.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
+                return;
+            }
+            if (this.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
                 ci.cancel();
             }
         }
@@ -53,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, IF
 
     @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
     public void heal(float p_21154_, CallbackInfo ci) {
-        List<ApostleBoss> bosses = this.self().level().getEntitiesOfClass(ApostleBoss.class, this.self().getBoundingBox()
+        List<ApostleBoss> bosses = this.level().getEntitiesOfClass(ApostleBoss.class, this.getBoundingBox()
                         .inflate(64), boss -> MobUtils.canHurt(this.self(), boss));
         if (!bosses.isEmpty() && NoixmodAPIMainConfig.HorrorMode.get()) {
             for (ApostleBoss boss : bosses) {
@@ -64,7 +66,9 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, IF
                     }
                 }
             }
-        } else if (this.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
+            return;
+        }
+        if (this.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
             ci.cancel();
         }
     }

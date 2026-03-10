@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
+import com.bilibili.player_ix.noixmod_api.client.renderer.block.CursedChestR;
 import com.bilibili.player_ix.noixmod_api.client.renderer.servant.*;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.api.renderer.BaseEntityRenderer;
@@ -176,7 +177,8 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.NETHER_SOUL.get(), NetherSoulRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_ARROW.get(), NihilisticArrowRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_ARROW_RAIN.get(), NihilisticArrowRainRenderer::new);
-        event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_BLAZE.get(), NihilityBlazeRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_BLAZE.get(), NihilisticBlazeRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.HOSTILE_NB.get(), NihilisticBlazeRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_CRACK.get(), BaseEntityRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_DEATH.get(), NihilisticDeathRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_EVOKER.get(), NihilisticEvokerRenderer::new);
@@ -234,21 +236,34 @@ public class ClientInitEvents {
 
     @SubscribeEvent
     public static void onClientSetUp(FMLClientSetupEvent event) {
-        MenuScreens.register(ApiGuis.ALTAR.get(), AltarContainerScreen::new);
-        MenuScreens.register(ApiGuis.INFERNAL_IRON_ANVIL.get(), InfernalIronAnvilScreen::new);
+        registerScreens();
         IEventBus bus = MinecraftForge.EVENT_BUS;
         bus.addListener(BossBar::renderBossBar);
+        registerBlockRenderers();
+        createApiPacket();
+        registerItemStates();
+    }
+
+    public static void registerScreens() {
+        MenuScreens.register(ApiGuis.ALTAR.get(), AltarContainerScreen::new);
+        MenuScreens.register(ApiGuis.INFERNAL_IRON_ANVIL.get(), InfernalIronAnvilScreen::new);
+    }
+
+    public static void registerBlockRenderers() {
         BlockEntityRenderers.register(ApiBlockEntities.ALTAR.get(), AltarRenderer::new);
-        //createApiPacket();
+        BlockEntityRenderers.register(ApiBlockEntities.CURSED_CHEST.get(), CursedChestR::new);
+    }
+
+    public static void registerItemStates() {
         ItemProperties.register(NoixmodAPIItems.BOW_BOW.get(), new ResourceLocation("pull"),
                 (stack, level, living, i) -> {
-            if (living == null) {
-                return 0.0F;
-            } else {
-                return living.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration()
-                        - living.getUseItemRemainingTicks()) / 20.0F;
-            }
-        });
+                    if (living == null) {
+                        return 0.0F;
+                    } else {
+                        return living.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration()
+                                - living.getUseItemRemainingTicks()) / 20.0F;
+                    }
+                });
         ItemProperties.register(NoixmodAPIItems.BOW_BOW.get(), new ResourceLocation("pulling"),
                 (itemStack, clientLevel, livingEntity, i) -> livingEntity != null &&
                         livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F);

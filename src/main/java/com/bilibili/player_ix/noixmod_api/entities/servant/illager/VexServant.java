@@ -76,7 +76,7 @@ implements IFlagMob {
     }
 
     protected boolean isFlapping() {
-        return this.tickCount % TICKS_PER_FLAP ==0;
+        return this.tickCount % TICKS_PER_FLAP == 0;
     }
 
     protected float getStandingEyeHeight(Pose p_260180_, EntityDimensions p_260049_) {

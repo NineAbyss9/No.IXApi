@@ -103,7 +103,6 @@ public class BiologistModel<T extends Biologist> extends HierarchicalModel<T> im
 		return LayerDefinition.create(meshdefinition, 64, 128);
 	}
 
-	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.head.yRot = netHeadYaw * (Maths.CLOSER_PI / 180F);
@@ -116,7 +115,6 @@ public class BiologistModel<T extends Biologist> extends HierarchicalModel<T> im
 		this.animate(entity.summon, BiologistAnimations.summon1, ageInTicks);
 	}
 
-	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

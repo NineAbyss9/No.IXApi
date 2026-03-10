@@ -54,9 +54,6 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
             public boolean checkSee() {
                 return true;
             }
-
-            public void stopOrStrafe(double distance, LivingEntity livingentity) {
-            }
         });
         this.goalSelector.addGoal(8, new VexRandomMoveGoal(this));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, LivingEntity.class, 20f));
@@ -162,7 +159,7 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
         }
 
         public boolean canUse() {
-            if (!mob.getNavigation().isDone() && !this.canMove()) {
+            if (!mob.getNavigation().isDone()) {
                 return false;
             }
             return checkRandom();
@@ -170,10 +167,6 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
 
         protected boolean checkRandom() {
             return mob.getRandom().nextInt(reducedTickDelay(7)) == 0;
-        }
-
-        public boolean canMove() {
-            return this.mob.distanceToSqr(last) > 2;
         }
 
         public boolean canContinueToUse() {
@@ -188,10 +181,10 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
             for (int $$1 = 0; $$1 < 3; ++$$1) {
                 BlockPos $$2 = pos.offset(this.mob.getRandom().nextInt(15) - 7, this.mob
                         .getRandom().nextInt(11) - 5, this.mob.getRandom().nextInt(15) - 7);
-                last = Vec9.of($$2);
                 if (this.mob.level().isEmptyBlock($$2)) {
-                   this.mob.getMoveControl().setWantedPosition($$2.getX() + 0.5, $$2.getY() + 0.5,
-                           $$2.getZ() + 0.5, 0.3);
+                    this.mob.getMoveControl().setWantedPosition($$2.getX() + 0.5, $$2.getY() + 0.5,
+                            $$2.getZ() + 0.5, 0.3);
+                    last = Vec9.of($$2);
                     if (this.mob.getTarget() == null) {
                         this.mob.getLookControl().setLookAt($$2.getX() + 0.5, $$2.getY() + 0.5,
                                 $$2.getZ() + 0.5, 180.0F, 20.0F);
@@ -200,5 +193,9 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
                 }
             }
         }
+
+        //public void tick() {
+
+        //}
     }
 }

@@ -4,16 +4,12 @@ package com.bilibili.player_ix.noixmod_api;
 import com.bilibili.player_ix.noixmod_api.client.ClientAgent;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
 import com.bilibili.player_ix.noixmod_api.config.*;
-import com.bilibili.player_ix.noixmod_api.entities.mod.APIMonster;
 import com.bilibili.player_ix.noixmod_api.network.ApiNetwork;
 import com.bilibili.player_ix.noixmod_api.register.*;
 import com.bilibili.player_ix.noixmod_api.server.ServerAgent;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -24,7 +20,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.*;
 
@@ -54,7 +49,7 @@ public class NoixmodAPI {
         FMLJavaModLoadingContext context = FMLJavaModLoadingContext.get();
         IEventBus bus = context.getModEventBus();
         bus.addListener(this::commonSetUp);
-        bus.addListener(this::registerSpawns);
+        bus.addListener(NoixmodAPIEntities::registerSpawns);
         NoixmodAPITags.init();
         NoixmodAPIItems.REGISTRY.register(bus);
         NoixmodAPIMobEffects.REGISTER.register(bus);
@@ -79,52 +74,15 @@ public class NoixmodAPI {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void commonSetUp(@Nonnull FMLCommonSetupEvent event) {
+    private void commonSetUp(FMLCommonSetupEvent event) {
         ApiNetwork.register();
     }
 
-    private void registerSpawns(@Nonnull SpawnPlacementRegisterEvent event) {
-        event.register(NoixmodAPIEntities.AQUATIC_WORM.get(), SpawnPlacements.Type.IN_WATER,
-                Heightmap.Types.OCEAN_FLOOR, (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
-                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos,
-                                randomSource) && NoixmodAPIMainConfig.AquaticWormWillSpawn.get()
-                                && randomSource.nextDouble() <= 0.05,
-                SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NoixmodAPIEntities.GIRL_GHOST.get(), SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
-                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
-                                blockPos, randomSource)
-                        && NoixmodAPIMainConfig.GirlGhostCanSummon.get(), SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NoixmodAPIEntities.PLATEAU_BEAST.get(), SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, APIMonster::checkAPIMonsterSpawnRules,
-                SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NoixmodAPIEntities.VAMPIRE.get(), SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
-                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
-                                blockPos, randomSource)
-                        && NoixmodAPIMainConfig.VampireWillSpawn.get(), SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NoixmodAPIEntities.H_WIND_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
-                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
-                                blockPos, randomSource) && NoixmodAPIMainConfig.WindZombieCanSpawn.get(),
-                SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NoixmodAPIEntities.WORM.get(), SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
-                        randomSource.nextDouble() <= 0.05 && APIMonster.checkAPIMonsterSpawnRules(entityType,
-                                serverLevelAccessor, mobSpawnType, blockPos, randomSource)
-                                && NoixmodAPIMainConfig.WormWillSpawn.get(), SpawnPlacementRegisterEvent.Operation.AND);
-    }
-
-    @Nonnull
     public static ResourceLocation location(String s) {
         return new ResourceLocation(MOD_ID, s);
     }
 
-    private static void createFiles(@Nonnull Path dirPath, String dirLabel) {
+    private static void createFiles(Path dirPath, String dirLabel) {
         if (!Files.isDirectory(dirPath.getParent())) {
             createFiles(dirPath.getParent(), "parent of " + dirLabel);
         }

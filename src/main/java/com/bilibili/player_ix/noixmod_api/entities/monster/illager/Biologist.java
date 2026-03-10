@@ -63,12 +63,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.network.PlayMessages;
 import org.NineAbyss9.math.AbyssMath;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -107,23 +105,22 @@ implements RangedAttackMob,
     public AnimationState summon;
     public String ATTACK = "attack";
     public String AMBIENT = "ambient";
-    public String WALK = "walk";
     public String SUMMON = "ownerSummon";
     public String SUMMON_1 = "summon_1";
     public Biologist(EntityType<? extends Biologist> e, Level l) {
         super(e, l);
         this.setMaxUpStep(2);
-        this.xpReward = 50;
+        this.xpReward = 25;
     }
 
     @Override
-    public void startSeenByPlayer(@NotNull ServerPlayer player) {
+    public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
         this.bossInfo.addPlayer(player);
     }
 
     @Override
-    public void stopSeenByPlayer(@NotNull ServerPlayer player) {
+    public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         this.bossInfo.removePlayer(player);
     }
@@ -146,6 +143,13 @@ implements RangedAttackMob,
         this.entityData.define(HEAL_COOL_DOWN, 0);
         this.entityData.define(ROAR_COOL_DOWN, 0);
         this.entityData.define(IS_HEALING, false);
+    }
+
+    public void aiStep() {
+        super.aiStep();
+        if (this.level().isClientSide && this.getAnimationState() == 0) {
+            this.ambient.startIfStopped(tickCount);
+        }
     }
 
     public Integer getAnimationState() {
@@ -247,12 +251,6 @@ implements RangedAttackMob,
         return this.entityData.get(HEAL_COOL_DOWN);
     }
 
-    @SuppressWarnings("unused")
-    public Biologist(PlayMessages.SpawnEntity packet, Level world) {
-        this(NoixmodAPIEntities.BIOLOGIST.get(), world);
-    }
-
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FreakySummonGoal());
@@ -275,7 +273,8 @@ implements RangedAttackMob,
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_37856_, DifficultyInstance p_37857_, MobSpawnType p_37858_, @Nullable SpawnGroupData p_37859_, @Nullable CompoundTag p_37860_) {
-        if (p_37858_ != MobSpawnType.COMMAND && p_37858_ != MobSpawnType.SPAWN_EGG && p_37856_.getRandom().nextFloat() >= 0.29) {
+        if (p_37858_ != MobSpawnType.COMMAND && p_37858_ != MobSpawnType.SPAWN_EGG && p_37856_.getRandom().nextFloat()
+                >= 0.29) {
             this.discard();
         }
         return super.finalizeSpawn(p_37856_, p_37857_, p_37858_, p_37859_, p_37860_);
@@ -373,33 +372,20 @@ implements RangedAttackMob,
         return SoundEvents.VINDICATOR_CELEBRATE;
     }
 
-    @Override
-    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> p_21104_) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> p_21104_) {
         if (AnimationStates.equals(p_21104_) && this.level().isClientSide()) {
             switch (this.getAnimationState()) {
-                case 0: {
-                    this.stopAllAnimations();
-                    this.ambient.stop();
-                    break;
-                }
-                case 1: {
-                    this.stopAllAnimations();
-                    this.ambient.start(this.tickCount);
-                    break;
-                }
-                case 2: {
-                    this.stopAllAnimations();
-                    this.walking.start(this.tickCount);
-                    break;
-                }
                 case 3: {
                     this.stopAllAnimations();
-                    this.attacking.start(this.tickCount);
+                    this.attacking.startIfStopped(this.tickCount);
                     break;
                 }
                 case 4: {
                     this.stopAllAnimations();
-                    this.summon.start(this.tickCount);
+                    this.summon.startIfStopped(this.tickCount);
+                    break;
+                }
+                case 5: {
                     break;
                 }
             }
@@ -407,7 +393,6 @@ implements RangedAttackMob,
         super.onSyncedDataUpdated(p_21104_);
     }
 
-    @Override
     protected void dropCustomDeathLoot(DamageSource p_21385_, int p_21386_, boolean p_21387_) {
         if (BlueOceansCompat.isLoaded()) {
             this.spawnAtLocation(BlueOceansCompat.getItemStack("gravy_bottle"), 3);
@@ -420,7 +405,6 @@ implements RangedAttackMob,
         super.dropCustomDeathLoot(p_21385_, p_21386_, p_21387_);
     }
 
-    @Override
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
         if (this.isSecondPhase()){
             this.heal(2f);
@@ -428,14 +412,12 @@ implements RangedAttackMob,
         return super.killedEntity(p_216988_, p_216989_);
     }
 
-    @Override
     public boolean doHurtTarget(Entity p_21372_) {
         this.heal(1f);
         this.setAnimationState(this.ATTACK);
         return super.doHurtTarget(p_21372_);
     }
 
-    @Override
     public void tick() {
         super.tick();
         double x = this.getX();
@@ -444,10 +426,9 @@ implements RangedAttackMob,
         if (!this.entityData.get(IS_ANGRY) && this.isHalfHealth()) {
             this.entityData.set(IS_ANGRY, true);
         }
-        if (this.isHealing()) {
-            if (this.level().isClientSide) {
-                this.level().addParticle(NoixmodAPIParticleTypes.NIHILISTIC_SPELL.get(), x, y + 2.5, z, 0.1, 0.1, 0.0);
-            }
+        if (this.level().isClientSide && this.isHealing()) {
+            this.level().addParticle(NoixmodAPIParticleTypes.NIHILISTIC_SPELL.get(), x, y + 2.5, z, 0.1,
+                    0.1, 0.0);
         }
         if (this.RoarTicks > 0) {
             this.setRoarTicks(this.RoarTicks - 1);
@@ -468,12 +449,7 @@ implements RangedAttackMob,
     }
 
     public List<AnimationState> getAnimations() {
-        ArrayList<AnimationState> animationStates = new ArrayList<>();
-        animationStates.add(this.ambient);
-        animationStates.add(this.walking);
-        animationStates.add(this.attacking);
-        animationStates.add(this.summon);
-        return animationStates;
+        return List.of(attacking, summon);
     }
 
     public void stopAllAnimations() {
@@ -485,9 +461,6 @@ implements RangedAttackMob,
     public Integer getAni(String string) {
         if (Objects.equals(this.AMBIENT, string)) {
             return 1;
-        }
-        if (Objects.equals(this.WALK, string)) {
-            return 2;
         }
         if (Objects.equals(this.ATTACK, string)) {
             return 3;
@@ -856,27 +829,21 @@ implements RangedAttackMob,
 
     private static class HealGoal<T extends Biologist> extends Goal {
         public final T mob;
-
         private HealGoal(T entity) {
             super();
             this.mob = entity;
         }
 
-        @Override
         public void start() {
-            super.start();
             this.mob.setAnimationState(this.mob.SUMMON);
             this.mob.healTicks = 44;
         }
 
-        @Override
         public boolean canContinueToUse() {
             return this.mob.getHealCoolDown() == 0 && this.mob.getHealth() < this.mob.getMaxHealth() && this.canUse();
         }
 
-        @Override
         public void tick() {
-            super.tick();
             this.mob.entityData.set(IS_HEALING, true);
             --this.mob.healTicks;
             if (--this.mob.healTicks == 4) {
@@ -884,16 +851,13 @@ implements RangedAttackMob,
             }
         }
 
-        @Override
         public void stop() {
-            super.stop();
             this.mob.heal(10f);
             this.mob.entityData.set(IS_HEALING, false);
             this.mob.entityData.set(HEAL_COOL_DOWN, 600);
             this.mob.healTicks = 0;
         }
 
-        @Override
         public boolean canUse() {
             if (this.mob.getHealCoolDown() != 0) {
                 return false;
@@ -910,7 +874,6 @@ implements RangedAttackMob,
     {
         this.ambient = new AnimationState();
         this.attacking = new AnimationState();
-        this.walking = new AnimationState();
         this.summon = new AnimationState();
     }
 }

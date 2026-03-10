@@ -72,7 +72,6 @@ extends APISpellcaster {
     }
 
     private class AttackSpellGoal extends UseSpellGoal {
-
         protected void castSpell() {
             LivingEntity target = getTarget();
             if (target != null) {

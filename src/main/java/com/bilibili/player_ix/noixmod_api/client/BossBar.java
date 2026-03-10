@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
@@ -32,7 +31,6 @@ public class BossBar {
             NoixmodAPI.MOD_ID, "textures/gui/apostle_boss_bar_horror_1.png");
     public static Map<UUID, Mob> BOSS_BARS = new HashMap<>();
 
-    @SubscribeEvent
     public static void renderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
         Minecraft minecraft = Minecraft.getInstance();
         int i = minecraft.getWindow().getGuiScaledWidth();

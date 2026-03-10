@@ -42,6 +42,7 @@ extends AbstractIllager {
     private int cheerCooldown;
     public Bugler(EntityType<? extends AbstractIllager> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
+        this.xpReward = 1;
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(NoixmodAPIItems.OMINOUS_HORN.get()));
     }
 

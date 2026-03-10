@@ -11,7 +11,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 
 import java.util.EnumSet;
@@ -25,8 +24,6 @@ public class ApiMeleeAttackGoal extends Goal {
     protected int ticksUntilNextPathRecalculation;
     protected int ticksUntilNextAttack;
     protected long lastCanUseCheck;
-    protected int failedPathFindingPenalty = 0;
-    protected final boolean canPenalize = false;
     protected final boolean p_1145;
     protected final boolean p_1146;
     protected final float p_1147;
@@ -71,14 +68,6 @@ public class ApiMeleeAttackGoal extends Goal {
                 return false;
             } else if (!livingentity.isAlive()) {
                 return false;
-            } else if (this.canPenalize) {
-                if (--this.ticksUntilNextPathRecalculation <= 0) {
-                    path = this.mob.getNavigation().createPath(livingentity, 0);
-                    this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
-                    return path != null;
-                } else {
-                    return true;
-                }
             } else {
                 path = this.mob.getNavigation().createPath(livingentity, 0);
                 if (path != null) {
@@ -142,19 +131,6 @@ public class ApiMeleeAttackGoal extends Goal {
                 this.pathedTargetY = livingentity.getY();
                 this.pathedTargetZ = livingentity.getZ();
                 this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
-                if (this.canPenalize) {
-                    this.ticksUntilNextPathRecalculation += this.failedPathFindingPenalty;
-                    if (this.mob.getNavigation().getPath() != null) {
-                        Node finalPathPoint = this.mob.getNavigation().getPath().getEndNode();
-                        if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.asVec3()) < 0.6) {
-                            this.failedPathFindingPenalty = 0;
-                        } else {
-                            this.failedPathFindingPenalty += 4;
-                        }
-                    } else {
-                        this.failedPathFindingPenalty += 4;
-                    }
-                }
                 if (d0 > 1024.0) {
                     this.ticksUntilNextPathRecalculation += 4;
                 } else if (d0 > 256.0) {

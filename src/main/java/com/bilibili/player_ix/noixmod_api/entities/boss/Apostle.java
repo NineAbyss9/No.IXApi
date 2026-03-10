@@ -570,6 +570,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     public void setTicksFrozen(int p_146918_) {
     }
 
+    public LivingEntity self() {
+        return super.self();
+    }
+
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -704,7 +708,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                     Maths.randomInteger(2)).below().mutable();
             soul.moveTo($$2, 0, 0);
             soul.setTarget(this.getTarget());
-            soul.setOwner(this.getOwner() == null ? this : this.getOwner());
+            soul.setOwner(this);
             soul.finalizeSpawn(this.serverLevel(), this.serverLevel().getCurrentDifficultyAt(this.blockPosition()),
                     MobSpawnType.MOB_SUMMONED);
             this.serverLevel().addFreshEntity(soul);
@@ -836,12 +840,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             NihilisticServant servant = new NihilisticServant(NoixmodAPIEntities.NIHILISTIC_SERVANT.get(),
                     this.serverLevel());
             servant.handleLifeTicks();
-            SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(),
-                    this.serverLevel());
+            SummonEntity entity = NoixmodAPIEntities.SUMMON_ENTITY.get().create(this.serverLevel());
             entity.entity(NoixmodAPIEntities.NIHILISTIC_SERVANT.get());
             entity.setDangerous(true);
             this.getSummon().integerSummon(entity, 7);
-            this.serverLevel().addFreshEntity(entity);
         }
     }
 
@@ -1616,7 +1618,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
         if (BlueOceansCompat.isLoaded() && this.isRisingRedPlum())
             arrow.addEffect(new MobEffectInstance(BlueOceansCompat.getEffect("plum_invade"),
                     40, 0));
-        arrow.setCritArrow(this.isInEnd());
+        arrow.setCritArrow(this.isInEnd() || this.random.nextFloat() < 0.05F);
         arrow.setBaseDamage(this.getArrowDamage());
         return arrow;
     }
@@ -1663,6 +1665,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                 if (speed.hasModifier(FAST_SPEED)) {
                     speed.removeModifier(FAST_SPEED);
                 }
+            }
+            if (this.isCastingSpell() && !isInEnd()) {
+                if (!speed.hasModifier(CASTING_SPEED))
+                    speed.addTransientModifier(CASTING_SPEED);
+            } else {
+                if (speed.hasModifier(CASTING_SPEED))
+                    speed.removeModifier(CASTING_SPEED);
             }
             if (this.statueSpeedTime > 0) {
                 if (!speed.hasModifier(STATUE_COOLDOWN_SPEED)) {

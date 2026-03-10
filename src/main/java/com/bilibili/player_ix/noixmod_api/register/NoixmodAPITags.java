@@ -44,6 +44,7 @@ public class NoixmodAPITags {
     public static TagKey<Item> SUMMON_APOSTLE_ITEMS
             = itemTag("summon_apostle_items");
     public static TagKey<Item> SCULKS = itemTag("sculks");
+    public static TagKey<Item> ICES = itemTag("ices");
 
     private NoixmodAPITags() {}
 

@@ -67,11 +67,11 @@ implements ApiNihilisticBoss {
 
     public void baseTick() {
         if (this.firstTick) {
-            Component component = Option.of(Component.literal("Απόστολος")
+            Component component = Option.of(Component.literal("Apostle")
                             .withStyle(ChatFormatting.DARK_RED, ChatFormatting.OBFUSCATED))
                     .ifOrElse(NoixmodAPIMainConfig.HorrorMode.get(),
-                            Component.literal("Απόστολος")
-                                    .withStyle(ChatFormatting.DARK_PURPLE));
+                            Component.literal("Apostle")
+                                    .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.OBFUSCATED));
             Minecraft.getInstance().gui.setTitle(component);
             if (!this.level().isClientSide) {
                 this.sendSystemMessage(Component.literal("We will have a great time!")

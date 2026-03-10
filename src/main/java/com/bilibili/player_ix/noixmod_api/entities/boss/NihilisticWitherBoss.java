@@ -2,7 +2,6 @@
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
-import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticWither;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +29,7 @@ implements ApiNihilisticBoss {
     }
 
     protected void addTargetGoals() {
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Nihilistic.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class,
                 true, this::canAttack));
     }

@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
+/**Learned from Polarice3's codes*/
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = NoixmodAPI.MOD_ID)
 public class ApiLootInject {
     private static final List<String> CHEST_TABLES = List.of("ancient_city", "pillager_outpost");

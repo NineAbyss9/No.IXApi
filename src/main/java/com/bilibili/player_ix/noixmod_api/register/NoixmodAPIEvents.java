@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import net.minecraft.world.entity.animal.allay.Allay;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
@@ -142,7 +143,7 @@ public class NoixmodAPIEvents {
                 event.setCanceled(true);
             }
         } else if (mob instanceof WanderingTrader trader && MathSupport.random.nextFloat() < 0.25F
-                && trader.getSpawnType() == MobSpawnType.EVENT && NoixmodAPIMainConfig.IntruderWillSpawn.get()) {
+                && event.getSpawnType() == MobSpawnType.EVENT && NoixmodAPIMainConfig.IntruderWillSpawn.get()) {
             Intruder intruder = NoixmodAPIEntities.INTRUDER.get().create(serverLevel);
             if (intruder != null) {
                 intruder.moveTo(trader.position());
@@ -152,6 +153,14 @@ public class NoixmodAPIEvents {
                 serverLevel.addFreshEntity(intruder);
                 trader.setRemoved(Entity.RemovalReason.KILLED);
                 event.setCanceled(true);
+            }
+        } else if (mob instanceof Allay allay && MathSupport.random.nextBoolean() &&
+                event.getSpawnType() == MobSpawnType.EVENT) {
+            Healing healing = NoixmodAPIEntities.HEALING.get().create(serverLevel);
+            if (healing != null) {
+                healing.moveTo(allay.position());
+                if (serverLevel.addFreshEntity(healing))
+                    allay.discard();
             }
         }
     }

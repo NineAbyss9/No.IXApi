@@ -107,16 +107,19 @@ extends NihilitySummonedMobs {
                 0.0F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(0, new OwnableTargetGoal<>(this, true));
+        this.targetGoal();
         this.targetSelector.addGoal(0, new OwnerHurtTargetGoal<>(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+    }
+
+    protected void targetGoal() {
+        this.targetSelector.addGoal(0, new OwnableTargetGoal<>(this, true));
     }
 
     protected SoundEvent getDeathSound() {
         return SoundEvents.BLAZE_DEATH;
     }
 
-    @Override
     public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }

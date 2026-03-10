@@ -31,7 +31,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 public class Cultist
@@ -42,11 +41,6 @@ implements Enemy {
     public Cultist(EntityType<Cultist> type, Level level) {
         super(type, level);
         this.xpReward = 10;
-    }
-
-    public Cultist(PlayMessages.SpawnEntity entity, Level world) {
-        this(NoixmodAPIEntities.CULTIST.get(), world);
-        entity.getEntity();
     }
 
     public void convert() {

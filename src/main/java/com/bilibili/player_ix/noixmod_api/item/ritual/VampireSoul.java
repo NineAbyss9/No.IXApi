@@ -17,13 +17,11 @@ extends RitualSupplies {
         super(new Properties().stacksTo(64).fireResistant());
     }
 
-    @Override
     public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        if (p_41432_ instanceof ServerLevel level) {
+        if (!p_41432_.isClientSide) {
             ISpell spell = Spells.VAMPIRE.get();
-            spell.castSpell(level, p_41433_);
-            return ItemUtils.startUsingInstantly(level, p_41433_, p_41434_);
+            spell.castSpell((ServerLevel)p_41432_, p_41433_);
         }
-        return super.use(p_41432_, p_41433_, p_41434_);
+        return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
     }
 }

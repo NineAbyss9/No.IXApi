@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class ApostleServant
@@ -114,7 +113,7 @@ extends Apostle {
     }
 
     public int healTicker() {
-        if (Objects.equals(this.getOwner(), null)) {
+        if (this.getOwner() == null) {
             return 30;
         } else {
             float health = (this.getOwner().getHealth() / this.getMaxHealth());

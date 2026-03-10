@@ -1,9 +1,15 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
+import com.bilibili.player_ix.noixmod_api.entities.mod.APIMonster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.hostile.HostileNihilisticBlaze;
 import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.ElderGuardianServant;
 import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.GuardianServant;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.entities.boss.*;
@@ -66,16 +72,16 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<ApostleBoss>> APOSTLE = NoixmodAPIEntities.register("apostle", EntityType.Builder.<ApostleBoss>of(ApostleBoss::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setCustomClientFactory(ApostleBoss::new).sized(0.6f, 2f).fireImmune());
     public static final RegistryObject<EntityType<ApostleServant>> APOSTLE_SERVANT = NoixmodAPIEntities.register("apostle_servant", EntityType.Builder.of(ApostleServant::new, MobCategory.MISC).sized(0.6f, 2f).fireImmune().setTrackingRange(128));
     public static final RegistryObject<EntityType<ApostleShadow>> APOSTLE_SHADOW = NoixmodAPIEntities.register("apostle_shadow", EntityType.Builder.<ApostleShadow>of(ApostleShadow::new, MobCategory.MISC).setCustomClientFactory(ApostleShadow::new).sized(0.6f, 1.95f).fireImmune());
-    public static final RegistryObject<EntityType<AquaticWorm>> AQUATIC_WORM = NoixmodAPIEntities.register("aquatic_worm", EntityType.Builder.<AquaticWorm>of(AquaticWorm::new, MobCategory.MONSTER).sized(1f, 1f).setUpdateInterval(2));
+    public static final RegistryObject<EntityType<AquaticWorm>> AQUATIC_WORM = NoixmodAPIEntities.register("aquatic_worm", EntityType.Builder.of(AquaticWorm::new, MobCategory.MONSTER).sized(1f, 1f).setUpdateInterval(2));
     public static final RegistryObject<EntityType<ArcherServant>> ARCHER_SERVANT = register("archer_servant", EntityType.Builder.of(ArcherServant::new, MobCategory.MISC).sized(0.6f, 1.95f).clientTrackingRange(8));
     public static final RegistryObject<EntityType<Armorer>> ARMORER = NoixmodAPIEntities.register("armorer", EntityType.Builder.of(Armorer::new, MobCategory.MONSTER).sized(0.6F, 1.95F));
     public static final RegistryObject<EntityType<ArrowArrowEntity>> ARROW_ARROW = NoixmodAPIEntities.register("arrow_arrow", EntityType.Builder.<ArrowArrowEntity>of(ArrowArrowEntity::new, MobCategory.MISC).sized(0.5f, 0.5f));
     public static final RegistryObject<EntityType<BlackHole>> BLACK_HOLE = NoixmodAPIEntities.register("black_hole", EntityType.Builder.of(BlackHole::new, MobCategory.MISC).sized(2f, 2f).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Biologist>> BIOLOGIST = NoixmodAPIEntities.register("biologist", EntityType.Builder.<Biologist>of(Biologist::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(12).setUpdateInterval(3).sized(0.6f, 1.95f).setCustomClientFactory(Biologist::new).fireImmune());
+    public static final RegistryObject<EntityType<Biologist>> BIOLOGIST = NoixmodAPIEntities.register("biologist", EntityType.Builder.of(Biologist::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(12).setUpdateInterval(3).sized(0.6f, 1.95f).fireImmune());
     public static final RegistryObject<EntityType<Bugler>> BUGLER = NoixmodAPIEntities.register("bugler", EntityType.Builder.of(Bugler::new, MobCategory.MONSTER).sized(0.6f, 1.8f));
     public static final RegistryObject<EntityType<Cage>> CAGE = register("cage", EntityType.Builder.of(Cage::new, MobCategory.MISC).sized(1f, 1.2f));
     public static final RegistryObject<EntityType<CreeperServant>> CREEPER_SERVANT = register("creeper_servant", EntityType.Builder.of(CreeperServant::new, MobCategory.MISC).sized(0.6F, 1.9F));
-    public static final RegistryObject<EntityType<Cultist>> CULTIST = NoixmodAPIEntities.register("cultist", EntityType.Builder.<Cultist>of(Cultist::new, MobCategory.MONSTER).updateInterval(2).sized(0.6f, 1.95f).setCustomClientFactory(Cultist::new));
+    public static final RegistryObject<EntityType<Cultist>> CULTIST = NoixmodAPIEntities.register("cultist", EntityType.Builder.of(Cultist::new, MobCategory.MONSTER).updateInterval(2).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<CursedNihilisticEvoker>> CURSED_NIHILISTIC_EVOKER = NoixmodAPIEntities.register("cursed_nihilistic_evoker", EntityType.Builder.<CursedNihilisticEvoker>of(CursedNihilisticEvoker::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(CursedNihilisticEvoker::new).fireImmune().sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<DamageEntity>> DAMAGE_ENTITY = NoixmodAPIEntities.register("damage_entity", EntityType.Builder.of(DamageEntity::new, MobCategory.MISC).sized(0.7F, 0.2F).fireImmune().clientTrackingRange(8));
     public static final RegistryObject<EntityType<DanDa>> DAN_ZHEN = NoixmodAPIEntities.register("dan_zhen", EntityType.Builder.of(DanDa::new, MobCategory.MISC).sized(0.6F, 1.95f).clientTrackingRange(8));
@@ -108,7 +114,8 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<NeoIllager>> NEO_ILLAGER = register("neo_illager", EntityType.Builder.of(NeoIllager::new, MobCategory.MISC)
             .sized(0.6F, 1.95F));
     public static final RegistryObject<EntityType<NihilisticArrowRain>> NIHILISTIC_ARROW_RAIN = NoixmodAPIEntities.register("nihilistic_arrow_rain", EntityType.Builder.of(NihilisticArrowRain::new, MobCategory.MISC).sized(4f, 0.3f));
-    public static final RegistryObject<EntityType<NihilisticBlaze>> NIHILISTIC_BLAZE = NoixmodAPIEntities.register("nihilistic_blaze", EntityType.Builder.of(NihilisticBlaze::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().sized(0.6f, 1.95f));
+    public static final RegistryObject<EntityType<NihilisticBlaze>> NIHILISTIC_BLAZE = NoixmodAPIEntities.register("nihilistic_blaze", EntityType.Builder.of(NihilisticBlaze::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().sized(0.6f, 1.95f));
+    public static final RegistryObject<EntityType<HostileNihilisticBlaze>> HOSTILE_NB = register("hostile_nihilistic_blaze", EntityType.Builder.of(HostileNihilisticBlaze::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<NihilisticGhast>> NIHILISTIC_GHAST = NoixmodAPIEntities.register("nihilistic_ghast", EntityType.Builder.of(NihilisticGhast::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().sized(2f, 2f));
     public static final RegistryObject<EntityType<NihilisticLord>> NIHILISTIC_LORD = NoixmodAPIEntities.register("nihilistic_lord", EntityType.Builder.of(NihilisticLord::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(1024).setUpdateInterval(3).fireImmune().sized(0.6f, 1.95f).noSummon());
     public static final RegistryObject<EntityType<NihilisticWither>> NIHILISTIC_WITHER = NoixmodAPIEntities.register("nihilistic_wither", EntityType.Builder.of(NihilisticWither::new, MobCategory.MONSTER).sized(0.9F, 3.5F).clientTrackingRange(10).fireImmune().immuneTo(Blocks.WITHER_ROSE));
@@ -122,9 +129,9 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<VillagerEvoker>> VILLAGER_EVOKER = NoixmodAPIEntities.register("villager_evoker", EntityType.Builder.of(VillagerEvoker::new, MobCategory.MISC).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<VillagerSpellcaster>> VILLAGER_SPELLCASTER = NoixmodAPIEntities.register("villager_spellcaster", EntityType.Builder.of(VillagerSpellcaster::new, MobCategory.MISC).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<WaterWarlock>> WATER_WARLOCK = NoixmodAPIEntities.register("water_warlock", EntityType.Builder.of(WaterWarlock::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
-    public static final RegistryObject<EntityType<FreakyWorm>> FREAKY_WORM = NoixmodAPIEntities.register("freaky_worm", EntityType.Builder.<FreakyWorm>of(FreakyWorm::new, MobCategory.MONSTER).sized(1.6f, 1.2f));
+    public static final RegistryObject<EntityType<FreakyWorm>> FREAKY_WORM = NoixmodAPIEntities.register("freaky_worm", EntityType.Builder.of(FreakyWorm::new, MobCategory.MONSTER).sized(1.6f, 1.2f));
     public static final RegistryObject<EntityType<FreakySkeleton>> FREAKY_SKELETON = NoixmodAPIEntities.register("freaky_skeleton", EntityType.Builder.<FreakySkeleton>of(FreakySkeleton::new, MobCategory.MISC).sized(0.6f, 1.95f));
-    public static final RegistryObject<EntityType<NihilisticFire>> NIHILISTIC_FIRE = NoixmodAPIEntities.register("nihilistic_fire", EntityType.Builder.<NihilisticFire>of(NihilisticFire::new, MobCategory.MISC).fireImmune().setTrackingRange(10).sized(1f, 1f));
+    public static final RegistryObject<EntityType<NihilisticFire>> NIHILISTIC_FIRE = NoixmodAPIEntities.register("nihilistic_fire", EntityType.Builder.of(NihilisticFire::new, MobCategory.MISC).fireImmune().setTrackingRange(10).sized(1f, 1f));
     public static final RegistryObject<EntityType<NihilisticFireball>> NIHILISTIC_FIREBALL = NoixmodAPIEntities.register("nihilistic_fireball", EntityType.Builder.<NihilisticFireball>of(NihilisticFireball::new, MobCategory.MISC).setTrackingRange(10).sized(1f,1f).fireImmune());
     public static final RegistryObject<EntityType<Intruder>> INTRUDER = NoixmodAPIEntities.register("intruder", EntityType.Builder.of(Intruder::new, MobCategory.MONSTER).fireImmune().clientTrackingRange(10));
     public static final RegistryObject<EntityType<LavaZombieServant>> LAVA_ZOMBIE_SERVANT = NoixmodAPIEntities.register("lava_zombie_servant", EntityType.Builder.of(LavaZombieServant::new, MobCategory.MISC).fireImmune().sized(0.6f, 1.95f));
@@ -132,21 +139,21 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<VampireServant>> VAMPIRE_SERVANT = register("vampire_servant", EntityType.Builder.of(VampireServant::new, MobCategory.MISC).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<VexArcher>> VEX_ARCHER = NoixmodAPIEntities.register("vex_archer", EntityType.Builder.of(VexArcher::new, MobCategory.MISC).clientTrackingRange(8).fireImmune().sized(0.4F, 0.8F));
     public static final RegistryObject<EntityType<WardenServant>> WARDEN_SERVANT = register("warden_servant", EntityType.Builder.of(WardenServant::new, MobCategory.MISC).sized(0.9F, 2.9F).clientTrackingRange(16).fireImmune());
-    public static final RegistryObject<EntityType<NihilisticEvoker>> NIHILISTIC_EVOKER = NoixmodAPIEntities.register("nihilistic_evoker", EntityType.Builder.<NihilisticEvoker>of(NihilisticEvoker::new, MobCategory.MONSTER).fireImmune().sized(0.6f, 1.95f));
+    public static final RegistryObject<EntityType<NihilisticEvoker>> NIHILISTIC_EVOKER = NoixmodAPIEntities.register("nihilistic_evoker", EntityType.Builder.of(NihilisticEvoker::new, MobCategory.MONSTER).fireImmune().sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<NihilisticServant>> NIHILISTIC_SERVANT = NoixmodAPIEntities.register("nihilistic_servant", EntityType.Builder.of(NihilisticServant::new, MobCategory.MISC).sized(0.6f, 1.95f).fireImmune());
     public static final RegistryObject<EntityType<LavaTrap>> LAVA_TRAP = NoixmodAPIEntities.register("lava_trap", EntityType.Builder.<LavaTrap>of(LavaTrap::new, MobCategory.MISC).sized(2F, 0.2F).fireImmune().clientTrackingRange(8));
     public static final RegistryObject<EntityType<StarGuardian>> STAR_GUARDIAN = NoixmodAPIEntities.register("star_guardian", EntityType.Builder.<StarGuardian>of(StarGuardian::new, MobCategory.MONSTER).sized(0.6F, 1.93F).setCustomClientFactory(StarGuardian::new).clientTrackingRange(20).fireImmune());
     public static final RegistryObject<EntityType<WaterTrap>> WATER_TRAP = NoixmodAPIEntities.register("water_trap", EntityType.Builder.<WaterTrap>of(WaterTrap::new, MobCategory.MISC).clientTrackingRange(6).updateInterval(2).sized(0.6f, 0.8f));
     public static final RegistryObject<EntityType<PlateauBeast>> PLATEAU_BEAST = NoixmodAPIEntities.register("plateau_beast", EntityType.Builder.<PlateauBeast>of(PlateauBeast::new, MobCategory.MONSTER).sized(1.25f, 1f));
     public static final RegistryObject<EntityType<NihilisticCrack>> NIHILISTIC_CRACK = register("nihilistic_crack", EntityType.Builder.of(NihilisticCrack::new, MobCategory.MISC).sized(0.5F, 0.5F));
-    public static final RegistryObject<EntityType<NihilisticDeath>> NIHILISTIC_DEATH = NoixmodAPIEntities.register("nihilistic_death", EntityType.Builder.<NihilisticDeath>of(NihilisticDeath::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
+    public static final RegistryObject<EntityType<NihilisticDeath>> NIHILISTIC_DEATH = NoixmodAPIEntities.register("nihilistic_death", EntityType.Builder.of(NihilisticDeath::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<RainbowphobiaPatients>> RAINBOWPHOBIA_PATIENTS = NoixmodAPIEntities.register("rainbowphobia_patients", EntityType.Builder.<RainbowphobiaPatients>of(RainbowphobiaPatients::new, MobCategory.MONSTER).clientTrackingRange(6).updateInterval(2).sized(0.6f, 1.95f).setCustomClientFactory(RainbowphobiaPatients::new));
     public static final RegistryObject<EntityType<EvokerIllager>> EVOKER_ILLAGER = NoixmodAPIEntities.register("evoker_illager", EntityType.Builder.<EvokerIllager>of(EvokerIllager::new, MobCategory.MONSTER).sized(0.6f, 1.95f).setCustomClientFactory(EvokerIllager::new).fireImmune());
     public static final RegistryObject<EntityType<VillagerMaster>> VILLAGER_MASTER = NoixmodAPIEntities.register("villager_master", EntityType.Builder.of(VillagerMaster::new, MobCategory.MISC).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<VillagerFangs>> VILLAGER_FANGS = NoixmodAPIEntities.register("villager_fangs",
             EntityType.Builder.of(VillagerFangs::new, MobCategory.MISC).sized(0.6F, 0.8F));
     public static final RegistryObject<EntityType<WitherSkeletonServant>> WITHER_SKELETON_SERVANT = NoixmodAPIEntities.register("wither_skeleton_servant", EntityType.Builder.of(WitherSkeletonServant::new, MobCategory.MISC).sized(0.6F, 2F).clientTrackingRange(8));
-    public static final RegistryObject<EntityType<PowerEntity>> POWER_ENTITY = NoixmodAPIEntities.register("power_entity", EntityType.Builder.<PowerEntity>of(PowerEntity::new, MobCategory.MISC).sized(0.7f, 0.7f));
+    public static final RegistryObject<EntityType<PowerEntity>> POWER_ENTITY = NoixmodAPIEntities.register("power_entity", EntityType.Builder.of(PowerEntity::new, MobCategory.MISC).sized(0.7f, 0.7f));
     public static final RegistryObject<EntityType<VillagerGolem>> VILLAGER_GOLEM = NoixmodAPIEntities.register("villager_golem", EntityType.Builder.of(VillagerGolem::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).sized(1.4f, 2.7f).fireImmune());
     public static final RegistryObject<EntityType<NihilisticStatue>> NIHILISTIC_STATUE = NoixmodAPIEntities.register("nihilistic_statue", EntityType.Builder.<NihilisticStatue>of(NihilisticStatue::new, MobCategory.MISC).setCustomClientFactory(NihilisticStatue::new).setUpdateInterval(3).fireImmune().sized(0.5f, 3f));
     public static final RegistryObject<EntityType<MagicalClone>> MAGICAL_CLONE = NoixmodAPIEntities.register("magical_clone", EntityType.Builder.of(MagicalClone::new, MobCategory.MISC).sized(0.6f, 1.95f).updateInterval(2));
@@ -170,7 +177,7 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<WindEntity>> WIND_ENTITY = register("wind_entity", EntityType.Builder.of(WindEntity::new, MobCategory.MISC).sized(0.5f, 0.5f));
     public static final RegistryObject<EntityType<WindZombie>> WIND_ZOMBIE = register("wind_zombie", EntityType.Builder.of(WindZombie::new, MobCategory.MISC).sized(0.6f, 1.95f).clientTrackingRange(8));
     public static final RegistryObject<EntityType<VindicatorServant>> VINDICATOR_SERVANT = register("vindicator_servant", EntityType.Builder.of(VindicatorServant::new, MobCategory.MISC).sized(0.6f, 1.96f).clientTrackingRange(8));
-    public static final RegistryObject<EntityType<Worm>> WORM = NoixmodAPIEntities.register("worm", EntityType.Builder.<Worm>of(Worm::new, MobCategory.MISC).sized(1f, 1f));
+    public static final RegistryObject<EntityType<Worm>> WORM = NoixmodAPIEntities.register("worm", EntityType.Builder.of(Worm::new, MobCategory.MISC).sized(1f, 1f));
     public static final RegistryObject<EntityType<WormMaster>> WORM_MASTER = register("worm_master", EntityType.Builder.of(WormMaster::new, MobCategory.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<WrongedSoul>> WRONGED_SOUL = NoixmodAPIEntities.register("wronged_soul", EntityType.Builder.of(WrongedSoul::new, MobCategory.MONSTER).fireImmune().sized(0.6f, 1.95f).setTrackingRange(12).canSpawnFarFromPlayer());
     public static final RegistryObject<EntityType<ZombieVindicator>> ZOMBIE_VINDICATOR = NoixmodAPIEntities.register("zombie_vindicator", EntityType.Builder.of(ZombieVindicator::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
@@ -198,6 +205,49 @@ public class NoixmodAPIEntities {
             Hunter.init();
             Mourner.init();
         });
+    }
+
+    public static void registerSpawns(SpawnPlacementRegisterEvent event) {
+        event.register(NoixmodAPIEntities.AQUATIC_WORM.get(), SpawnPlacements.Type.IN_WATER,
+                Heightmap.Types.OCEAN_FLOOR, (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
+                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos,
+                                randomSource) && NoixmodAPIMainConfig.AquaticWormWillSpawn.get()
+                                && randomSource.nextDouble() <= 0.05,
+                SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.GIRL_GHOST.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
+                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
+                                blockPos, randomSource)
+                                && NoixmodAPIMainConfig.GirlGhostCanSummon.get(), SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.PLATEAU_BEAST.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, APIMonster::checkAPIMonsterSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.VAMPIRE.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
+                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
+                                blockPos, randomSource)
+                                && NoixmodAPIMainConfig.VampireWillSpawn.get(), SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.HOSTILE_NB.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE, (pEntityType,
+                                                pServerLevel, pSpawnType, pPos,
+                                                pRandom) ->
+                APIMonster.checkAPIMonsterSpawnRules(pEntityType, pServerLevel, pSpawnType, pPos, pRandom) &&
+                NoixmodAPIMainConfig.NihilisticBlazeSpawn.get(),
+                SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.H_WIND_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
+                        APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
+                                blockPos, randomSource) && NoixmodAPIMainConfig.WindZombieCanSpawn.get(),
+                SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.WORM.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
+                        randomSource.nextDouble() <= 0.05 && APIMonster.checkAPIMonsterSpawnRules(entityType,
+                                serverLevelAccessor, mobSpawnType, blockPos, randomSource)
+                                && NoixmodAPIMainConfig.WormWillSpawn.get(), SpawnPlacementRegisterEvent.Operation.AND);
     }
 
     @SubscribeEvent
@@ -258,6 +308,7 @@ public class NoixmodAPIEntities {
         event.put(NIHILISTIC_ZOMBIE.get(), NihilisticZombie.createAttributes().build());
         event.put(NIHILISTIC_GHAST.get(), NihilisticGhast.createAttributes().build());
         event.put(NIHILISTIC_BLAZE.get(), NihilisticBlaze.createAttributes().build());
+        event.put(HOSTILE_NB.get(), NihilisticBlaze.createAttributes().build());
         event.put(NIHILISTIC_DEATH.get(), NihilisticDeath.createAttributes().build());
         event.put(NIHILISTIC_EVOKER.get(), NihilisticEvoker.createAttributes().build());
         event.put(NIHILISTIC_SERVANT.get(), NihilisticServant.createAttributes().build());

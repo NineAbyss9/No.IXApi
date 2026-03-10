@@ -6,7 +6,6 @@ import com.github.NineAbyss9.ix_api.api.mobs.IProjectile;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.github.NineAbyss9.ix_api.util.Maths;
-import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFire;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
@@ -111,15 +110,15 @@ implements IProjectile {
     public void addAdditionalSaveData(CompoundTag tag) {
         tag.putBoolean("Stay", this.stay);
         tag.putBoolean("isChasing", this.isAggressive());
-        if (this.chargePos != null) {
-            tag.put("ChangePos", Vec9.createVec3Tag(this.chargePos, "ChangePos"));
-        }
+        //if (this.chargePos != null) {
+        //    tag.put("ChangePos", Vec9.createVec3Tag(this.chargePos, "ChangePos"));
+        //}
         super.addAdditionalSaveData(tag);
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
         this.stay = tag.getBoolean("Stay");
-        this.setChasing(Vec9.readVec3Tag(tag, "ChangePos"));
+        //this.setChasing(Vec9.readVec3Tag(tag, "ChangePos"));
         super.readAdditionalSaveData(tag);
     }
 
@@ -142,7 +141,7 @@ implements IProjectile {
         if (lie != null) {
             this.getLookControl().setLookAt(lie, 30f, this.getMaxHeadXRot());
         }
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.level().addParticle(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(), this.getRandomX(0.5),
                     this.getRandomY(), this.getRandomZ(0.5), 0.0, 0.15, 0);
         }

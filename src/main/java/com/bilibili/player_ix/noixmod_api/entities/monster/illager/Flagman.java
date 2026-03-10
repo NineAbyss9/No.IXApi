@@ -28,7 +28,7 @@ import net.minecraft.world.level.Level;
 public class Flagman extends AbstractIllager {
     public Flagman(EntityType<? extends Flagman> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
-        this.xpReward = 1;
+        this.xpReward = 3;
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STONE_AXE));
         this.setItemSlot(EquipmentSlot.HEAD, Raid.getLeaderBannerInstance());
     }

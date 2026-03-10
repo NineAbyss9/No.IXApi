@@ -18,7 +18,7 @@ extends ApiAxe {
     }
 
     public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
-        if (p_41405_.random.nextFloat() <= 0.0001f) {
+        if (p_41405_.random.nextFloat() <= 0.001f) {
             p_41406_.playSound(SoundEvents.SOUL_ESCAPE);
         }
         super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);

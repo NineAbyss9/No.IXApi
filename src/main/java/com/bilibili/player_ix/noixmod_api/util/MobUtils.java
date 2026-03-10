@@ -4,7 +4,6 @@ package com.bilibili.player_ix.noixmod_api.util;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
 import com.github.NineAbyss9.ix_api.util.Maths;
-import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
@@ -33,7 +32,6 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.entity.EntityInLevelCallback;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -53,7 +51,6 @@ import java.util.function.Predicate;
 
 @PAMAreNonnullByDefault
 public record MobUtils(Entity entity) {
-    public static final EntityDataAccessor<Float> DATA_HEALTH_ID = getHealth();
     public static final Predicate<LivingEntity> avoidEntityPredicate_RangedEnemy;
 
     public void floatOnLava() {
@@ -176,23 +173,6 @@ public record MobUtils(Entity entity) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @SuppressWarnings("all")
-    public static void onRemove(Entity pEntity, Entity.RemovalReason pReason) {
-        try {
-            Field vField = Entity.class.getDeclaredField("f_146801_");
-            vField.setAccessible(true);
-            EntityInLevelCallback vCallback = (EntityInLevelCallback)vField.get(pEntity);
-            vCallback.onRemove(pReason);
-        } catch (Exception e) {
-            e.printStackTrace();
-            NoixmodAPI.LOGGER.error("e:", e);
-        }
-    }
-
-    public static void dataSetHealth(LivingEntity living, float health) {
-        living.getEntityData().set(DATA_HEALTH_ID, health);
     }
 
     public static boolean isDead(LivingEntity living) {
@@ -513,7 +493,6 @@ public record MobUtils(Entity entity) {
         }
         return entityHitAngle - entityAttackingAngle;
     }
-
     //To here
 
     public static void sweepAttack(LivingEntity attacker, Entity target, DamageSource damageSource, float damage){
@@ -574,6 +553,7 @@ public record MobUtils(Entity entity) {
         return false;
     }
 
+    //Based on Polarice's MobUtil
     public static void moveToGround(Entity entity) {
         HitResult rayTrace = rayTrace(entity);
         if (rayTrace.getType() == HitResult.Type.BLOCK) {
@@ -618,6 +598,8 @@ public record MobUtils(Entity entity) {
             }
         }
     }
+
+    //ToHere
 
     public static class HostileNearestAttackableTargetGoal
             extends NearestAttackableTargetGoal<LivingEntity> {

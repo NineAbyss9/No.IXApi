@@ -1,7 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.item.ritual;
 
+import com.bilibili.player_ix.noixmod_api.entities.projectile.summon.SummonApostle;
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -34,6 +37,15 @@ extends RitualSupplies {
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        return super.use(pLevel, pPlayer, pUsedHand);
+        ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+        if (!pLevel.isClientSide) {
+            SummonApostle apostle = new SummonApostle(NoixmodAPIEntities.SUMMON_APOSTLE.get(), pLevel);
+            apostle.setOwner(pPlayer);
+            apostle.setBoss(false);
+            apostle.moveTo(pPlayer.position());
+            if (pLevel.addFreshEntity(apostle))
+                ItemUtil.shrink(stack, pPlayer);
+        }
+        return InteractionResultHolder.sidedSuccess(stack, pLevel.isClientSide);
     }
 }

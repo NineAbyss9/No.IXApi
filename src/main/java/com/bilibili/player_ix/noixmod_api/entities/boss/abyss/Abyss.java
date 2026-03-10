@@ -5,7 +5,6 @@ import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
-import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.effect.EffectInstance;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
@@ -121,7 +120,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(4, new FloatGoal(this));
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this, Nihilistic.class));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }
 

@@ -28,7 +28,6 @@ public class DamageEntity extends OwnedEntity {
         super(type, level);
     }
 
-    @Override
     public void tick() {
         --this.lifeTicks;
         if (this.level().isClientSide) {
@@ -45,13 +44,13 @@ public class DamageEntity extends OwnedEntity {
         super.tick();
     }
 
-    @Override
     public Component getName() {
         return Component.empty();
     }
 
     public void damage() {
-        MobUtils.rangeHurt(radius, radius, radius, this.getOwner() == null ? this : this.getOwner(), this.source, this.damage);
+        MobUtils.rangeHurt(radius, radius, radius, this.getOwner() == null ? this : this.getOwner(), this.source,
+                this.damage);
     }
 
     public void dieParticles(@Nullable ParticleOptions option) {

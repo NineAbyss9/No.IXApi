@@ -58,6 +58,14 @@ extends OwnableIllager {
                         discard();
                 }
                 return InteractionResult.sidedSuccess(pPlayer.level().isClientSide);
+            } else if (stack.is(Items.CROSSBOW)) {
+                PillagerServant servant = NoixmodAPIEntities.PILLAGER_SERVANT.get().create(level());
+                if (servant != null) {
+                    copyTo(servant);
+                    if (level().addFreshEntity(servant))
+                        discard();
+                }
+                return success(stack, pPlayer);
             }
         }
         return super.mobInteract(pPlayer, pHand);

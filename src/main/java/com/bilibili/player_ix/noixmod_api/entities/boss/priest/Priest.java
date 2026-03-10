@@ -338,7 +338,7 @@ implements ApiNihilisticBoss, IFlagMob {
             List<LivingEntity> list = this.makeList(this.getBoundingBox().inflate(6));
             if (!list.isEmpty()) {
                 for (int i = 0; i < list.size();i++) {
-                    this.doHeal(0.5F);
+                    this.doHeal(0.05F);
                 }
             }
             if (this.getAniTick() == 30) {
@@ -348,7 +348,7 @@ implements ApiNihilisticBoss, IFlagMob {
                 if (!entities.isEmpty()) {
                     for (LivingEntity living : entities) {
                         this.doAttack(living, this.damageSources().mobAttack(this), this.getAttackDamage()
-                                + living.getMaxHealth() / 2, 20F);
+                                + living.getMaxHealth() / 3, 5F);
                     }
                 }
                 if (!this.level().isClientSide) {
@@ -509,8 +509,9 @@ implements ApiNihilisticBoss, IFlagMob {
     }
 
     private void doAttack(LivingEntity entity, DamageSource source, float damage, float healAmount, boolean bypassShield) {
-        if (!bypassShield && entity.isBlocking()) {
-            IShieldUser.hurtShield(entity, 12);
+        if (entity.isBlocking()) {
+            if (bypassShield) com.github.NineAbyss9.ix_api.api.mobs.MobUtils.disableShield(1, 1, 1, entity);
+            else IShieldUser.hurtShield(entity, 12);
             return;
         }
         if (entity instanceof Player)

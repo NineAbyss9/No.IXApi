@@ -37,7 +37,7 @@ public class Mourner extends APISpellcaster {
     private final OwnerSummon ownerSummon = new OwnerSummon(this);
     public Mourner(EntityType<? extends Mourner> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
-        this.xpReward = 15;
+        this.xpReward = 5;
     }
 
     protected void registerGoals() {

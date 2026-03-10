@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
+import com.bilibili.player_ix.noixmod_api.entities.villager.trades.ApiVillagerTrades;
 import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -84,6 +86,10 @@ implements RangedAttackMob {
         return new VillagerSpellcaster(NoixmodAPIEntities.VILLAGER_SPELLCASTER.get(), serverLevel);
     }
 
+    protected VillagerTrades.ItemListing[] getTradeLists() {
+        return ApiVillagerTrades.SPELLCASTER_TRADES;
+    }
+
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return false;
     }
@@ -140,7 +146,7 @@ implements RangedAttackMob {
         }
 
         public boolean canUse() {
-            if (isBaby()) {
+            if (isBaby() || getTarget() == null || !closerThan(getTarget(), 8)) {
                 return false;
             }
             return super.canUse();

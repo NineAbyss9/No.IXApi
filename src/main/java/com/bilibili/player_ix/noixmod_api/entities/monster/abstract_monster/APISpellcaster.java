@@ -136,11 +136,7 @@ extends AbstractIllager {
     }
 
     public boolean isCastingSpell() {
-        if (this.level().isClientSide) {
-            return this.getSpell() > 0;
-        } else {
-            return this.getSpellTicks() > 0;
-        }
+        return this.getSpellTicks() > 0;
     }
 
     public int getSpellTicks() {
@@ -195,8 +191,7 @@ extends AbstractIllager {
         }
 
         public boolean canUse() {
-            LivingEntity lie = APISpellcaster.this.getTarget();
-            if (this.needTarget() && lie == null) {
+            if (this.needTarget() && APISpellcaster.this.getTarget() == null) {
                 return false;
             }
             return APISpellcaster.this.tickCount > this.nextAttackTickCount;

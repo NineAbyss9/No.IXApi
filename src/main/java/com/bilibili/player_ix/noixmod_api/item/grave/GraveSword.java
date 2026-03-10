@@ -10,8 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
-
-import java.util.Random;
+import org.NineAbyss9.math.MathSupport;
 
 public class GraveSword
 extends ApiSword {
@@ -21,14 +20,13 @@ extends ApiSword {
     }
 
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        Random random = new Random();
-        if (pAttacker.level() instanceof ServerLevel serverLevel) {
-            if (random.nextInt(3) == 0) {
+        if (!pAttacker.level().isClientSide) {
+            if (MathSupport.random.nextFloat() < 0.25F) {
                 pAttacker.playSound(SoundEvents.SOUL_ESCAPE, 0.6f, 1f);
                 if (pTarget.isAlive()) {
                     pTarget.setHealth(pTarget.getHealth() - 5.0F);
                 }
-                ParticleUtil.sendParticles(serverLevel, ParticleTypes.SOUL, pTarget.position(),
+                ParticleUtil.sendParticles((ServerLevel)pAttacker.level(), ParticleTypes.SOUL, pTarget.position(),
                         8, 1, 1, 1, 0);
             }
         }

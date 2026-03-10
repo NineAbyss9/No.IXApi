@@ -6,6 +6,7 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -23,16 +24,17 @@ extends RitualSupplies {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide && stack.getCount() > 6) {
-            Mob boss;
+            Entity boss;
             if (pLevel.dimension() == Level.NETHER)
                 boss = NoixmodAPIEntities.EVIL_SUMMONER.get().create(pLevel);
             else if (pLevel.dimension() == Level.OVERWORLD)
                 boss = NoixmodAPIEntities.PRIEST.get().create(pLevel);
             else
-                boss = NoixmodAPIEntities.STAR_GUARDIAN.get().create(pLevel);
+                boss = NoixmodAPIEntities.SUMMON_STAR_GUARDIAN.get().create(pLevel);
             if (boss != null) {
                 boss.moveTo(pPlayer.position());
-                WorldUtil.nullableFinalizeSpawn(boss, pLevel, pPlayer.blockPosition(), MobSpawnType.EVENT);
+                if (boss instanceof Mob)
+                    WorldUtil.nullableFinalizeSpawn((Mob)boss, pLevel, pPlayer.blockPosition(), MobSpawnType.EVENT);
                 if (pLevel.addFreshEntity(boss)) {
                     ItemUtil.shrink(stack, pPlayer, 6);
                 }

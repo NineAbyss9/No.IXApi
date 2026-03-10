@@ -48,7 +48,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
 public class EvilSummoner
 extends SpellcasterNihilist
@@ -79,10 +78,6 @@ implements InventoryCarrier, ApiNihilisticBoss {
         OwnableMob.addBehaviorGoals(this, 6, 0.8, 20F, true, true);
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Nihilist.class));
         this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
-    }
-
-    public void tick() {
-        super.tick();
     }
 
     public void aiStep() {
@@ -227,12 +222,14 @@ implements InventoryCarrier, ApiNihilisticBoss {
     }
 
     private class SummonSpellGoal extends UseSpellGoalA {
-
         protected void castSpell() {
-            if (EvilSummoner.this.level() instanceof ServerLevel level) {
-                ISpell spell = Spells.NETHER_SOUL.get();
-                spell.castSpell(level, EvilSummoner.this);
-            }
+            ISpell spell = Spells.NETHER_SOUL.get();
+            spell.castSpell((ServerLevel)level(), EvilSummoner.this);
+        }
+
+        public boolean canUse() {
+            return super.canUse() && level().getEntitiesOfClass(OwnableMob.class, getBoundingBox().inflate(64),
+                    living -> living.isOwnedBy(EvilSummoner.this)).size() < 20;
         }
 
         protected int getCastingTime() {
@@ -274,6 +271,10 @@ implements InventoryCarrier, ApiNihilisticBoss {
             }
         }
 
+        public boolean canUse() {
+            return super.canUse();
+        }
+
         protected int getCastingTime() {
             return 40;
         }
@@ -307,8 +308,7 @@ implements InventoryCarrier, ApiNihilisticBoss {
 
         @Nullable
         private OwnableMob getSummon(ServerLevel serverLevel) {
-            Random util = getRandomUtil();
-            int i = util.nextInt(8);
+            int i = getRandomUtil().nextInt(8);
             switch (i) {
                 case 0 -> {
                     return NoixmodAPIEntities.ENDER_MAN_SERVANT.get().create(serverLevel);
@@ -323,18 +323,20 @@ implements InventoryCarrier, ApiNihilisticBoss {
                     return NoixmodAPIEntities.GIRL_GHOST.get().create(serverLevel);
                 }
                 case 4 -> {
-                    return NoixmodAPIEntities.NIHILISTIC_GHAST.get().create(serverLevel);
-                }
-                case 5 -> {
                     return NoixmodAPIEntities.HEALING.get().create(serverLevel);
                 }
-                case 6 -> {
+                case 5 -> {
                     return NoixmodAPIEntities.MAGICAL_CLONE.get().create(serverLevel);
                 }
                 default -> {
                     return NoixmodAPIEntities.WIND_ZOMBIE.get().create(serverLevel);
                 }
             }
+        }
+
+        public boolean canUse() {
+            return super.canUse() && level().getEntitiesOfClass(OwnableMob.class, getBoundingBox().inflate(64),
+                    living -> living.isOwnedBy(EvilSummoner.this)).size() < 20;
         }
 
         protected int getCastingTime() {
@@ -405,9 +407,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
     }
 
     private class HealSpellGoal extends UseSpellGoalA {
-
         protected void castSpell() {
-            heal(10f);
+            heal(20f);
         }
 
         protected int getCastingTime() {
@@ -415,7 +416,7 @@ implements InventoryCarrier, ApiNihilisticBoss {
         }
 
         protected int getCastingInterval() {
-            return 800;
+            return 1000;
         }
 
         protected boolean needTarget() {
@@ -432,7 +433,7 @@ implements InventoryCarrier, ApiNihilisticBoss {
         }
 
         public boolean canUse() {
-            if (getHealth() > getMaxHealth() -10f) {
+            if (getHealth() > getMaxHealth() -20f) {
                 return false;
             }
             return super.canUse();
@@ -440,7 +441,6 @@ implements InventoryCarrier, ApiNihilisticBoss {
     }
 
     private class AttackUpSpellGoal extends UseSpellGoalA {
-
         protected void castSpell() {
             if (!level().isClientSide) {
                 LivingEntity target = getTarget();
@@ -448,7 +448,8 @@ implements InventoryCarrier, ApiNihilisticBoss {
                     ServerLevel level = (ServerLevel)level();
                     List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class,
                             target.getBoundingBox().inflate(2, 0.2, 2),
-                            living -> MobUtils.canHurt(living, EvilSummoner.this));
+                            living -> MobUtils.canHurt(living, EvilSummoner.this)
+                    && living.onGround());
                     if (!list.isEmpty()) {
                         for (LivingEntity living : list) {
                             heal(3f);

@@ -3,17 +3,13 @@ package com.bilibili.player_ix.noixmod_api.entities.monster;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
-import com.github.NineAbyss9.ix_api.api.mobs.effect.EffectInstance;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -33,7 +29,7 @@ implements ApiPoseMob {
         super.registerGoals();
         this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1, 4));
         this.addBehaviorGoal(4, 0.6, 20f);
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Nihilistic.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnableTargetGoal<>(this, false));
     }
 
@@ -44,18 +40,6 @@ implements ApiPoseMob {
                     this.getRandomX(1), this.getRandomY(), this.getRandomZ(1),
                     0, 0, 0);
         }
-    }
-
-    public boolean doHurtTarget(Entity p_21372_) {
-        boolean hurt = super.doHurtTarget(p_21372_);
-        if (hurt) {
-            if (p_21372_ instanceof LivingEntity entity) {
-                entity.addEffect(EffectInstance.create(NoixmodAPIMobEffects.NIHILISTIC, 40,
-                        this.mobData.getDifficultyId()));
-            }
-            return true;
-        }
-        return false;
     }
 
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {

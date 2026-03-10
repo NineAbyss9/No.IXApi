@@ -10,14 +10,13 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 3,
-                "max": 7,
+                "min": 3.0,
+                "max": 7.0,
                 "type": "minecraft:uniform"
               }
             }
           ],
-          "name": "minecraft:soul_sand",
-          "add": false
+          "name": "minecraft:soul_sand"
         }
       ],
       "conditions": [

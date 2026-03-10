@@ -48,6 +48,7 @@ public class NoixmodAPIMainConfig {
     //Nihilistic
     public static ForgeConfigSpec.BooleanValue ApostleCanCancelLivingHeal;
     public static ForgeConfigSpec.IntValue CultistConversionInt;
+    public static ForgeConfigSpec.BooleanValue VampireBurnUnderSun;
     //Nihilistic End
     //Ab End
 
@@ -56,13 +57,13 @@ public class NoixmodAPIMainConfig {
     public static ForgeConfigSpec.BooleanValue IntruderWillSpawn;
     public static ForgeConfigSpec.BooleanValue WormWillSpawn;
     public static ForgeConfigSpec.BooleanValue VampireWillSpawn;
-    public static ForgeConfigSpec.BooleanValue VampireBurnUnderSun;
-    public static ForgeConfigSpec.BooleanValue HorrorMode;
+    public static ForgeConfigSpec.BooleanValue NihilisticBlazeSpawn;
     public static ForgeConfigSpec.BooleanValue GirlGhostCanSummon;
     public static ForgeConfigSpec.BooleanValue PlateauBeastCanSummon;
     public static ForgeConfigSpec.BooleanValue WindZombieCanSpawn;
     public static ForgeConfigSpec.BooleanValue NihilisticOrderSpawn;
     //Spawn End
+    public static ForgeConfigSpec.BooleanValue HorrorMode;
 
     public static ForgeConfigSpec.BooleanValue PlayBossMusic;
 
@@ -179,7 +180,11 @@ public class NoixmodAPIMainConfig {
         builder.pop();
         builder.push("Monster");
         builder.push("PlateauBeast");
-        PlateauBeastCanSummon = builder.comment("Will plateau beasts ownerSummon ?Default:true").worldRestart().define("高原野兽是否生成", true);
+        PlateauBeastCanSummon = builder.comment("Will plateau beasts spawn ?Default:true").worldRestart().define("高原野兽是否生成", true);
+        builder.pop();
+        builder.push("NihilisticBlaze");
+        builder.comment("Will nihilistic blazes spawn?Default:true").worldRestart().define("SpawnNihilisticBlaze",
+                true);
         builder.pop();
         builder.pop();
         builder.pop();

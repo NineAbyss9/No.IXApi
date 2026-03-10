@@ -44,7 +44,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.Node;
 
 import javax.annotation.Nullable;
 
@@ -61,7 +60,7 @@ extends APISpellcaster {
     private static final EntityDataAccessor<Boolean> DATA_BOSS;
     public Intruder(EntityType<Intruder> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
-        this.xpReward = 25;
+        this.xpReward = 15;
         event = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED,
                 BossEvent.BossBarOverlay.NOTCHED_10);
         this.setItemInHand(InteractionHand.MAIN_HAND,
@@ -404,19 +403,6 @@ extends APISpellcaster {
                     this.pathedTargetY = livingentity.getY();
                     this.pathedTargetZ = livingentity.getZ();
                     this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
-                    if (this.canPenalize) {
-                        this.ticksUntilNextPathRecalculation += this.failedPathFindingPenalty;
-                        if (this.mob.getNavigation().getPath() != null) {
-                            Node finalPathPoint = this.mob.getNavigation().getPath().getEndNode();
-                            if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.asVec3()) < 0.6) {
-                                this.failedPathFindingPenalty = 0;
-                            } else {
-                                this.failedPathFindingPenalty += 4;
-                            }
-                        } else {
-                            this.failedPathFindingPenalty += 4;
-                        }
-                    }
                     if (d0 > 1024.0) {
                         this.ticksUntilNextPathRecalculation += 4;
                     } else if (d0 > 256.0) {

@@ -31,7 +31,7 @@ public class FangsDancer extends APISpellcaster {
     private static final EntityDataAccessor<Integer> DATA_DANCE_TIME;
     public FangsDancer(EntityType<FangsDancer> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
-        this.xpReward = 15;
+        this.xpReward = 5;
     }
 
     protected void defineSynchedData() {

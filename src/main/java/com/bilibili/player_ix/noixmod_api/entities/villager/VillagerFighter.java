@@ -202,11 +202,11 @@ implements ApiVillager, Merchant, Npc, Ownable {
                         this.ownableData.nextFlag();
                         return InteractionResult.SUCCESS;
                     }
-                } else if (!this.getOffers().isEmpty()) {
-                    if (!this.level().isClientSide && !this.isAggressive()) {
+                } else if (!this.getOffers().isEmpty() && !this.isAggressive()) {
+                    if (!this.level().isClientSide) {
                         this.startTrading(player);
-                        return InteractionResult.sidedSuccess(this.level().isClientSide);
                     }
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }
             return InteractionResult.PASS;
