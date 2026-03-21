@@ -7,7 +7,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class WormRenderer<T extends Worm>
 extends MobRenderer<T, SilverfishModel<T>> {
@@ -16,9 +15,7 @@ extends MobRenderer<T, SilverfishModel<T>> {
         super(context, new SilverfishModel<>(context.bakeLayer(ModelLayers.SILVERFISH)), 0.5f);
     }
 
-    @NotNull
-    @Override
-    public ResourceLocation getTextureLocation(@NotNull T t) {
+    public ResourceLocation getTextureLocation(T t) {
         return WORM;
     }
 }

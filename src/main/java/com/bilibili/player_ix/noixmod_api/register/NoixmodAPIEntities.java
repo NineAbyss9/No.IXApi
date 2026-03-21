@@ -220,6 +220,13 @@ public class NoixmodAPIEntities {
                         APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
                                 blockPos, randomSource)
                                 && NoixmodAPIMainConfig.GirlGhostCanSummon.get(), SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.NIHILISTIC_BLAZE.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (pEntityType,
+                                                            pServerLevel, pSpawnType, pPos,
+                                                            pRandom) ->
+                    APIMonster.checkAPIMonsterSpawnRules(pEntityType, pServerLevel, pSpawnType,
+                            pPos, pRandom)
+                            && NoixmodAPIMainConfig.NihilisticBlazeSpawn.get(), SpawnPlacementRegisterEvent.Operation.AND);
         event.register(NoixmodAPIEntities.PLATEAU_BEAST.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, APIMonster::checkAPIMonsterSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.AND);

@@ -39,3 +39,4 @@ This may be the last version for quite some time,
    I will release patch versions to fix any errors. Please be assured that I have not abandoned this project.
 1.3.9: Added : Warden doll, Warden servant, NeoIllager.
 Changes : Drunkenness, flagmen and GraveKeepers will join raids now.Remastered headhunter.
+1.3.903 : Fixed some bugs.50% of Allays will be replaced by Heallings, use gold nugget to own them.

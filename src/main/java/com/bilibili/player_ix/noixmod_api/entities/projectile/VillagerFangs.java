@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -81,7 +82,8 @@ extends OwnedEntity {
     }
 
     public static boolean canDamage(LivingEntity living, @Nullable Entity entity) {
-        if (entity instanceof ApiVillager || entity instanceof VillagerFangs) {
+        if (entity instanceof ApiVillager || entity instanceof VillagerFangs || entity instanceof Arrow arrow &&
+        arrow.getOwner() instanceof ApiVillager) {
             if (NoixmodAPIMainConfig.VILLAGERS_IGNORE.get().stream().anyMatch(s -> {
                 EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(s));
                 return type != null && type == living.getType();

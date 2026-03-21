@@ -183,7 +183,7 @@ public class NoixmodAPIMainConfig {
         PlateauBeastCanSummon = builder.comment("Will plateau beasts spawn ?Default:true").worldRestart().define("高原野兽是否生成", true);
         builder.pop();
         builder.push("NihilisticBlaze");
-        builder.comment("Will nihilistic blazes spawn?Default:true").worldRestart().define("SpawnNihilisticBlaze",
+        NihilisticBlazeSpawn = builder.comment("Will nihilistic blazes spawn?Default:true").worldRestart().define("SpawnNihilisticBlaze",
                 true);
         builder.pop();
         builder.pop();
