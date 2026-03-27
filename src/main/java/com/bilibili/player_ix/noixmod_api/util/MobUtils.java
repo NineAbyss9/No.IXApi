@@ -149,7 +149,6 @@ public record MobUtils(Entity entity) {
             actuallyHurt.invoke(living, source, amount);
             living.hurtTime = 10;
             living.hurtDuration = 10;
-            living.hurtMarked = true;
             if (living.isDeadOrDying()) {
                 living.die(source);
                 return false;

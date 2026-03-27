@@ -10,8 +10,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AltarContainer extends ItemCombinerMenu {
-    public AltarContainer(int p_38852_, Inventory inventory, ContainerLevelAccess access) {
+public class AltarMenu extends ItemCombinerMenu {
+    public AltarMenu(int p_38852_, Inventory inventory, ContainerLevelAccess access) {
         super(ApiGuis.ALTAR.get(), p_38852_, inventory, access);
         /*this.addSlot(new SlotItemHandler(handler, 1, 123, 29));
         this.addSlot(new SlotItemHandler(handler, 2, 87, 51));
@@ -34,8 +34,8 @@ public class AltarContainer extends ItemCombinerMenu {
         }*/
     }
 
-    public static AltarContainer create(int id, Inventory inventory, FriendlyByteBuf buf) {
-        return new AltarContainer(id, inventory, ContainerLevelAccess.NULL);
+    public static AltarMenu create(int id, Inventory inventory, FriendlyByteBuf buf) {
+        return new AltarMenu(id, inventory, ContainerLevelAccess.NULL);
     }
 
     public ItemStack quickMoveStack(Player player, int i) {

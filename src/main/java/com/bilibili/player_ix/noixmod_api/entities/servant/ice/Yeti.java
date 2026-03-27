@@ -39,25 +39,27 @@ implements IFlagMob {
     }
 
     public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-        if (DATA_FLAGS.equals(pKey) && this.level().isClientSide) {
-            switch (this.getFlag()) {
-                case 0:{
-                    break;
+        if (DATA_FLAGS.equals(pKey)) {
+            if (this.level().isClientSide) {
+                switch (this.getFlag()) {
+                    case 1:{
+                        this.stopAllAnimations();
+                        this.hide.startIfStopped(tickCount);
+                        break;
+                    }
+                    case 2:{
+                        this.stopAllAnimations();
+                        this.attack.startIfStopped(tickCount);
+                        break;
+                    }
+                    default:{
+                        break;
+                    }
                 }
-                case 1:{
-                    this.stopAllAnimations();
-                    this.hide.startIfStopped(tickCount);
-                    break;
-                }
-                case 2:{
-                    this.stopAllAnimations();
-                    this.attack.startIfStopped(tickCount);
-                    break;
-                }
-                default:{
+            } else {
+                if (this.getFlag() > 5) {
                     NoixmodAPI.LOGGER.warn("Can't handle synchedData in {}", this.getClass().getSimpleName());
                     this.setFlag(0);
-                    break;
                 }
             }
         }

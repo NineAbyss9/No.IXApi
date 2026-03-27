@@ -7,7 +7,7 @@ import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.api.renderer.BaseEntityRenderer;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
-import com.bilibili.player_ix.noixmod_api.client.gui.screen.AltarContainerScreen;
+import com.bilibili.player_ix.noixmod_api.client.gui.screen.AltarScreen;
 import com.bilibili.player_ix.noixmod_api.client.gui.screen.InfernalIronAnvilScreen;
 import com.bilibili.player_ix.noixmod_api.client.model.*;
 import com.bilibili.player_ix.noixmod_api.client.particle.*;
@@ -245,7 +245,7 @@ public class ClientInitEvents {
     }
 
     public static void registerScreens() {
-        MenuScreens.register(ApiGuis.ALTAR.get(), AltarContainerScreen::new);
+        MenuScreens.register(ApiGuis.ALTAR.get(), AltarScreen::new);
         MenuScreens.register(ApiGuis.INFERNAL_IRON_ANVIL.get(), InfernalIronAnvilScreen::new);
     }
 

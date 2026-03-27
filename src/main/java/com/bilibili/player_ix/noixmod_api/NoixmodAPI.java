@@ -82,6 +82,7 @@ public class NoixmodAPI {
         return new ResourceLocation(MOD_ID, s);
     }
 
+    /**Code from <a href="https://github.com/Polarice3/Goety-2/blob/1.20/src/main/java/com/Polarice3/Goety/Goety.java">link</a>*/
     private static void createFiles(Path dirPath, String dirLabel) {
         if (!Files.isDirectory(dirPath.getParent())) {
             createFiles(dirPath.getParent(), "parent of " + dirLabel);

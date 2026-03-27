@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.blocks.entities;
 
 import com.github.NineAbyss9.ix_api.util.Maths;
-//import com.bilibili.player_ix.noixmod_api.client.gui.menu.AltarContainer;
+//import com.bilibili.player_ix.noixmod_api.client.gui.menu.AltarMenu;
 import com.bilibili.player_ix.noixmod_api.register.ApiBlockEntities;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -96,7 +96,7 @@ implements GameEventListener, RecipeHolder, WorldlyContainer {
     protected AbstractContainerMenu createMenu(int pContainerId, Inventory inventory) {
         return //level == null ?
                 null //:
-                //new AltarContainer(pContainerId, inventory, ContainerLevelAccess.create(this.level, this.worldPosition))
+                //new AltarMenu(pContainerId, inventory, ContainerLevelAccess.create(this.level, this.worldPosition))
         ;
     }
 

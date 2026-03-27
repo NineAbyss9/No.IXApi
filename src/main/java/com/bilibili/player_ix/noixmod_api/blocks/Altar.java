@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.blocks;
 
 import com.bilibili.player_ix.noixmod_api.blocks.entities.AltarBlockEntity;
-import com.bilibili.player_ix.noixmod_api.client.gui.menu.AltarContainer;
+import com.bilibili.player_ix.noixmod_api.client.gui.menu.AltarMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.*;
@@ -89,7 +89,7 @@ implements SimpleWaterloggedBlock {
     @Nullable
     public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
         return new SimpleMenuProvider(
-                (id, inventory, player) -> new AltarContainer(id, inventory, ContainerLevelAccess.create(
+                (id, inventory, player) -> new AltarMenu(id, inventory, ContainerLevelAccess.create(
                         pLevel, pPos
                 )), getName());
     }
