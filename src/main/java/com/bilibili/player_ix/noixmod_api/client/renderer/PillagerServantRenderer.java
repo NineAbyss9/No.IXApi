@@ -16,8 +16,9 @@ extends IllagerServantRenderer<T> {
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
-    @Override
+    private static ResourceLocation LOC = NoixmodAPI.location("textures/entities/illagers/servant/pillager_servant.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return NoixmodAPI.location("textures/entities/illagers/servant/pillager_servant.png");
+        return LOC;
     }
 }

@@ -14,13 +14,13 @@ extends MobRenderer<T, SilverfishModel<T>> {
         super(p_174304_, new SilverfishModel<>(p_174304_.bakeLayer(ModelLayers.SILVERFISH)), 0.3f);
     }
 
-    @Override
     protected float getFlipDegrees(T p_115337_) {
         return 180F;
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("textures/entity/silverfish.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("textures/entity/silverfish.png");
+        return LOC;
     }
 }

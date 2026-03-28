@@ -26,7 +26,9 @@ public class AmbusherRenderer<A extends Ambusher> extends VillagerFighterRendere
         this.model.getHat().visible = true;
     }
 
+    public static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/villagers/ambusher.png");
+
     public ResourceLocation getTextureLocation(A a) {
-        return new ResourceLocation("noixmodapi:textures/entities/villagers/ambusher.png");
+        return LOC;
     }
 }

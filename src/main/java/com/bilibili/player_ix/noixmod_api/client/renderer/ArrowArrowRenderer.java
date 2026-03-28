@@ -12,7 +12,6 @@ public class ArrowArrowRenderer<A extends ArrowArrowEntity> extends ArrowRendere
         super(p_173917_);
     }
 
-    @Override
     public ResourceLocation getTextureLocation(A a) {
         return TippableArrowRenderer.NORMAL_ARROW_LOCATION;
     }

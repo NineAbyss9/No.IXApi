@@ -12,8 +12,9 @@ public class SuperstitiousRenderer<T extends Superstitious> extends NihilistRend
         super($$0, new NihilistIllagerModel<>($$0.bakeLayer(NoixmodAPIModelLayer.NIHILIST)), 0.5F);
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/superstitious.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/superstitious.png");
+        return LOC;
     }
 }

@@ -13,7 +13,9 @@ public class MournerRenderer<T extends Mourner> extends IllagerRenderer<T> {
         super(p_174182_, new IllagerModel<>(p_174182_.bakeLayer(ModelLayers.EVOKER)), 0.5F);
     }
 
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/illagers/mourner.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/illagers/mourner.png");
+        return LOC;
     }
 }

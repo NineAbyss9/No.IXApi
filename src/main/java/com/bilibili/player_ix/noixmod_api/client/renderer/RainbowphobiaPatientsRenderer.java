@@ -9,12 +9,10 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RainbowphobiaPatientsRenderer<T extends RainbowphobiaPatients> extends HumanoidMobRenderer<T, RainbowphobiaPatientsModel<T>> {
-
     public RainbowphobiaPatientsRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new RainbowphobiaPatientsModel<>(p_174304_.bakeLayer(ModelLayers.PLAYER)), 0.5f);
     }
 
-    @Override
     public ResourceLocation getTextureLocation(T t) {
         return new ResourceLocation("noixmod:textures/entities/nihilistic_mobs/rp");
     }

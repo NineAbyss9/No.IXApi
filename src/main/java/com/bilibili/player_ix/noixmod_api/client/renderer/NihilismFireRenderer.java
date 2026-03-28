@@ -13,7 +13,6 @@ extends EntityRenderer<T> {
         super(p_174304_);
     }
 
-    @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull T t) {
         return new ResourceLocation("noixmodapi:textures/entities/entity_null.png");
     }

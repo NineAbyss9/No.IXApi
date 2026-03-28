@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 
 public class StarGuardianRenderer<S extends StarGuardian> extends MobRenderer<S, StarGuardianModel<S>> {
     public StarGuardianRenderer(EntityRendererProvider.Context p_174304_) {
@@ -25,14 +24,18 @@ public class StarGuardianRenderer<S extends StarGuardian> extends MobRenderer<S,
                 0.5F);
     }
 
+    private static final ResourceLocation BIRTHDAY = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/birthday/zhuan_birthday.png");
+    private static ResourceLocation DIE = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/zhuan_die.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/zhuan.png");
+
     public ResourceLocation getTextureLocation(S s) {
         if (TimeSelector.birthday()) {
-            return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/birthday/zhuan_birthday.png");
+            return BIRTHDAY;
         }
         if (s.isFlag(4)) {
-            return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/zhuan_die.png");
+            return DIE;
         } else {
-            return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/zhuan.png");
+            return LOC;
         }
     }
 
@@ -61,12 +64,10 @@ public class StarGuardianRenderer<S extends StarGuardian> extends MobRenderer<S,
             return Mth.cos(p_117702_ * 0.02F) * 3.0F;
         }
 
-        @NotNull
         protected ResourceLocation getTextureLocation() {
             return ARMOR_LOCATION;
         }
 
-        @NotNull
         protected StarGuardianModel<S> model() {
             return this.model;
         }

@@ -12,8 +12,7 @@ extends EntityRenderer<T> {
         super(p_174008_);
     }
 
-    @Override
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("");
+        return null;
     }
 }

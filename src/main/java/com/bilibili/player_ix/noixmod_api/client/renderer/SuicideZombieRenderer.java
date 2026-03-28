@@ -12,12 +12,13 @@ import javax.annotation.Nonnull;
 public class SuicideZombieRenderer<T extends SuicideZombie>
 extends MobRenderer<T, SuicideZombieModel<T>> {
     public SuicideZombieRenderer(EntityRendererProvider.Context p_174304_) {
-        super(p_174304_, new SuicideZombieModel<>(p_174304_.bakeLayer(SuicideZombieModel.LAYER_LOCATION)), 0.5f);
+        super(p_174304_, new SuicideZombieModel<>(p_174304_.bakeLayer(SuicideZombieModel.LAYER_LOCATION)),
+                0.5f);
     }
 
-    @Nonnull
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/servants/suicide_zombie.png");
+
     public ResourceLocation getTextureLocation(@Nonnull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/servants/suicide_zombie.png");
+        return LOC;
     }
 }

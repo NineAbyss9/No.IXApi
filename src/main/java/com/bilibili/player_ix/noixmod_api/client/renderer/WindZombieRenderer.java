@@ -10,12 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 
 public class WindZombieRenderer<T extends WindZombie>
 extends ApiZombieRenderer<T, ApiZombieModel<T>> {
+    private static ResourceLocation LOC = NoixmodAPI.location("textures/entities/servants/zombies/wind_zombie.png");
     public WindZombieRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new ApiZombieModel<>(p_174304_.bakeLayer(ApiZombieModel.API_ZOMBIE)));
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
     public ResourceLocation getTextureLocation(T t) {
-        return NoixmodAPI.location("textures/entities/servants/zombies/wind_zombie.png");
+        return LOC;
     }
 }

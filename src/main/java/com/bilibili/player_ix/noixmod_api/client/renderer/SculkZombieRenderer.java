@@ -16,7 +16,9 @@ extends ApiZombieRenderer<E, ApiZombieModel<E>> {
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
+    private static ResourceLocation LOC = NoixmodAPI.location("textures/entities/servants/sculk/zombie.png");
+
     public ResourceLocation getTextureLocation(E pEntity) {
-        return NoixmodAPI.location("textures/entities/servants/sculk/zombie.png");
+        return LOC;
     }
 }

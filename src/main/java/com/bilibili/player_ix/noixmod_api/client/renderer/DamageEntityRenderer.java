@@ -11,7 +11,6 @@ public class DamageEntityRenderer<D extends DamageEntity> extends EntityRenderer
         super(p_174008_);
     }
 
-    @Override
     public ResourceLocation getTextureLocation(D d) {
         return new ResourceLocation("noixmodapi:textures/entities/entity_null.png");
     }

@@ -11,7 +11,6 @@ public class HorrorCameraRenderer<T extends HorrorCamera> extends EntityRenderer
         super(p_174008_);
     }
 
-    @Override
     public ResourceLocation getTextureLocation(T t) {
         return new ResourceLocation("noixmodapi:textures/entities/entity_null.png");
     }

@@ -3,7 +3,6 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.client.model.SummonEntityModel;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.summon.SummonEntity;
-import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -13,10 +12,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
-@OnlyInClient
 public class SummonEntityRenderer<T extends SummonEntity>
 extends EntityRenderer<T> {
     private final SummonEntityModel<T> model;
@@ -25,7 +22,6 @@ extends EntityRenderer<T> {
         this.model = new SummonEntityModel<>(p_174008_.bakeLayer(SummonEntityModel.LAYER_LOCATION));
     }
 
-    @Override
     public void render(T p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) {
         p_114488_.pushPose();
         float f = 10F;
@@ -60,9 +56,9 @@ extends EntityRenderer<T> {
         return 0.75F;
     }
 
-    @NotNull
-    @Override
-    public ResourceLocation getTextureLocation(@NotNull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/projectile/summon_entity.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/projectile/summon_entity.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

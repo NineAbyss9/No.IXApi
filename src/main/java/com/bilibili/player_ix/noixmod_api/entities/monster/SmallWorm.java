@@ -11,8 +11,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-
 public class SmallWorm
 extends AbstractWorm {
     public SmallWorm(EntityType<? extends SmallWorm> p_21683_, Level p_21684_) {
@@ -27,7 +25,6 @@ extends AbstractWorm {
         this.addTargetGoal(true);
     }
 
-    @Nonnull
     public static AttributeSupplier.Builder createAttributes() {
         return Worm.createBaseAttributes().add(Attributes.MAX_HEALTH, 10);
     }

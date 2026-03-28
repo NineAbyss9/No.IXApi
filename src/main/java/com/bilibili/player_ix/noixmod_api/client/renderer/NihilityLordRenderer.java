@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
-public class NihilityLordRenderer <T extends NihilisticLord> extends HumanoidNihilitistRenderer<T> {
+public class NihilityLordRenderer <T extends NihilisticLord> extends HumanoidNihilistRenderer<T>
+{
     private static final ResourceLocation NO_IX_APOSTLE = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/no_ix_apostle.png");
     private static final ResourceLocation NIHILITY_LORD = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihility_lord.png");
 
@@ -19,8 +19,7 @@ public class NihilityLordRenderer <T extends NihilisticLord> extends HumanoidNih
         super($$0, new NihilistHumanoidModel<>($$0.bakeLayer(NihilistHumanoidModel.LAYER_LOCATION)), 0.5f);
         this.addLayer(new HumanoidNihilityArmorLayer<>(this, $$0.getModelSet()));
         this.addLayer(new ItemInHandLayer<>(this, $$0.getItemInHandRenderer()) {
-
-            public void render(@NotNull PoseStack $$10, @NotNull MultiBufferSource $$1, int $$2, @NotNull T $$3, float $$4, float $$5, float $$6, float $$7, float $$8, float $$9) {
+            public void render(PoseStack $$10, MultiBufferSource $$1, int $$2, T $$3, float $$4, float $$5, float $$6, float $$7, float $$8, float $$9) {
                 if ($$3.isCastingSpell() || $$3.isAggressive()) {
                     super.render($$10, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8, $$9);
                 }
@@ -29,8 +28,7 @@ public class NihilityLordRenderer <T extends NihilisticLord> extends HumanoidNih
         this.model.getHat().visible = true;
     }
 
-    @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull T lord) {
+    public ResourceLocation getTextureLocation(T lord) {
         if (lord.isPowered()) {
             return NIHILITY_LORD;
         }

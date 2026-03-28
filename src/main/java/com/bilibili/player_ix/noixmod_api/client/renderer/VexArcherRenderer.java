@@ -14,12 +14,13 @@ V
 extends VexArcher
 >
 extends MobRenderer<V, VexArcherModel<V>> {
+    private static ResourceLocation LOC = new ResourceLocation("textures/entity/illager/vex.png");
     public VexArcherRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new VexArcherModel<>(p_174304_.bakeLayer(ModelLayers.VEX)), 0.4f);
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
     public ResourceLocation getTextureLocation(V v) {
-        return new ResourceLocation("textures/entity/illager/vex.png");
+        return LOC;
     }
 }

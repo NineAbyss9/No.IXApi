@@ -17,9 +17,9 @@ public class ArmorerRenderer<T extends Armorer> extends IllagerRenderer<T> {
         this.model.getHat().visible = true;
     }
 
-    @NotNull
-    @Override
-    public ResourceLocation getTextureLocation(@NotNull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/illagers/armorer.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/illagers/armorer.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

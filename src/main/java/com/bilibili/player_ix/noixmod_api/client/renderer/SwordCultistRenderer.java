@@ -14,7 +14,6 @@ public class SwordCultistRenderer<S extends SwordCultist> extends NihilistRender
     public SwordCultistRenderer(EntityRendererProvider.Context $$0) {
         super($$0, new NihilistIllagerModel<>($$0.bakeLayer(NoixmodAPIModelLayer.NIHILIST)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, $$0.getItemInHandRenderer()) {
-            @Override
             public void render(PoseStack p_117204_, MultiBufferSource p_117205_, int p_117206_, S p_117207_, float p_117208_, float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
                 if (p_117207_.isAggressive()) {
                     super.render(p_117204_, p_117205_, p_117206_, p_117207_, p_117208_, p_117209_, p_117210_, p_117211_, p_117212_, p_117213_);
@@ -24,8 +23,9 @@ public class SwordCultistRenderer<S extends SwordCultist> extends NihilistRender
         this.model.getHat().visible = true;
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/sword_cultist.png");
+
     public ResourceLocation getTextureLocation(S s) {
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/sword_cultist.png");
+        return LOC;
     }
 }

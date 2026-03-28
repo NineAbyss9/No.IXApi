@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class WormMasterRenderer<W extends WormMaster>
 extends MobRenderer<W, WormIllagerModel<W>> {
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/worms/worm_master.png");
     public WormMasterRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new WormIllagerModel<>(p_174304_.bakeLayer(WormIllagerModel.LAYER_LOCATION)),
                 0.5f);
@@ -27,6 +28,6 @@ extends MobRenderer<W, WormIllagerModel<W>> {
     }
 
     public ResourceLocation getTextureLocation(W w) {
-        return new ResourceLocation("noixmodapi:textures/entities/worms/worm_master.png");
+        return LOC;
     }
 }

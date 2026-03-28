@@ -23,8 +23,9 @@ extends NihilistRenderer<T> {
         });
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_death.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_death.png");
+        return LOC;
     }
 }

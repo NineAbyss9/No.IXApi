@@ -15,12 +15,14 @@ extends MobRenderer<T, APIGhastModel<T>> {
         super(p_174304_, new APIGhastModel<>(p_174304_.bakeLayer(NoixmodAPIModelLayer.API_GHAST)), 0.5f);
     }
 
-    @NotNull
-    @Override
-    public ResourceLocation getTextureLocation(@NotNull T t) {
+    private static final ResourceLocation CHARGING = new ResourceLocation("noixmodapi:textures/entities/servants/mini_ghast/mini_ghast_charging.png");
+
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/servants/mini_ghast/mini_ghast.png");
+
+    public ResourceLocation getTextureLocation(T t) {
         if (t.isCharging()) {
-            return new ResourceLocation("noixmodapi:textures/entities/servants/mini_ghast/mini_ghast_charging.png");
+            return CHARGING;
         }
-        return new ResourceLocation("noixmodapi:textures/entities/servants/mini_ghast/mini_ghast.png");
+        return LOC;
     }
 }

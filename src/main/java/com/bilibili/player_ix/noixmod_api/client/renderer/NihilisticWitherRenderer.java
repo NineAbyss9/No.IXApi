@@ -15,7 +15,6 @@ extends MobRenderer<N, NihilisticWitherModel<N>> {
         super(p_174304_, new NihilisticWitherModel<>(p_174304_.bakeLayer(NihilisticWitherModel.WITHER)), 0.8f);
     }
 
-    @Override
     protected int getBlockLightLevel(N p_114496_, BlockPos p_114497_) {
         return 15;
     }
@@ -29,14 +28,16 @@ extends MobRenderer<N, NihilisticWitherModel<N>> {
         p_116440_.scale($$3, $$3, $$3);
     }
 
-    @Override
+    private static final ResourceLocation POWERED = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/wither/wither_invulnerable.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/wither/wither.png");
+
     public ResourceLocation getTextureLocation(N n) {
         int i = n.getInvulnerableTicks();
         boolean flag = i > 0 && (i > 80 || i / 5 % 2 != 1);
         boolean flag1 = n.isGivingBackDamage();
         if (flag || flag1) {
-            return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/wither/wither_invulnerable.png");
+            return POWERED;
         }
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/wither/wither.png");
+        return LOC;
     }
 }

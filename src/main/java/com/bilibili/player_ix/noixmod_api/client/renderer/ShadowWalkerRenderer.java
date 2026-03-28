@@ -15,7 +15,6 @@ extends NihilistRenderer<S> {
     public ShadowWalkerRenderer(EntityRendererProvider.Context context) {
         super(context, new NihilistIllagerModel<>(context.bakeLayer(NoixmodAPIModelLayer.NIHILIST)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()) {
-            @Override
             public void render(PoseStack p_117204_, MultiBufferSource p_117205_, int p_117206_, S p_117207_, float p_117208_,
                                float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
                 if (!p_117207_.isInvisible() && (p_117207_.isCastingSpell() || p_117207_.isAggressive())) {
@@ -27,8 +26,9 @@ extends NihilistRenderer<S> {
         this.model.getHat().visible = true;
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/shadow_walker.png");
+
     public ResourceLocation getTextureLocation(S s) {
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/shadow_walker.png");
+        return LOC;
     }
 }

@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
-import org.jetbrains.annotations.NotNull;
 
 public class ThrownAxeRenderer<T extends ThrownAxe> extends EntityRenderer<T> {
     private final ItemRenderer model;
@@ -33,8 +32,7 @@ public class ThrownAxeRenderer<T extends ThrownAxe> extends EntityRenderer<T> {
         super.render(p_114656_, p_114657_, p_114658_, p_114659_, p_114660_, p_114661_);
     }
 
-    @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull ThrownAxe thrownAxe) {
+    public ResourceLocation getTextureLocation(ThrownAxe thrownAxe) {
         return ThrownAxeModel.TEXTURE;
     }
 }

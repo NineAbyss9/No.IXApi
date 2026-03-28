@@ -17,7 +17,6 @@ public class EvokerIllagerRenderer<T extends EvokerIllager>
     public EvokerIllagerRenderer(EntityRendererProvider.Context $$0) {
         super($$0, new EIModel<>($$0.bakeLayer(NoixmodAPIModelLayer.EI)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, $$0.getItemInHandRenderer()) {
-            @Override
             public void render(PoseStack $$0, MultiBufferSource $$1, int $$2, T $$3, float $$4, float $$5, float $$6, float $$7, float $$8, float $$9) {
                 if ($$3.isCastingSpell()) {
                     super.render($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8, $$9);
@@ -26,7 +25,6 @@ public class EvokerIllagerRenderer<T extends EvokerIllager>
         });
     }
 
-    @Override
     public ResourceLocation getTextureLocation(T $$0) {
         return EVOKER_ILLAGER;
     }

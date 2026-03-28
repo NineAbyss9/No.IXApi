@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -24,11 +23,11 @@ extends EntityRenderer<T> {
         super(p_174008_);
     }
 
-    protected int getBlockLightLevel(@NotNull T p_114087_, @NotNull BlockPos p_114088_) {
+    protected int getBlockLightLevel(T p_114087_, BlockPos p_114088_) {
         return 9;
     }
 
-    public void render(@NotNull T p_114080_, float p_114081_, float p_114082_, @NotNull PoseStack p_114083_, @NotNull MultiBufferSource p_114084_, int p_114085_) {
+    public void render(T p_114080_, float p_114081_, float p_114082_, PoseStack p_114083_, MultiBufferSource p_114084_, int p_114085_) {
         p_114083_.pushPose();
         p_114083_.scale(1.5F, 1.5F, 1.5F);
         p_114083_.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -45,13 +44,11 @@ extends EntityRenderer<T> {
         super.render(p_114080_, p_114081_, p_114082_, p_114083_, p_114084_, p_114085_);
     }
 
-    private static void vertex(@NotNull VertexConsumer p_254095_, Matrix4f p_254477_, Matrix3f p_253948_, int p_253829_, float p_253995_, int p_254031_, int p_253641_, int p_254243_) {
+    private static void vertex(VertexConsumer p_254095_, Matrix4f p_254477_, Matrix3f p_253948_, int p_253829_, float p_253995_, int p_254031_, int p_253641_, int p_254243_) {
         p_254095_.vertex(p_254477_, p_253995_ - 0.5F, (float)p_254031_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float)p_253641_, (float)p_254243_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_253829_).normal(p_253948_, 0.0F, 1.0F, 0.0F).endVertex();
     }
 
-    @NotNull
-    @Override
-    public ResourceLocation getTextureLocation(@NotNull T t) {
+    public ResourceLocation getTextureLocation(T t) {
         return Fireball;
     }
 

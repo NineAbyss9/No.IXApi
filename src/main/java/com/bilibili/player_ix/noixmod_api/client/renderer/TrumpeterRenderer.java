@@ -18,9 +18,9 @@ extends IllagerRenderer<T> {
         this.addLayer(new ItemInHandLayer<>(this, p_174182_.getItemInHandRenderer()));
     }
 
-    @Nonnull
-    @Override
-    public ResourceLocation getTextureLocation(@Nonnull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/illagers/trumpeter.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/illagers/trumpeter.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

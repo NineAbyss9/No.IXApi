@@ -14,7 +14,6 @@ public class SmokeTrapRenderer<T extends SmokeTrap>  extends EntityRenderer<T> {
         super(p_174008_);
     }
 
-    @Override
     public ResourceLocation getTextureLocation(T entity) {
         return TRAP;
     }

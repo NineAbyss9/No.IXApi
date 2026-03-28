@@ -19,12 +19,10 @@ extends MobRenderer<T, VexServantModel<T>> {
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
-    @Override
     protected int getBlockLightLevel(T p_114496_, BlockPos p_114497_) {
         return 15;
     }
 
-    @Override
     public ResourceLocation getTextureLocation(T t) {
         return t.getFlag() == 1 ? VEX_CHARGING_LOCATION : VEX_LOCATION;
     }

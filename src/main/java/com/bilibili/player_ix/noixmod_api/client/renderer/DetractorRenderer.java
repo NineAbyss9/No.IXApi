@@ -15,8 +15,9 @@ public class DetractorRenderer<T extends Detractor> extends MobRenderer<T, ApiZo
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/monsters/horror/detractor.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/monsters/horror/detractor.png");
+        return LOC;
     }
 }

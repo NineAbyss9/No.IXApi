@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class VindicatorServantRenderer<T extends VindicatorServant>
 extends IllagerServantRenderer<T> {
+    private static ResourceLocation LOC = NoixmodAPI.location("textures/entities/illagers/servant/vindicator.png");
     public VindicatorServantRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new IXIllagerModel<>(p_174304_.bakeLayer(IXIllagerModel.LAYER_LOCATION)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()) {
@@ -27,6 +28,6 @@ extends IllagerServantRenderer<T> {
     }
 
     public ResourceLocation getTextureLocation(T t) {
-        return NoixmodAPI.location("textures/entities/illagers/servant/vindicator.png");
+        return LOC;
     }
 }

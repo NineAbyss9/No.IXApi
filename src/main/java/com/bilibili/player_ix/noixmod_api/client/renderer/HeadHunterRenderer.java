@@ -13,9 +13,11 @@ public class HeadHunterRenderer<H extends HeadHunter> extends MobRenderer<H, Hea
         super(p_174304_, new HeadHunterModel<>(p_174304_.bakeLayer(NoixmodAPIModelLayer.HEAD_HUNTER)), 0.7F);
     }
 
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/monsters/head_hunter_second.png");
+
     public ResourceLocation getTextureLocation(H h) {
         //if (h.isSecondPhase()) {
-            return new ResourceLocation("noixmodapi:textures/entities/monsters/head_hunter_second.png");
+            return LOC;
         //}
         //return new ResourceLocation("noixmodapi:textures/entities/monsters/head_hunter.png");
     }

@@ -14,8 +14,9 @@ extends NihilistRenderer<T> {
         super($$0, new NihilistIllagerModel<>($$0.bakeLayer(NoixmodAPIModelLayer.NIHILIST)), 0.5f);
     }
 
-    @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_evoker.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_evoker.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

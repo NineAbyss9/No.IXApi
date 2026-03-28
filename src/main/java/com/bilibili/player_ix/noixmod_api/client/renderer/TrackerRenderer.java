@@ -10,14 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TrackerRenderer<T extends Tracker>
 extends MobRenderer<T, HumanoidModel<T>> {
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/monsters/horror/tracker.png");
     public TrackerRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new HumanoidModel<>(pContext.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);
     }
 
-    /**
-     * Returns the location of an entity's texture.
-     */
     public ResourceLocation getTextureLocation(T pEntity) {
-        return new ResourceLocation("noixmodapi:textures/entities/monsters/horror/tracker.png");
+        return LOC;
     }
 }

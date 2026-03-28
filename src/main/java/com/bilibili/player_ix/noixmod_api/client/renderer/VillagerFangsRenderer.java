@@ -12,9 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
 
 public class VillagerFangsRenderer<T extends VillagerFangs>
 extends EntityRenderer<T> {
@@ -24,8 +21,7 @@ extends EntityRenderer<T> {
         this.model = new EvokerFangsModel<>(p_174008_.bakeLayer(ModelLayers.EVOKER_FANGS));
     }
 
-    @Override
-    public void render(@NotNull T p_114528_, float p_114529_, float p_114530_, @NotNull PoseStack p_114531_, @NotNull MultiBufferSource p_114532_, int p_114533_) {
+    public void render(T p_114528_, float p_114529_, float p_114530_, PoseStack p_114531_, MultiBufferSource p_114532_, int p_114533_) {
         float $$6 = p_114528_.getAnimationProgress(p_114530_);
         if ($$6 != 0.0F) {
             float $$7 = 2.0F;
@@ -45,9 +41,9 @@ extends EntityRenderer<T> {
         }
     }
 
-    @Nonnull
-    @Override
-    public ResourceLocation getTextureLocation(@Nonnull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/projectile/villager_fangs.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/projectile/villager_fangs.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

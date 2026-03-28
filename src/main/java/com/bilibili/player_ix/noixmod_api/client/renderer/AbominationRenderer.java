@@ -13,10 +13,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class AbominationRenderer<A extends Abomination>
 extends IllagerRenderer<A> {
+    public static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/illagers/abomination.png");
     public AbominationRenderer(EntityRendererProvider.Context p_174182_) {
         super(p_174182_, new IllagerModel<>(p_174182_.bakeLayer(ModelLayers.EVOKER)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, p_174182_.getItemInHandRenderer()) {
-            @Override
             public void render(PoseStack p_117204_, MultiBufferSource p_117205_, int p_117206_, A p_117207_,
                                float p_117208_, float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
                 if (p_117207_.isCastingSpell() || p_117207_.isAggressive()) {
@@ -27,8 +27,7 @@ extends IllagerRenderer<A> {
         });
     }
 
-    @Override
     public ResourceLocation getTextureLocation(A a) {
-        return new ResourceLocation("noixmodapi:textures/entities/illagers/abomination.png");
+        return LOC;
     }
 }

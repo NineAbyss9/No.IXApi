@@ -108,10 +108,13 @@ extends MobRenderer<T, StatueModel<T>> {
         consumer.vertex(matrix4f, x, y, z).color(red, green, blue, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
     }
 
+    private static final ResourceLocation HORROR = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_statue_horror.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_statue.png");
+
     public ResourceLocation getTextureLocation(T t) {
         if (NoixmodAPIMainConfig.HorrorMode.get()) {
-            return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_statue_horror.png");
+            return HORROR;
         }
-        return new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/nihilistic_statue.png");
+        return LOC;
     }
 }

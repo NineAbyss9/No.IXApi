@@ -7,9 +7,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 
-public abstract class HumanoidNihilitistRenderer<T extends Nihilist>
+public abstract class HumanoidNihilistRenderer<T extends Nihilist>
 extends MobRenderer<T, NihilistHumanoidModel<T>> {
-    protected HumanoidNihilitistRenderer(EntityRendererProvider.Context $$0, NihilistHumanoidModel<T> $$1, float $$2) {
+    protected HumanoidNihilistRenderer(EntityRendererProvider.Context $$0, NihilistHumanoidModel<T> $$1, float $$2) {
         super($$0, $$1, $$2);
     }
 

@@ -16,8 +16,9 @@ extends MobRenderer<D, DeadIllagerSkullModel<D>> {
         this.addLayer(new CustomHeadLayer<>(this, p_174304_.getModelSet(), p_174304_.getItemInHandRenderer()));
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/illagers/dead_illager_skull.png");
+
     public ResourceLocation getTextureLocation(D d) {
-        return new ResourceLocation("noixmodapi:textures/entities/illagers/dead_illager_skull.png");
+        return LOC;
     }
 }

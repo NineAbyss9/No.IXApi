@@ -13,7 +13,6 @@ extends MobRenderer<T, NihilistIllagerModel<T>> {
         super(context, m, scale);
     }
 
-    @Override
     protected void scale(T $$0, PoseStack $$1, float $$2) {
         $$2 = 0.9375f;
         $$1.scale($$2, $$2, $$2);

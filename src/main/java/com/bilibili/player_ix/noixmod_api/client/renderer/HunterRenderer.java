@@ -1,7 +1,6 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer;
 
-import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.Hunter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.IllagerModel;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.entity.IllagerRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 
-@PAMAreNonnullByDefault
 public class HunterRenderer<T extends Hunter>
 extends IllagerRenderer<T> {
     public HunterRenderer(EntityRendererProvider.Context p_174182_) {
@@ -27,7 +25,9 @@ extends IllagerRenderer<T> {
         this.model.getHat().visible = true;
     }
 
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/illagers/hunter.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/illagers/hunter.png");
+        return LOC;
     }
 }

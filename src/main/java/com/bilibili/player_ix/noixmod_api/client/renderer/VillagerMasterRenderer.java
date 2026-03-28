@@ -9,17 +9,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
 
 public class VillagerMasterRenderer<T extends VillagerMaster>
 extends VillagerFighterRenderer<T> {
     public VillagerMasterRenderer(EntityRendererProvider.Context $$0) {
         super($$0, new VillagerFighterModel<>($$0.bakeLayer(NoixmodAPIModelLayer.VILLAGER_FIGHTER)), 0.5f);
         this.addLayer(new ItemInHandLayer<>(this, $$0.getItemInHandRenderer()) {
-            @Override
-            public void render(@NotNull PoseStack p_117204_, @NotNull MultiBufferSource p_117205_, int p_117206_, @NotNull T p_117207_, float p_117208_, float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
+            public void render(PoseStack p_117204_, MultiBufferSource p_117205_, int p_117206_, T p_117207_, float p_117208_, float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
                 if (p_117207_.isCastingSpell() || p_117207_.isAggressive()) {
                     super.render(p_117204_, p_117205_, p_117206_, p_117207_, p_117208_, p_117209_, p_117210_, p_117211_, p_117212_, p_117213_);
                 }
@@ -27,8 +23,9 @@ extends VillagerFighterRenderer<T> {
         });
     }
 
-    @Override
-    public @Nonnull ResourceLocation getTextureLocation(@Nonnull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/villagers/master.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/villagers/master.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

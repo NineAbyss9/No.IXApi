@@ -15,8 +15,9 @@ extends MobRenderer<T, SilverfishModel<T>> {
         super(p_174304_, new SilverfishModel<>(p_174304_.bakeLayer(ModelLayers.SILVERFISH)), 0.5f);
     }
 
-    @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/worms/aquatic_worm.png");
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/worms/aquatic_worm.png");
+
+    public ResourceLocation getTextureLocation(T t) {
+        return LOC;
     }
 }

@@ -21,7 +21,6 @@ extends MobRenderer<VillagerGolem, VillagerGolemModel<VillagerGolem>> {
     protected void setupRotations(VillagerGolem p_115014_, PoseStack p_115015_, float p_115016_, float p_115017_, float p_115018_) {
         super.setupRotations(p_115014_, p_115015_, p_115016_, p_115017_, p_115018_);
         if (!(p_115014_.walkAnimation.speed() < 0.01F)) {
-            float $$5 = 13.0F;
             float $$6 = p_115014_.walkAnimation.position(p_115018_) + 6.0F;
             float $$7 = (Math.abs($$6 % 13.0F - 6.5F) - 3.25F) / 3.25F;
             p_115015_.mulPose(Axis.ZP.rotationDegrees(6.5F * $$7));

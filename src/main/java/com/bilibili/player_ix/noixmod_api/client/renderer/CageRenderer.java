@@ -25,8 +25,8 @@ implements RenderLayerParent<T, M> {
     @SuppressWarnings("unchecked")
     public CageRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
-        this.cageModel = (M)new CageModel<>(p_174008_.bakeLayer(CageModel.LAYER_LOCATION));
-        this.cageLayer = new CageLayer<>(this, p_174008_.getModelSet());
+        this.cageModel = (M)new CageModel<T>(p_174008_.bakeLayer(CageModel.LAYER_LOCATION));
+        this.cageLayer = new CageLayer<T, M>(this, p_174008_.getModelSet());
     }
 
     public void render(T p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) {
@@ -49,7 +49,7 @@ implements RenderLayerParent<T, M> {
     }
 
     public ResourceLocation getTextureLocation(T t) {
-        return new ResourceLocation("noixmodapi:textures/entities/entity_null.png");
+        return null;
     }
 
     private static class CageLayer <T extends Cage, M extends CageModel<T>>

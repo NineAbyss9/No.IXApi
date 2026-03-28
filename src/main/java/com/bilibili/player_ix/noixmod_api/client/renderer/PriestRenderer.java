@@ -14,7 +14,9 @@ extends MobRenderer<T, PriestModel<T>> {
         super(pContext, new PriestModel<>(pContext.bakeLayer(PriestModel.LAYER_LOCATION)), 0.6F);
     }
 
+    private static ResourceLocation LOC = NoixmodAPI.location("textures/entities/nihilistic_mobs/priest.png");
+
     public ResourceLocation getTextureLocation(T t) {
-        return NoixmodAPI.location("textures/entities/nihilistic_mobs/priest.png");
+        return LOC;
     }
 }

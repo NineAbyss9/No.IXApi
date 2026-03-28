@@ -92,6 +92,7 @@ import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.NineAbyss9.util.ValueHolder;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -154,8 +155,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     protected static final AttributeModifier STATUE_COOLDOWN_SPEED;
     protected static final AttributeModifier ZERO_SPEED;
 
-    public Apostle(EntityType<? extends Apostle> apostle, Level world) {
-        super(apostle, world);
+    public Apostle(EntityType<? extends Apostle> pEntityType, Level world) {
+        super(pEntityType, world);
         bossEvent = new ApiBossEvent(this, Component.literal("Απόστολος")
                 .withStyle(ChatFormatting.DARK_PURPLE), BossEvent.BossBarColor.PURPLE,
                 false, true);
@@ -1052,35 +1053,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     public void tick() {
-        LivingEntity lie = this.getTarget();
-        List<Mob> target = this.level().getEntitiesOfClass(Mob.class, this.getBoundingBox().inflate(64), living
-                -> MobUtils.isAlive(living) && (living.getTarget() == this ||
-                living.getTarget() instanceof Ownable ownable && ownable.getOwner() == this));
-        if (lie == null && !target.isEmpty()) {
-            for (Mob living : target) {
-                if (MobUtils.canHurt(living, this)) {
-                    this.setTarget(living);
-                    this.setApostleTarget(living);
-                    break;
-                }
-            }
-        }
-        List<Mob> apostles = this.level().getEntitiesOfClass(Mob.class, this.getBoundingBox().inflate(64),
-                living -> living.getType() == ForgeRegistries.ENTITY_TYPES.getValue(
-                        new ResourceLocation("goety:apostle")));
-        if (!apostles.isEmpty() && this.isBoss()) {
-            for (Mob mob : apostles) {
-                mob.setNoAi(true);
-                mob.setPosRaw(Double.NaN, Double.NaN, Double.NaN);
-                mob.discard();
-            }
-        }
         this.setCastingSpeed();
-        if (this instanceof ApostleBoss) {
+        if (this.isBoss()) {
             this.setApostleSpell();
             this.handleTitleEvents();
         }
         super.tick();
+        LivingEntity lie = this.getTarget();
         if (this.isInWater() || this.isInLava() || this.isInWall() || this.isInPowderSnow) {
             this.teleport();
         }
@@ -1100,8 +1079,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             NihilisticFireball ball = new NihilisticFireball(NoixmodAPIEntities.NIHILISTIC_FIREBALL.get(), this.level());
             ball.moveTo(this.blockPosition().offset(Maths.randomInteger(10), 15,
                     Maths.randomInteger(10)), 0, 0);
-            ball.setMoveDown(true);
-            ball.setSpeed(-0.5);
+            ball.setMoveDown();
             this.level().addFreshEntity(ball);
         }
         if (this.pressureTicks > 0) {
@@ -1714,12 +1692,9 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     10=Armor
     */
     public void setApostleSpell() {
-        if (!(this instanceof ApostleBoss)) {
-            return;
-        }
         Random pRandom = this.getRandomUtil();
         boolean flag = pRandom.nextBoolean();
-        float chance = pRandom.nextFloat(1);
+        float chance = pRandom.nextFloat();
         boolean secondPhase = this.isSecondPhase();
         if (secondPhase) {
             if (this.getCooldown() == 0) {
@@ -1800,7 +1775,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                     entity.getPositionCodec().setBase(new Vec3(Double.NaN, Double.NEGATIVE_INFINITY,
                             Double.MAX_VALUE));
                     entity.setRemoved(RemovalReason.KILLED);
-                    MobUtils.onRemove(entity, RemovalReason.KILLED);
                 });
             }*/
             if (!this.level().isClientSide) {
@@ -1918,11 +1892,30 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             }
         }
         if (!this.level().isClientSide) {
-            if (!this.getApostleTargets().isEmpty()) {
-                for (LivingEntity living : this.getApostleTargets()) {
+            LivingEntity lie = this.getTarget();
+            List<Mob> target = this.level().getEntitiesOfClass(Mob.class, this.getBoundingBox().inflate(64), living
+                    -> MobUtils.isAlive(living) && MobUtils.canHurt(living, this) && (living.getTarget() == this ||
+                    living.getTarget() instanceof Ownable ownable && ownable.getOwner() == this));
+            if (lie == null && !target.isEmpty())
+            {
+                target.stream().findAny().ifPresent(living -> {
+                    this.setTarget(living);
                     this.setApostleTarget(living);
-                    break;
+                });
+            }
+            if (GoetyCompat.goetyLoaded() && this.isBoss())
+            {
+                var entity = ValueHolder.nullToOther(this.getTarget(), this.getApostleTarget());
+                if (entity != null && entity.getType() == ForgeRegistries.ENTITY_TYPES.getValue(
+                        new ResourceLocation("goety:apostle")))
+                {
+                    entity.setPosRaw(Double.NaN, Double.NaN, Double.NaN);
+                    entity.discard();
                 }
+            }
+            if (!this.getApostleTargets().isEmpty())
+            {
+                this.setApostleTarget(this.getApostleTargets().stream().findAny().orElse(null));
             }
             if (this.isSecondPhase()) {
                 int i = this.isHalfHealth() ? 2 : 1;
@@ -1988,8 +1981,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
         private boolean strafingBackwards;
         private int strafingTime = -1;
 
-        public ApostleBowAttackGoal(Apostle p_25792_) {
-            this.mob = p_25792_;
+        public ApostleBowAttackGoal(Apostle pApostle) {
+            this.mob = pApostle;
             this.attackRadiusSqr = 30F * 30F;
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
@@ -2137,12 +2130,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     protected static class ApostleRandomLookGoal
-            extends Goal {
+    extends Goal {
         protected final Apostle mob;
         protected double relX;
         protected double relZ;
         protected int lookTime;
-
         public ApostleRandomLookGoal(Apostle apostle) {
             this.mob = apostle;
             this.setFlags(EnumSet.of(Flag.LOOK));
@@ -2178,7 +2170,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     protected abstract class SpellGoal
-            extends UseSpellGoal {
+    extends UseSpellGoal {
         protected final Apostle apostle;
 
         public SpellGoal(Apostle apostle) {

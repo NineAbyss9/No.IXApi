@@ -16,8 +16,9 @@ public class DanDaRenderer<D extends DanDa> extends MobRenderer<D, DanDingModel<
         this.addLayer(new ItemInHandLayer<>(this, p_174304_.getItemInHandRenderer()));
     }
 
-    @Override
+    private static ResourceLocation LOC =new ResourceLocation("noixmodapi:textures/entities/special/dd.png");
+
     public ResourceLocation getTextureLocation(D d) {
-        return new ResourceLocation("noixmodapi:textures/entities/special/dd.png");
+        return LOC;
     }
 }

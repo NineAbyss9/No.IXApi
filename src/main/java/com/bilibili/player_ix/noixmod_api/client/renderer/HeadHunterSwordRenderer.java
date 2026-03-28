@@ -20,7 +20,6 @@ extends EntityRenderer<H> {
         this.model = new HeadHunterSwordModel<>(p_174008_.bakeLayer(HeadHunterSwordModel.LAYER_LOCATION));
     }
 
-    @Override
     public void render(H p_114485_, float p_114486_, float p_114487_, PoseStack p_114488_, MultiBufferSource p_114489_, int p_114490_) {
         p_114488_.pushPose();
         VertexConsumer consumer = p_114489_.getBuffer(this.model.renderType(this.getTextureLocation(p_114485_)));
@@ -33,8 +32,9 @@ extends EntityRenderer<H> {
         super.render(p_114485_, p_114486_, p_114487_, p_114488_, p_114489_, p_114490_);
     }
 
-    @Override
+    private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/projectile/head_hunter_sword.png");
+
     public ResourceLocation getTextureLocation(H h) {
-        return new ResourceLocation("noixmodapi:textures/entities/projectile/head_hunter_sword.png");
+        return LOC;
     }
 }
