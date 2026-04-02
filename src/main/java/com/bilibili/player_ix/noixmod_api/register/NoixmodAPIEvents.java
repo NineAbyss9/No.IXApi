@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.register;
 
 import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.level.LevelAccessor;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
@@ -284,15 +285,18 @@ public class NoixmodAPIEvents {
 
     @SubscribeEvent
     public static void onWorldLoad(LevelEvent.Load event) {
-        if (!event.getLevel().isClientSide()) {
-            ORDER_SPAWNER.put((ServerLevel)event.getLevel(), new NihilisticOrderSpawner());
+        LevelAccessor accessor = event.getLevel();
+        if (!accessor.isClientSide() && accessor instanceof Level level
+            && level.dimension() == Level.OVERWORLD) {
+            ORDER_SPAWNER.put(((ServerLevel)event.getLevel()), new NihilisticOrderSpawner());
         }
     }
 
     @SubscribeEvent
     public static void onWorldEnd(LevelEvent.Unload event) {
-        if (!event.getLevel().isClientSide()) {
-            ORDER_SPAWNER.remove((ServerLevel)event.getLevel());
+        LevelAccessor accessor = event.getLevel();
+        if (!accessor.isClientSide() && accessor instanceof Level level) {
+            ORDER_SPAWNER.remove((ServerLevel)level);
         }
     }
 

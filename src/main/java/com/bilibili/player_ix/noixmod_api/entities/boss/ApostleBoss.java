@@ -16,35 +16,46 @@ import net.minecraft.world.level.Level;
 
 public class ApostleBoss
 extends Apostle
-implements ApiNihilisticBoss {
+implements ApiNihilisticBoss
+{
     private static final EntityDataAccessor<Float> APOSTLE_HEALTH;
-    public ApostleBoss(EntityType<ApostleBoss> apostle, Level world) {
+
+    public ApostleBoss(EntityType<ApostleBoss> apostle, Level world)
+    {
         super(apostle, world);
     }
 
-    protected void defineSynchedData() {
+    protected void defineSynchedData()
+    {
         super.defineSynchedData();
         this.entityData.define(APOSTLE_HEALTH, 320F);
     }
 
-    public boolean isBoss() {
+    public boolean isBoss()
+    {
         return true;
     }
 
-    public int getExperienceReward() {
-        if (this.isInEnd()) {
+    public int getExperienceReward()
+    {
+        if (this.isInEnd())
+        {
             return XP_APOSTLE_HARD;
-        } else {
+        } else
+        {
             return XP_APOSTLE;
         }
     }
 
-    public static Component normal(String st) {
+    public static Component normal(String st)
+    {
         return Component.literal(st).withStyle(ChatFormatting.DARK_PURPLE);
     }
 
-    public static Component horror(String st) {
-        if (NoixmodAPIMainConfig.HorrorMode.get()) {
+    public static Component horror(String st)
+    {
+        if (NoixmodAPIMainConfig.HorrorMode.get())
+        {
             return Component.literal(st).withStyle(ChatFormatting.DARK_RED, ChatFormatting.OBFUSCATED);
         }
         return Component.literal(st).withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.OBFUSCATED);
@@ -60,34 +71,42 @@ implements ApiNihilisticBoss {
         }
     }
 
-    public void baseTick() {
-        if (this.firstTick) {
-            Component component = Option.of(Component.literal("Apostle")
-                            .withStyle(ChatFormatting.DARK_RED, ChatFormatting.OBFUSCATED))
-                    .ifOrElse(NoixmodAPIMainConfig.HorrorMode.get(),
-                            Component.literal("Apostle")
-                                    .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.OBFUSCATED));
-            Minecraft.getInstance().gui.setTitle(component);
-            if (!this.level().isClientSide) {
+    public void baseTick()
+    {
+        if (this.firstTick)
+        {
+            if (this.level().isClientSide)
+            {
+                Component component = Option.of(Component.literal("Apostle")
+                                .withStyle(ChatFormatting.DARK_RED, ChatFormatting.OBFUSCATED))
+                        .ifOrElse(NoixmodAPIMainConfig.HorrorMode.get(),
+                                Component.literal("Apostle")
+                                        .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.OBFUSCATED));
+                Minecraft.getInstance().gui.setTitle(component);
+            } else
+            {
                 this.sendSystemMessage(Component.literal("We will have a great time!")
                         .withStyle(NoixmodAPIMainConfig.HorrorMode.get() ? ChatFormatting.DARK_RED :
-                                        ChatFormatting.DARK_PURPLE, ChatFormatting.OBFUSCATED));
+                                ChatFormatting.DARK_PURPLE, ChatFormatting.OBFUSCATED));
             }
         }
         super.baseTick();
     }
 
-    public Component getDisplayName() {
+    public Component getDisplayName()
+    {
         return Option.of(horror("Apostle")).ifOrElse(NoixmodAPIMainConfig.HorrorMode.get(),
                 Component.translatable("title.noixmodapi.apostle_" + this.getTitleNumber())
                         .withStyle(ChatFormatting.DARK_PURPLE));
     }
 
-    public boolean isHostile() {
+    public boolean isHostile()
+    {
         return true;
     }
 
-    static {
+    static
+    {
         APOSTLE_HEALTH = SynchedEntityData.defineId(ApostleBoss.class, EntityDataSerializers.FLOAT);
     }
 }

@@ -1,9 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import org.NineAbyss9.code.Code;
+
 import java.util.Objects;
 
-public final class ErrorCode {
+public final class ErrorCode implements Code
+{
     final int id;
     final String message;
     ErrorCode(int id, String message) {
@@ -13,6 +16,16 @@ public final class ErrorCode {
 
     static ErrorCode create(int id, String st) {
         return new ErrorCode(id, st);
+    }
+
+    public String read()
+    {
+        return String.valueOf(id);
+    }
+
+    public void write(String s)
+    {
+        throw new UnsupportedOperationException();
     }
 
     int getId() {

@@ -95,37 +95,28 @@ implements IWormMob {
         return super.hurt(pSource, pAmount);
     }
 
-    @Override
     public boolean killedEntity(ServerLevel level, LivingEntity p_216989_) {
         this.summonBreedMob();
         return super.killedEntity(level, p_216989_);
     }
 
-    @Nullable
-    @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.SILVERFISH_AMBIENT;
     }
 
-    @Nullable
-    @Override
     protected SoundEvent getHurtSound(DamageSource p_21239_) {
         return SoundEvents.SILVERFISH_HURT;
     }
 
-    @Nullable
-    @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.SILVERFISH_DEATH;
     }
 
-    @Override
     protected void playStepSound(BlockPos p_20135_, BlockState p_20136_) {
         this.playSound(SoundEvents.SILVERFISH_STEP, 1f, 0.5f);
     }
 
     @Nullable
-    @Override
     public Team getTeam() {
         LivingEntity entity = this.getOwner();
         if (entity != null && !this.areBothOwner(entity)) {
@@ -140,25 +131,25 @@ implements IWormMob {
     }
 
     public void makeWormParticle() {
-        if (this.level() instanceof ServerLevel) {
+        if (!this.level().isClientSide) {
             WorldUtil.sendParticles(NoixmodAPIParticleTypes.WORM_PARTICLE.get(), this, 15,
                     this.random.nextGaussian() * 0.2);
         }
     }
 
     public void summonBreedMob() {
-        if (this.level() instanceof ServerLevel level) {
+        if (!this.level().isClientSide) {
             AbstractWorm worm = this.getBreedMob();
             if (worm != null) {
                 worm.moveTo(this.blockPosition(), 0, 0);
-                WorldUtil.nullableFinalizeSpawn(worm, level, level.getCurrentDifficultyAt(this.blockPosition()),
+                WorldUtil.nullableFinalizeSpawn(worm, serverLevel(), serverLevel().getCurrentDifficultyAt(this.blockPosition()),
                         MobSpawnType.BREEDING);
                 if (this.getOwner() != null) {
                     worm.setOwner(this.getOwner());
                 }
                 worm.setHostile(this.isHostile());
                 worm.setBreedCooldown(this.getBreedCooldown());
-                level.addFreshEntity(worm);
+                serverLevel().addFreshEntity(worm);
                 this.makeWormParticle();
             }
             this.playSound(SoundEvents.SLIME_SQUISH);

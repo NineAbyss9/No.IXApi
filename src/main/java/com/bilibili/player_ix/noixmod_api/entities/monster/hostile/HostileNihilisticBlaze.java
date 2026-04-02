@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.entities.monster.hostile;
 
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticBlaze;
 import com.github.NineAbyss9.ix_api.api.mobs.MobUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
@@ -16,6 +17,11 @@ implements Enemy {
 
     protected void targetGoal() {
         this.targetSelector.addGoal(1, new MobUtils.HostileNearestAttackableTargetGoal(this, true));
+    }
+
+    public Component getName()
+    {
+        return Component.translatable("entity.noixmodapi.nihilistic_blaze");
     }
 
     public boolean isHostile() {

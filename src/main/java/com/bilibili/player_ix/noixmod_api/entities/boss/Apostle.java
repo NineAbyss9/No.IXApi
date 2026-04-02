@@ -1053,10 +1053,14 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     public void tick() {
-        this.setCastingSpeed();
-        if (this.isBoss()) {
-            this.setApostleSpell();
-            this.handleTitleEvents();
+        if (!this.level().isClientSide)
+        {
+            this.setCastingSpeed();
+            if (this.isBoss())
+            {
+                this.setApostleSpell();
+                this.handleTitleEvents();
+            }
         }
         super.tick();
         LivingEntity lie = this.getTarget();
@@ -1516,15 +1520,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             if (this.getTarget() != null) {
                 this.getTarget().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 0));
             }
-        } else if (this.isNihilistic()) {
-            if (this.level().isClientSide) {
-                this.clientLevel().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
-                        this.getRandomX(0.8), this.getRandomY(), this.getRandomZ(0.8),
-                        0, 0, 0);
-                this.clientLevel().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
-                        this.getRandomX(0.8) + Math.random(), this.getRandomY(),
-                        this.getRandomZ(0.8) + Math.random(), 0, 0, 0);
-            }
         }
     }
 
@@ -1863,6 +1858,12 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide && this.isNihilistic()) {
+            this.clientLevel().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
+                    this.getRandomX(0.8), this.getRandomY(), this.getRandomZ(0.8),
+                    0, 0, 0);
+            this.clientLevel().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
+                    this.getRandomX(0.8) + Math.random(), this.getRandomY(),
+                    this.getRandomZ(0.8) + Math.random(), 0, 0, 0);
             --this.clientSideIllusionTicks;
             if (this.clientSideIllusionTicks < 0) {
                 this.clientSideIllusionTicks = 0;
@@ -1930,7 +1931,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                         }
                     }
                 }
-                if (this.isServerSide() && this.checkRainWeather(serverLevel()))
+                if (this.checkRainWeather(serverLevel()))
                     serverLevel().setWeatherParameters(0, ServerLevel.RAIN_DURATION.getMaxValue(),
                             true, true);
             }

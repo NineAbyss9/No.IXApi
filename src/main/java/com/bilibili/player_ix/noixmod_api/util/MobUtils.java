@@ -512,7 +512,8 @@ public record MobUtils(Entity entity) {
         }
     }
 
-    public static AABB getRange(Mob mob, double dv, double x, double y, double z, double x1, double y1, double z1) {
+    public static AABB getRange(Mob mob, double dv, double x, double y, double z, double x1, double y1, double z1)
+    {
         float bodyYawRad = mob.yBodyRot * Mth.DEG_TO_RAD;
         double dx = -Mth.sin(bodyYawRad) * dv;
         double dz = Mth.cos(bodyYawRad) * dv;

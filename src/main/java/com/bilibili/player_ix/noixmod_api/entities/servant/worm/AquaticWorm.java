@@ -9,20 +9,15 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
@@ -62,7 +57,7 @@ extends AbstractWorm {
 
     public void tick() {
         super.tick();
-        if (this.level().isClientSide() && this.isInWater() && this.random.nextFloat() <= 0.05) {
+        if (this.level().isClientSide && this.isInWater() && this.random.nextFloat() <= 0.05F) {
             this.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
             this.level().addParticle(ParticleTypes.BUBBLE, this.getX(), this.getY(), this.getZ(), 0,
                     0.1, 0);
@@ -80,8 +75,11 @@ extends AbstractWorm {
         this.goalSelector.addGoal(2, new ApiMeleeAttackGoal(this, 1.2, false, false));
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 2, 40));
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.8));
-        this.addBehaviorGoal(4, 0.8, 12f, false);
-        this.addTargetGoal(false);
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, LivingEntity.class, 5f));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this,
+                LivingEntity.class, true, this::canAttack));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(1, new OwnerHurtTargetGoal<>(this));
     }
 
     public MobType getMobType() {
@@ -104,7 +102,7 @@ extends AbstractWorm {
     }
 
     public void makeWormParticle() {
-        if (this.level() instanceof ServerLevel) {
+        if (!this.level().isClientSide) {
             WorldUtil.sendParticles(NoixmodAPIParticleTypes.WORM_PARTICLE.get(), this, 15,
                     this.random.nextGaussian() * 0.3);
             WorldUtil.sendParticles(ParticleTypes.BUBBLE, this, 6, 0);
