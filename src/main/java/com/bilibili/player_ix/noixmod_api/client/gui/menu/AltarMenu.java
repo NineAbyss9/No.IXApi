@@ -1,37 +1,52 @@
 
 package com.bilibili.player_ix.noixmod_api.client.gui.menu;
 
+import com.bilibili.player_ix.noixmod_api.api.craft.RitualRecipe;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
+import com.bilibili.player_ix.noixmod_api.register.ApiRecipes;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIBlocks;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 
-public class AltarMenu extends ItemCombinerMenu {
-    public AltarMenu(int p_38852_, Inventory inventory, ContainerLevelAccess access) {
-        super(ApiGuis.ALTAR.get(), p_38852_, inventory, access);
-        /*this.addSlot(new SlotItemHandler(handler, 1, 123, 29));
-        this.addSlot(new SlotItemHandler(handler, 2, 87, 51));
-        this.addSlot(new SlotItemHandler(handler, 3, 119, 84));
-        this.addSlot(new SlotItemHandler(handler, 4, 158, 53));
-        this.addSlot(new SlotItemHandler(handler, 5, 158, 104));
-        this.addSlot(new SlotItemHandler(handler, 6, 120, 134));
-        this.addSlot(new SlotItemHandler(handler, 7, 83, 104));
+import java.util.Optional;
+
+@SuppressWarnings("unused")
+public class AltarMenu extends AbstractContainerMenu {
+    private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
+    private final ResultContainer resultSlots = new ResultContainer();
+    private final ContainerLevelAccess access;
+    private final Player player;
+    public AltarMenu(int pContainerId, Inventory inventory, ContainerLevelAccess accessIn) {
+        super(ApiGuis.ALTAR.get(), pContainerId);
+        this.access = accessIn;
+        this.player = inventory.player;
+        this.addSlot(new ResultSlot(player, craftSlots, resultSlots, 0, 183, 79));
+        this.addSlot(new Slot(craftSlots, 1, 123, 29));
+        this.addSlot(new Slot(craftSlots, 2, 87, 51));
+        this.addSlot(new Slot(craftSlots, 3, 118, 84));
+        this.addSlot(new Slot(craftSlots, 4, 158, 53));
+        this.addSlot(new Slot(craftSlots, 5, 158, 104));
+        this.addSlot(new Slot(craftSlots, 6, 120, 134));
+        this.addSlot(new Slot(craftSlots, 7, 83, 104));
         for (int i = 0; i < 9; ++i) {//49, 157
-            this.addSlot(new Slot(inventory, i + 7, 50 + 18 * i, 166));
+            this.addSlot(new Slot(inventory, i + 8, 50 + 18 * i, 158));
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i + 16, 50 + 18 * i, 184));
+            this.addSlot(new Slot(inventory, i + 17, 50 + 18 * i, 177));
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i + 25, 50 + 18 * i, 202));
+            this.addSlot(new Slot(inventory, i + 26, 50 + 18 * i, 195));
         }
         for (int k = 0; k < 9; ++k) {//49, 215
-            this.addSlot(new Slot(inventory, k, 50 + k * 18, 216));
-        }*/
+            this.addSlot(new Slot(inventory, k + 35, 50 + k * 18, 216));
+        }
     }
 
     public static AltarMenu create(int id, Inventory inventory, FriendlyByteBuf buf) {
@@ -67,19 +82,58 @@ public class AltarMenu extends ItemCombinerMenu {
     protected void onTake(Player pPlayer, ItemStack pStack) {
     }
 
-    protected boolean isValidBlock(BlockState pState) {
-        return pState.is(NoixmodAPIBlocks.ALTAR.get());
-    }
-
     public void createResult() {
 
+    }
+
+    public void slotsChanged(Container pInventory) {
+        this.access.execute((p_39386_, p_39387_) ->
+                slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots));
+    }
+
+    protected static void slotChangedCraftingGrid(AbstractContainerMenu pMenu, Level pLevel,
+                                                  Player pPlayer, CraftingContainer pContainer, ResultContainer pResult) {
+        if (!pLevel.isClientSide) {
+            ServerPlayer serverplayer = (ServerPlayer)pPlayer;
+            ItemStack itemstack = ItemStack.EMPTY;
+            Optional<RitualRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(ApiRecipes.RITUAL_RECIPE
+                    .get(), pContainer, pLevel);
+            if (optional.isPresent()) {
+                RitualRecipe recipe = optional.get();
+                if (pResult.setRecipeUsed(pLevel, serverplayer, recipe)) {
+                    ItemStack itemstack1 = recipe.assemble(pContainer, pLevel.registryAccess());
+                    if (itemstack1.isItemEnabled(pLevel.enabledFeatures())) {
+                        itemstack = itemstack1;
+                    }
+                }
+            }
+            pResult.setItem(0, itemstack);
+            pMenu.setRemoteSlot(0, itemstack);
+            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
+        }
+    }
+
+    public void removed(Player pPlayer) {
+        super.removed(pPlayer);
+        this.access.execute((p_39371_, p_39372_) -> {
+            this.clearContainer(pPlayer, this.craftSlots);
+        });
     }
 
     protected ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create().build();
     }
 
+    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
+        return pSlot.container != this.resultSlots && super.canTakeItemForPickAll(pStack, pSlot);
+    }
+
+    public int getResultSlotIndex() {
+        return 0;
+    }
+
     public boolean stillValid(Player player) {
-        return player.isAlive();
+        return player.isAlive() && access.evaluate((level, blockPos) ->
+                level.getBlockState(blockPos).is(NoixmodAPIBlocks.ALTAR.get()), true);
     }
 }

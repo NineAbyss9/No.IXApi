@@ -40,10 +40,10 @@ public class Drunkenness extends APISpellcaster {
     public void tick() {
         super.tick();
         int integer = this.getTicksUsingItem();
-        if (this.getHealth() <= 20 && this.isAlive()) {
+        if (this.getHealth() <= 20 && this.isAlive() && !this.getOffhandItem().isEmpty()) {
             this.startUsingItem(InteractionHand.OFF_HAND);
         }
-        if (integer >= 20) {
+        if (integer >= 19) {
             this.completeUsingItem();
         }
     }
@@ -54,7 +54,7 @@ public class Drunkenness extends APISpellcaster {
                 this.setHealth(this.getMaxHealth());
             }
         }
-        super.completeUsingItem();
+        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
     }
 
     public boolean isAttackable() {

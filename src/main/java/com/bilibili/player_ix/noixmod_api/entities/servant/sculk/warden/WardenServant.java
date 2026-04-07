@@ -93,7 +93,7 @@ implements VibrationSystem {
     private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
     AngerManagement angerManagement = new AngerManagement(this::canTargetEntity, Collections.emptyList());
     private static final AttributeModifier DAMAGE_PLUS = new AttributeModifier(
-            "1Player_IX2-931-WS-DamagePlus", 2.0,
+            "1Player_IX2-931-WS-DamagePlus", 2.0D,
             AttributeModifier.Operation.MULTIPLY_TOTAL);
     public WardenServant(EntityType<? extends WardenServant> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -429,6 +429,7 @@ implements VibrationSystem {
     public boolean killedEntity(ServerLevel pLevel, LivingEntity pEntity) {
         if (!this.isPowerful())
             setPowerPlus();
+        this.heal(pEntity.getMaxHealth() / 10.0F);
         return super.killedEntity(pLevel, pEntity);
     }
 

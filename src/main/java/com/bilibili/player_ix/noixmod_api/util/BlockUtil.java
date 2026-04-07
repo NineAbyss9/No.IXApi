@@ -1,13 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockUtil {
     public BlockUtil() {
     }

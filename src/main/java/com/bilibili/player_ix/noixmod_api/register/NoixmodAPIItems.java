@@ -142,6 +142,7 @@ public class NoixmodAPIItems {
             11506911, 9529055);
     public static final RegistryObject<Item> WORM_MASTER_SPAWN_EGG = spawnEggItem("worm_master", NoixmodAPIEntities.WORM_MASTER,
             -10066432, -16764160, Rarity.RARE);
+    public static final RegistryObject<Item> YETI_SPAWN_EGG = apiSpawnEgg("yeti", NoixmodAPIEntities.YETI, 5592575, 11184810);
 
     //Ores
     public static final RegistryObject<Item> INFERNAL_IRON_INGOT = REGISTRY.register("infernal_iron_ingot", ()->
@@ -257,6 +258,7 @@ public class NoixmodAPIItems {
             FreshSoul::new);
     public static final RegistryObject<Item> HALO_OF_APOSTLE =
             REGISTRY.register("halo_of_apostle", HaloOfApostleItem::new);
+    public static final RegistryObject<Item> ICE_CORE = REGISTRY.register("ice_core", IceCore::new);
     public static final RegistryObject<Item> NIHILISTIC_ASH = REGISTRY.register("nihilistic_ash",
             ()-> new Item(properties().rarity(Rarity.UNCOMMON).stacksTo(64)));
     public static final RegistryObject<Item> NIHILISTIC_ESSENCE = REGISTRY.register("nihilistic_essence",

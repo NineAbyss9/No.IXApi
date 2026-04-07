@@ -77,7 +77,6 @@ implements PowerableMob, Nihilistic
         ZOMBIE_ATTACKING
     }
 
-    @Override
     public EntityDimensions getDimensions(Pose pose) {
         return super.getDimensions(pose).scale(0.9f);
     }

@@ -6,4 +6,8 @@ extends RitualSupplies {
     public IceCore(Properties properties) {
         super(properties);
     }
+
+    public IceCore() {
+        this(new Properties());
+    }
 }

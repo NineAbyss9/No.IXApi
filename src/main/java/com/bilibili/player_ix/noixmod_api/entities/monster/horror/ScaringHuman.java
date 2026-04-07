@@ -14,6 +14,11 @@ implements ApiPoseMob {
         super(p_33002_, p_33003_);
     }
 
+    protected void registerGoals() {
+        this.addAttackGoal();
+        this.addGoals(2);
+    }
+
     public ApiPose getPoses() {
         if (isAggressive())
             return ApiPose.ZOMBIE_ATTACKING;

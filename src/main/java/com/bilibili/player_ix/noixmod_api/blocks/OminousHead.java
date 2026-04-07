@@ -35,7 +35,7 @@ extends SkullBlock {
         else {
             p_60506_.playSound(SoundEvents.AMBIENT_CAVE.get());
             ServerLevel serverLevel = (ServerLevel)p_60504_;
-            var  headHunter = NoixmodAPIEntities.HEAD_HUNTER.get().create(serverLevel);
+            var headHunter = NoixmodAPIEntities.HEAD_HUNTER.get().create(serverLevel);
             if (headHunter != null) {
                 headHunter.moveTo(Vec9.of(p_60505_));
                 headHunter.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(p_60505_), MobSpawnType.EVENT);

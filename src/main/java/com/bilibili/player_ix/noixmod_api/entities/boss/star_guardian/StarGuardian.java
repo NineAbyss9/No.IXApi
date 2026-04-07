@@ -56,7 +56,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.network.PlayMessages;
 import org.NineAbyss9.math.AbyssMath;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -104,11 +103,6 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         this.setPersistenceRequired();
         this.setLeftHanded(false);
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.STAR_SWORD.get()));
-    }
-
-    @SuppressWarnings("unused")
-    public StarGuardian(PlayMessages.SpawnEntity entity, Level pLevel) {
-        this(NoixmodAPIEntities.STAR_GUARDIAN.get(), pLevel);
     }
 
     protected void defineSynchedData() {
@@ -211,8 +205,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 }
             }
         }
-        if (this.isFlag(0))
-            return;
+        if (this.isFlag(0)) return;
         if (this.isFlag(1)) {
             increaseAniTick();
             if (this.aniTickEquals(10)) {
@@ -295,7 +288,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             if (target != null) {
                 GuardianTeleportAttack.trigger(this, target);
             }
-            if (this.aniTick(75)) {
+            if (this.aniTick(80)) {
                 this.resetState();
             }
         } else if (this.isFlag(8)) {

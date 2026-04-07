@@ -83,10 +83,10 @@ extends SwordItem {
                         try {
                             living.readAdditionalSaveData(tag);
                         } catch (RuntimeException ignores) {
-                            entity.setRemoved(Entity.RemovalReason.KILLED);
                             if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {
                                 BossBar.removeBossBar(apostle.getUUID(), apostle);
                             }
+                            entity.setRemoved(Entity.RemovalReason.KILLED);
                             continue;
                         }
                     }

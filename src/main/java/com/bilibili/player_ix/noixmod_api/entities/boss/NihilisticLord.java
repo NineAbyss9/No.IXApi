@@ -68,7 +68,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
-@Prototype(prototype = "bilibili@Player_IX")
+@Prototype(prototype = "bilibili@")
 public class NihilisticLord
 extends SpellcasterNihilist
 implements RangedAttackMob, ApiNihilisticBoss, IX {

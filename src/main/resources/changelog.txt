@@ -40,3 +40,6 @@ This may be the last version for quite some time,
 1.3.9: Added : Warden doll, Warden servant, NeoIllager.
 Changes : Drunkenness, flagmen and GraveKeepers will join raids now.Remastered headhunter.
 1.3.903 : Fixed some bugs.50% of Allays will be replaced by Heallings, use gold nugget to own them.
+1.3.904 : Try to fix a bug about apostle in server.Added Yeti.Make warden servants more powerful.
+Maybe the altar system will be completed next version.
+1.3.905(1.4.0) : Added : Altar.

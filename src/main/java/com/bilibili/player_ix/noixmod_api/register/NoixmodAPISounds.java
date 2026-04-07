@@ -1,7 +1,6 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -10,7 +9,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -37,13 +35,11 @@ public class NoixmodAPISounds {
     public static final RegistryObject<SoundEvent> PARTY_GLITCH;
     private NoixmodAPISounds() {}
 
-    @Nonnull
     private static SoundEvent createVariableRangeEvent(String location) {
         return SoundEvent.createVariableRangeEvent(new ResourceLocation(NoixmodAPI.MOD_ID,
                 location));
     }
 
-    @Nonnull
     private static Supplier<SoundEvent> createVariableSupplier(String st) {
         return ()->createVariableRangeEvent(st);
     }

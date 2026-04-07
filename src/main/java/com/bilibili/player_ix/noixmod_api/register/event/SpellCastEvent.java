@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.register.event;
 
 import com.bilibili.player_ix.noixmod_api.magic.Spell;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +19,7 @@ public class SpellCastEvent extends Event {
     private final Spell.Type spellType;
     private final Spell spell;
     public SpellCastEvent(ServerLevel pLevel, LivingEntity pCaster, Spell.Type pType, Spell pSpell) {
-        level = pLevel;
+        this.level = pLevel;
         this.caster = pCaster;
         this.spellType = pType;
         this.spell = pSpell;
@@ -34,6 +35,10 @@ public class SpellCastEvent extends Event {
 
     public Vec3 getCastPos() {
         return this.getCaster().position();
+    }
+
+    public BlockPos blockPos() {
+        return this.caster.blockPosition();
     }
 
     public LivingEntity getCaster() {

@@ -24,6 +24,7 @@ public class NoixmodAPIParticleTypes {
     public static final RegistryObject<ParticleType<CircleParticleOption>> CIRCLE;
     public static final RegistryObject<SimpleParticleType> CLOUD;
     public static final RegistryObject<SimpleParticleType> COLORED_ASH;
+    public static final RegistryObject<SimpleParticleType> CORRUPTION;
     public static final RegistryObject<SimpleParticleType> CRACK;
     public static final RegistryObject<SimpleParticleType> DARK_SPELL = REGISTRY.register("dark_spell", supplier());
     public static final RegistryObject<SimpleParticleType> NIHILISTIC_FIRE = REGISTRY.register("nihilistic_fire_particle", supplier());
@@ -65,6 +66,7 @@ public class NoixmodAPIParticleTypes {
         });
         CLOUD = REGISTRY.register("cloud", supplier());
         COLORED_ASH = REGISTRY.register("colored_ash", supplier());
+        CORRUPTION = REGISTRY.register("corruption", supplier());
         NORMAL_SPELL = REGISTRY.register("normal_spell", supplier());
         GOLDEN_FLAME = REGISTRY.register("golden_flame", supplier());
         SUMMON_PARTICLE = REGISTRY.register("summon_particle", supplier());

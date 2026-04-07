@@ -62,8 +62,12 @@ public class NoixmodAPIMainConfig {
     public static ForgeConfigSpec.BooleanValue PlateauBeastCanSummon;
     public static ForgeConfigSpec.BooleanValue WindZombieCanSpawn;
     public static ForgeConfigSpec.BooleanValue NihilisticOrderSpawn;
+    public static ForgeConfigSpec.BooleanValue YetiWillSpawn;
     //Spawn End
+    //Horror Mode
     public static ForgeConfigSpec.BooleanValue HorrorMode;
+    public static ForgeConfigSpec.BooleanValue SpawnHorror;
+    //Horror Mode End
 
     public static ForgeConfigSpec.BooleanValue PlayBossMusic;
 
@@ -84,9 +88,10 @@ public class NoixmodAPIMainConfig {
         builder.pop();
         builder.push("HorrorMode");
         HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false").define("API恐怖模式", false);
+        SpawnHorror = builder.comment("Will scaring mobs spawn?Default:false").worldRestart().define("SpawnScaringMobs", false);
         builder.pop();
         builder.push("Sounds");
-        PlayBossMusic = builder.comment("Will bosses play music?Default:true").define("是否播放Boss音乐", true);
+        PlayBossMusic = builder.comment("Will bosses play music?Default:true(Deprecated)").define("是否播放Boss音乐", true);
         builder.pop();
         builder.push("Nihilists");
         builder.push("Order");
@@ -181,6 +186,9 @@ public class NoixmodAPIMainConfig {
         builder.push("Monster");
         builder.push("PlateauBeast");
         PlateauBeastCanSummon = builder.comment("Will plateau beasts spawn ?Default:true").worldRestart().define("高原野兽是否生成", true);
+        builder.pop();
+        builder.push("Yeti");
+        YetiWillSpawn = builder.comment("Will yetis spawn ?Default:true").worldRestart().define("雪怪是否生成", true);
         builder.pop();
         builder.push("NihilisticBlaze");
         NihilisticBlazeSpawn = builder.comment("Will nihilistic blazes spawn?Default:true").worldRestart().define("SpawnNihilisticBlaze",

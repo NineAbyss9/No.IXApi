@@ -4,8 +4,7 @@
     "CompassItemMixin",
     "LivingEntityMixin",
     "MobileEntityMixin",
-    "PlayerMixin",
-    "ServerLevelMixin"
+    "PlayerMixin"
   ],
   "required": true,
   "minVersion": "0.8",

@@ -50,6 +50,7 @@ implements ISpell {
         WATER,
         NETHER,
         END,
+        ICE,
         NIHILISTIC,
         VILLAGER,
         ILLAGER,

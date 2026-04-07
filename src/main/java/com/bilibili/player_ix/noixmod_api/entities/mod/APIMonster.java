@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.mod;
 
+import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -33,5 +34,10 @@ extends Monster {
                                                     MobSpawnType spawnType, BlockPos pos, RandomSource source) {
         return APIMonster.checkMobSpawnRules(type, accessor, spawnType, pos, source) && accessor.getDifficulty()
                 != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(accessor, pos, source);
+    }
+
+    public static boolean horrorMobsSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor accessor,
+                                               MobSpawnType spawnType, BlockPos pos, RandomSource source) {
+        return NoixmodAPIMainConfig.HorrorMode.get() && checkAPIMonsterSpawnRules(type, accessor, spawnType, pos, source);
     }
 }

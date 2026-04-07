@@ -58,13 +58,11 @@ implements ApiBoss {
         super.customServerAiStep();
     }
 
-    @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         return super.hurt(pSource, pAmount);
     }
 
-    @Override
-    protected void actuallyHurt(@NotNull DamageSource p_21240_, float p_21241_) {
+    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
         if (this.getHealth() - p_21241_ <= 0 && this.needChangePhase() && this.isAlive()) {
             this.setHealth(this.getMaxHealth());
             this.setPhase((byte)(this.getPhase() + 1));

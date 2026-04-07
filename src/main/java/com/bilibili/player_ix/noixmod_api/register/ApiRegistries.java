@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.DeferredRegister;
 
+@Deprecated
 public class ApiRegistries {
     public static final ResourceKey<Registry<ISpell>> SPELL = createRegistryKey("spell");
     public static final DeferredRegister<ISpell> SPELLS =

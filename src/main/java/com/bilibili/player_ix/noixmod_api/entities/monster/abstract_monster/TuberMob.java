@@ -15,7 +15,6 @@ extends OwnableMob {
         super(p_21683_, p_21684_);
     }
 
-    @Override
     public boolean canAttack(@NotNull LivingEntity p_21171_) {
         if (p_21171_ instanceof TuberMob) {
             return false;

@@ -9,7 +9,6 @@ public class NihilisticBeacon extends BeaconBlock {
         super(p_49421_);
     }
 
-    @Override
     public DyeColor getColor() {
         return DyeColor.PURPLE;
     }

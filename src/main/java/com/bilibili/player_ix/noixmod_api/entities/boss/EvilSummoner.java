@@ -80,14 +80,10 @@ implements InventoryCarrier, ApiNihilisticBoss {
         this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }
 
-    public void aiStep() {
-        super.aiStep();
-        if (this.level().isClientSide) {
-            if (this.isCastingSpell()) {
-                this.level().addParticle(NoixmodAPIParticleTypes.RED_SKULL.get(), this.getRandomX(1),
-                        this.getRandomY(), this.getRandomZ(1), 0, 0, 0);
-            }
-        }
+    protected void spellTick() {
+        super.spellTick();
+        this.level().addParticle(NoixmodAPIParticleTypes.RED_SKULL.get(), this.getRandomX(1),
+                this.getRandomY(), this.getRandomZ(1), 0, 0, 0);
     }
 
     protected void customServerAiStep() {
@@ -209,6 +205,7 @@ implements InventoryCarrier, ApiNihilisticBoss {
         } else {
             for (int j = 0; j < this.getInventory().getContainerSize(); j++) {
                 ItemEntity entity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), this.getInventory().getItem(j));
+                entity.setNoPickUpDelay();
                 entity.setUnlimitedLifetime();
                 this.level().addFreshEntity(entity);
             }

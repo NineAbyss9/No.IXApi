@@ -13,15 +13,12 @@ implements ApiAgent {
     public ServerAgent() {
     }
 
-    @Override
     public Player getPlayerInstance() {
         return null;
     }
 
-    @Override
     public void addBossBar(UUID id, Mob mob) {}
 
-    @Override
     public void removeBossBar(UUID id, Mob mob) {}
 
     public OwnableData getOwnableData() {

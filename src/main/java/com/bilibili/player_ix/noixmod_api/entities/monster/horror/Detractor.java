@@ -26,7 +26,7 @@ public class Detractor extends AbstractHorrorMob {
 
     public void tick() {
         super.tick();
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             ParticleUtil.addRedStoneParticle(this, this.getRandomX(0.5), this.getRandomY(),
                     this.getRandomZ(0.5), 0, 0.2, 0);
         }

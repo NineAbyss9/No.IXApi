@@ -23,13 +23,11 @@ implements Ownable {
     }
 
     @Nullable
-    @Override
     public LivingEntity getOwner() {
         return this.owner;
     }
 
     @Nullable
-    @Override
     public UUID getOwnerUUID() {
         if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
             Entity $$0 = ((ServerLevel)this.level()).getEntity(this.ownerUUID);
@@ -40,7 +38,6 @@ implements Ownable {
         return this.ownerUUID;
     }
 
-    @Override
     public void setOwner(@Nullable LivingEntity lie) {
         this.owner = lie;
         if (lie != null) {

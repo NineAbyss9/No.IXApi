@@ -1,20 +1,32 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
+import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class AbstractHorrorMob extends ApiPathfinderMob {
+public abstract class AbstractHorrorMob extends ApiPathfinderMob {
     public AbstractHorrorMob(EntityType<? extends AbstractHorrorMob> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
+    }
+
+    protected void addAttackGoal() {
+        this.goalSelector.addGoal(0, new ApiMeleeAttackGoal(this, 1.0D));
+    }
+
+    protected void addGoals(int i) {
+        this.goalSelector.addGoal(i, new FloatGoal(this));
+        this.goalSelector.addGoal(i, new RandomStrollGoal(this, 0.8D));
     }
 
     public boolean canAttack(LivingEntity p_21171_) {

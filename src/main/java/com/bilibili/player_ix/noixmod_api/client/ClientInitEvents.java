@@ -82,6 +82,7 @@ public class ClientInitEvents {
         event.registerLayerDefinition(NoixmodAPIModelLayer.VILLAGER_FIGHTER, VillagerFighterModel::createBodyLayer);
         event.registerLayerDefinition(WormIllagerModel.LAYER_LOCATION, WormIllagerModel::createBodyLayer);
         event.registerLayerDefinition(WrongedSoulModel.LAYER_LOCATION, WrongedSoulModel::createBodyLayer);
+        event.registerLayerDefinition(YetiModel.LAYER_LOCATION, YetiModel::createBodyLayer);
         event.registerLayerDefinition(NoixmodAPIModelLayer.API_ZOMBIE, ApiZombieModel::createBodyLayer);
     }
 
@@ -94,6 +95,7 @@ public class ClientInitEvents {
         event.registerSpriteSet(NoixmodAPIParticleTypes.CIRCLE.get(), CircleParticle.Provider::new);
         event.registerSpriteSet(NoixmodAPIParticleTypes.CLOUD.get(), Cloud.Provider::new);
         event.registerSpriteSet(NoixmodAPIParticleTypes.COLORED_ASH.get(), ColoredAsh.ColoredAshProvider::new);
+        event.registerSpriteSet(NoixmodAPIParticleTypes.CORRUPTION.get(), Corruption.Provider::new);
         event.registerSpriteSet(NoixmodAPIParticleTypes.CRACK.get(), CrackParticle.Provider::new);
         event.registerSpriteSet(NoixmodAPIParticleTypes.DARK_SPELL.get(), NihilisticSpell.DarkSpellProvider::new);
         event.registerSpriteSet(NoixmodAPIParticleTypes.GOLDEN_FLAME.get(), GoldenFlame.GoldenFlameProvider::new);
@@ -179,6 +181,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_ARROW_RAIN.get(), NihilisticArrowRainRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_BLAZE.get(), NihilisticBlazeRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HOSTILE_NB.get(), NihilisticBlazeRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.HOSTILE_YETI.get(), YetiRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_CRACK.get(), BaseEntityRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_DEATH.get(), NihilisticDeathRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.NIHILISTIC_EVOKER.get(), NihilisticEvokerRenderer::new);
@@ -231,6 +234,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.WORM.get(), WormRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WORM_MASTER.get(), WormMasterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WRONGED_SOUL.get(), WrongedSoulRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.YETI.get(), YetiRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.ZOMBIE_VINDICATOR.get(), ZombieVindicatorRenderer::new);
     }
 

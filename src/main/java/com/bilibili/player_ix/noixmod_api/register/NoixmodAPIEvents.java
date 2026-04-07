@@ -1,7 +1,12 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.bilibili.player_ix.noixmod_api.server.HorrorModeSavedData;
+import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
+import com.bilibili.player_ix.noixmod_api.entities.ai.goal.HorrorLookAtEntityGoal;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.LevelAccessor;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
@@ -92,8 +97,7 @@ public class NoixmodAPIEvents {
     @SubscribeEvent
     public static void onBabySpawn(BabyEntitySpawnEvent event) {
         Mob mob = event.getChild();
-        if (mob == null)
-            return;
+        if (mob == null) return;
         Level level = mob.level();
         if (!level.isClientSide && mob instanceof Villager villager && Math.random() < 0.5) {
             ServerLevel serverLevel = (ServerLevel)level;
@@ -156,7 +160,7 @@ public class NoixmodAPIEvents {
                 event.setCanceled(true);
             }
         } else if (mob instanceof Allay allay && MathSupport.random.nextBoolean() &&
-                event.getSpawnType() == MobSpawnType.EVENT) {
+                event.getSpawnType() == MobSpawnType.STRUCTURE) {
             Healing healing = NoixmodAPIEntities.HEALING.get().create(serverLevel);
             if (healing != null) {
                 healing.moveTo(allay.position());
@@ -279,6 +283,15 @@ public class NoixmodAPIEvents {
                 }
             }
         }*/
+        if (NoixmodAPIMainConfig.HorrorMode.get()) {
+            if (entity instanceof Mob mob) {
+                if (mob instanceof OwnableMob ownableMob && (ownableMob.isHostile() || ownableMob instanceof Enemy)) {
+                    ownableMob.goalSelector.addGoal(3, new HorrorLookAtEntityGoal(ownableMob));
+                } else {
+                    mob.goalSelector.addGoal(3, new HorrorLookAtEntityGoal(mob));
+                }
+            }
+        }
     }
 
     public static final Map<ServerLevel, NihilisticOrderSpawner> ORDER_SPAWNER = new HashMap<>();
@@ -286,6 +299,13 @@ public class NoixmodAPIEvents {
     @SubscribeEvent
     public static void onWorldLoad(LevelEvent.Load event) {
         LevelAccessor accessor = event.getLevel();
+        if (NoixmodAPIMainConfig.HorrorMode.get()) {
+            if (accessor instanceof ServerLevel serverLevel) {
+                HorrorModeManager.horrorModeManagers.put(serverLevel, new HorrorModeManager(serverLevel));
+                serverLevel.getDataStorage().computeIfAbsent(compound -> HorrorModeSavedData.load(serverLevel,
+                                compound), () -> new HorrorModeSavedData(serverLevel), "horror_modes");
+            }
+        }
         if (!accessor.isClientSide() && accessor instanceof Level level
             && level.dimension() == Level.OVERWORLD) {
             ORDER_SPAWNER.put(((ServerLevel)event.getLevel()), new NihilisticOrderSpawner());
@@ -295,6 +315,7 @@ public class NoixmodAPIEvents {
     @SubscribeEvent
     public static void onWorldEnd(LevelEvent.Unload event) {
         LevelAccessor accessor = event.getLevel();
+        //HorrorModeManager.horrorModeManagers.remove((Level)accessor);
         if (!accessor.isClientSide() && accessor instanceof Level level) {
             ORDER_SPAWNER.remove((ServerLevel)level);
         }
@@ -310,8 +331,12 @@ public class NoixmodAPIEvents {
                 }
             }
         }*/
-        if(!event.level.isClientSide){
+        if(!event.level.isClientSide) {
             ServerLevel serverLevel = (ServerLevel)event.level;
+            if (NoixmodAPIMainConfig.HorrorMode.get()) {
+                serverLevel.getDataStorage().get(compoundTag ->
+                        HorrorModeSavedData.load(serverLevel, compoundTag), HorrorModeSavedData.MANAGER_FILE_ID).tick();
+            }
             NihilisticOrderSpawner orderSpawner = ORDER_SPAWNER.get(serverLevel);
             if (orderSpawner != null){
                 orderSpawner.tick(serverLevel);

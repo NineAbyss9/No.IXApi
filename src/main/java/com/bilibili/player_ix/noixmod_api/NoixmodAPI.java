@@ -29,20 +29,6 @@ public class NoixmodAPI {
     public static final String MOD_ID = "noixmodapi";
     public static ApiAgent agent = DistExecutor.unsafeRunForDist(() -> ClientAgent::new,
             () -> ServerAgent::new);
-    /*public static Unsafe UNSAFE;
-    public static MethodHandles.Lookup LOOKUP_IMPL;
-
-    static {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            UNSAFE = (Unsafe)theUnsafe.get(null);
-            Field lookup = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
-            LOOKUP_IMPL = (MethodHandles.Lookup)UNSAFE.getObject(
-                    UNSAFE.staticFieldBase(lookup), UNSAFE.staticFieldOffset(lookup));
-        } catch (Exception ignore) {
-        }
-    }*/
 
     @SuppressWarnings("removal")
     public NoixmodAPI() {
@@ -50,9 +36,11 @@ public class NoixmodAPI {
         IEventBus bus = context.getModEventBus();
         bus.addListener(this::commonSetUp);
         bus.addListener(NoixmodAPIEntities::registerSpawns);
+        bus.addListener(NoixmodAPIEntities::registerAttributes);
         NoixmodAPITags.init();
         NoixmodAPIItems.REGISTRY.register(bus);
         NoixmodAPIMobEffects.REGISTER.register(bus);
+        ApiRecipes.register(bus);
         ApiGuis.REGISTER.register(bus);
         ApiEnchantments.REGISTER.register(bus);
         ApiBlockEntities.REGISTER.register(bus);
@@ -76,6 +64,7 @@ public class NoixmodAPI {
 
     private void commonSetUp(FMLCommonSetupEvent event) {
         ApiNetwork.register();
+        NoixmodAPIEntities.init(event);
     }
 
     public static ResourceLocation location(String s) {

@@ -159,6 +159,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.WARDEN_SERVANT_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.WIND_ZOMBIE_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.WORM_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.YETI_SPAWN_EGG.get());
             }).build());
 
     private NoixmodAPITabs() {}

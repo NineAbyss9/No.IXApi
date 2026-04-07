@@ -63,8 +63,7 @@ extends APISpellcaster {
         this.xpReward = 15;
         event = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED,
                 BossEvent.BossBarOverlay.NOTCHED_10);
-        this.setItemInHand(InteractionHand.MAIN_HAND,
-                new ItemStack(NoixmodAPIItems.UNINVITED_SWORD.get()));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.UNINVITED_SWORD.get()));
     }
 
     protected void defineSynchedData() {

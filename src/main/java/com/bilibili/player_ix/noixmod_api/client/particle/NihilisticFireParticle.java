@@ -5,8 +5,6 @@ import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 @OnlyInClient
 public class NihilisticFireParticle
@@ -25,14 +23,11 @@ extends TextureSheetParticle {
         this.setSpriteFromAge(this.set);
     }
 
-    @Override
     public void tick() {
         this.setSpriteFromAge(this.set);
         super.tick();
     }
 
-    @NotNull
-    @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
@@ -43,9 +38,7 @@ extends TextureSheetParticle {
             this.pSet = spriteSet;
         }
 
-        @Nullable
-        @Override
-        public Particle createParticle(@NotNull SimpleParticleType type, @NotNull ClientLevel clientLevel, double v, double v1, double v2, double v3, double v4, double v5) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel clientLevel, double v, double v1, double v2, double v3, double v4, double v5) {
             return new NihilisticFireParticle(clientLevel, v, v1, v2, v3, v4, v5, this.pSet);
         }
     }
@@ -56,9 +49,7 @@ extends TextureSheetParticle {
             this.pSet = spriteSet;
         }
 
-        @Nullable
-        @Override
-        public Particle createParticle(@NotNull SimpleParticleType type, @NotNull ClientLevel clientLevel, double v, double v1, double v2, double v3, double v4, double v5) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel clientLevel, double v, double v1, double v2, double v3, double v4, double v5) {
             NihilisticFireParticle fire = new NihilisticFireParticle(clientLevel, v, v1, v2, v3, v4, v5, this.pSet);
             fire.scale(0.6F);
             return fire;

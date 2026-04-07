@@ -7,11 +7,9 @@ import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.level.Level;
 
 //the villager
@@ -25,11 +23,10 @@ implements ApiPoseMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new ApiMeleeAttackGoal(this, 1.0));
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, LivingEntity.class, 30F));
     }
 
     public Component getDisplayName() {
-        return Component.translatable("entity.minecraft.villager");
+        return getName();
     }
 
     public Component getName() {
@@ -37,8 +34,7 @@ implements ApiPoseMob {
     }
 
     public ApiPose getPoses() {
-        if (this.isAggressive())
-            return ApiPose.ZOMBIE_ATTACKING;
+        if (this.isAggressive()) return ApiPose.ZOMBIE_ATTACKING;
         return ApiPose.NATURAL;
     }
 

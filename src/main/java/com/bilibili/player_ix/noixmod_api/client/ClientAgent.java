@@ -15,7 +15,6 @@ implements ApiAgent {
     public ClientAgent() {
     }
 
-    @Override
     public Player getPlayerInstance() {
         return Minecraft.getInstance().player;
     }
@@ -24,12 +23,10 @@ implements ApiAgent {
         return ownableDataInstance;
     }
 
-    @Override
     public void addBossBar(UUID id, Mob mob) {
         BossBar.addBossBar(id, mob);
     }
 
-    @Override
     public void removeBossBar(UUID id, Mob mob) {
         BossBar.removeBossBar(id, mob);
     }

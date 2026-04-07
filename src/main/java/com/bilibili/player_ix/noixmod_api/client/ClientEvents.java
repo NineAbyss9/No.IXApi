@@ -1,7 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
-import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.TickEvent;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.sound.BossLoopMusic;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
@@ -27,7 +29,6 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.*;
 
-@PAMAreNonnullByDefault
 @Mod.EventBusSubscriber(modid = NoixmodAPI.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
     private ClientEvents() {
@@ -56,6 +57,16 @@ public class ClientEvents {
         }
     }
 
+    public static void onWorldTick(TickEvent.LevelTickEvent event) {
+        Level level = event.level;
+        if (NoixmodAPIMainConfig.HorrorMode.get() && level.isClientSide) {
+            HorrorModeManager manager = HorrorModeManager.horrorModeManagers.get(level);
+            if (manager == null) return;
+            manager.tick();
+        }
+    }
+
+    //From Polarice's codes
     public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         Minecraft minecraft = Minecraft.getInstance();
@@ -110,6 +121,7 @@ public class ClientEvents {
             }
         }
     }
+    //To here
 
     @Nullable
     public static ApostleBoss findApostle(Entity entity) {

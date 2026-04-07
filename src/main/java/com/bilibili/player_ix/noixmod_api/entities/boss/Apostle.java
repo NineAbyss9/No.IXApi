@@ -530,7 +530,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
         if (this.tickSummon > 0) {
             this.tickSummon--;
         }
-        if (this.getSpreadFireballTicks() > 0) {
+        if (this.spreadFireballTicks > 0) {
             this.spreadFireballTicks--;
         }
         if (this.escapeTime > 0) {
@@ -1702,7 +1702,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                 } else {
                     if (chance <= 0.3F && this.getStatueCooldown() <= 0) {
                         this.setApostleSpell(4);
-                    } else if (this.getSpreadFireballTicks() == 0 && chance <= 0.2F) {
+                    } else if (this.getSpreadFireballTicks() <= 0 && chance <= 0.2F) {
                         this.setApostleSpell(3);
                     }
                 }
@@ -2066,13 +2066,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                             this.mob.stopUsingItem();
                         } else if (flag) {
                             int i = this.mob.getTicksUsingItem();
-                            int j = 20;
+                            final int j = 20;
                             if (i >= j) {
                                 this.mob.stopUsingItem();
                                 this.mob.performRangedAttack(livingentity, (BowItem.getPowerForTime(i) / 1.5f));
                             }
-                            this.attackTime = this.mob.isAfraid() ? 50 : NoixmodAPIAttributesConfig
-                                    .apostleArcheryCooldown.get();
+                            int cooldown = NoixmodAPIAttributesConfig.apostleArcheryCooldown.get();
+                            this.attackTime = this.mob.isAfraid() ? cooldown * 2 : cooldown;
                         }
                     } else if (--this.attackTime <= 0 && this.seeTime >= -120) {
                         this.mob.startUsingItem(InteractionHand.MAIN_HAND);

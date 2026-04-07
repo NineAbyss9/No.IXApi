@@ -52,8 +52,6 @@ extends AbstractHorrorMob {
             setLife(getLife() - 1);
         else {
             die();
-
-
             discard();
         }
         LivingEntity target = this.getTarget();
@@ -61,7 +59,7 @@ extends AbstractHorrorMob {
             this.lookControl.setLookAt(player, 30.0F, 30.0F);
             if (isLookingAtMe(player))
                 this.playerLooked = true;
-            if (closerThan(target, 100.0D)) {
+            if (closerThan(target, 60.0D)) {
                 this.getNavigation().stop();
             } else {
                 this.getNavigation().moveTo(target, 1.0D);

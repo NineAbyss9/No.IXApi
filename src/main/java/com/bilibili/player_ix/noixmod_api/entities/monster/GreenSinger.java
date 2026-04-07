@@ -43,7 +43,6 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_AXE));
     }
 
-    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new CastingSpellGoal());
         this.goalSelector.addGoal(1, new SummonSpellGoal(this));
@@ -56,7 +55,6 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
     }
 
-    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         pAmount = Math.min(15, pAmount);
         if (pSource.is(DamageTypeTags.IS_FIRE)) {
@@ -68,7 +66,6 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
         return super.hurt(pSource, pAmount);
     }
 
-    @Override
     public boolean doHurtTarget(Entity p_21372_) {
         this.heal(3f);
         if (p_21372_ instanceof LivingEntity entity) {
@@ -77,7 +74,6 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
         return super.doHurtTarget(p_21372_);
     }
 
-    @Override
     public double getAttributeValue(Attribute p_21134_) {
         if (p_21134_.equals(Attributes.ATTACK_DAMAGE)) {
             return super.getAttributeValue(p_21134_) * Mth.randomBetween(this.random, 1f, 1.25f);
@@ -85,7 +81,6 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
         return super.getAttributeValue(p_21134_);
     }
 
-    @Override
     public ApiPose getPoses() {
         if (this.isCastingSpell()) {
             return ApiPose.SPELL_CASTING;
@@ -127,13 +122,11 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
     }
 
     @Nullable
-    @Override
     public SoundEvent getCastingSoundEvent() {
         return this.getCastSound();
     }
 
     @Nullable
-    @Override
     public SoundEvent getCastSound() {
         return SoundEvents.EVOKER_CAST_SPELL;
     }
@@ -144,7 +137,6 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
             super(finder);
         }
 
-        @Override
         protected void castSpell() {
             for (int i = 0; i < 3; ++i) {
                 GreenSinger.this.summonWorm();
@@ -152,23 +144,19 @@ public class GreenSinger extends SpellcasterNihilist implements ApiPoseMob, Spel
             spawnFreakyWorm();
         }
 
-        @Override
         protected int getCastingTime() {
             return 20;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 400;
         }
 
         @Nullable
-        @Override
         protected SoundEvent getSpellPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        @Override
         protected APISpells.APISpell getSpell() {
             return APISpells.APISpell.FIRE;
         }

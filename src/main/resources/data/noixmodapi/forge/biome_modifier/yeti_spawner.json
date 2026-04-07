@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#forge:is_snowy",
+  "spawners": {
+    "type": "noixmodapi:yeti",
+    "minCount": 1,
+    "maxCount": 1,
+    "weight": 30
+  }
+}
