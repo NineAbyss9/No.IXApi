@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer.layer;
 
-import com.bilibili.player_ix.noixmod_api.client.model.NihilistIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.NihilistIllagerModel;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.mojang.blaze3d.vertex.PoseStack;

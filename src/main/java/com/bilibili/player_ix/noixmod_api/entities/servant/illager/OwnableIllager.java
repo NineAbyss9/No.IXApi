@@ -36,6 +36,7 @@ implements ApiPoseMob, SpellCasterMob {
     protected static final EntityDataAccessor<APISpells.APISpell> SPELL;
     protected OwnableIllager(EntityType<? extends OwnableIllager> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 3;
     }
 
     protected void defineSynchedData() {
@@ -167,6 +168,10 @@ implements ApiPoseMob, SpellCasterMob {
 
     public boolean canAccept(ItemStack stack) {
         return !stack.isEmpty() && isFood(stack);
+    }
+
+    public int getExperienceReward() {
+        return isHostile() ? super.getExperienceReward() : 0;
     }
 
     static {

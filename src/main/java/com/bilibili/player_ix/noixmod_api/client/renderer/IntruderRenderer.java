@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
-import com.bilibili.player_ix.noixmod_api.client.model.IntruderModel;
+import com.bilibili.player_ix.noixmod_api.client.model.illager.IntruderModel;
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.Intruder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;

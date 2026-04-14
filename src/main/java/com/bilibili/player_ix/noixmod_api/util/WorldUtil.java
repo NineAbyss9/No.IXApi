@@ -108,8 +108,8 @@ public record WorldUtil(Entity entity) {
         ForgeEventFactory.onFinalizeSpawn(mob, level, instance, type, data, tag);
     }
 
-    public static void nullableFinalizeSpawn(Mob mob, ServerLevel level, DifficultyInstance instance, MobSpawnType type) {
-        WorldUtil.finalizeSpawn(mob, level, instance, type, null, null);
+    public static void nullableFinalizeSpawn(Mob mob, Level level, DifficultyInstance instance, MobSpawnType type) {
+        WorldUtil.finalizeSpawn(mob, (ServerLevel)level, instance, type, null, null);
     }
 
     public static void nullableFinalizeSpawn(Mob mob, Level level, BlockPos pos, MobSpawnType type) {

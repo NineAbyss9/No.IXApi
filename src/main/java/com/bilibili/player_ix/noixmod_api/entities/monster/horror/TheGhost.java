@@ -7,12 +7,14 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
+import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.MeleeGoal;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
@@ -21,7 +23,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.NineAbyss9.math.MathSupport;
@@ -33,9 +39,13 @@ implements IFlagMob {
     private static final EntityDataAccessor<Integer> DATA_FLAGS;
     private static final EntityDataAccessor<Integer> DATA_ANI_TICK;
     public AnimationState attack = new AnimationState();
+    public AnimationState avoid = new AnimationState();
     public TheGhost(EntityType<? extends TheGhost> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.BONE_SWORD.get()));
+        if (this.getNavigation() instanceof GroundPathNavigation n) {
+            n.setCanOpenDoors(true);
+        }
     }
 
     protected void defineSynchedData() {
@@ -47,17 +57,26 @@ implements IFlagMob {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide) {
+            if (this.randomUtil.nextFloat() < 0.9F) return;
             this.level().addParticle(NoixmodAPIParticleTypes.CORRUPTION.get(),
                     this.getRandomX(0.8), this.getRandomY() - 0.2, this.getRandomZ(0.8),
                     0, 0.1D, 0);
         } else {
-            if (this.isFlag(0)) {
-                if (this.closerThan(this.getTarget(), 3.5D)) {
-                    this.setFlag(1);
+            if (this.tickCount % 20 == 0) {
+                this.heal(0.5F);
+            }
+            if (this.isFlag(0) && this.getTarget() != null) {
+                if (this.closerThan(this.getTarget(), 3.1D)) {
+                    if (this.randomUtil.nextFloat() < 0.8F)
+                        this.setFlag(1);
+                    else
+                        this.setFlag(2);
                 }
             }
             if (this.isFlag(1)) {
                 this.attack();
+            } else if (isFlag(2)) {
+                this.avoid();
             }
         }
     }
@@ -65,7 +84,10 @@ implements IFlagMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new MeleeGoal(this, 1.0));
         this.goalSelector.addGoal(2, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new OpenDoorGoal(this, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.8));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(2, new HorrorHurtByTargetGoal(this));
     }
 
     public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
@@ -73,10 +95,15 @@ implements IFlagMob {
             if (this.level().isClientSide) {
                 if (this.getFlag() == 1) {
                     this.attack.stop();
+                    this.avoid.stop();
                     this.attack.startIfStopped(tickCount);
+                } else if (this.getFlag() == 2) {
+                    this.attack.stop();
+                    this.avoid.stop();
+                    this.avoid.startIfStopped(tickCount);
                 }
             } else {
-                if (this.getFlag() != 0 && this.getFlag() != 1) {
+                if (this.getFlag() != 0 && this.getFlag() != 1 && this.getFlag() != 2) {
                     NoixmodAPI.LOGGER.warn("TheGhost {} has invalid flag {}, resetting to 0", this.getStringUUID(), this.getFlag());
                     this.setFlag(0);
                 }
@@ -88,15 +115,31 @@ implements IFlagMob {
     public void attack() {
         increaseAniTick();
         if (this.aniTickEquals(10)) {
-            MobUtils.areaAttack(this, 3F, 3F, 90F,
+            MobUtils.areaAttack(this, 3.1F, 3F, 90F,
                     ((float)this.getAttributeValue(Attributes.ATTACK_DAMAGE)) * (MathSupport.random.nextFloat() + 0.2F),
                     0.05F, 5, this.damageSources().mobAttack(this), false, e -> {
                         EntityEventHandler.broadcastEntityEvent(e, 4);
+                        this.heal(3F);
                     }, false);
         }
-        if (this.aniTick(20)) {
+        if (this.aniTick(MobUtils.isHalfHealth(this) ? 10 : 20)) {
             this.resetState();
         }
+    }
+
+    public void avoid() {
+        increaseAniTick();
+        if (this.aniTickEquals(1)) {
+            com.github.NineAbyss9.ix_api.api.mobs.MobUtils.moveToLookAt(this, -2.0D);
+        }
+        if (this.aniTick(30)) {
+            this.resetState();
+        }
+    }
+
+    public void die(DamageSource pDamageSource) {
+        this.die(HorrorModeManager.THE_GHOST.left());
+        super.die(pDamageSource);
     }
 
     public int getFlag() {
@@ -124,12 +167,22 @@ implements IFlagMob {
         }
     }
 
+    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
+        super.actuallyHurt(p_21240_, p_21241_ * 0.25F);
+    }
+
+    public int getLevel() {
+        return 1;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return createPathAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D)
-                .add(Attributes.ARMOR, 6.0D);
+                .add(Attributes.ARMOR, 6.0D)
+                .add(Attributes.FOLLOW_RANGE, 56.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.1D);
     }
 
     static {

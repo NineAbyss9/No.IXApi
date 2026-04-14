@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer.layer;
 
-import com.bilibili.player_ix.noixmod_api.client.model.NihilistHumanoidModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.NihilistHumanoidModel;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.entity.RenderLayerParent;

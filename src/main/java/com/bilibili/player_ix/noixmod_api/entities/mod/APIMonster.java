@@ -38,6 +38,6 @@ extends Monster {
 
     public static boolean horrorMobsSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor accessor,
                                                MobSpawnType spawnType, BlockPos pos, RandomSource source) {
-        return NoixmodAPIMainConfig.HorrorMode.get() && checkAPIMonsterSpawnRules(type, accessor, spawnType, pos, source);
+        return NoixmodAPIMainConfig.SpawnHorror.get() && checkAPIMonsterSpawnRules(type, accessor, spawnType, pos, source);
     }
 }

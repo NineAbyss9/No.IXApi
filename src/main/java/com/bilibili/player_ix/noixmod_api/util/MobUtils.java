@@ -10,7 +10,6 @@ import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +40,6 @@ import org.NineAbyss9.math.AbyssMath;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
@@ -94,12 +91,6 @@ public record MobUtils(Entity entity) {
     public static boolean illagerSpawnPredicate(EntityType<? extends AbstractIllager> entityType, ServerLevelAccessor
             world, MobSpawnType reason, BlockPos blockPos, RandomSource random) {
         return Mob.checkMobSpawnRules(entityType, world, reason, blockPos, random) && blockPos.asLong() > 60;
-    }
-
-    public static <T extends Mob> SpawnPlacements.SpawnPredicate<T> monsterSpawnPredicate() {
-        return (entityType, world, reason, pos, random) ->
-                (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random)
-                        && Mob.checkMobSpawnRules(entityType, world, reason, pos, random));
     }
 
     public boolean isEasy() {
@@ -157,21 +148,6 @@ public record MobUtils(Entity entity) {
             return false;
         }
         return true;
-    }
-
-    @SuppressWarnings("all")
-    public static EntityDataAccessor<Float> getHealth() {
-        try {
-            Field field = LivingEntity.class.getDeclaredField("f_20961_");
-            field.setAccessible(true);
-            Object value = field.get(null);
-            if (value instanceof EntityDataAccessor<?>) {
-                return (EntityDataAccessor<Float>)value;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public static boolean isDead(LivingEntity living) {
@@ -402,7 +378,7 @@ public record MobUtils(Entity entity) {
                 player.level().broadcastEntityEvent(player, AbyssMath.toByte(30));
             }
         } else if (pEntity instanceof IShieldUser user) {
-            user.disableShield(true);
+            user.disableShield(false);
         }
     }
 

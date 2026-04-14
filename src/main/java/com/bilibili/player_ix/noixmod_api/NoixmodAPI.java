@@ -50,7 +50,7 @@ public class NoixmodAPI {
         NoixmodAPIEntities.REGISTRY.register(bus);
         NoixmodAPIParticleTypes.REGISTRY.register(bus);
         NoixmodAPITabs.REGISTRY.register(bus);
-        createFiles(FMLPaths.CONFIGDIR.get().resolve("noixmodapi"), "noixmodapi");
+        createFiles(FMLPaths.CONFIGDIR.get().resolve(MOD_ID), MOD_ID);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NoixmodAPIMainConfig.SPEC,
                 "noixmodapi/noixmodapi-main_config.toml");
         NoixmodAPIMainConfig.load(NoixmodAPIMainConfig.SPEC, FMLPaths.CONFIGDIR.get()
@@ -69,6 +69,14 @@ public class NoixmodAPI {
 
     public static ResourceLocation location(String s) {
         return new ResourceLocation(MOD_ID, s);
+    }
+
+    public static ResourceLocation entity(String st) {
+        return new ResourceLocation(MOD_ID, "textures/entities/" + st);
+    }
+
+    public static ResourceLocation horror(String st) {
+        return new ResourceLocation(MOD_ID, "textures/entities/monsters/horror/" + st);
     }
 
     /**Code from <a href="https://github.com/Polarice3/Goety-2/blob/1.20/src/main/java/com/Polarice3/Goety/Goety.java">link</a>*/

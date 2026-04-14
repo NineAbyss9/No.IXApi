@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer.layer;
 
-import com.bilibili.player_ix.noixmod_api.client.model.NihilistIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.NihilistIllagerModel;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;

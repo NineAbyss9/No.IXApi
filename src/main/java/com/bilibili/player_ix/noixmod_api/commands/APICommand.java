@@ -7,12 +7,16 @@ import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.Spells;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
+
+import static net.minecraft.commands.Commands.literal;
+import static net.minecraft.commands.Commands.argument;
 
 public class APICommand {
     public APICommand() {
@@ -25,12 +29,23 @@ public class APICommand {
                         .then(Commands.argument("spell", StringArgumentType.string())
                                 .executes(commandContext ->
                                         castSpell(commandContext.getSource(),
-                                        StringArgumentType.getString(commandContext, "spell"))
+                                                StringArgumentType.getString(commandContext, "spell"))
                                 )))
                 .then(Commands.literal("horrorMode")
                         .then(Commands.argument("value", BoolArgumentType.bool())
                                 .executes(commandContext -> setHorror(commandContext.getSource(),
-                                        BoolArgumentType.getBool(commandContext, "value")))))
+                                        BoolArgumentType.getBool(commandContext, "value"))))
+                        .then(Commands.literal("spawn")
+                                .then(literal("setMobsWillSpawn")
+                                        .then(argument("index", IntegerArgumentType.integer())
+                                                .then(argument("flag", BoolArgumentType.bool())
+                                                        .executes(commandContext ->
+                                                                HorrorModeCommand.setMobsWillSpawn(
+                                                                        IntegerArgumentType.getInteger(commandContext, "index"),
+                                                                        BoolArgumentType.getBool(commandContext, "flag"))))))
+                                .then(Commands.literal("the_ghost")
+                                        .executes(commandContext ->
+                                                HorrorModeCommand.spawnTheGhost(commandContext.getSource())))))
                 .then(Commands.literal("nihilisticOrder")
                         .then(Commands.literal("spawnNow")
                                 .executes(context -> spawnNihilisticOrder(context.getSource())))));

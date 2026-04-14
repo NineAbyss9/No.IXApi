@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -36,6 +37,6 @@ extends RecipeProvider {
         ItemStack stack = materials.get(0).getItems()[0];
         RitualRecipeBuilder.ritual(pCategory, pResult, pCount).define(NonNullList.of(Ingredient.EMPTY, materials.toArray(new Ingredient[0])))
                 .unlockedBy(getHasName(stack.getItem()), has(stack.getItem()))
-                .save(pConsumer);
+                .save(pConsumer, new ResourceLocation("noixmodapi", pResult.asItem() + "_ritual"));
     }
 }

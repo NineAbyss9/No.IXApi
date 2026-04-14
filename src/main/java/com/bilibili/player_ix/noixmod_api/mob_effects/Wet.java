@@ -24,6 +24,6 @@ extends MobEffect {
     }
 
     public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
-        return true;
+        return p_19455_ % 10 == 0;
     }
 }

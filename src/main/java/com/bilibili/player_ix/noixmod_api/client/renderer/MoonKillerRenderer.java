@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
-import com.bilibili.player_ix.noixmod_api.client.model.EIModel;
+import com.bilibili.player_ix.noixmod_api.client.model.illager.EIModel;
 import com.bilibili.player_ix.noixmod_api.entities.monster.MoonKiller;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

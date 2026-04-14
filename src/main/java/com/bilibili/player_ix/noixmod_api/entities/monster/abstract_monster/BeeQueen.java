@@ -11,7 +11,6 @@ extends AbstractBee {
         super(p_21683_, p_21684_);
     }
 
-    @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
         if (this.breedCooldown > 0) {

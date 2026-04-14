@@ -20,11 +20,12 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 
 @SuppressWarnings("deprecation")
 public class RitualRecipe implements Recipe<CraftingContainer> {
-    final NonNullList<Ingredient> recipeItems;
-    final ItemStack result;
+    public static final int RECIPE_COUNT = 7;
+    private final NonNullList<Ingredient> recipeItems;
+    private final ItemStack result;
     private final ResourceLocation id;
-    final String group;
-    final boolean showNotification;
+    private final String group;
+    private final boolean showNotification;
 
     public RitualRecipe(ResourceLocation pId, String pGroup, NonNullList<Ingredient> pRecipeItems,
                         ItemStack pResult, boolean pShowNotification) {
@@ -88,7 +89,7 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
             }
         }*/
         boolean flag = true;
-        for (int i = 0;i < 9;i++) {
+        for (int i = 0;i < RECIPE_COUNT;i++) {
             var list = pInv.getItems();
             //try {
                 if (list.get(i).isEmpty() && !recipeItems.get(i).isEmpty()) {
@@ -277,7 +278,7 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
         //private static final ResourceLocation NAME = NoixmodAPI.location("ritual");
         public RitualRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
             String s = GsonHelper.getAsString(pJson, "group", "");
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(9, Ingredient.EMPTY);
+            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(RECIPE_COUNT, Ingredient.EMPTY);
             nonnulllist.replaceAll(ingredient -> Ingredient.fromJson(pJson));
             ItemStack itemstack = RitualRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
             boolean flag = GsonHelper.getAsBoolean(pJson, "show_notification", true);
@@ -286,7 +287,7 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
 
         public RitualRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
             String s = pBuffer.readUtf();
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(9, Ingredient.EMPTY);
+            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(RECIPE_COUNT, Ingredient.EMPTY);
             nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(pBuffer));
             ItemStack itemstack = pBuffer.readItem();
             boolean flag = pBuffer.readBoolean();

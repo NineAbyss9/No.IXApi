@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.mixin;
 
+import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.level.Level;
@@ -15,7 +16,7 @@ public abstract class CompassItemMixin {
     @Inject(method = "getSpawnPosition", at =
             @At("RETURN"), cancellable = true)
     private static void getSpawnPosition(Level p_220020_, CallbackInfoReturnable<GlobalPos> cir) {
-        if (p_220020_.getDayTime() == 666) {
+        if (NoixmodAPIMainConfig.HorrorMode.get()) {
             cir.setReturnValue(null);
         }
     }

@@ -79,7 +79,7 @@ implements ApiRangedAttackMob {
     }
 
     protected void populateDefaultEquipmentSlots(RandomSource p_217055_, DifficultyInstance p_217056_) {
-        if (p_217055_.nextFloat() > 0.5) {
+        if (p_217055_.nextFloat() > 0.5F) {
             int $$2 = p_217055_.nextInt(16);
             if ($$2 < 10) {
                 this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));

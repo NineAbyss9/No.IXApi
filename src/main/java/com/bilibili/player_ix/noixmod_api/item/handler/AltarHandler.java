@@ -7,6 +7,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+@Deprecated
 public class AltarHandler extends ItemStackHandler {
     private final ItemStack itemStack;
     private final int size;

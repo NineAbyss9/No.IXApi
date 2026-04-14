@@ -121,7 +121,7 @@ implements IFlagMob {
                 switch (this.getFlag()) {
                     case POSE: {
                         this.stopAllAnimations();
-                        this.pose.start(tickCount);
+                        this.pose.startIfStopped(tickCount);
                         break;
                     }
                     case ATTACK: {
@@ -172,7 +172,7 @@ implements IFlagMob {
             } else {
                 if (this.getFlag() > HIDE_POSE || this.getFlag() < 0) {
                     NoixmodAPI.LOGGER.warn("Can't handle synchedData in {}", this.getClass().getSimpleName());
-                    this.setFlag(0);
+                    this.resetFlag();
                 }
             }
         }

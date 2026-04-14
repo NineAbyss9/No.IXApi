@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.gui.screen;
 
 import com.bilibili.player_ix.noixmod_api.entities.villager.VillagerFighter;
+import com.github.NineAbyss9.ix_api.api.annotation.MaybeDeprecated;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 
+@MaybeDeprecated
 public class DialogueScreen extends Screen {
     private final Entity targetEntity;
     private static final Component TITLE = Component.translatable("gui.noixapi.talking.talking");

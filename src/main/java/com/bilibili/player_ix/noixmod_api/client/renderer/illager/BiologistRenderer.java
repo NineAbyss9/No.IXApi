@@ -1,0 +1,28 @@
+
+package com.bilibili.player_ix.noixmod_api.client.renderer.illager;
+
+import com.bilibili.player_ix.noixmod_api.client.model.illager.BiologistModel;
+import com.bilibili.player_ix.noixmod_api.entities.monster.illager.Biologist;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+
+public class BiologistRenderer<T extends Biologist>
+        extends MobRenderer<T, BiologistModel<T>> {
+    private static final ResourceLocation BIOLOGIST = new ResourceLocation("noixmodapi:textures/entities/illagers/biologist.png");
+
+    public ResourceLocation getTextureLocation(T entity) {
+        return BIOLOGIST;
+    }
+
+    public BiologistRenderer(EntityRendererProvider.Context $$0) {
+        super($$0, new BiologistModel<>($$0.bakeLayer(BiologistModel.LAYER_LOCATION)), 0.5f);
+    }
+
+    static final float f = 0.975f;
+
+    protected void scale(T p_115314_, PoseStack p_115315_, float p_115316_) {
+        p_115315_.scale(f, f, f);
+    }
+}

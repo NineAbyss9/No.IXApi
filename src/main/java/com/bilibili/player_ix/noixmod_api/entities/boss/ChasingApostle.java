@@ -1,14 +1,14 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import net.minecraft.CrashReport;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
@@ -33,7 +33,11 @@ extends Apostle {
         super.tick();
         LivingEntity var100000 = this.getTarget();
         if (var100000 != null) {
-            this.getNavigation().moveTo(var100000, this.getDataSpeed());
+            if (this.getNavigation().isDone())
+                this.getNavigation().moveTo(var100000, this.getDataSpeed());
+            if (this.closerThan(var100000, 1.5D)) {
+                this.onChase(var100000);
+            }
         }
     }
 
@@ -53,13 +57,21 @@ extends Apostle {
     public void setHealth(float amount) {
     }
 
+    public boolean isAlive() {
+        return this.health() > 0;
+    }
+
+    public boolean isDeadOrDying() {
+        return this.health() <= 0;
+    }
+
     public int health() {
         return this.entityData.get(DATA_HEALTH);
     }
 
     public void hurt() {
         this.entityData.set(DATA_HEALTH, health() - 1);
-        if (this.health() <= 0) {
+        if (this.isDeadOrDying()) {
             this.discard();
         }
     }
@@ -72,9 +84,17 @@ extends Apostle {
         this.entityData.set(DATA_SPEED, pSpeed);
     }
 
-    private void onChase() {
+    private void onChase(LivingEntity player) {
+        player.setHealth(1.0F);
         this.setRemoved(RemovalReason.KILLED);
-        Minecraft.crash(new CrashReport("$&*^&*&^*#!", new RuntimeException()));
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, 72)
+                .add(Attributes.ATTACK_DAMAGE, 1)
+                .add(Attributes.MAX_HEALTH, 10)
+                .add(Attributes.ARMOR, 0)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     static {

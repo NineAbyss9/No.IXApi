@@ -23,7 +23,7 @@ extends TextureSheetParticle {
         this.yd = this.yd * 0.01 + pYSpeed;
         this.zd = this.zd * 0.01 + pZSpeed;
         this.gravity = -0.01F;
-        this.quadSize = 0.4F;
+        this.quadSize = 0.2F;
         this.lifetime = 25 + pLevel.random.nextInt(2);
     }
 

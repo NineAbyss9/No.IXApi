@@ -157,11 +157,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
 
     public Apostle(EntityType<? extends Apostle> pEntityType, Level world) {
         super(pEntityType, world);
-        bossEvent = new ApiBossEvent(this, Component.literal("Απόστολος")
+        bossEvent = new ApiBossEvent(this, Component.translatable("entity.noixmodapi.apostle")
                 .withStyle(ChatFormatting.DARK_PURPLE), BossEvent.BossBarColor.PURPLE,
                 false, true);
         horrorEvent = new ApiBossEvent(this,
-                Component.literal("Απόστολος").withStyle(ChatFormatting.OBFUSCATED,
+                Component.literal("Apostle").withStyle(ChatFormatting.OBFUSCATED,
                         ChatFormatting.DARK_RED), BossEvent.BossBarColor.RED, true, true);
         this.clientSideIllusionOffsets = new Vec3[2][4];
         for (int i = 0; i < 4; ++i) {
@@ -188,10 +188,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             return this.clientSideIllusionOffsets[1];
         } else {
             double d0 = this.clientSideIllusionTicks - ticks / 3.0F;
-            d0 = Math.pow(d0, 0.25);
+            d0 = Math.pow(d0, 0.25D);
             Vec3[] avec3 = new Vec3[4];
             for (int i = 0; i < 4; ++i) {
-                avec3[i] = this.clientSideIllusionOffsets[1][i].scale(1.0 - d0).add(this
+                avec3[i] = this.clientSideIllusionOffsets[1][i].scale(1.0D - d0).add(this
                         .clientSideIllusionOffsets[0][i].scale(d0));
             }
             return avec3;

@@ -25,6 +25,5 @@ public class NoixmodAPIBlocks {
     //public static final RegistryObject<Block> TOMBSTONE = REGISTER.init("tombstone", ()-> new Block(BlockBehaviour.Properties.of().strength(1.5f, 6f)));
     public static final RegistryObject<Block> WORM_BLOCK = REGISTER.register("worm_block", WormBlock::new);
     public static final RegistryObject<Block> WORM_DIRT = REGISTER.register("worm_dirt", WormDirt::new);
-
     private NoixmodAPIBlocks() {}
 }

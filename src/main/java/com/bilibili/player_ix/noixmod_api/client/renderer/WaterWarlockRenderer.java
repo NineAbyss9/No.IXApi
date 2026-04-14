@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.renderer;
 
-import com.bilibili.player_ix.noixmod_api.client.model.NihilistIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.NihilistIllagerModel;
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.WaterWarlock;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.IllagerModel;

@@ -19,7 +19,8 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class AltarMenu extends AbstractContainerMenu {
-    private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
+    public static final int resultSlotIndex = 0;
+    private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 4, 2);
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;
@@ -39,13 +40,13 @@ public class AltarMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(inventory, i + 8, 50 + 18 * i, 158));
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i + 17, 50 + 18 * i, 177));
+            this.addSlot(new Slot(inventory, i + 18, 50 + 18 * i, 177));
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i + 26, 50 + 18 * i, 195));
+            this.addSlot(new Slot(inventory, i + 27, 50 + 18 * i, 195));
         }
         for (int k = 0; k < 9; ++k) {//49, 215
-            this.addSlot(new Slot(inventory, k + 35, 50 + k * 18, 216));
+            this.addSlot(new Slot(inventory, k + 36, 50 + k * 18, 216));
         }
     }
 
@@ -83,15 +84,14 @@ public class AltarMenu extends AbstractContainerMenu {
     }
 
     public void createResult() {
-
     }
 
     public void slotsChanged(Container pInventory) {
         this.access.execute((p_39386_, p_39387_) ->
-                slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots));
+                slotChangedCraftingGrid(p_39386_, this.player, this.craftSlots, this.resultSlots));
     }
 
-    protected static void slotChangedCraftingGrid(AbstractContainerMenu pMenu, Level pLevel,
+    protected void slotChangedCraftingGrid(Level pLevel,
                                                   Player pPlayer, CraftingContainer pContainer, ResultContainer pResult) {
         if (!pLevel.isClientSide) {
             ServerPlayer serverplayer = (ServerPlayer)pPlayer;
@@ -107,17 +107,16 @@ public class AltarMenu extends AbstractContainerMenu {
                     }
                 }
             }
-            pResult.setItem(0, itemstack);
-            pMenu.setRemoteSlot(0, itemstack);
-            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
+            pResult.setItem(resultSlotIndex, itemstack);
+            this.setRemoteSlot(resultSlotIndex, itemstack);
+            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(this.containerId, this.incrementStateId()
+                    , resultSlotIndex, itemstack));
         }
     }
 
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
-        this.access.execute((p_39371_, p_39372_) -> {
-            this.clearContainer(pPlayer, this.craftSlots);
-        });
+        this.access.execute((p_39371_, p_39372_) -> this.clearContainer(pPlayer, this.craftSlots));
     }
 
     protected ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
@@ -126,10 +125,6 @@ public class AltarMenu extends AbstractContainerMenu {
 
     public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
         return pSlot.container != this.resultSlots && super.canTakeItemForPickAll(pStack, pSlot);
-    }
-
-    public int getResultSlotIndex() {
-        return 0;
     }
 
     public boolean stillValid(Player player) {

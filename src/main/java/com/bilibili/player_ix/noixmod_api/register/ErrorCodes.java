@@ -8,7 +8,7 @@ public final class ErrorCodes {
     public static final ErrorCode DEFAULT;
     public static final ErrorCode ENTITY_EVENT_HANDLER;
     private ErrorCodes() {
-        throw new IllegalArgumentException("No ErrorCodes instance for you");
+        throw new AssertionError();
     }
 
     public static int readId(ErrorCode code) {

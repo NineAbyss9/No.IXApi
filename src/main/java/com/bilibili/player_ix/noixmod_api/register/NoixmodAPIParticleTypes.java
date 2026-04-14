@@ -58,7 +58,7 @@ public class NoixmodAPIParticleTypes {
         BLOOD = REGISTRY.register("blood", supplier());
         BLOOD_SPELL = REGISTRY.register("blood_spell", supplier());
         CRACK = REGISTRY.register("crack", supplier());
-        CIRCLE = REGISTRY.register("circle_particle", ()-> new ParticleType<>(false,
+        CIRCLE = REGISTRY.register("circle_particle", () -> new ParticleType<>(false,
                 CircleParticleOption.DESERIALIZER) {
             public Codec<CircleParticleOption> codec() {
                 return CircleParticleOption.CODEC;

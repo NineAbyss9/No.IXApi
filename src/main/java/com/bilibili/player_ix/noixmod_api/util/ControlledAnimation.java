@@ -1,6 +1,10 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
+import com.github.NineAbyss9.ix_api.api.annotation.MaybeDeprecated;
+
+/**From Polarice's codes*/
+@MaybeDeprecated
 public class ControlledAnimation {
     private int timer;
     private int prevtimer;

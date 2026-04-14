@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -25,7 +24,7 @@ public class OwnerSummon extends Summon {
         return OwnerSummon.canSummon(level, lie, max, OwnableMob.ownablePredicate());
     }
 
-    public static boolean canSummon(@Nonnull ServerLevel level, LivingEntity lie, int max, Predicate<Entity> predicate) {
+    public static boolean canSummon(ServerLevel level, LivingEntity lie, int max, Predicate<Entity> predicate) {
         int count = 0;
         for (Entity entity : level.getAllEntities()) {
             if (!(entity instanceof LivingEntity livingEntity)) continue;
@@ -37,7 +36,7 @@ public class OwnerSummon extends Summon {
         return count < max;
     }
 
-    public static boolean canSummonEntity(@Nonnull ServerLevel level, LivingEntity lie, int max, Predicate<Entity> entityPredicate) {
+    public static boolean canSummonEntity(ServerLevel level, LivingEntity lie, int max, Predicate<Entity> entityPredicate) {
         int count = 0;
         for (Entity entity : level.getAllEntities()) {
             if (!(entity instanceof Ownable ownable)) continue;
@@ -48,11 +47,11 @@ public class OwnerSummon extends Summon {
         return count < max;
     }
 
-    public <T extends Entity & Ownable> void integerSummon(@Nonnull T entity, int i) {
+    public <T extends Entity & Ownable> void integerSummon(T entity, int i) {
         integerSummon(entity, i, getServerLevel());
     }
 
-    public <T extends Entity & Ownable> void integerSummon(@Nonnull T entity, int range, ServerLevel level) {
+    public <T extends Entity & Ownable> void integerSummon(T entity, int range, ServerLevel level) {
         if (!entity.isRemoved()) {
             entity.moveTo(this.blockPos().offset(Maths.randomInteger(range), 0, Maths.randomInteger(range)),
                     0, 0);
@@ -65,7 +64,7 @@ public class OwnerSummon extends Summon {
         }
     }
 
-    public <T extends EntityType<? extends Entity>> void summonWithSummonEntity(@Nonnull T entity,
+    public <T extends EntityType<? extends Entity>> void summonWithSummonEntity(T entity,
                                                                                 int distance, boolean flag) {
         SummonEntity summon = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(),
                 this.getOwner().level());
@@ -77,7 +76,7 @@ public class OwnerSummon extends Summon {
         this.getOwner().level().addFreshEntity(summon);
     }
 
-    public void moveTo(int x, int y, int z, @Nonnull Entity entity) {
+    public void moveTo(int x, int y, int z, Entity entity) {
         entity.moveTo(this.getOwner().blockPosition().offset(x, y, z), 0, 0);
     }
 
@@ -93,7 +92,7 @@ public class OwnerSummon extends Summon {
         return (ServerLevel)this.getOwner().level();
     }
 
-    public double[] projectileDouble(@Nonnull LivingEntity target) {
+    public double[] projectileDouble(LivingEntity target) {
         return new double[]{
                 target.getX() - this.getX(),
                 target.getY(0.5) - this.getY(0.5),
@@ -101,8 +100,7 @@ public class OwnerSummon extends Summon {
         };
     }
 
-    @Nonnull
-    public static double[] projectileDouble(@Nonnull LivingEntity target, @Nonnull Entity entity) {
+    public static double[] projectileDouble(LivingEntity target, Entity entity) {
         return new double[] {
                 target.getX() - entity.getX(),
                 target.getY() - entity.getY(),

@@ -26,7 +26,7 @@ public class LavaTrap extends OwnedEntity {
             this.discard();
         }
         super.tick();
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.level().addParticle(NoixmodAPIParticleTypes.API_LAVA.get(), this.getRandomX(0.5),
                     this.getY() + 0.1, this.getRandomZ(0.5), 0, 0, 0);
         }
@@ -34,8 +34,8 @@ public class LavaTrap extends OwnedEntity {
 
     public void damage() {
         this.playSound(SoundEvents.GENERIC_EXPLODE, 2, 0.5F);
-        if (this.level() instanceof ServerLevel level) {
-            level.sendParticles(ParticleTypes.LAVA, this.getRandomX(0.5), this.getRandomY(),
+        if (!this.level().isClientSide) {
+            ((ServerLevel)level()).sendParticles(ParticleTypes.LAVA, this.getRandomX(0.5), this.getRandomY(),
                     this.getRandomZ(0.5), 12, 0, 0, 0, 1);
         }
         MobUtils.rangeHurtAndFire(3, 1, 3, this.getOwner() == null ? this : this.getOwner(),

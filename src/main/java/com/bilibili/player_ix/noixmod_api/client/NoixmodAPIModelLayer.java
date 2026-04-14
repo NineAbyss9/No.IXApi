@@ -3,6 +3,9 @@ package com.bilibili.player_ix.noixmod_api.client;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.model.*;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.ApostleModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.LurkerModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.NihilistIllagerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 

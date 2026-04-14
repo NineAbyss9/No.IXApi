@@ -1,10 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.horror;
 
-import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.NineAbyss9.math.MathSupport;
 
 /**Tracker class.A human-like who was looking at you.*/
 public class Tracker
@@ -32,9 +32,8 @@ extends AbstractHorrorMob {
     private static final EntityDataAccessor<Integer> DATA_LIFE;
     public Tracker(EntityType<? extends Tracker> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
-        int actMobId = p_33003_.random.nextInt(4);
-        this.actNameId = actMobId;
-        this.actName = this.getActName(actMobId);
+        this.actNameId = MathSupport.random.nextInt(4);
+        this.actName = this.getActName(this.actNameId);
     }
 
     protected void defineSynchedData() {
@@ -51,20 +50,23 @@ extends AbstractHorrorMob {
         if (getLife() > 0)
             setLife(getLife() - 1);
         else {
-            die();
-            discard();
+            this.remove(RemovalReason.CHANGED_DIMENSION);
+            return;
         }
         LivingEntity target = this.getTarget();
         if (target instanceof Player player) {
-            this.lookControl.setLookAt(player, 30.0F, 30.0F);
             if (isLookingAtMe(player))
                 this.playerLooked = true;
-            if (closerThan(target, 60.0D)) {
+            if (closerThan(target, 10.0D)) {
                 this.getNavigation().stop();
             } else {
                 this.getNavigation().moveTo(target, 1.0D);
             }
         }
+    }
+
+    public int getLevel() {
+        return 1;
     }
 
     public Component getDisplayName() {
@@ -83,13 +85,6 @@ extends AbstractHorrorMob {
         vec31 = vec31.normalize();
         double d1 = vec3.dot(vec31);
         return d1 > 1.0D - 0.025D / d0 && pPlayer.hasLineOfSight(this);
-    }
-
-    public void die() {
-        if (this.isServerSide()) {
-            ParticleUtil.sendParticles(this.serverLevel(), ParticleTypes.LARGE_SMOKE, this.position(), 5,
-                    0.15, 0.5, 0.15, 0.05);
-        }
     }
 
     public Component getActName(int actMobId) {
@@ -125,13 +120,19 @@ extends AbstractHorrorMob {
 
     protected void playSwimSound(float pVolume) {}
 
+    public void die(DamageSource pDamageSource) {
+        this.die(HorrorModeManager.TRACKER.left());
+        super.die(pDamageSource);
+    }
+
     protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        super.actuallyHurt(p_21240_, p_21241_ / 50F);
+        super.actuallyHurt(p_21240_, p_21241_ / 5F);
     }
 
     public static AttributeSupplier createAttributes() {
-        return createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.35D)
-                .add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.MAX_HEALTH, 40).build();
+        return createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.FOLLOW_RANGE, 72)
+                .add(Attributes.MAX_HEALTH, 40).build();
     }
 
     static {

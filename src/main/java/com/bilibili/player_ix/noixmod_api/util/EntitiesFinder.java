@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public record EntitiesFinder(Entity pSourceEntity) {
+public record EntitiesFinder(Entity sourceEntity) {
 
     @Nullable
     @ServerOnly

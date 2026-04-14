@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.api.craft.RitualRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -11,9 +12,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ApiRecipes {
     public static final DeferredRegister<RecipeType<?>> RECIPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES,
-            "noixmodapi");
+            NoixmodAPI.MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,
-            "noixmodapi");
+            NoixmodAPI.MOD_ID);
 
     public static final RegistryObject<RecipeType<RitualRecipe>> RITUAL_RECIPE = RECIPES.register("ritual", () ->
             new RecipeType<RitualRecipe>() {

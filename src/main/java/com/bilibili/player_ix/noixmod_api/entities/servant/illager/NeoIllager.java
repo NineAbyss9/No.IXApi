@@ -71,6 +71,7 @@ extends OwnableIllager {
         return super.mobInteract(pPlayer, pHand);
     }
 
+    /**Success and shrink*/
     private InteractionResult success(ItemStack stack, Entity pEntity) {
         ItemUtil.shrink(stack, pEntity);
         return InteractionResult.sidedSuccess(pEntity.level().isClientSide);

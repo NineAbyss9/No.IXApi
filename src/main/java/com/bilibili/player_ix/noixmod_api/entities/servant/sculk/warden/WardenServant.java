@@ -191,7 +191,7 @@ implements VibrationSystem {
     }
 
     public float getSonicBoomDamage() {
-        return (float)(this.getAttributeValue(Attributes.ATTACK_DAMAGE) / 3);
+        return (float)(this.getAttributeValue(Attributes.ATTACK_DAMAGE) / 3D);
     }
 
     protected void defineSynchedData() {

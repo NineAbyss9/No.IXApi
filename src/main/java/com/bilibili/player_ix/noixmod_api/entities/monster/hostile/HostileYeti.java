@@ -12,6 +12,7 @@ extends Yeti
 implements Enemy {
     public HostileYeti(EntityType<? extends Yeti> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 10;
         this.setHostile(true);
     }
 

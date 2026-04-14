@@ -10,6 +10,7 @@ public class TimeSelector {
     public static final int SEC_Q;
     public static final int ONE_SEC;
     public TimeSelector() {
+        throw new AssertionError();
     }
 
     public static boolean birthday() {

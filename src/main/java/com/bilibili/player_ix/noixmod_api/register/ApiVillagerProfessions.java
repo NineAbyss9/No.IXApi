@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.register;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
+import com.github.NineAbyss9.ix_api.api.annotation.MaybeDeprecated;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import net.minecraft.core.Holder;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+@MaybeDeprecated
 public class ApiVillagerProfessions {
     private static final Map<String, ProfessionPoiType> POI_TYPES = Maps.newHashMap();
     public static final DeferredRegister<VillagerProfession> REGISTER = DeferredRegister.create(

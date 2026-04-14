@@ -14,7 +14,6 @@ implements ApiPoseMob {
         super(p_33002_, p_33003_);
     }
 
-    @Override
     public ApiPose getPoses() {
         return ApiPose.NATURAL;
     }

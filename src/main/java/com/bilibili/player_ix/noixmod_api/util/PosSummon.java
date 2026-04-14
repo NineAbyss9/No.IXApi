@@ -22,15 +22,15 @@ public class PosSummon<T extends Entity> extends Summon {
     }
 
     public double getX() {
-        return this.position.x();
+        return this.position.x;
     }
 
     public double getY() {
-        return this.position.y();
+        return this.position.y;
     }
 
     public double getZ() {
-        return this.position.z();
+        return this.position.z;
     }
 
     public void lock() {
@@ -39,6 +39,10 @@ public class PosSummon<T extends Entity> extends Summon {
     public boolean pickLevel(ServerLevel pLevel) {
         this.level = pLevel;
         return true;
+    }
+
+    public Vec3 position() {
+        return position;
     }
 
     public void summon() {

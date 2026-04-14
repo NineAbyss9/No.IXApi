@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NoixmodAPIMainConfig {
-    public static ForgeConfigSpec.BooleanValue DARK_SKY;
+    public static ForgeConfigSpec.BooleanValue TERRIBLE_SKY;
     //Villager
     public static ForgeConfigSpec.DoubleValue VillagerMasterHealAmount;
     public static ForgeConfigSpec.ConfigValue<List<String>> VILLAGERS_IGNORE;
@@ -83,11 +83,9 @@ public class NoixmodAPIMainConfig {
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.push("NoixmodAPIMainConfig");
-        builder.push("NoIXAPIClientConfig");
-        DARK_SKY = builder.comment("If true, the sky will become dark.").define("黑暗天空", false);
-        builder.pop();
         builder.push("HorrorMode");
-        HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false").define("API恐怖模式", false);
+        HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false.Enable the following settings for a better experience.").define("API恐怖模式", false);
+        TERRIBLE_SKY = builder.comment("If true, the sky will become ???.").define("TerribleSky", false);
         SpawnHorror = builder.comment("Will scaring mobs spawn?Default:false").worldRestart().define("SpawnScaringMobs", false);
         builder.pop();
         builder.push("Sounds");

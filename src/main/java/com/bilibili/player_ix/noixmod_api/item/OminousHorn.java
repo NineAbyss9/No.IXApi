@@ -33,7 +33,7 @@ extends Item {
         return 20;
     }
 
-    public InteractionResultHolder<ItemStack> use( Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
+    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
         p_41433_.getCooldowns().addCooldown(this, 60);
         p_41433_.awardStat(Stats.ITEM_USED.get(this));
         if (p_41433_ instanceof ServerPlayer player) {

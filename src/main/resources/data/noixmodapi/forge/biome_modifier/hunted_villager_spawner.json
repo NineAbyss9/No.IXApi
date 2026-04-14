@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": {
+    "type": "forge:any"
+  },
+  "spawners": {
+    "type": "noixmodapi:hunted_villager",
+    "minCount": 1,
+    "maxCount": 1,
+    "weight": 10
+  }
+}

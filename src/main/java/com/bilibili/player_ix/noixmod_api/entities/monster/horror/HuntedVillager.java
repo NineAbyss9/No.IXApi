@@ -1,15 +1,18 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.horror;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.github.NineAbyss9.ix_api.api.ApiPose;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 //the villager
@@ -23,6 +26,11 @@ implements ApiPoseMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new ApiMeleeAttackGoal(this, 1.0));
         this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.targetGoals();
+    }
+
+    protected void populateDefaultItems() {
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.AXE_OF_HUNTER.get()));
     }
 
     public Component getDisplayName() {

@@ -25,7 +25,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-/**The {@code EntityEventHandler} class provides prepared codes for coders.For example:
+/**The {@linkplain EntityEventHandler} class provides prepared codes for coders.
+ * The method {@linkplain #broadcastEntityEvent(Entity, int)} is the main content.For example:
  * <blockquote><pre>
  *     {@code if (!this.level().isClientSide) EntityEventHandler.broadcastEntityEvent(this, 0);}
  * </pre></blockquote>
@@ -88,7 +89,7 @@ public class EntityEventHandler {
                         }
                         mourner.playSound(SoundEvents.WARDEN_SONIC_BOOM, 3.0F, 1.0F);
                         p_217704_.hurt(mourner.damageSources().mobAttack(mourner),
-                                Math.min(NoixmodAPIMainConfig.MournerDamage.get().floatValue(), mourner.getDead()));
+                                Math.min(NoixmodAPIMainConfig.MournerDamage.get().floatValue(), mourner.getDeath()));
                         double $$8 = 0.5 * (1.0 - p_217704_.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                         double $$9 = 2.5 * (1.0 - p_217704_.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                         p_217704_.push($$5.x() * $$9, $$5.y() * $$8, $$5.z() * $$9);
@@ -151,7 +152,7 @@ public class EntityEventHandler {
                         0.0, 0.0, 0.0, 0.0);
             }
             if (target.isBlocking()) {
-                MobUtils.disableShield(1, 2, 1, target);
+                MobUtils.disableShield(target, 60);
                 target.playSound(SoundEvents.SHIELD_BLOCK);
             } else {
                 target.setHealth(target.getHealth() - 15);

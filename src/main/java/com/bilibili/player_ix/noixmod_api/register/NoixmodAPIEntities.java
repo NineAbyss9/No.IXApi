@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.register;
 
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.mod.APIMonster;
+import com.bilibili.player_ix.noixmod_api.entities.monster.horror.*;
 import com.bilibili.player_ix.noixmod_api.entities.monster.hostile.HostileNihilisticBlaze;
 import com.bilibili.player_ix.noixmod_api.entities.monster.hostile.HostileYeti;
 import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.ElderGuardianServant;
@@ -19,8 +20,6 @@ import com.bilibili.player_ix.noixmod_api.entities.boss.abyss.Abyss;
 import com.bilibili.player_ix.noixmod_api.entities.boss.priest.Priest;
 import com.bilibili.player_ix.noixmod_api.entities.boss.star_guardian.StarGuardian;
 import com.bilibili.player_ix.noixmod_api.entities.monster.*;
-import com.bilibili.player_ix.noixmod_api.entities.monster.horror.Detractor;
-import com.bilibili.player_ix.noixmod_api.entities.monster.horror.Tracker;
 import com.bilibili.player_ix.noixmod_api.entities.monster.hostile.HostileWindZombie;
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.*;
 import com.bilibili.player_ix.noixmod_api.entities.monster.nihilist.*;
@@ -106,6 +105,7 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<NewHeadHunter>> HEAD_HUNTER = register("headhunter", EntityType.Builder.of(NewHeadHunter::new, MobCategory.MONSTER).sized(0.6F, 2.1F));
     public static final RegistryObject<EntityType<HostileWindZombie>> H_WIND_ZOMBIE = register("hostile_wind_zombie", EntityType.Builder.of(HostileWindZombie::new, MobCategory.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(9));
     public static final RegistryObject<EntityType<HostileYeti>> HOSTILE_YETI = register("hostile_yeti", EntityType.Builder.of(HostileYeti::new, MobCategory.MONSTER).sized(1f, 3f));
+    public static final RegistryObject<EntityType<HuntedVillager>> HUNTED_VILLAGER = NoixmodAPIEntities.register("hunted_villager", EntityType.Builder.of(HuntedVillager::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<LittleFireball>> LITTLE_FIREBALL = NoixmodAPIEntities.register("little_fireball", EntityType.Builder.<LittleFireball>of(LittleFireball::new, MobCategory.MISC).sized(0.5f, 0.5f));
     public static final RegistryObject<EntityType<MiniGhast>> MINI_GHAST = NoixmodAPIEntities.register("mini_ghast", EntityType.Builder.of(MiniGhast::new, MobCategory.MISC).sized(1.5f, 1.5f).setTrackingRange(64).updateInterval(2).fireImmune());
     public static final RegistryObject<EntityType<NetherSoul>> NETHER_SOUL = NoixmodAPIEntities.register("nether_soul", EntityType.Builder.of(NetherSoul::new, MobCategory.MONSTER).sized(0.6f, 1.95f).fireImmune().clientTrackingRange(8));
@@ -186,6 +186,9 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<Drunkenness>> DRUNKENNESS = NoixmodAPIEntities.register("drunkenness", EntityType.Builder.of(Drunkenness::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<Detractor>> DETRACTOR = NoixmodAPIEntities.register("detractor", EntityType.Builder.of(Detractor::new, MobCategory.MONSTER).sized(0.6F, 2F).fireImmune().clientTrackingRange(12));
     public static final RegistryObject<EntityType<Yeti>> YETI = NoixmodAPIEntities.register("yeti", EntityType.Builder.of(Yeti::new, MobCategory.MISC).sized(1F, 3F));
+    public static final RegistryObject<EntityType<TheGhost>> THE_GHOST = NoixmodAPIEntities.register("the_ghost", EntityType.Builder.of(TheGhost::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(16));
+    public static final RegistryObject<EntityType<ScaringHuman>> THE_HUMAN = NoixmodAPIEntities.register("the_human", EntityType.Builder.of(ScaringHuman::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
+    public static final RegistryObject<EntityType<ChasingApostle>> CH_APOSTLE = register("chasing_apostle", EntityType.Builder.of(ChasingApostle::new, MobCategory.MONSTER).sized(0.6F, 1.95F));
     private NoixmodAPIEntities() {}
 
     public static <T extends Entity> RegistryObject<EntityType<T>> register(String registryName, EntityType.Builder<T> entityTypeBuilder) {
@@ -211,7 +214,7 @@ public class NoixmodAPIEntities {
                 Heightmap.Types.OCEAN_FLOOR, (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
                         APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType, blockPos,
                                 randomSource) && NoixmodAPIMainConfig.AquaticWormWillSpawn.get()
-                                && randomSource.nextDouble() <= 0.05,
+                                && randomSource.nextDouble() <= 0.05D,
                 SpawnPlacementRegisterEvent.Operation.AND);
         event.register(NoixmodAPIEntities.DETRACTOR.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -223,6 +226,9 @@ public class NoixmodAPIEntities {
                         APIMonster.checkAPIMonsterSpawnRules(entityType, serverLevelAccessor, mobSpawnType,
                                 blockPos, randomSource)
                                 && NoixmodAPIMainConfig.GirlGhostCanSummon.get(), SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NoixmodAPIEntities.HUNTED_VILLAGER.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, APIMonster::horrorMobsSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.AND);
         event.register(NoixmodAPIEntities.NIHILISTIC_BLAZE.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (pEntityType,
                                                             pServerLevel, pSpawnType, pPos,
@@ -255,7 +261,7 @@ public class NoixmodAPIEntities {
         event.register(NoixmodAPIEntities.WORM.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->
-                        randomSource.nextDouble() <= 0.05 && APIMonster.checkAPIMonsterSpawnRules(entityType,
+                        randomSource.nextDouble() <= 0.05D && APIMonster.checkAPIMonsterSpawnRules(entityType,
                                 serverLevelAccessor, mobSpawnType, blockPos, randomSource)
                                 && NoixmodAPIMainConfig.WormWillSpawn.get(), SpawnPlacementRegisterEvent.Operation.AND);
         event.register(NoixmodAPIEntities.HOSTILE_YETI.get(), SpawnPlacements.Type.ON_GROUND,
@@ -277,6 +283,7 @@ public class NoixmodAPIEntities {
         event.put(ARCHER_SERVANT.get(), ArcherServant.createAttributes());
         event.put(ARMORER.get(), NoixmodAPIAttributes.createArmorerAttributes().build());
         event.put(BIOLOGIST.get(), Biologist.createAttributes().build());
+        event.put(CH_APOSTLE.get(), ChasingApostle.createAttributes().build());
         event.put(CREEPER_SERVANT.get(), CreeperServant.createAttributes().build());
         event.put(CULTIST.get(), Cultist.createAttributes().build());
         event.put(CURSED_NIHILISTIC_EVOKER.get(), CursedNihilisticEvoker.createAttributes().build());
@@ -305,6 +312,7 @@ public class NoixmodAPIEntities {
         event.put(OLD_HEAD_HUNTER.get(), HeadHunter.createAttributes().build());
         event.put(HEALING.get(), Healing.createAttributes());
         event.put(H_WIND_ZOMBIE.get(), WindZombie.createAttributes().build());
+        event.put(HUNTED_VILLAGER.get(), HuntedVillager.createAttributes().build());
         event.put(HUNTER.get(), NoixmodAPIAttributes.createHunterAttributes().build());
         event.put(INTRUDER.get(), NoixmodAPIAttributes.createIntruderAttributes().build());
         event.put(LAVA_ZOMBIE_SERVANT.get(), NoixmodAPIAttributes.createLavaAttributes().build());
@@ -343,6 +351,8 @@ public class NoixmodAPIEntities {
         event.put(SUPERSTITIOUS.get(), NoixmodAPIAttributes.createSuperstitiousAttributes().build());
         event.put(SUPERSTITIOUS_CLONE.get(), NoixmodAPIAttributes.createSuperstitiousCloneAttributes().build());
         event.put(SWORD_CULTIST.get(), NoixmodAPIAttributes.createSwordCultistAttributes().build());
+        event.put(THE_GHOST.get(), TheGhost.createAttributes().build());
+        event.put(THE_HUMAN.get(), ScaringHuman.createAttributes().build());
         event.put(TRACKER.get(), Tracker.createAttributes());
         event.put(BUGLER.get(), Bugler.createAttributes().build());
         event.put(VAMPIRE.get(), NoixmodAPIAttributes.createVampireAttributes().build());

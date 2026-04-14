@@ -17,8 +17,8 @@ public class Detractor extends AbstractHorrorMob {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1,
-                Maths.square(1.7)));
-        OwnableMob.addBehaviorGoals(this, 4, 0.8, 10F, true, true);
+                Maths.square(1.7D)));
+        OwnableMob.addBehaviorGoals(this, 4, 0.8D, 10F, true, true);
         this.targetSelector.addGoal(1, new HorrorHurtByTargetGoal(this,
                 AbstractHorrorMob.class).setAlertOthers());
         this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));

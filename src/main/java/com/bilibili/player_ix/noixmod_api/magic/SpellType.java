@@ -1,9 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.magic;
 
+import org.NineAbyss9.util.function.Holder;
+
 import java.util.function.Supplier;
 
-public class SpellType implements Supplier<ISpell> {
+public class SpellType implements Holder<ISpell> {
     protected final String name;
     private final Supplier<ISpell> type;
 

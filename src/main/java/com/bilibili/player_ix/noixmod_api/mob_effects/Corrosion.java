@@ -20,7 +20,7 @@ extends MobEffect {
         return -1 * (level + 1);
     }
 
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
         return true;
     }
 }

@@ -15,6 +15,10 @@ extends MobRenderer<T, HumanoidModel<T>> {
         super(pContext, new HumanoidModel<>(pContext.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);
     }
 
+    protected boolean isShaking(T pEntity) {
+        return true;
+    }
+
     public ResourceLocation getTextureLocation(T pEntity) {
         return LOC;
     }

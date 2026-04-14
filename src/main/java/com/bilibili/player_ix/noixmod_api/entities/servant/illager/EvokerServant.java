@@ -36,6 +36,7 @@ public class EvokerServant
 extends OwnableIllager {
     public EvokerServant(EntityType<? extends EvokerServant> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 7;
     }
 
     protected void registerGoals() {

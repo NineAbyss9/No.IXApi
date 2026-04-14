@@ -1,9 +1,25 @@
 
 package com.bilibili.player_ix.noixmod_api.client;
 
+import com.bilibili.player_ix.noixmod_api.client.model.horror.TheGhostModel;
+import com.bilibili.player_ix.noixmod_api.client.model.illager.BiologistModel;
+import com.bilibili.player_ix.noixmod_api.client.model.illager.EIModel;
+import com.bilibili.player_ix.noixmod_api.client.model.illager.IXIllagerModel;
+import com.bilibili.player_ix.noixmod_api.client.model.illager.IntruderModel;
+import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.*;
 import com.bilibili.player_ix.noixmod_api.client.renderer.block.CursedChestR;
+import com.bilibili.player_ix.noixmod_api.client.renderer.horror.*;
+import com.bilibili.player_ix.noixmod_api.client.renderer.illager.*;
+import com.bilibili.player_ix.noixmod_api.client.renderer.nb.*;
+import com.bilibili.player_ix.noixmod_api.client.renderer.nihilist.*;
 import com.bilibili.player_ix.noixmod_api.client.renderer.servant.*;
-import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.ice.YetiRenderer;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.illager.*;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.nihilistic.ApostleServantRenderer;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.nihilistic.GolemRenderer;
+import com.bilibili.player_ix.noixmod_api.client.renderer.servant.nihilistic.WrongedSoulRenderer;
+import com.bilibili.player_ix.noixmod_api.client.renderer.villager.AmbusherRenderer;
+import net.minecraft.world.item.Item;
 import com.github.NineAbyss9.ix_api.api.renderer.BaseEntityRenderer;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
@@ -34,8 +50,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Supplier;
 
-@PAMAreNonnullByDefault
 @Mod.EventBusSubscriber(modid = NoixmodAPI.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT)
 public class ClientInitEvents {
@@ -78,6 +94,7 @@ public class ClientInitEvents {
         event.registerLayerDefinition(NoixmodAPIModelLayer.STATUE, StatueModel::createBodyLayer);
         event.registerLayerDefinition(SuicideZombieModel.LAYER_LOCATION, SuicideZombieModel::createBodyLayer);
         event.registerLayerDefinition(SummonEntityModel.LAYER_LOCATION, SummonEntityModel::createBodyLayer);
+        event.registerLayerDefinition(TheGhostModel.LAYER_LOCATION, TheGhostModel::createBodyLayer);
         event.registerLayerDefinition(ThrownAxeModel.LAYER_LOCATION, ThrownAxeModel::createLayer);
         event.registerLayerDefinition(NoixmodAPIModelLayer.VILLAGER_FIGHTER, VillagerFighterModel::createBodyLayer);
         event.registerLayerDefinition(WormIllagerModel.LAYER_LOCATION, WormIllagerModel::createBodyLayer);
@@ -130,6 +147,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.BIOLOGIST.get(), BiologistRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CAGE.get(), CageRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.CH_APOSTLE.get(), HorrorRenderer.ChasingApostleRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CREEPER_SERVANT.get(), CreeperServantRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CULTIST.get(), CultistRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CURSED_NIHILISTIC_EVOKER.get(), CursedNihilityEvokerRenderer::new);
@@ -162,6 +180,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.HHS.get(), HeadHunterSwordRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HORROR_CAMERA.get(), HorrorCameraRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.H_WIND_ZOMBIE.get(), HostileWindZombieRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.HUNTED_VILLAGER.get(), HuntedVillagerRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HUNTER.get(), HunterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.INTRUDER.get(), IntruderRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.LAVA_TRAP.get(), LavaTrapRenderer::new);
@@ -213,6 +232,8 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.SWORD_CULTIST.get(), SwordCultistRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.THROWN_AXE.get(), ThrownAxeRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.BUGLER.get(), TrumpeterRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.THE_GHOST.get(), TheGhostRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.THE_HUMAN.get(), HorrorRenderer.ScaringHumanRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.TRACKER.get(), TrackerRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.VAMPIRE.get(), VampireRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.VAMPIRE_ARROW.get(), VampireArrowRenderer::new);
@@ -259,7 +280,11 @@ public class ClientInitEvents {
     }
 
     public static void registerItemStates() {
-        ItemProperties.register(NoixmodAPIItems.BOW_BOW.get(), new ResourceLocation("pull"),
+        makeBow(NoixmodAPIItems.BOW_BOW);
+    }
+
+    private static void makeBow(Supplier<? extends Item> item) {
+        ItemProperties.register(item.get(), new ResourceLocation("pull"),
                 (stack, level, living, i) -> {
                     if (living == null) {
                         return 0.0F;
@@ -268,7 +293,7 @@ public class ClientInitEvents {
                                 - living.getUseItemRemainingTicks()) / 20.0F;
                     }
                 });
-        ItemProperties.register(NoixmodAPIItems.BOW_BOW.get(), new ResourceLocation("pulling"),
+        ItemProperties.register(item.get(), new ResourceLocation("pulling"),
                 (itemStack, clientLevel, livingEntity, i) -> livingEntity != null &&
                         livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F);
     }

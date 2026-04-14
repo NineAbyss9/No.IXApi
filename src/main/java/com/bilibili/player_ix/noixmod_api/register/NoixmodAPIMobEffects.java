@@ -23,7 +23,7 @@ public class NoixmodAPIMobEffects {
     private NoixmodAPIMobEffects() {}
 
     static {
-        CORROSION = REGISTER.register("corrosion", ()-> new Corrosion(-10092402)
+        CORROSION = REGISTER.register("corrosion", () -> new Corrosion(-10092402)
                 .addAttributeModifier(Attributes.ARMOR, "20263B89-116E-49AC-9B6B-9971489B9BE5",
                         0, AttributeModifier.Operation.ADDITION));
         DESIRE_FOR_BLOOD = REGISTER.register("desire_for_blood", DesireForBlood::new);

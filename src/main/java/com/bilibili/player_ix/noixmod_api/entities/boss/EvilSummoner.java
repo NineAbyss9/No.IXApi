@@ -23,8 +23,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+/*import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;*/
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -94,13 +94,13 @@ implements InventoryCarrier, ApiNihilisticBoss {
         this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
     }
 
-    protected InteractionResult mobInteract(Player p_21472_, InteractionHand p_21473_) {
-        /*if (!this.isActive()) {
+    /*protected InteractionResult mobInteract(Player p_21472_, InteractionHand p_21473_) {
+        if (!this.isActive()) {
             p_21472_.openMenu(new SimpleMenuProvider())
 
-        }*/
+        }
         return super.mobInteract(p_21472_, p_21473_);
-    }
+    }*/
 
     protected void onEffectAdded(MobEffectInstance instance, @Nullable Entity pEntity) {
     }

@@ -23,6 +23,7 @@ public class HunterServant
 extends OwnableIllager {
     public HunterServant(EntityType<? extends HunterServant> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 5;
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.AXE_OF_HUNTER.get()));
     }
 
@@ -33,12 +34,6 @@ extends OwnableIllager {
 
     protected void addAttackGoal() {
         this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1, Maths.square(2.5)));
-    }
-
-    public int getExperienceReward() {
-        if (!isHostile())
-            return 0;
-        return super.getExperienceReward();
     }
 
     protected SoundEvent getAmbientSound() {
@@ -66,8 +61,8 @@ extends OwnableIllager {
 
     public boolean doHurtTarget(Entity pEntity) {
         if (pEntity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), Maths.toTick(3), this.level()
-                    .getDifficulty().getId()));
+            living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), Maths.toTick(3),
+                    this.mobData.getDifficultyId()));
             if (!living.level().isClientSide && !living.getMobType().equals(MobType.UNDEAD)) {
                 EntityEventHandler.broadcastEntityEvent(living, 4);
             }

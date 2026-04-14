@@ -36,7 +36,6 @@ public class HorrorLookAtEntityGoal extends Goal {
         }
     }
 
-    @Override
     public boolean canUse() {
         if (!NoixmodAPIMainConfig.HorrorMode.get()) {
             return false;
@@ -49,7 +48,6 @@ public class HorrorLookAtEntityGoal extends Goal {
         return this.lookAt != null;
     }
 
-    @Override
     public boolean canContinueToUse() {
         if (!NoixmodAPIMainConfig.HorrorMode.get()) {
             return false;
@@ -64,17 +62,14 @@ public class HorrorLookAtEntityGoal extends Goal {
         }
     }
 
-    @Override
     public void start() {
         this.lookTime = this.adjustedTickDelay(40 + this.mob.getRandom().nextInt(40));
     }
 
-    @Override
     public void stop() {
         this.lookAt = null;
     }
 
-    @Override
     public void tick() {
         if (this.lookAt != null && this.lookAt.isAlive()) {
             double $$0 = this.onlyHorizontal ? this.mob.getEyeY() : this.lookAt.getEyeY();

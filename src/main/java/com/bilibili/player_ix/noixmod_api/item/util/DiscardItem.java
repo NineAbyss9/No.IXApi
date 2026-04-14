@@ -7,7 +7,6 @@ import com.bilibili.player_ix.noixmod_api.entities.boss.NihilisticLord;
 import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -43,16 +42,10 @@ extends SwordItem {
                     BossBar.removeBossBar(apostle.getUUID(), apostle);
                 }
             }
-            entity.remove(Entity.RemovalReason.KILLED);
             entity.canUpdate(false);
+            entity.remove(Entity.RemovalReason.KILLED);
             entity.setRemoved(Entity.RemovalReason.KILLED);
             entity.onRemovedFromWorld();
-            if (!entity.isRemoved()) {
-                if (entity.level() instanceof ServerLevel level) {
-                    level.getEntitiesOfClass(entity.getClass(), entity.getBoundingBox().inflate(6)).remove(entity);
-                    level.getEntities(entity, entity.getBoundingBox().inflate(6)).remove(entity);
-                }
-            }
         }
         return super.onLeftClickEntity(stack, player, entity);
     }

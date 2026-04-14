@@ -17,14 +17,12 @@ import net.minecraft.world.level.Level;
 public class ApostleBoss
 extends Apostle
 implements ApiNihilisticBoss {
-    //private static final EntityDataAccessor<Float> APOSTLE_HEALTH;
     public ApostleBoss(EntityType<ApostleBoss> apostle, Level world) {
         super(apostle, world);
     }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        //this.entityData.define(APOSTLE_HEALTH, 320F);
     }
 
     public boolean isBoss() {
@@ -85,8 +83,4 @@ implements ApiNihilisticBoss {
     public boolean isHostile() {
         return true;
     }
-
-    /*static {
-        APOSTLE_HEALTH = SynchedEntityData.defineId(ApostleBoss.class, EntityDataSerializers.FLOAT);
-    }*/
 }

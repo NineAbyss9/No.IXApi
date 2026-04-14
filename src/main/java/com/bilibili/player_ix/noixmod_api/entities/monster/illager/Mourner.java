@@ -32,7 +32,7 @@ import java.util.List;
 public class Mourner extends APISpellcaster {
     @Nullable
     private Sheep wlTarget;
-    private int dead = 0;
+    private int death = 0;
     private int damageSpellCooldown;
     private final OwnerSummon ownerSummon = new OwnerSummon(this);
     public Mourner(EntityType<? extends Mourner> p_32105_, Level p_32106_) {
@@ -53,9 +53,9 @@ public class Mourner extends APISpellcaster {
         this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, true));
     }
 
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide()) {
+    public void aiStep() {
+        super.aiStep();
+        if (this.level().isClientSide) {
             if (this.random.nextBoolean()) {
                 this.level().addParticle(ParticleTypes.FALLING_WATER, this.getRandomX(0.5),
                         this.getY() + 1.5, this.getRandomZ(0.5), 0, 0, 0);
@@ -96,28 +96,28 @@ public class Mourner extends APISpellcaster {
         return 0.7F;
     }
 
-    public int getDead() {
-        return this.dead;
+    public int getDeath() {
+        return this.death;
     }
 
-    public void setDead(int count) {
-        this.dead = Math.min(NoixmodAPIMainConfig.MournerDamage.get().intValue(), count);
+    public void setDeath(int count) {
+        this.death = Math.min(NoixmodAPIMainConfig.MournerDamage.get().intValue(), count);
     }
 
-    public void setDeadPlus() {
-        if (this.dead < NoixmodAPIMainConfig.MournerDamage.get().intValue()) {
-            ++this.dead;
+    public void setDeathPlus() {
+        if (this.death < NoixmodAPIMainConfig.MournerDamage.get().intValue()) {
+            ++this.death;
         }
     }
 
     public void addAdditionalSaveData(CompoundTag p_37870_) {
-        p_37870_.putInt("Dead", this.getDead());
+        p_37870_.putInt("Death", this.getDeath());
         super.addAdditionalSaveData(p_37870_);
     }
 
     public void readAdditionalSaveData(CompoundTag p_37862_) {
-        if (p_37862_.contains("Dead")) {
-            this.setDead(p_37862_.getInt("Dead"));
+        if (p_37862_.contains("Death")) {
+            this.setDeath(p_37862_.getInt("Dead"));
         }
         super.readAdditionalSaveData(p_37862_);
     }
@@ -165,7 +165,7 @@ public class Mourner extends APISpellcaster {
     private class SummonGoal extends UseSpellGoal {
 
         protected void castSpell() {
-            for (int dead = 0; dead < Mourner.this.getDead(); ++dead) {
+            for (int dead = 0;dead < Mourner.this.getDeath();++dead) {
                 DeadIllagerSkull skull = new DeadIllagerSkull(NoixmodAPIEntities.DEAD_ILLAGER_SKULL.get(),
                         Mourner.this.level());
                 skull.setBoundOrigin(Mourner.this.blockPosition());
@@ -179,7 +179,7 @@ public class Mourner extends APISpellcaster {
         }
 
         protected int getCastWarmupTime() {
-            return 2 * Mourner.this.getDead();
+            return 2 * Mourner.this.getDeath();
         }
 
         protected int getCastingInterval() {
@@ -192,7 +192,7 @@ public class Mourner extends APISpellcaster {
             if (!skulls.isEmpty()) {
                 return false;
             }
-            if (Mourner.this.getDead() <= 0) {
+            if (Mourner.this.getDeath() <= 0) {
                 return false;
             }
             return super.canUse();

@@ -7,42 +7,78 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.level.Level;
 
 public class TargetSelector
 extends Item {
-    @Nullable
-    protected Mob firstMob;
-    @Nullable
-    protected LivingEntity secondMob;
-    protected boolean isSelected;
+    public static final String SELECTED = "Selected";
+    public static final String FIRST = "First";
+    public static final String SECOND = "Second";
     public TargetSelector() {
         super(new Properties().stacksTo(1).fireResistant());
     }
 
-    @Override
+    public ItemStack getDefaultInstance() {
+        var stack = super.getDefaultInstance();
+        setSelected(stack, false);
+        return stack;
+    }
+
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (this.isSelected) {
+        if (isSelected(stack)) {
             if (entity instanceof LivingEntity living) {
-                this.secondMob = living;
+                setSecond(stack, living.getId());
             }
-            this.setTarget();
+            this.setTarget(player.level(), stack);
         } else {
-            if (this.firstMob == null && entity instanceof Mob mob) {
-                this.isSelected = true;
-                this.firstMob = mob;
-            }
+            setSelected(stack, true);
+            setFirst(stack, entity.getId());
         }
         return true;
     }
 
-    public void setTarget() {
-        if (this.firstMob != null) {
-            this.firstMob.setTarget(this.secondMob);
+    public void setTarget(Level pLevel, ItemStack stack) {
+        var first = pLevel.getEntity(getFirst(stack));
+        var second = pLevel.getEntity(getSecond(stack));
+        if (first instanceof Mob mob) {
+            if (second instanceof LivingEntity entity) {
+                mob.setTarget(entity);
+            }
         }
-        this.firstMob = null;
-        this.secondMob = null;
-        this.isSelected = false;
+        if (second instanceof Mob mob) {
+            if (first instanceof LivingEntity entity) {
+                mob.setTarget(entity);
+            }
+        }
+        setSelected(stack, false);
+        setFirst(stack, -1);
+        setSecond(stack, -1);
+    }
+
+    public static boolean isSelected(ItemStack stack) {
+        var tag = stack.getOrCreateTag();
+        return tag.contains(SELECTED) && tag.getBoolean(SELECTED);
+    }
+
+    public static void setSelected(ItemStack stack, boolean flag) {
+        stack.getOrCreateTag().putBoolean(SELECTED, flag);
+    }
+
+    public static int getFirst(ItemStack stack) {
+        var tag = stack.getOrCreateTag();
+        return tag.contains(FIRST) ? tag.getInt(FIRST) : -1;
+    }
+
+    public static void setFirst(ItemStack stack, int id) {
+        stack.getOrCreateTag().putInt(FIRST, id);
+    }
+
+    public static int getSecond(ItemStack stack) {
+        var tag = stack.getOrCreateTag();
+        return tag.contains(SECOND) ? tag.getInt(SECOND) : -1;
+    }
+
+    public static void setSecond(ItemStack stack, int id) {
+        stack.getOrCreateTag().putInt(SECOND, id);
     }
 }

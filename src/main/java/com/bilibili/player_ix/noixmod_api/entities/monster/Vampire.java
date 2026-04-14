@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -45,9 +46,9 @@ implements ApiRangedAttackMob {
         super(p_32105_, p_32106_);
         this.xpReward = 3;
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+        ((GroundPathNavigation)navigation).setAvoidSun(NoixmodAPIMainConfig.VampireBurnUnderSun.get());
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new CastingSpellGoal());
@@ -93,12 +94,10 @@ implements ApiRangedAttackMob {
         return arrow;
     }
 
-    @Override
     public MobType getMobType() {
         return MobType.UNDEAD;
     }
 
-    @Override
     public IllagerArmPose getArmPose() {
         if (this.isCastingSpell()) {
             return IllagerArmPose.SPELLCASTING;
@@ -109,10 +108,9 @@ implements ApiRangedAttackMob {
         return IllagerArmPose.CROSSED;
     }
 
-    @Override
     public void aiStep() {
-        MobUtils.burnInTheSun(NoixmodAPIMainConfig.VampireBurnUnderSun.get(), this, 3);
         super.aiStep();
+        MobUtils.burnInTheSun(NoixmodAPIMainConfig.VampireBurnUnderSun.get(), this, 3);
     }
 
     @Nullable

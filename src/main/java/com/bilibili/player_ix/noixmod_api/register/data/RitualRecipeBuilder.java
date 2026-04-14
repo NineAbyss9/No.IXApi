@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register.data;
 
+import com.bilibili.player_ix.noixmod_api.api.craft.RitualRecipe;
 import com.bilibili.player_ix.noixmod_api.register.ApiRecipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -62,6 +63,11 @@ implements RecipeBuilder {
      */
     public RitualRecipeBuilder define(NonNullList<Ingredient> pIngredients) {
         this.materials = pIngredients;
+        for (int i = 0;i<RitualRecipe.RECIPE_COUNT;i++) {
+            if (this.materials.get(i).isEmpty()) {
+                this.materials.set(i, Ingredient.EMPTY);
+            }
+        }
         return this;
     }
 
