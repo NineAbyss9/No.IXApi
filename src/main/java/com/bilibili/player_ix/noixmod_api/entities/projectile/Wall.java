@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

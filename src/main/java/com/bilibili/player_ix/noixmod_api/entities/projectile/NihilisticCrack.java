@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
-import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.server.level.ServerLevel;

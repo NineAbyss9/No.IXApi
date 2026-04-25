@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
+import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
@@ -8,7 +9,6 @@ import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.compat.goety.GoetyCompat;
 import com.bilibili.player_ix.noixmod_api.entities.ai.control.FlyingVexMoveControl;
-import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,7 +19,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -42,19 +41,15 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
     public VexArcher(EntityType<? extends VexArcher> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
         this.moveControl = new FlyingVexMoveControl(this);
-        ItemStack stack = ItemStacks.of(Items.BOW);
-        this.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        this.setItemInHand(InteractionHand.MAIN_HAND, ItemStacks.of(Items.BOW));
+        this.enchantSpawnedWeapon(p_21684_.random, 1.0F);
     }
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        //this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(4, new ApiRangedBowAttackGoal(this, 1.5, 14,
-                20f) {
-            public boolean checkSee() {
-                return true;
-            }
-        });
+                20f));
         this.goalSelector.addGoal(8, new VexRandomMoveGoal(this));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, LivingEntity.class, 20f));
         this.targetSelector.addGoal(0, new OwnerHurtTargetGoal<>(this));
@@ -65,14 +60,11 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
     public void tick() {
         this.noPhysics = true;
         super.tick();
+        this.noPhysics = false;
         this.setNoGravity(true);
         if (this.hasLife() && this.getLifeTick() <= 0) {
             this.hurt(this.damageSources().starve(), 1.0f);
         }
-    }
-
-    public void aiStep() {
-        super.aiStep();
     }
 
     public void move(MoverType p_19973_, Vec3 p_19974_) {

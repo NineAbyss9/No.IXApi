@@ -17,7 +17,6 @@ extends Block {
     }
 
     @SuppressWarnings("deprecation")
-    @Override
     public int getLightBlock(BlockState p_60585_, BlockGetter p_60586_, BlockPos p_60587_) {
         return 15;
     }

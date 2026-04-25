@@ -1,12 +1,12 @@
 modLoader="javafml"
 loaderVersion="[47,)"
-license="{mod_license}"
+license="${mod_license}"
 
 [[mods]]
 modId="noixmodapi"
 version="${mod_version}"
-displayName="No.IXAPI"
-displayURL="https://github.com/noixmod"
+displayName="No.IXApi"
+displayURL="https://github.com/NineAbyss9"
 logoFile="logo.png"
 credits="Programmer : Player_IX.Some textures by Illager-Wither"
 authors="Player_IX"

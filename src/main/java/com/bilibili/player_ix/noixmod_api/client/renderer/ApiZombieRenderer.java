@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.client.model.ApiZombieModel;
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractZombieServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractZombieServant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;

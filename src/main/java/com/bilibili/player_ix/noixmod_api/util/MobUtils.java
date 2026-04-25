@@ -523,8 +523,7 @@ public record MobUtils(Entity entity) {
             BlockPos blockpos = BlockPos.containing(mob.getX(), mob.getEyeY(), mob.getZ());
             boolean flag = mob.isInWaterRainOrBubble() || mob.isInPowderSnow || mob.wasInPowderSnow
                     || mob.hasEffect(NoixmodAPIMobEffects.WET.get());
-            return f > 0.5F && mob.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && !flag
-                    && mob.level().canSeeSky(blockpos);
+            return f > 0.5F && mob.level().canSeeSky(blockpos) && mob.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && !flag;
         }
         return false;
     }

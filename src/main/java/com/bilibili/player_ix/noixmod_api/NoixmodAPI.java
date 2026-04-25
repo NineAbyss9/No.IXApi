@@ -27,6 +27,8 @@ import java.nio.file.*;
 public class NoixmodAPI {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "noixmodapi";
+    @SuppressWarnings("unused")
+    public static final String MODID = MOD_ID;
     public static ApiAgent agent = DistExecutor.unsafeRunForDist(() -> ClientAgent::new,
             () -> ServerAgent::new);
 
@@ -76,7 +78,7 @@ public class NoixmodAPI {
     }
 
     public static ResourceLocation horror(String st) {
-        return new ResourceLocation(MOD_ID, "textures/entities/monsters/horror/" + st);
+        return new ResourceLocation(MOD_ID, "textures/entities/monsters/horror/" + st + ".png");
     }
 
     /**Code from <a href="https://github.com/Polarice3/Goety-2/blob/1.20/src/main/java/com/Polarice3/Goety/Goety.java">link</a>*/

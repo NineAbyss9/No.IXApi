@@ -7,6 +7,6 @@
     "type": "noixmodapi:detractor",
     "minCount": 1,
     "maxCount": 1,
-    "weight": 50
+    "weight": 20
   }
 }

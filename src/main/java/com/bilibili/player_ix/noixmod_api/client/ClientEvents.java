@@ -39,7 +39,6 @@ import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import org.NineAbyss9.math.MathSupport;
 import org.joml.Matrix4f;
@@ -96,58 +95,7 @@ public class ClientEvents {
         PoseStack pPoseStack = event.getPoseStack();
         float pPartialTick = event.getPartialTick();
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        //VertexBuffer.unbind();
         RenderSystem.enableBlend();
-        //Light(strange)
-        /*float[] afloat = level.effects().getSunriseColor(level.getSunAngle(pPartialTick), pPartialTick);
-        if (afloat == null) afloat = new float[]{1.0F, 0.25F, 0.25F, 1.0F};
-        if (renderStrangeLight) {
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            RenderSystem.setShaderColor(2.0F, 0.5F, 0.5F, 1.0F);
-            pPoseStack.pushPose();
-            pPoseStack.mulPose(Axis.XP.rotationDegrees(-180.0F));
-            float f3 = (Mth.sin(level.getSunAngle(pPartialTick)) < 0.1F) ? 180.0F : 0.0F;//< 0.1F may be terrible, >
-            // 0.0F
-            pPoseStack.mulPose(Axis.ZP.rotationDegrees(f3));
-            pPoseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-            float f4 = afloat[0];
-            float f5 = afloat[1];
-            float f6 = afloat[2];
-            Matrix4f matrix4f = pPoseStack.last().pose();
-            bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
-            bufferbuilder.vertex(matrix4f, 0.0F, 100.0F, 0.0F).color(f4, f5, f6, afloat[3]).endVertex();
-            //int i = 16;
-            for (float j = 0.0F;j <= 16.0F;++j) {
-                float f7 = j * ((float)Math.PI * 2F) / 16.0F;
-                float f8 = Mth.sin(f7);
-                float f9 = Mth.cos(f7);
-                bufferbuilder.vertex(matrix4f, f8 * 120.0F, f9 * 120.0F, -f9 * 40.0F * afloat[3]).color(afloat[0],
-                        afloat[1], afloat[2], 0.0F).endVertex();
-            }
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            pPoseStack.popPose();
-        }
-        //Light
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        RenderSystem.setShaderColor(1.0F, 0.5F, 0.5F, 1.0F);
-        pPoseStack.pushPose();
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-        pPoseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(level.getSunAngle(pPartialTick)) < 0.0F ? 180.0F : 0.0F));
-        //pPoseStack.mulPose(Axis.ZP.rotationDegrees(0.0F));
-        Matrix4f matrix4f = pPoseStack.last().pose();
-        bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
-        bufferbuilder.vertex(matrix4f, 0.0F, 100.0F, 0.0F).color(afloat[0], afloat[1], afloat[2],
-                afloat[3]).endVertex();
-        //int i = 16;
-        for (float j = 0.0F;j <= 16.0F;++j) {
-            float f7 = j * ((float)Math.PI * 2F) / 16.0F;
-            float f8 = Mth.sin(f7);
-            float f9 = Mth.cos(f7);
-            bufferbuilder.vertex(matrix4f, f8 * 120.0F, f9 * 120.0F, -f9 * 40.0F * afloat[3]).color(afloat[0],
-                    afloat[1], afloat[2], 0.0F).endVertex();
-        }
-        BufferUploader.drawWithShader(bufferbuilder.end());
-        pPoseStack.popPose();*/
         //The Horror
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
                 GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -173,7 +121,9 @@ public class ClientEvents {
     }
 
     public static final List<SoundEvent> randomAmbientSounds
-            = List.of(SoundEvents.ZOMBIE_AMBIENT, SoundEvents.SKELETON_AMBIENT, SoundEvents.CREEPER_PRIMED);
+            = List.of(SoundEvents.ZOMBIE_AMBIENT, SoundEvents.SKELETON_AMBIENT);
+
+    public static final List<SoundEvent> terribleSounds = List.of(SoundEvents.CREEPER_PRIMED);
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -186,31 +136,33 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onClientPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side != LogicalSide.CLIENT) return;
         if (HorrorModeManager.horrorModeEnabled()) {
             Player player = event.player;
             Level level = player.level();
             BlockPos pos = player.blockPosition();
             if (level.canSeeSky(pos)) {
                 if (level.getGameTime() % 600L == 0L) {
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.05F) {
+                    if (MathSupport.threadSafeRandom.nextFloat() < 0.005F) {
                         level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(), SoundSource.HOSTILE,
                                 0.5F, 1.0F, false);
                     }
                 }
             } else {
-                if (level.getGameTime() % 60L == 0L) {
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.05F) {
+                if (level.getGameTime() % 300L == 0L) {
+                    if (MathSupport.threadSafeRandom.nextFloat() < 0.008F) {
                         level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(), SoundSource.HOSTILE,
                                 0.5F, 1.0F, false);
                     }
-                }
-                if (level.getGameTime() % 300L == 0L) {
                     if (MathSupport.threadSafeRandom.nextFloat() < 0.01F) {
-                        level.playLocalSound(pos, randomAmbientSounds.get(MathSupport.threadSafeRandom.nextInt(
-                                randomAmbientSounds.size())), SoundSource.HOSTILE, 0.25F, 1.0F, false);
+                        if (MathSupport.threadSafeRandom.nextBoolean()) {
+                            level.playLocalSound(pos, randomAmbientSounds.get(MathSupport.threadSafeRandom.nextInt(
+                                    randomAmbientSounds.size())), SoundSource.HOSTILE, 0.25F, 1.0F, false);
+                        } else {
+                            level.playLocalSound(pos, terribleSounds.get(MathSupport.threadSafeRandom.nextInt(
+                                    terribleSounds.size())), SoundSource.HOSTILE, 0.75F, 1.0F, false);
+                        }
                     }
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.08F) {
+                    if (MathSupport.threadSafeRandom.nextFloat() < 0.02F) {
                         level.playLocalSound(pos, SoundEvents.AMBIENT_CAVE.value(), SoundSource.NEUTRAL,
                                 0.5F, 1.0F, false);
                     }
@@ -221,7 +173,9 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onRenderLiving(RenderLivingEvent.Pre<AbstractHorrorMob, ?> event) {
+        if (!HorrorModeManager.horrorModeEnabled()) return;
         var entity = event.getEntity();
+        if (!(entity instanceof AbstractHorrorMob)) return;
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
         // 距离检查
@@ -231,12 +185,11 @@ public class ClientEvents {
         Vec3 from = player.getEyePosition(1.0F);
         Vec3 to = entity.getEyePosition(1.0F);
         BlockHitResult hit = level.clip(new ClipContext(from, to,
-                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE,
-                entity));
+                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
         // 如果射线碰到方块且不是生物本身
         if (hit.getType() == HitResult.Type.BLOCK) {
             double hitDist = hit.getLocation().distanceTo(to);
-            if (hitDist > 0.5D) {
+            if (hitDist > 0.25D) {//0.5
                 event.setCanceled(true);  // 不渲染
             }
         }
@@ -247,7 +200,7 @@ public class ClientEvents {
         if (NoixmodAPIMainConfig.HorrorMode.get() && level.isClientSide) {
             HorrorModeManager manager = HorrorModeManager.horrorModeManagers.get(level);
             if (manager == null) return;
-            manager.tick();
+            manager.tick(level);
         }
     }
 

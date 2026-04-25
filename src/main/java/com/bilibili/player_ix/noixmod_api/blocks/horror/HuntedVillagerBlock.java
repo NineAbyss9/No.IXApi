@@ -1,9 +1,13 @@
 
 package com.bilibili.player_ix.noixmod_api.blocks.horror;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.HuntedVillager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -13,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -27,6 +32,7 @@ extends Block {
     static final VoxelShape SHAPE;
     public HuntedVillagerBlock(Properties pProperties) {
         super(pProperties);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.EAST));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -47,12 +53,20 @@ extends Block {
     }
 
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        HuntedVillager villager = null;
         if (level instanceof Level pLevel) {
-            villager.moveTo(Vec9.of(pos));
+            HuntedVillager villager = NoixmodAPIEntities.HUNTED_VILLAGER.get().create(pLevel);
+            villager.moveTo(Vec9.of(pos.above()));
             pLevel.addFreshEntity(villager);
             pLevel.destroyBlock(pos, false);
         }
+    }
+
+    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
+        super.playerDestroy(pLevel, pPlayer, pPos, pState, pBlockEntity, pTool);
+        HuntedVillager villager = NoixmodAPIEntities.HUNTED_VILLAGER.get().create(pLevel);
+        villager.moveTo(Vec9.of(pPos.above()));
+        pLevel.addFreshEntity(villager);
+        pLevel.destroyBlock(pPos, false);
     }
 
     public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {

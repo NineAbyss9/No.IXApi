@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer.servant.nihilistic;
 
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
 import com.bilibili.player_ix.noixmod_api.client.model.APIHumanoidModel;
-import com.bilibili.player_ix.noixmod_api.entities.monster.Golem;
+import com.bilibili.player_ix.noixmod_api.entities.monster.nihilist.Golem;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;

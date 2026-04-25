@@ -5,7 +5,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractSkeletonServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractSkeletonServant;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

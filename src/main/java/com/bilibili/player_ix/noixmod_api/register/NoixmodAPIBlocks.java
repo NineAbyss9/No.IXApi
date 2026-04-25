@@ -21,7 +21,7 @@ public class NoixmodAPIBlocks {
             InfernalIronAnvil::new);
     public static final RegistryObject<Block> OMINOUS_HEAD = REGISTER.register("ominous_head", OminousHead::new);
     public static final RegistryObject<Block> SPIRIT_STONE_ORE = REGISTER.register("spirit_stone_ore", SpiritStoneOre::new);
-    public static final RegistryObject<Block> TELEPORT_PLATE = REGISTER.register("teleport_plate", TeleportPlate::new);
+    //public static final RegistryObject<Block> TELEPORT_PLATE = REGISTER.register("teleport_plate", TeleportPlate::new);
     //public static final RegistryObject<Block> TOMBSTONE = REGISTER.init("tombstone", ()-> new Block(BlockBehaviour.Properties.of().strength(1.5f, 6f)));
     public static final RegistryObject<Block> WORM_BLOCK = REGISTER.register("worm_block", WormBlock::new);
     public static final RegistryObject<Block> WORM_DIRT = REGISTER.register("worm_dirt", WormDirt::new);

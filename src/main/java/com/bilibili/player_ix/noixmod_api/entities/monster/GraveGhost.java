@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster;
 
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractZombieServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractZombieServant;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;

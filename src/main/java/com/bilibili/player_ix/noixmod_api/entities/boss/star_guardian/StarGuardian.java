@@ -8,7 +8,6 @@ import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.bilibili.player_ix.noixmod_api.api.entity.IX;
-import com.bilibili.player_ix.noixmod_api.entities.ai.goal.NoAttackMeleeGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFireball;
@@ -64,6 +63,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**转（星之守护者）*/
 public class StarGuardian
 extends SpellcasterNihilist
 implements ApiNihilisticBoss, IX, IFlagMob {
@@ -116,7 +116,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new MeleeGoal(this));
+        this.goalSelector.addGoal(0, new com.github.NineAbyss9.ix_api.api.mobs.ai.goal.MeleeGoal(this, 0.7D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 0.7));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, LivingEntity.class, 12F));
@@ -941,11 +941,5 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         DATA_TARGET_ID = SynchedEntityData.defineId(StarGuardian.class, EntityDataSerializers.INT);
         DATA_TARGET_UUID = SynchedEntityData.defineId(StarGuardian.class, EntityDataSerializers.OPTIONAL_UUID);
         DATA_SHIELD_TICK = SynchedEntityData.defineId(StarGuardian.class, EntityDataSerializers.INT);
-    }
-
-    private static class MeleeGoal extends NoAttackMeleeGoal {
-        public MeleeGoal(StarGuardian finder) {
-            super(finder, 0.7D, Maths.square(3));
-        }
     }
 }

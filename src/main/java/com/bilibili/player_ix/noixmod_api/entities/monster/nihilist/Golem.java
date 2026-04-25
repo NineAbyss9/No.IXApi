@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.monster;
+package com.bilibili.player_ix.noixmod_api.entities.monster.nihilist;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;

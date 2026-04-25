@@ -1,6 +1,7 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.servant;
+package com.bilibili.player_ix.noixmod_api.entities.servant.aquatic;
 
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractZombieServant;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;

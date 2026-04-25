@@ -6,9 +6,13 @@ import com.bilibili.player_ix.noixmod_api.entities.mod.APIMonster;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.*;
 import com.bilibili.player_ix.noixmod_api.entities.monster.hostile.HostileNihilisticBlaze;
 import com.bilibili.player_ix.noixmod_api.entities.monster.hostile.HostileYeti;
+import com.bilibili.player_ix.noixmod_api.entities.monster.ice.PlateauBeast;
+import com.bilibili.player_ix.noixmod_api.entities.monster.worm.SmallWorm;
+import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.DrownedServant;
 import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.ElderGuardianServant;
 import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.GuardianServant;
 import com.bilibili.player_ix.noixmod_api.entities.servant.ice.Yeti;
+import com.bilibili.player_ix.noixmod_api.entities.servant.nether.MiniGhast;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -148,7 +152,7 @@ public class NoixmodAPIEntities {
     public static final RegistryObject<EntityType<NihilisticCrack>> NIHILISTIC_CRACK = register("nihilistic_crack", EntityType.Builder.of(NihilisticCrack::new, MobCategory.MISC).sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<NihilisticDeath>> NIHILISTIC_DEATH = NoixmodAPIEntities.register("nihilistic_death", EntityType.Builder.of(NihilisticDeath::new, MobCategory.MONSTER).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<RainbowphobiaPatients>> RAINBOWPHOBIA_PATIENTS = NoixmodAPIEntities.register("rainbowphobia_patients", EntityType.Builder.<RainbowphobiaPatients>of(RainbowphobiaPatients::new, MobCategory.MONSTER).clientTrackingRange(6).updateInterval(2).sized(0.6f, 1.95f).setCustomClientFactory(RainbowphobiaPatients::new));
-    public static final RegistryObject<EntityType<EvokerIllager>> EVOKER_ILLAGER = NoixmodAPIEntities.register("evoker_illager", EntityType.Builder.<EvokerIllager>of(EvokerIllager::new, MobCategory.MONSTER).sized(0.6f, 1.95f).setCustomClientFactory(EvokerIllager::new).fireImmune());
+    public static final RegistryObject<EntityType<EvokerIllager>> EVOKER_ILLAGER = NoixmodAPIEntities.register("evoker_illager", EntityType.Builder.<EvokerIllager>of(EvokerIllager::new, MobCategory.MONSTER).sized(0.6f, 1.95f).fireImmune());
     public static final RegistryObject<EntityType<VillagerMaster>> VILLAGER_MASTER = NoixmodAPIEntities.register("villager_master", EntityType.Builder.of(VillagerMaster::new, MobCategory.MISC).sized(0.6f, 1.95f));
     public static final RegistryObject<EntityType<VillagerFangs>> VILLAGER_FANGS = NoixmodAPIEntities.register("villager_fangs",
             EntityType.Builder.of(VillagerFangs::new, MobCategory.MISC).sized(0.6F, 0.8F));

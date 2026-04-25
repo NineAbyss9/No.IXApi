@@ -14,7 +14,7 @@ import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIAttributesConfig;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.ApostleAI;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.HorrorLookAtEntityGoal;
-import com.bilibili.player_ix.noixmod_api.entities.monster.Golem;
+import com.bilibili.player_ix.noixmod_api.entities.monster.nihilist.Golem;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.ArrowRain;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticArrowRain;
@@ -1753,25 +1753,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             this.move(MoverType.SELF, new Vec3(0, -3, 0));
         }
         if (this.fallDistance <= 1 && this.trueDeathTime >= Maths.toTick(11) - 10) {
-            /*if (this.isBoss()) {
-                List<Entity> entities = this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox()
-                                .inflate(99),
-                        entity -> {
-                            if (entity instanceof TraceableEntity traceable) {
-                                return traceable.getOwner() == this;
-                            }
-                            return !(entity instanceof Player) && !(entity instanceof IX) && entity != this
-                                    && !(entity instanceof ExperienceOrb);
-                        });
-                entities.forEach(entity -> {
-                    entity.setTicksFrozen(999);
-                    entity.canUpdate(false);
-                    entity.setPosRaw(Double.NaN, Double.NEGATIVE_INFINITY, Double.MAX_VALUE);
-                    entity.getPositionCodec().setBase(new Vec3(Double.NaN, Double.NEGATIVE_INFINITY,
-                            Double.MAX_VALUE));
-                    entity.setRemoved(RemovalReason.KILLED);
-                });
-            }*/
             if (!this.level().isClientSide) {
                 this.serverLevel().sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(),
                         200, 0.5, 0, 0.5, 0.5);
@@ -1789,9 +1770,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                 else
                     this.playSound(NoixmodAPISounds.APOSTLE_DEATH.get());
             } else {
-                /*if (this instanceof ApostleBoss) {
-                    this.playSound(NoixmodAPISounds.PARTY_GLITCH.get(), 5.0f, 1.0f);
-                }*/
                 this.playSound(NoixmodAPISounds.APOSTLE_DEATH.get());
             }
             this.removeBecauseKilled();
@@ -1879,12 +1857,12 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
             } else {
                 this.clientSideIllusionTicks = 3;
                 int l;
-                for(l = 0; l < 4; ++l) {
+                for (l = 0; l < 4; ++l) {
                     this.clientSideIllusionOffsets[0][l] = this.clientSideIllusionOffsets[1][l];
                     this.clientSideIllusionOffsets[1][l] = new Vec3(-6.0F + this.random.nextInt(13) * 0.5,
                             Math.max(0, this.random.nextInt(6) - 4), -6.0F + this.random.nextInt(13) * 0.5);
                 }
-                for(l = 0; l < 16; ++l) {
+                for (l = 0; l < 16; ++l) {
                     this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5),
                             this.getRandomY(), this.getZ(0.5), 0.0, 0.0, 0.0);
                 }
@@ -1926,7 +1904,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                             this.healSelf(this.getMaxHealth() / 320F);
                         }
                         if (this.isOwned()) {
-                            assert this.getOwner() != null;
                             this.getOwner().heal(0.25F);
                         }
                     }

@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer.illager;
 
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
 import com.bilibili.player_ix.noixmod_api.client.model.illager.GreenSingerModel;
-import com.bilibili.player_ix.noixmod_api.entities.monster.GreenSinger;
+import com.bilibili.player_ix.noixmod_api.entities.monster.illager.GreenSinger;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

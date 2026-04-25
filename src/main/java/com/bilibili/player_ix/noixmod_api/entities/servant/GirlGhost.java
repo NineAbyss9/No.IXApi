@@ -1,16 +1,14 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
-import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.mod.APIMonster;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractGhost;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -71,20 +69,8 @@ extends AbstractGhost {
         }
     }
 
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.SOUL_ESCAPE;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource p_33034_) {
-        return SoundEvents.SOUL_ESCAPE;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return this.getAmbientSound();
-    }
-
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        if (this.getOwner() == pPlayer) {
+        if (pPlayer.equals(this.getOwner())) {
             if (this.canAccept(pPlayer.getItemInHand(pHand))) {
                 this.setArmors(pPlayer.getMainHandItem().copyWithCount(1));
             }
@@ -103,9 +89,7 @@ extends AbstractGhost {
             this.setItemInHand(InteractionHand.OFF_HAND, stack);
         } else if (stack.getItem() instanceof ArmorItem item) {
             this.setItemSlot(item.getEquipmentSlot(), stack);
-        }/* else if (stack.isEmpty()) {
-            this.dropEquipment();
-        }*/
+        }
     }
 
     public boolean isHostile() {

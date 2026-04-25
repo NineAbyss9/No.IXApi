@@ -5,15 +5,15 @@ import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.MeleeGoal;
 import com.github.NineAbyss9.ix_api.api.mobs.effect.EffectInstance;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.github.NineAbyss9.ix_api.util.UnmodifiableList;
 import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.api.entity.IX;
-import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.star_guardian.StarGuardian;
-import com.bilibili.player_ix.noixmod_api.entities.monster.Golem;
+import com.bilibili.player_ix.noixmod_api.entities.monster.nihilist.Golem;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.Cage;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.DamageEntity;
@@ -56,7 +56,7 @@ import org.slf4j.Logger;
 import java.util.List;
 import java.util.function.Predicate;
 
-/**重渊 Abyss
+/**重(chóng)渊 Abyss
  *@see StarGuardian
  *@author Player_IX*/
 public class Abyss
@@ -115,7 +115,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new AbyssAttackGoal(this));
+        this.goalSelector.addGoal(1, new MeleeGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, LivingEntity.class, 30f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(4, new FloatGoal(this));
@@ -127,7 +127,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     public void tick() {
         super.tick();
         if (this.spin < Maths.CLOSER_PI) {
-            this.spin = (this.spin + (Maths.CLOSER_PI / 180));
+            this.spin = (this.spin + (Maths.CLOSER_PI / 180.F));
         } else {
             this.spin = (-Maths.CLOSER_PI);
         }
@@ -731,7 +731,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     public static AttributeSupplier createAttributes() {
-        return Abyss.createPathAttributes().add(Attributes.MAX_HEALTH, 297)
+        return Abyss.createPathAttributes().add(Attributes.MAX_HEALTH, 297D)
                 .add(Attributes.ARMOR, 8).add(Attributes.FOLLOW_RANGE, 99)
                 .add(Attributes.MOVEMENT_SPEED, 0.3).add(Attributes.ATTACK_DAMAGE, 13)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.39).build();
@@ -747,14 +747,5 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         DATA_FLAGS = SynchedEntityData.defineId(Abyss.class, EntityDataSerializers.INT);
         DATA_HURT_COOLDOWN = SynchedEntityData.defineId(Abyss.class, EntityDataSerializers.INT);
         DATA_SUMMON_TICK = SynchedEntityData.defineId(Abyss.class, EntityDataSerializers.INT);
-    }
-
-    private static class AbyssAttackGoal extends ApiMeleeAttackGoal {
-        public AbyssAttackGoal(PathfinderMob mob) {
-            super(mob, 1, false, false);
-        }
-
-        @Override
-        protected void checkAndPerformAttack(LivingEntity p_25557_, double p_25558_) {}
     }
 }

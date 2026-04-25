@@ -5,14 +5,12 @@ import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.blocks.entities.AltarBlockEntity;
 import com.bilibili.player_ix.noixmod_api.blocks.entities.CursedChestBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.NineAbyss9.code.Instance;
 
 @SuppressWarnings("all")
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ApiBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(
             ForgeRegistries.BLOCK_ENTITY_TYPES, NoixmodAPI.MOD_ID);

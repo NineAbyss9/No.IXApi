@@ -71,7 +71,7 @@ public class NoixmodAPITabs {
         output.accept(NoixmodAPIItems.TELEPORTER.get());
         output.accept(NoixmodAPIItems.HEAD_HUNTERS_CROSSBOW.get());
         output.accept(NoixmodAPIItems.ICE_PICKAXE.get());
-        output.accept(NoixmodAPIItems.MAGICAL_SWORD.get());
+        output.accept(NoixmodAPIItems.MAGICAL_SWORD.get().getDefaultInstance());
         output.accept(NoixmodAPIItems.STAR_SWORD.get());
         output.accept(NoixmodAPIItems.SPIRIT_STONE_HELMET.get());
         output.accept(NoixmodAPIItems.SPIRIT_STONE_CHESTPLATE.get());
@@ -161,6 +161,12 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.WORM_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.YETI_SPAWN_EGG.get());
             }).build());
+    public static final RegistryObject<CreativeModeTab> API_HORROR = REGISTRY.register("noixapi_horrormode",
+            () -> CreativeModeTab.builder().icon(() -> ItemStacks.of(NoixmodAPIItems.BLOOD))
+                    .title(Component.translatable("item_group.noixmodapi.api_horrormode"))
+                    .displayItems((pParameters, pOutput) -> {
+                        pOutput.accept(NoixmodAPIItems.BLOOD.get());
+                    }).withBackgroundLocation(NoixmodAPI.location("textures/gui/horror_tab")).build());
 
     private NoixmodAPITabs() {}
 

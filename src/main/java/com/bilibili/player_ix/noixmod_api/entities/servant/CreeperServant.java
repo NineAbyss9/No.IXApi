@@ -39,7 +39,7 @@ implements PowerableMob, ICreeper {
     private int oldSwell;
     private int swell;
     private int maxSwell = 30;
-    private int explosionRadius = 3;
+    private float explosionRadius = 3.0F;
     private int droppedSkulls;
     public CreeperServant(EntityType<? extends CreeperServant> entityType, Level level) {
         super(entityType, level);
@@ -66,12 +66,12 @@ implements PowerableMob, ICreeper {
             if (this.isIgnited()) {
                 this.setSwellDir(1);
             }
-            int $$0 = this.getSwellDir();
-            if ($$0 > 0 && this.swell == 0) {
+            int dir = this.getSwellDir();
+            if (dir > 0 && this.swell == 0) {
                 this.playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
                 this.gameEvent(GameEvent.PRIME_FUSE);
             }
-            this.swell += $$0;
+            this.swell += dir;
             if (this.swell < 0) {
                 this.swell = 0;
             }
@@ -108,24 +108,28 @@ implements PowerableMob, ICreeper {
     }
 
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        ItemStack $$2 = pPlayer.getItemInHand(pHand);
-        if ($$2.is(ItemTags.CREEPER_IGNITERS)) {
-            SoundEvent $$3 = $$2.is(Items.FIRE_CHARGE) ? SoundEvents.FIRECHARGE_USE :
+        ItemStack stack = pPlayer.getItemInHand(pHand);
+        if (stack.is(ItemTags.CREEPER_IGNITERS)) {
+            SoundEvent $$3 = stack.is(Items.FIRE_CHARGE) ? SoundEvents.FIRECHARGE_USE :
                     SoundEvents.FLINTANDSTEEL_USE;
             this.level().playSound(pPlayer, this.getX(), this.getY(), this.getZ(), $$3, this.getSoundSource(),
                     1.0F, this.random.nextFloat() * 0.4F + 0.8F);
             if (!this.level().isClientSide) {
                 this.ignite();
-                if (!$$2.isDamageableItem()) {
-                    $$2.shrink(1);
+                if (!stack.isDamageableItem()) {
+                    stack.shrink(1);
                 } else {
-                    $$2.hurtAndBreak(1, pPlayer, (p_32290_) -> {
+                    stack.hurtAndBreak(1, pPlayer, (p_32290_) -> {
                         p_32290_.broadcastBreakEvent(pHand);
                     });
                 }
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         } else {
+            if (stack.is(Items.GUNPOWDER)) {
+                ++this.explosionRadius;
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
             return super.mobInteract(pPlayer, pHand);
         }
     }
@@ -193,10 +197,10 @@ implements PowerableMob, ICreeper {
 
     public void explodeCreeper() {
         if (!this.level().isClientSide) {
-            float $$0 = this.isPowered() ? 2.0F : 1.0F;
+            float powered = this.isPowered() ? 2.0F : 1.0F;
             this.dead = true;
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), (float)this.explosionRadius
-                    * $$0, Level.ExplosionInteraction.MOB);
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), this.explosionRadius
+                    * powered, Level.ExplosionInteraction.MOB);
             this.discard();
             this.spawnLingeringCloud();
         }

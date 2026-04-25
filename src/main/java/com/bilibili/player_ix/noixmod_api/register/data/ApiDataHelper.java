@@ -16,5 +16,6 @@ public class ApiDataHelper {
         boolean includeClient = event.includeClient();
         boolean includeServer = event.includeServer();
         generator.addProvider(includeServer, new ApiRecipeProvider(packOutput));
+        //generator.addProvider(includeServer, new ApiLootProvider.Entity());
     }
 }

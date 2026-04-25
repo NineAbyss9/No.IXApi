@@ -9,6 +9,7 @@ import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Abst
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -44,6 +45,13 @@ implements ApiPoseMob {
     public ApiPose getPoses() {
         if (this.isAggressive()) return ApiPose.ZOMBIE_ATTACKING;
         return ApiPose.NATURAL;
+    }
+
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        if (this.getSpawnType() == MobSpawnType.STRUCTURE) {
+            return false;
+        }
+        return super.removeWhenFarAway(pDistanceToClosestPlayer);
     }
 
     public float getVoicePitch() {

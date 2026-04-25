@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.model;
 
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractStatue;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractStatue;
 import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;

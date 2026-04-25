@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -9,6 +10,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
@@ -27,23 +30,23 @@ extends Apostle {
     }
 
     protected void registerGoals() {
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     public void tick() {
         super.tick();
-        LivingEntity var100000 = this.getTarget();
-        if (var100000 != null) {
+        LivingEntity var10000 = this.getTarget();
+        if (var10000 != null) {
             if (this.getNavigation().isDone())
-                this.getNavigation().moveTo(var100000, this.getDataSpeed());
-            if (this.closerThan(var100000, 1.5D)) {
-                this.onChase(var100000);
+                this.getNavigation().moveTo(var10000, this.getDataSpeed());
+            if (this.closerThan(var10000, 1.5D)) {
+                this.onChase(var10000);
             }
         }
     }
 
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getDirectEntity() instanceof Projectile) {
-            //pAmount = 1;
             this.hurt();
             this.setDataSpeed(this.getDataSpeed() + 1);
             return true;
@@ -72,6 +75,7 @@ extends Apostle {
     public void hurt() {
         this.entityData.set(DATA_HEALTH, health() - 1);
         if (this.isDeadOrDying()) {
+            //HorrorModeSavedData.getInstanceUnsafe().updateNextMobWillSpawn(-1);
             this.discard();
         }
     }
@@ -87,6 +91,10 @@ extends Apostle {
     private void onChase(LivingEntity player) {
         player.setHealth(1.0F);
         this.setRemoved(RemovalReason.KILLED);
+    }
+
+    public EntityType<?> getType() {
+        return NoixmodAPIEntities.CH_APOSTLE.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {

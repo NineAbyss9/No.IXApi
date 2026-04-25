@@ -14,13 +14,10 @@ extends NihilisticWither
 implements ApiNihilisticBoss {
     public NihilisticWitherBoss(EntityType<NihilisticWitherBoss> type, Level level) {
         super(type, level);
+        this.setHostile(true);
     }
 
     public boolean isBoss() {
-        return true;
-    }
-
-    public boolean isHostile() {
         return true;
     }
 

@@ -21,7 +21,7 @@ extends IronBarsBlock {
     }
 
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (isHorror && pRandom.nextDouble() < 0.01) {
+        if (isHorror && pRandom.nextDouble() < 0.01D) {
             pLevel.playLocalSound(pPos, SoundEvents.EMPTY, SoundSource.BLOCKS,
                     Math.max(pRandom.nextFloat(), 0.8F), Math.max(pRandom.nextFloat(), 0.5F), false);
         }

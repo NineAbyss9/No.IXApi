@@ -1,19 +1,19 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
-import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.github.NineAbyss9.ix_api.api.mobs.ApiIllagerBoss;
-import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
-import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
-import com.bilibili.player_ix.noixmod_api.entities.monster.MoonKiller;
+import com.bilibili.player_ix.noixmod_api.entities.monster.illager.MoonKiller;
 import com.bilibili.player_ix.noixmod_api.entities.servant.SuicideZombie;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIAttributes;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPISounds;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
+import com.github.NineAbyss9.ix_api.api.ApiPose;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiIllagerBoss;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import com.google.common.base.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,7 +54,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,11 +75,6 @@ implements ApiIllagerBoss, ApiPoseMob {
         this.setMaxUpStep(1f);
         this.xpReward = 100;
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.TOTEM_OF_UNDYING));
-    }
-
-    public EvokerIllager(PlayMessages.SpawnEntity packet, Level world) {
-        this(NoixmodAPIEntities.EVOKER_ILLAGER.get(), world);
-        packet.getEntity();
     }
 
     protected void defineSynchedData() {

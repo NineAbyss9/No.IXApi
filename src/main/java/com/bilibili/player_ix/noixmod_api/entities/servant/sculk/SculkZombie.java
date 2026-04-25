@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.servant.sculk;
 
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractZombieServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractZombieServant;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPITags;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,10 +36,15 @@ extends AbstractZombieServant {
     }
 
     public void affect(LivingEntity living) {
-        if (!level().isClientSide) {
+        if (!this.level().isClientSide) {
             ParticleUtil.sendParticles((ServerLevel)this.level(), ParticleTypes.SCULK_SOUL, living.position(), 2,
                     0.3, 0.5, 0.3, 0);
+            living.hurt(this.damageSources().indirectMagic(this, this), 0.5F);
         }
+    }
+
+    public boolean shouldBurn() {
+        return false;
     }
 
     public boolean isFood(ItemStack stack) {

@@ -25,26 +25,20 @@ import java.util.Random;
 public class BloodBlock
 extends Block {
     private static final VoxelShape SHAPE;
-    //public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final IntegerProperty TEXTURE = ApiBlockProperties.TEXTURE;
     public BloodBlock() {
         super(Properties.of().instabreak().sound(SoundType.SLIME_BLOCK)//.mapColor(MapColor.COLOR_RED)
                 .replaceable().noOcclusion().instrument(NoteBlockInstrument.BASEDRUM));
-        this.stateDefinition.any()
-                //.setValue(FACING, Direction.WEST)
-                .setValue(TEXTURE, 0);
+        this.stateDefinition.any().setValue(TEXTURE, 0);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(//FACING,
-                TEXTURE);
+        pBuilder.add(TEXTURE);
     }
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(TEXTURE, new Random().nextInt(5)
-                //).setValue(FACING, pContext.getHorizontalDirection().getOpposite()
-                );
+        return this.defaultBlockState().setValue(TEXTURE, new Random().nextInt(5));
     }
 
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
@@ -55,14 +49,6 @@ extends Block {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
-
-    /*public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
-        return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
-    }
-
-    public BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
-    }*/
 
     static {
         SHAPE = box(0, 0, 0, 16, 0.1, 16);

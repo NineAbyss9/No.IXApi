@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer.servant;
 
 import com.bilibili.player_ix.noixmod_api.client.model.nihilistic.NihilistIllagerModel;
 import com.bilibili.player_ix.noixmod_api.client.renderer.nihilist.NihilistRenderer;
-import com.bilibili.player_ix.noixmod_api.entities.servant.ZombieVindicator;
+import com.bilibili.player_ix.noixmod_api.entities.servant.illager.ZombieVindicator;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

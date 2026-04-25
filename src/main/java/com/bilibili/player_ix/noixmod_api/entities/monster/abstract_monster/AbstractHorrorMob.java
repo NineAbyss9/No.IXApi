@@ -7,7 +7,9 @@ import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -52,6 +54,13 @@ public abstract class AbstractHorrorMob extends ApiPathfinderMob implements Enem
         return super.canAttack(p_21171_);
     }
 
+    public boolean isInvulnerableTo(DamageSource pSource) {
+        if (pSource.is(DamageTypeTags.IS_FALL)) {
+            return true;
+        }
+        return super.isInvulnerableTo(pSource);
+    }
+
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (NoixmodAPIDamageSource.sourceEntity(pSource) instanceof AbstractHorrorMob) {
             return false;
@@ -66,10 +75,18 @@ public abstract class AbstractHorrorMob extends ApiPathfinderMob implements Enem
         super.actuallyHurt(p_21240_, p_21241_);
     }
 
+    public boolean startRiding(Entity pEntity, boolean pForce) {
+        return false;
+    }
+
+    protected boolean canRide(Entity pVehicle) {
+        return false;
+    }
+
     public void die(int pIndex) {
         if (this.isServerSide()) {
             var ser = this.serverLevel();
-            HorrorModeSavedData.getInstanceUnsafe().updateNextMobWillSpawn(pIndex);
+            HorrorModeSavedData.load(ser).updateNextMobWillSpawn(pIndex);
             ParticleUtil.sendParticles(ser, ParticleTypes.LARGE_SMOKE, this.position(), 5,
                     0.15, 0.5, 0.15, 0.05);
         }

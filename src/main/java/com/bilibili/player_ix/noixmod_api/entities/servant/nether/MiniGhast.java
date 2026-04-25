@@ -1,7 +1,8 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.servant;
+package com.bilibili.player_ix.noixmod_api.entities.servant.nether;
 
 import com.bilibili.player_ix.noixmod_api.entities.projectile.LittleFireball;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.FlyingOwnable;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

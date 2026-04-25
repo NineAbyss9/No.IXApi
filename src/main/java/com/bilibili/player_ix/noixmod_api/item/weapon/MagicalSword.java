@@ -6,6 +6,7 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -20,14 +21,17 @@ import net.minecraft.world.level.Level;
 
 public class MagicalSword
 extends SwordItem {
-    private int cooldown;
+    static final String COOLDOWN = "CoolDown";
     public MagicalSword() {
         super(ItemUtil.getTier(
                 0, 2.8f, 5, 3, 5, Ingredient.EMPTY
         ), 1, -2.4f, new Properties().rarity(Rarity.RARE));
     }
 
-    @Override
+    public ItemStack getDefaultInstance() {
+        return this.setCooldown(new ItemStack(this), 0);
+    }
+
     public InteractionResultHolder<ItemStack> use(Level p_43243_, Player p_43244_, InteractionHand p_43245_) {
         p_43244_.playSound(SoundEvents.ILLUSIONER_MIRROR_MOVE);
         for (int i = 0; i < 5;++i) {
@@ -35,7 +39,7 @@ extends SwordItem {
                 MagicalClone clone = new MagicalClone(NoixmodAPIEntities.MAGICAL_CLONE.get(), p_43243_);
                 int d = Maths.randomInteger(3);
                 int d1 = Maths.randomInteger(3);
-                BlockPos.MutableBlockPos pos = p_43244_.blockPosition().offset(d, 0, d1).mutable();
+                BlockPos pos = p_43244_.blockPosition().offset(d, 0, d1);
                 clone.setOwner(p_43244_);
                 clone.moveTo(pos, 0, 0);
                 clone.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED);
@@ -47,12 +51,14 @@ extends SwordItem {
         return ItemUtils.startUsingInstantly(p_43243_, p_43244_, p_43245_);
     }
 
-    public int getCooldown() {
-        return this.cooldown;
+    public int getCooldown(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        return tag == null ? 0 : tag.getInt(COOLDOWN);
     }
 
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
+    public ItemStack setCooldown(ItemStack stack, int cooldown) {
+        stack.getOrCreateTag().putInt(COOLDOWN, cooldown);
+        return stack;
     }
 
     public int getUseDuration(ItemStack p_41454_) {
@@ -60,20 +66,19 @@ extends SwordItem {
     }
 
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (this.getCooldown() <= 0) {
+        if (this.getCooldown(stack) <= 0) {
             if (entity instanceof LivingEntity lie && lie.isAlive()) {
-                lie.setHealth(lie.getHealth() - (lie.getMaxHealth() / 50));
-                this.setCooldown(2);
+                lie.setHealth(lie.getHealth() - (lie.getMaxHealth() / 50.0F));
+                this.setCooldown(stack, 2);
             }
         } else {
             if (entity instanceof LivingEntity lie && lie.hurtDuration > 9) {
-                --this.cooldown;
+                this.setCooldown(stack, this.getCooldown(stack) - 1);
             }
         }
         return super.onLeftClickEntity(stack, player, entity);
     }
 
-    @Override
     public UseAnim getUseAnimation(ItemStack p_41452_) {
         return UseAnim.BLOCK;
     }

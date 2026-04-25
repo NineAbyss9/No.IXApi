@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.monster;
+package com.bilibili.player_ix.noixmod_api.entities.monster.ice;
 
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
@@ -33,7 +33,6 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -48,10 +47,6 @@ extends APIMonster {
     public PlateauBeast(EntityType<? extends PlateauBeast> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.xpReward = XP_REWARD_MEDIUM;
-    }
-
-    public PlateauBeast(PlayMessages.SpawnEntity entity, Level world) {
-        this(NoixmodAPIEntities.PLATEAU_BEAST.get(), world);
     }
 
     protected void defineSynchedData() {
@@ -183,7 +178,7 @@ extends APIMonster {
         return ApiPathfinderMob.createPathAttributes().add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.FOLLOW_RANGE, 60)
                 .add(Attributes.MOVEMENT_SPEED, 0.3).add(Attributes.ARMOR, 2)
-                .add(Attributes.ATTACK_DAMAGE, 6);
+                .add(Attributes.ATTACK_DAMAGE, 4.0D);
     }
 
     {

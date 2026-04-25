@@ -82,10 +82,6 @@ extends OwnableIllager {
         other.setPos(this.position());
     }
 
-    protected void populateDefaultEquipment() {
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STONE_AXE));
-    }
-
     public ApiPose getPoses() {
         if (isAggressive())
             return ApiPose.ATTACKING;

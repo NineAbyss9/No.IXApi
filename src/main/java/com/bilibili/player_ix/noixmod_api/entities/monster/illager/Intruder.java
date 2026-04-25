@@ -79,20 +79,6 @@ extends APISpellcaster {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Raider.class).setAlertOthers());
     }
 
-    public boolean canJoinRaid() {return false;}
-
-    public void setCanJoinRaid(boolean p_37898_) {}
-
-    public boolean canBeLeader() {return false;}
-
-    public boolean startRiding(Entity p_21396_, boolean p_21397_) {return false;}
-
-    public boolean startRiding(Entity p_20330_) {return false;}
-
-    protected boolean canRide(Entity p_20339_) {return false;}
-
-    public boolean fireImmune() {return true;}
-
     protected void checkFallDamage(double p_20990_, boolean p_20991_, BlockState p_20992_, BlockPos p_20993_) {}
 
     public void setAttackTicks(int ticks) {
@@ -363,6 +349,14 @@ extends APISpellcaster {
         }
         return IntruderArmPose.CROSSED;
     }
+
+    public boolean canJoinRaid() {return false;}
+    public void setCanJoinRaid(boolean p_37898_) {}
+    public boolean canBeLeader() {return false;}
+    public boolean startRiding(Entity p_21396_, boolean p_21397_) {return false;}
+    public boolean startRiding(Entity p_20330_) {return false;}
+    protected boolean canRide(Entity p_20339_) {return false;}
+    public boolean fireImmune() {return true;}
 
     public enum IntruderArmPose {
         ATTACKING,

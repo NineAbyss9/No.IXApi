@@ -1,23 +1,42 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile.arrow;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.Nullable;
 
 public class ArrowArrowEntity
 extends Arrow {
-    public ArrowArrowEntity(EntityType<? extends Arrow> p_36858_, Level p_36859_) {
-        super(p_36858_, p_36859_);
+    public ArrowArrowEntity(EntityType<? extends Arrow> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel);
     }
 
-    @SuppressWarnings("all")
-    public ArrowArrowEntity(Level level, @Nullable LivingEntity living) {
-        super(level, living);
+    public ArrowArrowEntity(Level pLevel, double pX, double pY, double pZ) {
+        super(pLevel, pX, pY, pZ);
+    }
+
+    public ArrowArrowEntity(Level pLevel, LivingEntity pShooter) {
+        super(pLevel, pShooter);
+    }
+
+    public EntityType<?> getType() {
+        return NoixmodAPIEntities.ARROW_ARROW.get();
+    }
+
+    public static ArrowArrowEntity simple(Level pLevel, LivingEntity pShooter) {
+        var entity = new ArrowArrowEntity(NoixmodAPIEntities.ARROW_ARROW.get(), pLevel);
+        entity.setOwner(pShooter);
+        entity.setPos(pShooter.getX(), pShooter.getEyeY() - 0.1D, pShooter.getZ());
+        if (pShooter instanceof Player) {
+            entity.pickup = AbstractArrow.Pickup.ALLOWED;
+        }
+        return entity;
     }
 
     protected void onHit(HitResult p_37260_) {

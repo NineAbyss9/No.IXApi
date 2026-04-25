@@ -89,9 +89,8 @@ implements SimpleWaterloggedBlock {
     @Nullable
     public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
         return new SimpleMenuProvider(
-                (id, inventory, player) -> new AltarMenu(id, inventory, ContainerLevelAccess.create(
-                        pLevel, pPos
-                )), getName());
+                (id, inventory, player) -> new AltarMenu(id, inventory//, (AltarBlockEntity)pLevel.getBlockEntity(pPos)
+                        , ContainerLevelAccess.create(pLevel, pPos)), getName());
     }
 
     @Nullable

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nether;
 
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractZombieServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractZombieServant;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.magic.misc;
 
-import com.bilibili.player_ix.noixmod_api.entities.servant.DrownedServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.DrownedServant;
 import com.bilibili.player_ix.noixmod_api.magic.Spell;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;

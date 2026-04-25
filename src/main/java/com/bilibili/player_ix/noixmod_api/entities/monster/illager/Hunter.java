@@ -25,8 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class Hunter
 extends APISpellcaster {
     public Hunter(EntityType<? extends Hunter> p_32105_, Level p_32106_) {
@@ -70,11 +68,6 @@ extends APISpellcaster {
         return IllagerArmPose.CROSSED;
     }
 
-    /*
-    public void summonWolf() {
-
-    }*/
-
     public boolean doHurtTarget(Entity p_21372_) {
         if (p_21372_ instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), Maths.toTick(3), this.level()
@@ -88,9 +81,8 @@ extends APISpellcaster {
 
     public static void init() {
         if (NoixmodAPIMainConfig.HunterCanJoinRaid.get()) {
-            List<? extends Integer> list = NoixmodAPIMainConfig.HunterRaidCount.get();
             Raid.RaiderType.create("APIHunter", NoixmodAPIEntities.HUNTER.get(),
-                    IXList.raidCount(list));
+                    IXList.raidCount(NoixmodAPIMainConfig.HunterRaidCount.get()));
         }
     }
 }

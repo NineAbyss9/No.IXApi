@@ -24,7 +24,7 @@ extends ApiSword {
             if (MathSupport.random.nextFloat() < 0.25F) {
                 pAttacker.playSound(SoundEvents.SOUL_ESCAPE, 0.6f, 1f);
                 if (pTarget.isAlive()) {
-                    pTarget.setHealth(pTarget.getHealth() - 5.0F);
+                    pTarget.setHealth(Math.max(pTarget.getHealth() - 5.0F, 0.0F));
                 }
                 ParticleUtil.sendParticles((ServerLevel)pAttacker.level(), ParticleTypes.SOUL, pTarget.position(),
                         8, 1, 1, 1, 0);

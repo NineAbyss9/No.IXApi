@@ -18,6 +18,10 @@ extends VillagerFighter {
         super(type, level);
     }
 
+    public void aiStep() {
+        super.aiStep();
+    }
+
     protected void registerGoals() {
         super.registerGoals();
     }

@@ -89,7 +89,6 @@ public class GirlGhostModel<T extends AbstractGhost> extends HumanoidModel<T> {
         }
     }
 
-    @Override
     public ModelPart getHead() {
         return this.head;
     }

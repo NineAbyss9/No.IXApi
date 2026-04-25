@@ -83,12 +83,7 @@ implements IFlagMob {
         this.goalSelector.addGoal(2, new FollowOwnerGoal<>(this, 1.0D,
                 20.0F, 4.0F, false));
         this.goalSelector.addGoal(3, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, LivingEntity.class, 12.0F)/* {
-            public boolean canUse() {
-                if (getTarget() != null) return false;
-                return super.canUse();
-            }
-        }*/);
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, LivingEntity.class, 12.0F));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.8D));
         this.addTargetGoal();
     }
@@ -109,6 +104,7 @@ implements IFlagMob {
                 this.heal(0.5F);
             }
         }
+        this.setYRot(this.getYHeadRot());
     }
 
     protected void clientAiStep() {
@@ -419,11 +415,11 @@ implements IFlagMob {
                 AttributeModifier.Operation.MULTIPLY_BASE);
 
     private static AttributeModifier RUN_SPEED =
-        new AttributeModifier("Yeti speed boost", 1.5D,
+        new AttributeModifier("Yeti speed boost", 1.2D,
                 AttributeModifier.Operation.MULTIPLY_BASE);
 
     private static AttributeModifier STRIDE_SPEED =
-            new AttributeModifier("Yeti stride speed", 1.2D,
+            new AttributeModifier("Yeti stride speed", 1.1D,
                     AttributeModifier.Operation.MULTIPLY_BASE);
 
     public void handleStatusAndFlag() {

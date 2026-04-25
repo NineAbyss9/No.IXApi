@@ -126,7 +126,7 @@ extends AbstractHorrorMob {
     }
 
     protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        super.actuallyHurt(p_21240_, p_21241_ / 5F);
+        super.actuallyHurt(p_21240_, p_21241_ / 1.5F);
     }
 
     public static AttributeSupplier createAttributes() {

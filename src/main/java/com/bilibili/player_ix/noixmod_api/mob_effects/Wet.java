@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public class Wet
 extends MobEffect {
     public Wet(int p_19452_) {
-        super(MobEffectCategory.HARMFUL, p_19452_);
+        super(MobEffectCategory.NEUTRAL, p_19452_);
     }
 
     public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {

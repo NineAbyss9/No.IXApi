@@ -43,9 +43,12 @@ public class APICommand {
                                                                 HorrorModeCommand.setMobsWillSpawn(
                                                                         IntegerArgumentType.getInteger(commandContext, "index"),
                                                                         BoolArgumentType.getBool(commandContext, "flag"))))))
+                                .then(Commands.literal("tracker")
+                                        .executes(commandContext ->
+                                                HorrorModeCommand.spawnTracker(commandContext.getSource()))))
                                 .then(Commands.literal("the_ghost")
                                         .executes(commandContext ->
-                                                HorrorModeCommand.spawnTheGhost(commandContext.getSource())))))
+                                                HorrorModeCommand.spawnTheGhost(commandContext.getSource()))))
                 .then(Commands.literal("nihilisticOrder")
                         .then(Commands.literal("spawnNow")
                                 .executes(context -> spawnNihilisticOrder(context.getSource())))));

@@ -34,6 +34,7 @@ implements IFlagMob {
     public VexServant(EntityType<? extends VexServant> entityType, Level level) {
         super(entityType, level);
         this.setItemInHand(InteractionHand.MAIN_HAND, ItemStacks.of(Items.IRON_SWORD));
+        this.enchantSpawnedWeapon(level.random, 1.0F);
         this.moveControl = new FlyingVexMoveControl(this);
     }
 
@@ -109,7 +110,7 @@ implements IFlagMob {
         DATA_FLAGS = SynchedEntityData.defineId(VexServant.class, EntityDataSerializers.INT);
     }
 
-    private static class VexChargeAttackGoal<T extends Mob & IFlagMob> extends Goal {
+    public static class VexChargeAttackGoal<T extends Mob & IFlagMob> extends Goal {
         protected final T mob;
         public VexChargeAttackGoal(T pMob) {
             mob = pMob;

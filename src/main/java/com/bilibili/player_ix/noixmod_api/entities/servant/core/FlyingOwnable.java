@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.servant;
+package com.bilibili.player_ix.noixmod_api.entities.servant.core;
 
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.core.BlockPos;

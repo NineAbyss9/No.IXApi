@@ -53,7 +53,9 @@ extends OwnableMob {
 
     public void tick() {
         super.tick();
-        --this.invTicks;
+        if (invTicks > 0) {
+            --this.invTicks;
+        }
     }
 
     public void aiStep() {

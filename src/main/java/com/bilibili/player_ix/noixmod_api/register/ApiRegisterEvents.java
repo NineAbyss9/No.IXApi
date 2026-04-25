@@ -32,11 +32,11 @@ public class ApiRegisterEvents {
 
     //@SubscribeEvent
     public static void addTrades(VillagerTradesEvent event) {
-        if (event.getType() == ApiVillagerProfessions.WORM_MASTER.get()) {
+        //if (event.getType() == ApiVillagerProfessions.WORM_MASTER.get()) {
             Map<Integer, List<VillagerTrades.ItemListing>> map = event.getTrades();
             map.get(1).add(new BasicItemListing(ItemStacks.of(NoixmodAPIItems.WORM_DIRT_ITEM, 4),
                     ItemStacks.of(Items.EMERALD), 30,
                     2, 0.005f));
-        }
+        //}
     }
 }

@@ -244,8 +244,8 @@ extends AbstractIllager {
 
     public static void init() {
         if (NoixmodAPIMainConfig.ArmorerJoinRaid.get()) {
-            List<? extends Integer> list = NoixmodAPIMainConfig.ArmorerRaidCount.get();
-            Raid.RaiderType.create("armorer", NoixmodAPIEntities.ARMORER.get(), IXList.raidCount(list));
+            Raid.RaiderType.create("armorer", NoixmodAPIEntities.ARMORER.get(),
+                    IXList.raidCount(NoixmodAPIMainConfig.ArmorerRaidCount.get()));
         }
         MobUtils.registerSpawn(NoixmodAPIEntities.ARMORER.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MobUtils::illagerSpawnPredicate);

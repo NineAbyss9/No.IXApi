@@ -8,7 +8,7 @@ import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.summon.SummonEntity;
-import com.bilibili.player_ix.noixmod_api.entities.servant.AbstractStatue;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractStatue;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;

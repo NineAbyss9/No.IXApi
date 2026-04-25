@@ -5,6 +5,7 @@ import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.PowerEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,6 +34,9 @@ public class StarSword extends ApiSword {
             p_41433_.getCooldowns().addCooldown(this, 600);
             for (Apostle boss : bosses) {
                 boss.handleAfraid();
+                if (boss.isShadow()) {
+                    boss.remove(Entity.RemovalReason.KILLED);
+                }
             }
         }
         List<PowerEntity> powers = p_41432_.getEntitiesOfClass(PowerEntity.class, p_41433_.getBoundingBox()

@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
-import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;

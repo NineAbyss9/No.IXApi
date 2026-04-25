@@ -1,7 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.monster.hostile;
 
-import com.bilibili.player_ix.noixmod_api.entities.servant.DrownedServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.DrownedServant;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;

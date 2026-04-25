@@ -132,7 +132,6 @@ implements ArmedModel {
         return arm == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
     }
 
-    @Override
     public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
         this.getArm(humanoidArm).translateAndRotate(poseStack);
     }

@@ -88,6 +88,12 @@ implements PowerableMob, Nihilistic
         return NihilistArmPose.CROSSED;
     }
 
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
+    {
+        if (this.getSpawnType() == MobSpawnType.EVENT) return false;
+        return super.removeWhenFarAway(pDistanceToClosestPlayer);
+    }
+
     public OwnerSummon getSummon() {
         return summon;
     }
@@ -106,7 +112,7 @@ implements PowerableMob, Nihilistic
     }
 
     public void makeGroundParticle() {
-        if (!this.level().isClientSide()) {
+        if (!this.level().isClientSide) {
             WorldUtil.sendParticles(ParticleTypes.WITCH, this, 12, 2, 0, 2, 0);
         }
     }

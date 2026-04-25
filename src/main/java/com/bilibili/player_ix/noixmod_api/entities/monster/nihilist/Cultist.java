@@ -7,7 +7,7 @@ import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFireball;
-import com.bilibili.player_ix.noixmod_api.entities.servant.ZombieVindicator;
+import com.bilibili.player_ix.noixmod_api.entities.servant.illager.ZombieVindicator;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticBlaze;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticServant;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;

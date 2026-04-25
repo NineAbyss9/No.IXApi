@@ -10,6 +10,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+@Deprecated
 public class OwnableDataNextFlagPacket {
     private final int id;
     private final OwnableData ownableData;

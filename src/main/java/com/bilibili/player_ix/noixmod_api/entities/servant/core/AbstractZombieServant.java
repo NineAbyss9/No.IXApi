@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.servant;
+package com.bilibili.player_ix.noixmod_api.entities.servant.core;
 
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
@@ -35,7 +35,7 @@ extends OwnableMob {
             "1Player_IX2-931-Zombie-BabySpeed", 0.2, AttributeModifier.Operation.ADDITION);
     public AbstractZombieServant(EntityType<? extends AbstractZombieServant> entityType, Level level) {
         super(entityType, level);
-        if (this.getRandom().nextFloat() <= 0.005) {
+        if (this.getRandom().nextFloat() <= 0.05F) {
             this.setBaby(true);
         }
     }

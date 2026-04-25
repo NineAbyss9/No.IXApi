@@ -32,7 +32,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
@@ -44,6 +43,7 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
         ItemStack stack = Option.of(ItemStacks.of(Items.BOW)).ifOrElse(level.random.nextBoolean(),
                 ItemStacks.of(Items.IRON_SWORD));
         this.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        this.enchantSpawnedWeapon(level.random, 1.0F);
     }
 
     protected void defineSynchedData() {
@@ -64,9 +64,8 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
     public void tick() {
         super.tick();
         if (this.level().isClientSide && isEating()) {
-            Vec3 eyePosition = this.getEyePosition();
             this.level().addParticle(ParticleUtil.getItemParticleOption(getOffhandItem()), this.getRandomX(0.8),
-                    eyePosition.y - 0.1, getRandomZ(0.8), 0, 0.2, 0);
+                    this.getEyePosition().y - 0.1, getRandomZ(0.8), 0, 0.2, 0);
         }
     }
 

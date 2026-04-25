@@ -19,6 +19,7 @@ extends Apostle
 implements ApiNihilisticBoss {
     public ApostleBoss(EntityType<ApostleBoss> apostle, Level world) {
         super(apostle, world);
+        this.xpReward = world.dimension() == Level.END ? XP_APOSTLE_HARD : XP_APOSTLE;
     }
 
     protected void defineSynchedData() {
@@ -27,14 +28,6 @@ implements ApiNihilisticBoss {
 
     public boolean isBoss() {
         return true;
-    }
-
-    public int getExperienceReward() {
-        if (this.isInEnd()) {
-            return XP_APOSTLE_HARD;
-        } else {
-            return XP_APOSTLE;
-        }
     }
 
     public static Component normal(String st) {

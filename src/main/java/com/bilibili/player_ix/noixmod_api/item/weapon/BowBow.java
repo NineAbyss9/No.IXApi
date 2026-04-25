@@ -12,6 +12,7 @@ public class BowBow extends BowItem {
     }
 
     public AbstractArrow customArrow(AbstractArrow arrow) {
-        return new ArrowArrowEntity(arrow.level(), arrow.getOwner() instanceof LivingEntity living ? living : null);
+        if (!(arrow.getOwner() instanceof LivingEntity living)) return arrow;
+        return new ArrowArrowEntity(arrow.level(), living);
     }
 }

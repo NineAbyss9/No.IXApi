@@ -9,6 +9,7 @@ import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Abst
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.NineAbyss9.math.MathSupport;
 
 public class Detractor extends AbstractHorrorMob {
     public Detractor(EntityType<? extends AbstractHorrorMob> p_33002_, Level p_33003_) {
@@ -26,10 +27,11 @@ public class Detractor extends AbstractHorrorMob {
 
     public void tick() {
         super.tick();
-        if (this.level().isClientSide) {
-            ParticleUtil.addRedStoneParticle(this, this.getRandomX(0.5), this.getRandomY(),
-                    this.getRandomZ(0.5), 0, 0.2, 0);
+        if (!this.level().isClientSide || MathSupport.random.nextBoolean()) {
+            return;
         }
+        ParticleUtil.addRedStoneParticle(this, this.getRandomX(0.5), this.getRandomY(),
+                this.getRandomZ(0.5), 0, 0.2, 0);
     }
 
     public void aiStep() {

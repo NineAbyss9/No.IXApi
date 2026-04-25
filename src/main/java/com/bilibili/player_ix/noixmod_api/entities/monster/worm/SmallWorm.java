@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.entities.monster;
+package com.bilibili.player_ix.noixmod_api.entities.monster.worm;
 
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.servant.worm.AbstractWorm;

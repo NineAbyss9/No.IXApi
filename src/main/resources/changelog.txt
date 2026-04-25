@@ -10,12 +10,12 @@ of HeadHunter is no longer as extensive. Most of his skills no longer ignore shi
 Added : NihilisticWitherBoss, VillagerAmulet, Smoke Trap Spell, HeadHunter's crossbow(WIP), the HorrorMode command,
 Infernal iron ingot, Infernal iron sword, Infernal iron pickaxe, Infernal iron axe, Banned book,
 the No.IXModMoreTextures in resourcepacks.
-1.3.3 Change:Apostles will not ownerSummon ApostleServants when the HorrorMode does not enable.HeadHunter can break shields now.
+1.3.3 Change:Apostles will not summon ApostleServants when the HorrorMode does not enable.HeadHunter can break shields now.
 Changed Apostle, HaloOfApostle, and CopperUtils' textures.Revised the attack range of certain entities to make changeling them
 easier.
 Added:NihilisticOrder(It is WIP, but you can use commands to spawn).
 1.3.5 : Added:SilverfishServant, WormReagent.
-Change:Apostles ownerSummon Golem now but not ZombieVindicator.
+Change:Apostles summon Golem now but not ZombieVindicator.
 Fixed a bug.
 1.3.6:Stop using ClientConfig.
 Added:Many illager servants.HeadHunter has a new skill now.
@@ -42,5 +42,6 @@ Changes : Drunkenness, flagmen and GraveKeepers will join raids now.Remastered h
 1.3.903 : Fixed some bugs.50% of Allays will be replaced by Heallings, use gold nugget to own them.
 1.3.904 : Try to fix a bug about apostle in server.Added Yeti.Make warden servants more powerful.
 Maybe the altar system will be completed next version.
-1.4.0 : Added : Altar.
+1.4.0 : Added : Altar.Some recipes.
 Changes : Improve Horror Mode.
+Fix : A bug that make world crash when NoixmodAPIEvents#onFinalizeSpawn(1.3.908-pre1).

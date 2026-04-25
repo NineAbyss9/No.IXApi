@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.arrow.NihilisticArrow;
-import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;

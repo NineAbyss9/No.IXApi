@@ -2,12 +2,14 @@
 package com.bilibili.player_ix.noixmod_api.client;
 
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
+import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 
 import java.util.List;
 
+@OnlyInClient
 public class FogHandler {
     public static float currentDensity = 1.0f;
     public static float currentRed = 0.5f;
@@ -30,7 +32,7 @@ public class FogHandler {
         float factor = 0.0F;
         int level1Count = 0;
         for (var mob : list) {
-            if (mob.getLevel() != 1) continue;
+            if (mob.getLevel() < 1) continue;
             level1Count++;
         }
         factor += Math.min(level1Count * 0.1f, 0.6f);
@@ -62,10 +64,8 @@ public class FogHandler {
         targetNear = 6f + (1.0f - factor) * 2.0f;
         targetFar = 15.0f + (1.0f - factor) * 10.0f;
 
-        targetRed = 0.92f// + factor * 0.8f
-        ;
-        targetGreen = 0.9f// + factor * 0.1f
-        ;
+        targetRed = 0.92f;
+        targetGreen = 0.9f;
         targetBlue = 0.95f;
 
         limitFogDis = lerp(limitFogDis, targetNear, 0.1f);

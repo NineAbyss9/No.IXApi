@@ -79,6 +79,7 @@ implements IFlagMob {
                 this.avoid();
             }
         }
+        this.setYRot(this.getYHeadRot());
     }
 
     protected void registerGoals() {
@@ -130,7 +131,7 @@ implements IFlagMob {
     public void avoid() {
         increaseAniTick();
         if (this.aniTickEquals(1)) {
-            com.github.NineAbyss9.ix_api.api.mobs.MobUtils.moveToLookAt(this, -2.0D);
+            com.github.NineAbyss9.ix_api.api.mobs.MobUtils.moveToLookAt(this, -1.5D);
         }
         if (this.aniTick(30)) {
             this.resetState();

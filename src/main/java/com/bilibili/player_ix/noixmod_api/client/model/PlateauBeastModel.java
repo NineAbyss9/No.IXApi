@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.client.model;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.client.model.animations.PlateauBeastAnimations;
-import com.bilibili.player_ix.noixmod_api.entities.monster.PlateauBeast;
+import com.bilibili.player_ix.noixmod_api.entities.monster.ice.PlateauBeast;
 import com.github.NineAbyss9.ix_api.api.annotation.OnlyInClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

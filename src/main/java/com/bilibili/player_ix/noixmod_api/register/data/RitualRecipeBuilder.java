@@ -16,6 +16,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -29,9 +30,7 @@ implements RecipeBuilder {
     private final RecipeCategory category;
     private final Item result;
     private final int count;
-    //private final List<String> rows = Lists.newArrayList();
     private NonNullList<Ingredient> materials = NonNullList.withSize(7, Ingredient.EMPTY);
-    //private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
     private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
     @Nullable
     private String group;
@@ -52,34 +51,29 @@ implements RecipeBuilder {
     }
 
     /**
-     * Adds a key to the recipe pattern.
+     * Adds a single {@linkplain Ingredient}.
      */
     public RitualRecipeBuilder define(Ingredient pIngredient) {
         return this.define(NonNullList.of(pIngredient, pIngredient));
     }
 
-    /**
-     * Adds a key to the recipe pattern.
-     */
     public RitualRecipeBuilder define(NonNullList<Ingredient> pIngredients) {
-        this.materials = pIngredients;
-        for (int i = 0;i<RitualRecipe.RECIPE_COUNT;i++) {
+        if (pIngredients.size() < RitualRecipe.RECIPE_COUNT) {
+            for (int i = 0;i < RitualRecipe.RECIPE_COUNT && i < pIngredients.size();i++) {
+                if (!pIngredients.get(i).isEmpty()) {
+                    this.materials.set(i, pIngredients.get(i));
+                }
+            }
+        } else {
+            this.materials = pIngredients;
+        }
+        for (int i = 0;i < this.materials.size();i++) {
             if (this.materials.get(i).isEmpty()) {
-                this.materials.set(i, Ingredient.EMPTY);
+                this.materials.set(i, Ingredient.of(Items.AIR));
             }
         }
         return this;
     }
-
-    /*
-    public RitualRecipeBuilder pattern(String pPattern) {
-        if (!this.rows.isEmpty() && pPattern.length() != this.rows.get(0).length()) {
-            throw new IllegalArgumentException("Pattern must be the same width on every line!");
-        } else {
-            this.rows.add(pPattern);
-            return this;
-        }
-    }*/
 
     public RitualRecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
         this.advancement.addCriterion(pCriterionName, pCriterionTrigger);
@@ -101,7 +95,6 @@ implements RecipeBuilder {
     }
 
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
-        //this.ensureValid(pRecipeId);
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
                 RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId))
                 .requirements(RequirementsStrategy.OR);
@@ -109,24 +102,6 @@ implements RecipeBuilder {
                 this.group, this.category, this.materials, this.advancement, pRecipeId
                 .withPrefix("recipes/" + this.category.getFolderName() + "/"), this.showNotification));
     }
-
-    /*
-    private void ensureValid(ResourceLocation pId) {
-        if (this.rows.isEmpty()) {
-            throw new IllegalStateException("No pattern is defined for shaped recipe " + pId + "!");
-        } else {
-            Set<Character> set = Sets.newHashSet(this.key.keySet());
-            set.remove(' ');
-
-            if (!set.isEmpty()) {
-                throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + pId);
-            } else if (this.rows.size() == 1 && this.rows.get(0).length() == 1) {
-                throw new IllegalStateException("Shaped recipe " + pId + " only takes in a single item - should it be a shapeless recipe instead?");
-            } else if (this.advancement.getCriteria().isEmpty()) {
-                throw new IllegalStateException("No way of obtaining recipe " + pId);
-            }
-        }
-    }*/
 
     public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
@@ -173,16 +148,10 @@ implements RecipeBuilder {
             return ApiRecipes.RITUAL_SER.get();
         }
 
-        /**
-         * Gets the ID for the recipe.
-         */
         public ResourceLocation getId() {
             return this.id;
         }
 
-        /**
-         * Gets the JSON for the advancement that unlocks this recipe. Null if there is no advancement.
-         */
         @Nullable
         public JsonObject serializeAdvancement() {
             return this.advancement.serializeToJson();

@@ -29,37 +29,18 @@ extends ArrowArrowEntity {
         super(level, living);
     }
 
-    @Override
     public EntityType<?> getType() {
         return NoixmodAPIEntities.VAMPIRE_ARROW.get();
     }
 
-    @Override
     protected ItemStack getPickupItem() {
         return new ItemStack(Items.ARROW);
     }
 
-    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    @Override
-    public boolean isAttackable() {
-        return false;
-    }
-
-    @Override
-    public boolean isPickable() {
-        return false;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
     protected void onHitEntity(EntityHitResult p_36757_) {
         Entity entity = p_36757_.getEntity();
         if (this.getOwner() instanceof LivingEntity living) {

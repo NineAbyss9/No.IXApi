@@ -1,7 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.bilibili.player_ix.noixmod_api.entities.servant.CreeperServant;
 import com.github.NineAbyss9.ix_api.api.item.ApiSpawnEgg;
+import com.github.NineAbyss9.ix_api.api.item.UseItem;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.item.*;
@@ -249,11 +251,30 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> MOURNER_SPAWN_EGG =
             spawnEggItem("mourner", NoixmodAPIEntities.MOURNER, 9804699, 44543);
 
+    //Magic
+    /// For index
+    public static final Object MAGIC = null;
+    public static final RegistryObject<Item> CREEPER_EGG
+            = REGISTRY.register("creeper_egg", () -> new UseItem(properties().stacksTo(64),
+            (level, player, interactionHand) -> {
+                ItemStack stack = player.getItemInHand(interactionHand);
+                stack.shrink(1);
+                if (!level.isClientSide) {
+                    CreeperServant servant = NoixmodAPIEntities.CREEPER_SERVANT.get().create(level);
+                    servant.moveTo(player.position());
+                    servant.setOwner(player);
+                    level.addFreshEntity(servant);
+                }
+                return ItemUtils.startUsingInstantly(level, player, interactionHand);
+            }));
+
     //Ritual
+    /// For index
+    public static final Object RITUAL = null;
     public static final RegistryObject<Item> BANNED_BOOK = REGISTRY.register("banned_book",
             BannedBook::new);
     public static final RegistryObject<Item> BLOOD_BOTTLE = REGISTRY.register("blood_bottle",
-    BloodBottle::new);
+            BloodBottle::new);
     public static final RegistryObject<Item> FRESH_SOUL = REGISTRY.register("fresh_soul",
             FreshSoul::new);
     public static final RegistryObject<Item> HALO_OF_APOSTLE =
@@ -270,11 +291,13 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> WITHER_DOLL = REGISTRY.register("wither_doll", WitherDoll::new);
 
     //Blocks
+    /// For index
+    public static final Object BLOCKS = null;
     public static final RegistryObject<Item> ALTAR = REGISTRY.register("altar",
             ()-> new BlockItem(NoixmodAPIBlocks.ALTAR.get(), properties()) {
                 public void appendHoverText(ItemStack p_40572_, @Nullable Level p_40573_, List<Component> p_40574_,
                                             TooltipFlag p_40575_) {
-                    p_40574_.add(Component.literal("There is a bug,please do not test."));
+                    p_40574_.add(Component.literal("Not complete yet."));
                     super.appendHoverText(p_40572_, p_40573_, p_40574_, p_40575_);
                 }
             });
@@ -284,7 +307,7 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> SPIRIT_STONE_ORE = blockToItem(
             NoixmodAPIBlocks.SPIRIT_STONE_ORE
     );
-    public static final RegistryObject<Item> TELEPORT_PLATE = blockToItem(NoixmodAPIBlocks.TELEPORT_PLATE);
+    //public static final RegistryObject<Item> TELEPORT_PLATE = blockToItem(NoixmodAPIBlocks.TELEPORT_PLATE);
 
 
     private NoixmodAPIItems() {}

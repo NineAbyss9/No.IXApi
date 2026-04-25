@@ -110,15 +110,11 @@ implements IProjectile {
     public void addAdditionalSaveData(CompoundTag tag) {
         tag.putBoolean("Stay", this.stay);
         tag.putBoolean("isChasing", this.isAggressive());
-        //if (this.chargePos != null) {
-        //    tag.put("ChangePos", Vec9.createVec3Tag(this.chargePos, "ChangePos"));
-        //}
         super.addAdditionalSaveData(tag);
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
         this.stay = tag.getBoolean("Stay");
-        //this.setChasing(Vec9.readVec3Tag(tag, "ChangePos"));
         super.readAdditionalSaveData(tag);
     }
 
@@ -170,7 +166,7 @@ implements IProjectile {
             if (this.getLifeTick() == 50) {
                 if (lie != null) {
                     this.playSound(SoundEvents.RAVAGER_ROAR);
-                    double q = NoixmodAPIMainConfig.HorrorMode.get() ? 0.4 : 0.3;
+                    double q = NoixmodAPIMainConfig.HorrorMode.get() ? 0.4D : 0.3D;
                     Vec3 vec3 = this.getVec3(lie, q);
                     this.setChasing(vec3);
                     this.setAggressive(true);
@@ -240,7 +236,7 @@ implements IProjectile {
 
     public void onHitEntity(EntityHitResult pResult) {
         if (pResult.getEntity() instanceof LivingEntity lie) {
-            if (!this.level().isClientSide()) {
+            if (!this.level().isClientSide) {
                 ServerLevel level = (ServerLevel)this.level();
                 level.sendParticles(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(),
                         this.getRandomX(0.6), this.getRandomY(), this.getRandomZ(0.6),
@@ -269,7 +265,7 @@ implements IProjectile {
         double d2 = this.random.nextGaussian() * 0.2;
         MobUtils.rangeHurtAndFire(4, 0.25, 4, this, this.damageSources().indirectMagic(this,
                 this.getOwner()), this.damage, 2);
-        if (this.level() instanceof ServerLevel) {
+        if (!this.level().isClientSide) {
             WorldUtil.getServerLevel(this).sendParticles(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this.getX(),
                     this.getY() + 0.25, this.getZ(), 50, d, d1, d2, 0.25);
         }
@@ -278,8 +274,8 @@ implements IProjectile {
 
     protected void explosion() {
         MobUtils.rangeHurt(5, 5, 5, this, this.damageSources().starve(), this.damage);
-        if (this.level() instanceof ServerLevel level) {
-            level.sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 0.5, this.getZ(),
+        if (!this.level().isClientSide) {
+            serverLevel().sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 0.5, this.getZ(),
                     50, 0, 0, 0, 0.5);
         }
         this.discard();

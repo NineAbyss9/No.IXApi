@@ -3,11 +3,10 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
 import com.bilibili.player_ix.noixmod_api.client.model.APIGhastModel;
-import com.bilibili.player_ix.noixmod_api.entities.servant.MiniGhast;
+import com.bilibili.player_ix.noixmod_api.entities.servant.nether.MiniGhast;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class MiniGhastRenderer<T extends MiniGhast>
 extends MobRenderer<T, APIGhastModel<T>> {

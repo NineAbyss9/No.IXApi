@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.projectile.summon;
 
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
-import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;

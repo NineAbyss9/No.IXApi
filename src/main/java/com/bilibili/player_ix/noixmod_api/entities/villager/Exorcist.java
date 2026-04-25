@@ -51,18 +51,15 @@ extends VillagerFighter {
     }
 
     @Nullable
-    @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return new Exorcist(NoixmodAPIEntities.EXORCIST.get(), serverLevel);
     }
 
     @Nullable
-    @Override
     protected VillagerTrades.ItemListing[] getTradeLists() {
         return ApiVillagerTrades.EXORCIST_TRADES;
     }
 
-    @Override
     public void aiStep() {
         super.aiStep();
         if (this.tickCount % 20 == 0) {

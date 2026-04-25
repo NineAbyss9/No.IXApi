@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.model.illager;
 
 import com.github.NineAbyss9.ix_api.api.ApiPose;
-import com.bilibili.player_ix.noixmod_api.entities.monster.GreenSinger;
+import com.bilibili.player_ix.noixmod_api.entities.monster.illager.GreenSinger;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import net.minecraft.client.model.AnimationUtils;

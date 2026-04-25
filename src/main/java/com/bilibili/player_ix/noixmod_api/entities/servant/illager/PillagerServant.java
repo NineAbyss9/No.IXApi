@@ -30,7 +30,7 @@ implements ApiCrossbowAttackMob {
     public PillagerServant(EntityType<? extends PillagerServant> entityType, Level level) {
         super(entityType, level);
         ItemStack stack = ItemStacks.of(Items.CROSSBOW);
-        EnchantmentHelper.enchantItem(level.random, stack, 3, true);
+        EnchantmentHelper.enchantItem(level.random, stack, 3, false);
         this.setItemInHand(InteractionHand.MAIN_HAND, stack);
         this.setCanPickUpLoot(true);
     }

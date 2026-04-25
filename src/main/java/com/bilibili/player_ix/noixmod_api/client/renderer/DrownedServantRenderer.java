@@ -4,7 +4,7 @@ package com.bilibili.player_ix.noixmod_api.client.renderer;
 import com.bilibili.player_ix.noixmod_api.client.NoixmodAPIModelLayer;
 import com.bilibili.player_ix.noixmod_api.client.model.ApiZombieModel;
 import com.bilibili.player_ix.noixmod_api.client.renderer.layer.DrownedServantLayer;
-import com.bilibili.player_ix.noixmod_api.entities.servant.DrownedServant;
+import com.bilibili.player_ix.noixmod_api.entities.servant.aquatic.DrownedServant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

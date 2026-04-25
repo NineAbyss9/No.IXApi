@@ -3,7 +3,7 @@ package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
 import com.github.NineAbyss9.ix_api.api.mobs.ApiVillager;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
-import com.bilibili.player_ix.noixmod_api.entities.servant.OwnedEntity;
+import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -82,8 +82,10 @@ extends OwnedEntity {
     }
 
     public static boolean canDamage(LivingEntity living, @Nullable Entity entity) {
-        if (entity instanceof ApiVillager || entity instanceof VillagerFangs || entity instanceof Arrow arrow &&
-        arrow.getOwner() instanceof ApiVillager) {
+        if (!(entity instanceof ApiVillager || entity instanceof VillagerFangs || entity instanceof Arrow arrow &&
+                arrow.getOwner() instanceof ApiVillager)) {
+            return true;
+        } else {
             if (NoixmodAPIMainConfig.VILLAGERS_IGNORE.get().stream().anyMatch(s -> {
                 EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(s));
                 return type != null && type == living.getType();
@@ -97,8 +99,6 @@ extends OwnedEntity {
                 return false;
             }
             return MobUtils.canHurt(living, entity);
-        } else {
-            return true;
         }
     }
 
