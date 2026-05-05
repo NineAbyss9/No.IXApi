@@ -146,6 +146,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.ARROW_ARROW.get(), ArrowArrowRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.BIOLOGIST.get(), BiologistRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.BONE_SPELLCASTER.get(), MonsterRenderer.BoneSpellcasterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CAGE.get(), CageRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CH_APOSTLE.get(), HorrorRenderer.ChasingApostleRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.CREEPER_SERVANT.get(), CreeperServantRenderer::new);
@@ -220,6 +221,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.SCULK_ZOMBIE.get(), SculkZombieRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SHADOW_WALKER.get(), ShadowWalkerRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SILVERFISH_SERVANT.get(), SilverfishServantRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.SKELETON_SERVANT.get(), ServantRenderer.Skeleton::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SMALL_WORM.get(), SmallWormRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SMOKE_TRAP.get(), SmokeTrapRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.STAR_GUARDIAN.get(), StarGuardianRenderer::new);
@@ -251,6 +253,8 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.WATER_WARLOCK.get(), WaterWarlockRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WIND_ENTITY.get(), BaseEntityRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WIND_ZOMBIE.get(), WindZombieRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.WITHER_BONE_SPELLCASTER.get(),
+                MonsterRenderer.BoneSpellcasterRenderer.WitherBoneSpellcasterRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WITHER_SKELETON_SERVANT.get(), WitherSkeletonSRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WORM.get(), WormRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.WORM_MASTER.get(), WormMasterRenderer::new);

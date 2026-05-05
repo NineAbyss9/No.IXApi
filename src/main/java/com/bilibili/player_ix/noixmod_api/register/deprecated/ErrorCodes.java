@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.register;
+package com.bilibili.player_ix.noixmod_api.register.deprecated;
 
 import org.slf4j.Logger;
 
@@ -11,11 +11,11 @@ public final class ErrorCodes {
         throw new AssertionError();
     }
 
-    public static int readId(ErrorCode code) {
+    public static int readId(final ErrorCode code) {
         return code.getId();
     }
 
-    public static String readMessage(ErrorCode code) {
+    public static String readMessage(final ErrorCode code) {
         return code.getMessage();
     }
 

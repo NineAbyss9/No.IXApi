@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AltarContainer implements CraftingContainer {
-    protected final int size = 8;
+    protected final int size = 7;
     protected final NonNullList<ItemStack> items;
     @Nullable
     private List<ContainerListener> listeners;

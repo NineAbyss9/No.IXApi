@@ -11,17 +11,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 
 public class GroundSpell extends Spell {
-    @Override
     public Type getSpellType() {
         return Type.MISC;
     }
 
-    @Override
     public float spellPower() {
         return 9;
     }
 
-    @Override
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
         pLevel.playSound(pCaster, pCaster.blockPosition(), SoundEvents.GENERIC_EXPLODE, pCaster.getSoundSource(),
                 2f, 1f);

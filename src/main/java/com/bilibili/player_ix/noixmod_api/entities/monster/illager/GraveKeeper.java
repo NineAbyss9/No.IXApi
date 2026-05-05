@@ -14,7 +14,6 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -55,7 +54,8 @@ implements ApiIllagerBoss {
     }
 
     public void summonGhost() {
-        if (this.level() instanceof ServerLevel level) {
+        if (!this.level().isClientSide) {
+            var level = this.serverLevel();
             BlockPos pos = this.blockPosition().offset(Maths.randomInteger(3), 0, Maths.randomInteger(3));
             GraveGhost ghost = new GraveGhost(NoixmodAPIEntities.GRAVE_GHOST.get(), level);
             ghost.moveTo(pos, 0, 0);
@@ -122,23 +122,19 @@ implements ApiIllagerBoss {
             }
         }
 
-        @Override
         protected int getCastingTime() {
             return 20;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 400;
         }
 
         @Nullable
-        @Override
         protected SoundEvent getPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        @Override
         protected IllagerSpellType getSpellType() {
             return IllagerSpellType.ZOMBIE;
         }

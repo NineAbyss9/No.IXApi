@@ -1,15 +1,18 @@
 
 package com.bilibili.player_ix.noixmod_api.item.ritual;
 
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
-//Smite 13. 斑驳锈迹上，暗浮的银光声明着专戮之责
 public class Cross extends RitualSupplies {
     public Cross() {
         super(new Properties().rarity(Rarity.UNCOMMON).stacksTo(1));
@@ -21,7 +24,8 @@ public class Cross extends RitualSupplies {
         return stack;
     }
 
-    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        return super.hurtEnemy(pStack, pTarget, pAttacker);
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    {
+        pTooltipComponents.add(Component.translatable("info.noixmodapi.cross"));
     }
 }

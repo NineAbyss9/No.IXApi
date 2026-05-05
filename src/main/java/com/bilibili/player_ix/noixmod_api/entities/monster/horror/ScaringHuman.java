@@ -32,6 +32,7 @@ implements ApiPoseMob {
         return createPathAttributes().add(Attributes.ARMOR, 4.0D)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.MAX_HEALTH, 35.0D)
-                .add(Attributes.FOLLOW_RANGE, 56.0D);
+                .add(Attributes.FOLLOW_RANGE, 56.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 }

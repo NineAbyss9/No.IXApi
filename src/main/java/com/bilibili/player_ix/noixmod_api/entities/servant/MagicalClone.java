@@ -63,7 +63,7 @@ extends OwnableMob {
     }
 
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (this.invTicks > 0) {
+        if (this.level().isClientSide || this.invTicks > 0) {
             return false;
         } else {
             this.playSound(SoundEvents.ILLUSIONER_MIRROR_MOVE);

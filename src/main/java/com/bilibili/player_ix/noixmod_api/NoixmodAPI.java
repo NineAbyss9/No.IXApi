@@ -39,10 +39,9 @@ public class NoixmodAPI {
         bus.addListener(this::commonSetUp);
         bus.addListener(NoixmodAPIEntities::registerSpawns);
         bus.addListener(NoixmodAPIEntities::registerAttributes);
-        NoixmodAPITags.init();
         NoixmodAPIItems.REGISTRY.register(bus);
-        NoixmodAPIMobEffects.REGISTER.register(bus);
         ApiRecipes.register(bus);
+        NoixmodAPIMobEffects.REGISTER.register(bus);
         ApiGuis.REGISTER.register(bus);
         ApiEnchantments.REGISTER.register(bus);
         ApiBlockEntities.REGISTER.register(bus);
@@ -50,6 +49,7 @@ public class NoixmodAPI {
         NoixmodAPIBlocks.REGISTER.register(bus);
         NoixmodAPIEntities.SENSORS.register(bus);
         NoixmodAPIEntities.REGISTRY.register(bus);
+        NoixmodAPITags.init();
         NoixmodAPIParticleTypes.REGISTRY.register(bus);
         NoixmodAPITabs.REGISTRY.register(bus);
         createFiles(FMLPaths.CONFIGDIR.get().resolve(MOD_ID), MOD_ID);
@@ -74,7 +74,17 @@ public class NoixmodAPI {
     }
 
     public static ResourceLocation entity(String st) {
-        return new ResourceLocation(MOD_ID, "textures/entities/" + st);
+        return new ResourceLocation(MOD_ID, "textures/entities/" + st + ".png");
+    }
+
+    public static ResourceLocation servant(String st)
+    {
+        return entity("servants/" + st);
+    }
+
+    public static ResourceLocation monster(String st)
+    {
+        return new ResourceLocation(MOD_ID, "textures/entities/monsters/" + st + ".png");
     }
 
     public static ResourceLocation horror(String st) {

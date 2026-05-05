@@ -1,7 +1,9 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
+import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.IHorror;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
+import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,7 +18,9 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
 public class ChasingApostle
-extends Apostle {
+extends Apostle
+implements IHorror
+{
     private static final EntityDataAccessor<Integer> DATA_HEALTH;
     private static final EntityDataAccessor<Float> DATA_SPEED;
     public ChasingApostle(EntityType<? extends ChasingApostle> apostle, Level world) {
@@ -34,15 +38,49 @@ extends Apostle {
     }
 
     public void tick() {
+        if (!HorrorModeManager.horrorModeEnabled()) {
+            this.setRemoved(RemovalReason.KILLED);
+            return;
+        }
         super.tick();
-        LivingEntity var10000 = this.getTarget();
-        if (var10000 != null) {
-            if (this.getNavigation().isDone())
-                this.getNavigation().moveTo(var10000, this.getDataSpeed());
-            if (this.closerThan(var10000, 1.5D)) {
-                this.onChase(var10000);
+        if (!this.level().isClientSide) {
+            LivingEntity var10000 = this.getTarget();
+            if (var10000 != null) {
+                if (this.getNavigation().isDone())
+                    this.getNavigation().moveTo(var10000, this.getDataSpeed());
+                if (this.closerThan(var10000, 1.5D)) {
+                    this.onChase(var10000);
+                }
             }
         }
+    }
+
+    protected void handleBossEvent()
+    {
+        if (this.tickCount % 5 == 0) {
+            this.horrorEvent.update();
+        }
+        this.horrorEvent.setProgress(this.getTrueHealth() / 10.0F);
+    }
+
+    public void summonServant()
+    {
+    }
+
+    public void summonServants()
+    {
+    }
+
+    public void summonRangedServant()
+    {
+    }
+
+    public void teleport()
+    {
+    }
+
+    public void chaseTeleport()
+    {
     }
 
     public boolean hurt(DamageSource pSource, float pAmount) {
@@ -58,6 +96,15 @@ extends Apostle {
     }
 
     public void setHealth(float amount) {
+    }
+
+    public int getTrueHealth() {
+        return this.entityData.get(DATA_HEALTH);
+    }
+
+    public int getLevel()
+    {
+        return 3;
     }
 
     public boolean isAlive() {

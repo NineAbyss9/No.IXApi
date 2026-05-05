@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.npc.AbstractVillager;
+import org.NineAbyss9.math.MathSupport;
 
 public class DesireForBlood extends MobEffect {
     public DesireForBlood() {
@@ -25,17 +26,17 @@ public class DesireForBlood extends MobEffect {
 
     public void removeAttributeModifiers(LivingEntity p_19469_, AttributeMap p_19470_, int p_19471_) {
         if (p_19469_ instanceof AbstractVillager villager) {
-            if (villager.getRandom().nextBoolean()) {
+            if (MathSupport.threadSafeRandom.nextBoolean()) {
                 if (!p_19469_.level().isClientSide) {
                     EntityEventHandler.broadcastEntityEvent(villager, 4);
                 }
                 villager.kill();
             } else {
-                if (p_19469_.level() instanceof ServerLevel level) {
-                    VampireServant servant = NoixmodAPIEntities.VAMPIRE_SERVANT.get().spawn(level,
+                if (!p_19469_.level().isClientSide) {
+                    VampireServant servant = NoixmodAPIEntities.VAMPIRE_SERVANT.get().spawn((ServerLevel)p_19469_.level(),
                             villager.blockPosition(), MobSpawnType.CONVERSION);
                     if (servant != null) {
-                        servant.setOwner(level.getNearestPlayer(villager, 30.0));
+                        servant.setOwner(p_19469_.level().getNearestPlayer(villager, 30.0));
                     }
                 }
                 p_19469_.remove(Entity.RemovalReason.KILLED);

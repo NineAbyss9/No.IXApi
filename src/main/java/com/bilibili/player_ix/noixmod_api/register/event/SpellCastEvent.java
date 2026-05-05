@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.register.event;
 
 import com.bilibili.player_ix.noixmod_api.magic.Spell;
+import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -11,6 +12,7 @@ import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nullable;
 
+@ServerOnly
 public class SpellCastEvent extends Event {
     private final ServerLevel level;
     @Nullable

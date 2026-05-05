@@ -50,7 +50,7 @@ implements Enemy {
         this.goalSelector.addGoal(1, new HealSelfGoal());
         this.goalSelector.addGoal(1, new AttackSpellGoal());
         this.goalSelector.addGoal(1, new HealCompanionSpellGoal());
-        this.goalSelector.addGoal(4, new NihilisticAvoidGoal(this));
+        this.goalSelector.addGoal(4, new NihilistAvoidGoal(this));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, LivingEntity.class, 10f));
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.75));

@@ -18,22 +18,18 @@ extends RitualSupplies {
         super(new Properties().rarity(Rarity.UNCOMMON).stacksTo(16));
     }
 
-    @Override
     public UseAnim getUseAnimation(ItemStack p_41452_) {
         return UseAnim.DRINK;
     }
 
-    @Override
     public int getUseDuration(ItemStack p_41454_) {
         return 32;
     }
 
-    @Override
     public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
         return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
     }
 
-    @Override
     public void onUseTick(Level p_41428_, LivingEntity p_41429_, ItemStack p_41430_, int p_41431_) {
         p_41429_.addEffect(new MobEffectInstance(MobEffects.HUNGER, 10, 0));
         p_41429_.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 10, 0));
@@ -44,7 +40,6 @@ extends RitualSupplies {
         super.onUseTick(p_41428_, p_41429_, p_41430_, p_41431_);
     }
 
-    @Override
     public ItemStack finishUsingItem(ItemStack p_41409_, Level p_41410_, LivingEntity p_41411_) {
         if (p_41411_ instanceof Player player) {
             ItemUtil.shrink(p_41409_, player);

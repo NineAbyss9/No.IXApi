@@ -1,19 +1,19 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
-import com.bilibili.player_ix.noixmod_api.compat.Compatable;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.HuntedVillager;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.Tracker;
 import com.bilibili.player_ix.noixmod_api.server.HorrorModeSavedData;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.HorrorLookAtEntityGoal;
 import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
-import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.fml.ModList;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
@@ -68,44 +68,32 @@ public class NoixmodAPIEvents {
     public static void onLivingJoinWorld(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         Level level = event.getLevel();
+        if (level.isClientSide) return;
         if (entity instanceof AbstractIllager illager) {
             illager.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(illager,
                     LivingEntity.class, true, livingEntity -> livingEntity instanceof ApiVillager));
         }
         if (NoixmodAPIMainConfig.HorrorMode.get()) {
             if (entity instanceof Mob mob) {
-                if (mob instanceof OwnableMob ownableMob) {
-                    if (ownableMob.isHostile() || ownableMob instanceof Enemy) {
-                        ownableMob.goalSelector.addGoal(3, new HorrorLookAtEntityGoal(ownableMob));
-                    }
-                } else {
-                    mob.goalSelector.addGoal(3, new HorrorLookAtEntityGoal(mob));
+                if (mob instanceof Animal || mob instanceof Enemy) {
+                    mob.goalSelector.addGoal(4, new HorrorLookAtEntityGoal(mob));
                 }
-            }
-            if (!NoixmodAPIMainConfig.disableXMinMap.get()) return;
-            String xaerominimap = "xaerominimap";
-            if (!ModList.get().isLoaded(xaerominimap)) return;
-            var option = Compatable.mobEffect(xaerominimap, "no_entity_radar");
-            if (option.isEmpty()) return;
-            if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(option.get(), -1, 0));
             }
         }
     }
 
-    public static final Map<ServerLevel, NihilisticOrderSpawner> ORDER_SPAWNER = new HashMap<>();
+    public static final Map<Level, NihilisticOrderSpawner> ORDER_SPAWNER = new HashMap<>();
 
     @SubscribeEvent
     public static void onWorldLoad(LevelEvent.Load event) {
         LevelAccessor accessor = event.getLevel();
-        if (NoixmodAPIMainConfig.HorrorMode.get()) {
-            if (accessor instanceof ServerLevel serverLevel) {
-                //HorrorModeManager.horrorModeManagers.put(serverLevel, new HorrorModeManager(serverLevel));
-                HorrorModeSavedData.load(serverLevel);
+        if (accessor.isClientSide()) return;
+        if (HorrorModeManager.horrorModeEnabled()) {
+            if (accessor instanceof Level) {
+                HorrorModeSavedData.load((ServerLevel)event.getLevel());
             }
         }
-        if (!accessor.isClientSide() && accessor instanceof Level level
-            && level.dimension() == Level.OVERWORLD) {
+        if (accessor instanceof Level level && level.dimension() == Level.OVERWORLD) {
             ORDER_SPAWNER.put(((ServerLevel)event.getLevel()), new NihilisticOrderSpawner());
         }
     }
@@ -124,7 +112,7 @@ public class NoixmodAPIEvents {
         if (event.level.isClientSide) return;
         ServerLevel serverLevel = (ServerLevel)event.level;
         if (HorrorModeManager.horrorModeEnabled()) {
-            HorrorModeSavedData.load(serverLevel).tick(serverLevel);
+            HorrorModeSavedData.get(serverLevel).tick(serverLevel);
         }
         NihilisticOrderSpawner orderSpawner = ORDER_SPAWNER.get(serverLevel);
         if (orderSpawner != null) {
@@ -133,32 +121,32 @@ public class NoixmodAPIEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingHeal(LivingHealEvent event) {
+    public static void onLivingHeal(LivingHealEvent event)
+    {
         LivingEntity entity = event.getEntity();
-        if (entity != null) {
-            if (NoixmodAPIMainConfig.ApostleCanCancelLivingHeal.get() || NoixmodAPIMainConfig.HorrorMode.get()) {
-                List<Apostle> apostles = entity.level().getEntitiesOfClass(Apostle.class, entity.getBoundingBox()
-                        .inflate(64));
-                if (!apostles.isEmpty()) {
-                    for (Apostle apostle : apostles) {
-                        if (MobUtils.canHurt(entity, apostle)) {
-                            if ((apostle.getTarget() == entity || (entity instanceof Mob mob && mob.getTarget() == apostle))
-                                    && apostle.getCancelHealTick() > 0) {
-                                event.setAmount(0);
-                                event.setCanceled(true);
-                                break;
-                            } else if (NoixmodAPIMainConfig.HorrorMode.get()) {
-                                event.setAmount(0);
-                                event.setCanceled(true);
-                                break;
-                            }
+        if (entity.level().isClientSide) return;
+        if (NoixmodAPIMainConfig.ApostleCanCancelLivingHeal.get() || NoixmodAPIMainConfig.HorrorMode.get()) {
+            List<Apostle> apostles = entity.level().getEntitiesOfClass(Apostle.class, entity.getBoundingBox()
+                    .inflate(64));
+            if (!apostles.isEmpty()) {
+                for (Apostle apostle : apostles) {
+                    if (MobUtils.canHurt(entity, apostle)) {
+                        if ((apostle.getTarget() == entity || (entity instanceof Mob mob && mob.getTarget() == apostle))
+                                && apostle.getCancelHealTick() > 0) {
+                            event.setAmount(0);
+                            event.setCanceled(true);
+                            break;
+                        } else if (NoixmodAPIMainConfig.HorrorMode.get()) {
+                            event.setAmount(0);
+                            event.setCanceled(true);
+                            break;
                         }
                     }
                 }
-            } else if (entity.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
-                event.setAmount(0);
-                event.setCanceled(true);
             }
+        } else if (entity.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
+            event.setAmount(0);
+            event.setCanceled(true);
         }
     }
 
@@ -171,7 +159,8 @@ public class NoixmodAPIEvents {
         Mob mob = event.getChild();
         if (mob == null) return;
         Level level = mob.level();
-        if (!level.isClientSide && mob instanceof Villager villager && Math.random() < 0.5) {
+        if (level.isClientSide) return;
+        if (mob instanceof Villager villager && Math.random() < 0.5) {
             ServerLevel serverLevel = (ServerLevel)level;
             int i = MathSupport.random.nextInt(11);
             VillagerFighter fighter;
@@ -196,7 +185,8 @@ public class NoixmodAPIEvents {
     }
 
     @SubscribeEvent
-    public static void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
+    public static void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event)
+    {
         Mob mob = event.getEntity();
         ServerLevel serverLevel = event.getLevel().getLevel();
         if (mob instanceof Villager villager && event.getSpawnType() == MobSpawnType.STRUCTURE) {
@@ -211,16 +201,17 @@ public class NoixmodAPIEvents {
                     event.setSpawnCancelled(true);
                     event.setCanceled(true);
                 }
-            } else if (MathSupport.random.nextFloat() < 0.25F
-                    && !mob.isBaby()) {
-                int i = MathSupport.random.nextInt(11);
+            } else if (MathSupport.threadSafeRandom.nextFloat() < 0.25F && !mob.isBaby()) {
+                int i = MathSupport.threadSafeRandom.nextInt(11);
                 VillagerFighter fighter;
-                if (i < 4) {
+                if (i < 3) {
                     fighter = new VillagerSpellcaster(NoixmodAPIEntities.VILLAGER_SPELLCASTER.get(), serverLevel);
-                } else if (i < 6) {
+                } else if (i < 5) {
                     fighter = new VillagerMaster(NoixmodAPIEntities.VILLAGER_MASTER.get(), serverLevel);
-                } else if (i < 8) {
+                } else if (i < 7) {
                     fighter = new VillagerEvoker(NoixmodAPIEntities.VILLAGER_EVOKER.get(), serverLevel);
+                } else if (i < 9) {
+                    fighter = new Exorcist(NoixmodAPIEntities.EXORCIST.get(), serverLevel);
                 } else {
                     fighter = new Ambusher(NoixmodAPIEntities.AMBUSHER.get(), serverLevel);
                 }
@@ -233,7 +224,7 @@ public class NoixmodAPIEvents {
                     event.setCanceled(true);
                 }
             }
-        } else if (mob instanceof WanderingTrader trader && MathSupport.random.nextFloat() < 0.25F
+        } else if (mob instanceof WanderingTrader trader && MathSupport.threadSafeRandom.nextFloat() < 0.25F
                 && event.getSpawnType() == MobSpawnType.EVENT && NoixmodAPIMainConfig.IntruderWillSpawn.get()) {
             Intruder intruder = NoixmodAPIEntities.INTRUDER.get().create(serverLevel);
             if (intruder != null) {
@@ -260,11 +251,8 @@ public class NoixmodAPIEvents {
         }
     }
 
-    //private static boolean willSpawn;
-
     @SubscribeEvent
-    public static void playerDestroyBlock(BlockEvent.BreakEvent event) {
-        //willSpawn = MathSupport.random.nextFloat() < 0.3F;
+    public static void onPlayerDestroyBlock(BlockEvent.BreakEvent event) {
         if (!HorrorModeManager.spawnTerribleMobs()) return;
         var level = event.getLevel();
         if (level.isClientSide()) return;
@@ -289,9 +277,25 @@ public class NoixmodAPIEvents {
         tracker.moveTo(spawnPos, 0, 0);
         tracker.getLookControl().setLookAt(player, 30F, 30F);
         level.addFreshEntity(tracker);
+        player.playSound(SoundEvents.AMBIENT_CAVE.value());
+        BlockPos second = player.blockPosition().relative(d.getOpposite());
+        if (level.getBlockState(second).isAir()) {
+            var newTracker = NoixmodAPIEntities.TRACKER.get().create((Level)level);
+            if (newTracker == null) return;
+            level.destroyBlock(second, true);
+            if (second.getY() <= player.getY()) {
+                level.destroyBlock(second.above(), true);
+            } else {
+                level.destroyBlock(second.below(), true);
+            }
+            newTracker.setCanAttack();
+            newTracker.setLife(80);
+            newTracker.moveTo(second, 0, 0);
+            newTracker.getLookControl().setLookAt(player, 30F, 30F);
+            level.addFreshEntity(newTracker);
+        }
     }
 
-    @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.EntityInteract event) {
         Level level = event.getLevel();
         if (level.isClientSide) return;
@@ -308,8 +312,7 @@ public class NoixmodAPIEvents {
                     entity.discard();
                     event.setCanceled(true);
                 }
-            } else if (stack.is(NoixmodAPIItems.WORM_REAGENT.get()))
-            {
+            } else if (stack.is(NoixmodAPIItems.WORM_REAGENT.get())) {
                 Worm worm = new Worm(NoixmodAPIEntities.WORM.get(), level);
                 worm.moveTo(entity.position());
                 if (level.addFreshEntity(worm)) {
@@ -338,6 +341,7 @@ public class NoixmodAPIEvents {
             return;
         }
         List<Healing> healings = healings(hurt);
+        if (healings.isEmpty()) return;
         healings.stream().findAny().ifPresent(healing -> {
             healing.hurt(event.getSource(), event.getAmount());
             hurt.heal(event.getAmount());
@@ -405,7 +409,8 @@ public class NoixmodAPIEvents {
         LivingEntity entity = event.getEntity();
         List<VillagerFighter> fighters = entity.level().getEntitiesOfClass(VillagerFighter.class, entity.getBoundingBox()
                 .inflate(19));
-        if (!fighters.isEmpty() && target instanceof AbstractVillager) {
+        if (fighters.isEmpty()) return;
+        if (target instanceof AbstractVillager) {
             for (VillagerFighter fighter : fighters) {
                 if (fighter.getTarget() == null || !fighter.isAggressive()) {
                     fighter.setTarget(entity);

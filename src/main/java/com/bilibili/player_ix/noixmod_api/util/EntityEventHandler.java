@@ -7,7 +7,7 @@ import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.monster.illager.Mourner;
-import com.bilibili.player_ix.noixmod_api.register.ErrorCodes;
+import com.bilibili.player_ix.noixmod_api.register.deprecated.ErrorCodes;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.github.NineAbyss9.ix_api.util.Maths;

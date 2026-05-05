@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import org.NineAbyss9.math.MathSupport;
 
 public class Detractor extends AbstractHorrorMob {
-    public Detractor(EntityType<? extends AbstractHorrorMob> p_33002_, Level p_33003_) {
+    public Detractor(EntityType<? extends Detractor> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
     }
 
@@ -25,17 +25,13 @@ public class Detractor extends AbstractHorrorMob {
         this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }
 
-    public void tick() {
-        super.tick();
+    public void aiStep() {
+        super.aiStep();
         if (!this.level().isClientSide || MathSupport.random.nextBoolean()) {
             return;
         }
         ParticleUtil.addRedStoneParticle(this, this.getRandomX(0.5), this.getRandomY(),
                 this.getRandomZ(0.5), 0, 0.2, 0);
-    }
-
-    public void aiStep() {
-        super.aiStep();
         if (this.tickCount % 80 == 0) {
             this.heal(1F);
         }

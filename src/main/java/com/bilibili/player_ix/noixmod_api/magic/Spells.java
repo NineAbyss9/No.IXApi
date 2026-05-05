@@ -35,6 +35,7 @@ public class Spells {
     public static final SpellType NIHILISTIC_ROAR = register("nihilistic_roar", NihilisticRoarSpell::new);
     public static final SpellType NIHILISTIC_SERVANT = register("nihilistic_servant", NihilisticServantSpell::new);
     public static final SpellType SELF_FANGS = register("self_fangs", SelfFangsSpell::new);
+    public static final SpellType SKELETON = register("skeleton", SkeletonSpell::new);
     public static final SpellType SMOKE_TRAP = register("smoke_trap", SmokeTrapSpell::new);
     public static final SpellType VAMPIRE = register("vampire", VampireSpell::new);
     public static final SpellType VEX_ARCHER = register("vex_archer", VexArcherSpell::new);

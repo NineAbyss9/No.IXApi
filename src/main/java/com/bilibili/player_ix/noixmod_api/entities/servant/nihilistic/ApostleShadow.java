@@ -81,6 +81,11 @@ extends Apostle {
         super.readAdditionalSaveData(tag);
     }
 
+    public boolean isShadow()
+    {
+        return true;
+    }
+
     public void tick() {
         super.tick();
         if (this.level().isClientSide()) {

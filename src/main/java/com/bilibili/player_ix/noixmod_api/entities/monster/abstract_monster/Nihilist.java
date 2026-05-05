@@ -19,7 +19,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import java.awt.*;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
@@ -55,7 +54,7 @@ implements PowerableMob, Nihilistic
     }
 
     public boolean isPowered() {
-        return this.canBeLeader();
+        return false;
     }
 
     protected void registerGoals() {
@@ -125,24 +124,23 @@ implements PowerableMob, Nihilistic
         return ApiPathfinderMob.createPathAttributes();
     }
 
-    public static class NihilisticAvoidGoal
+    public static class NihilistAvoidGoal
     extends AvoidEntityGoal<LivingEntity> {
-        public NihilisticAvoidGoal(PathfinderMob mob) {
+        public NihilistAvoidGoal(PathfinderMob mob) {
             this(mob, Maths.square(3f), 0.6, 1);
         }
 
-        public NihilisticAvoidGoal(PathfinderMob p_25027_, float p_25029_, double p_25030_, double p_25031_) {
+        public NihilistAvoidGoal(PathfinderMob p_25027_, float p_25029_, double p_25030_, double p_25031_) {
             this(p_25027_, p_25029_, p_25030_, p_25031_, lie -> lie instanceof LivingEntity && EntitySelector
                     .NO_CREATIVE_OR_SPECTATOR.test(lie));
         }
 
-        public NihilisticAvoidGoal(PathfinderMob p_25033_, float p_25035_, double p_25036_, double p_25037_,
-                                   Predicate<LivingEntity> p_25038_) {
+        public NihilistAvoidGoal(PathfinderMob p_25033_, float p_25035_, double p_25036_, double p_25037_,
+                                 Predicate<LivingEntity> p_25038_) {
             super(p_25033_, LivingEntity.class, living -> living instanceof LivingEntity && EntitySelector
                     .NO_CREATIVE_OR_SPECTATOR.test(living), p_25035_, p_25036_, p_25037_, p_25038_);
         }
 
-        @Override
         public boolean canUse() {
             if (this.toAvoid instanceof Mob target) {
                 if (target.getTarget() == this.mob) {
@@ -160,23 +158,12 @@ implements PowerableMob, Nihilistic
             this.setFlags(EnumSet.of(Flag.LOOK));
         }
 
-        @Override
-        public void start() {
-            for (Entity entity : this.nihilist.getLord()) {
-                this.nihilist.getLookControl().setLookAt(entity, 100F, 30F);
-                break;
-            }
-        }
-
-        @Override
         public void tick() {
-            for (Entity entity : this.nihilist.getLord()) {
+            this.nihilist.getLord().stream().findFirst().ifPresent(entity -> {
                 this.nihilist.getLookControl().setLookAt(entity, 100F, 30F);
-                break;
-            }
+            });
         }
 
-        @Override
         public boolean canUse() {
             if (this.nihilist.getTarget() != null) {
                 return false;
@@ -184,7 +171,6 @@ implements PowerableMob, Nihilistic
             return !this.nihilist.getLord().isEmpty();
         }
 
-        @Override
         public boolean canContinueToUse() {
             return super.canContinueToUse();
         }

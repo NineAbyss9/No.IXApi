@@ -60,7 +60,6 @@ extends HierarchicalModel<T> implements ArmedModel, HeadedModel {
         return LayerDefinition.create(createMesh(), 64, 64);
     }
 
-    @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw * (Maths.CLOSER_PI / 180F);
         this.head.xRot = headPitch * (Maths.CLOSER_PI / 180);

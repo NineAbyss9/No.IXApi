@@ -5,16 +5,15 @@ import com.bilibili.player_ix.noixmod_api.register.event.SpellCastEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.MinecraftForge;
-import org.NineAbyss9.math.MathSupport;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 public abstract class Spell
 implements ISpell {
-    protected final Random random;
+    protected final ThreadLocalRandom random
+            = ThreadLocalRandom.current();
     protected Spell() {
-        this.random = MathSupport.random;
     }
 
     public abstract Type getSpellType();
@@ -27,7 +26,7 @@ implements ISpell {
         return MinecraftForge.EVENT_BUS.post(new SpellCastEvent(pLevel, pCaster, this.getSpellType(), this));
     }
 
-    public static ISpell of(Type type, float spellPower, BiConsumer<ServerLevel, LivingEntity> both) {
+    public static ISpell of(Type type, float spellPower, BiConsumer<ServerLevel, LivingEntity> consumer) {
         return new Spell() {
             public Type getSpellType() {
                 return type;
@@ -39,7 +38,7 @@ implements ISpell {
 
             public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
                 if (defaultCastSpell(pLevel, pCaster)) {
-                    both.accept(pLevel, pCaster);
+                    consumer.accept(pLevel, pCaster);
                 }
             }
         };

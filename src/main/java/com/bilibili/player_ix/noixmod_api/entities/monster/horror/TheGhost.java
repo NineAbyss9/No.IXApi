@@ -7,7 +7,6 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
-import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.MeleeGoal;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -57,7 +56,7 @@ implements IFlagMob {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide) {
-            if (this.randomUtil.nextFloat() < 0.9F) return;
+            if (this.tickCount % 5 != 0) return;
             this.level().addParticle(NoixmodAPIParticleTypes.CORRUPTION.get(),
                     this.getRandomX(0.8), this.getRandomY() - 0.2, this.getRandomZ(0.8),
                     0, 0.1D, 0);
@@ -139,7 +138,7 @@ implements IFlagMob {
     }
 
     public void die(DamageSource pDamageSource) {
-        this.die(HorrorModeManager.THE_GHOST.left());
+        this.die();
         super.die(pDamageSource);
     }
 
@@ -168,8 +167,13 @@ implements IFlagMob {
         }
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        super.actuallyHurt(p_21240_, p_21241_ * 0.25F);
+    protected void actuallyHurt(DamageSource pSource, float pAmount) {
+        super.actuallyHurt(pSource, pAmount * 0.25F);
+    }
+
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
+    {
+        return pDistanceToClosestPlayer > 64.0D * 64.0D;
     }
 
     public int getLevel() {

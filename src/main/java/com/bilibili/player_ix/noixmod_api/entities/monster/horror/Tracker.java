@@ -3,7 +3,9 @@ package com.bilibili.player_ix.noixmod_api.entities.monster.horror;
 
 import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.ApiMeleeAttackGoal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -12,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,10 +29,11 @@ import org.NineAbyss9.math.MathSupport;
 /**Tracker class.A human-like who was looking at you.*/
 public class Tracker
 extends AbstractHorrorMob {
-    private boolean playerLooked;
     private final int actNameId;
     private Component actName;
     private static final EntityDataAccessor<Integer> DATA_LIFE;
+    private static final EntityDataAccessor<Boolean> DATA_LOOKED;
+    private static final EntityDataAccessor<Boolean> CAN_ATTACK;
     public Tracker(EntityType<? extends Tracker> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.actNameId = MathSupport.random.nextInt(4);
@@ -39,28 +43,48 @@ extends AbstractHorrorMob {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_LIFE, 6000);
+        this.entityData.define(DATA_LOOKED, false);
+        this.entityData.define(CAN_ATTACK, false);
     }
 
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new TrackerAttackGoal(this, 1.0D));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     public void aiStep() {
         super.aiStep();
-        if (getLife() > 0)
-            setLife(getLife() - 1);
-        else {
-            this.remove(RemovalReason.CHANGED_DIMENSION);
-            return;
-        }
-        LivingEntity target = this.getTarget();
-        if (target instanceof Player player) {
-            if (isLookingAtMe(player))
-                this.playerLooked = true;
-            if (closerThan(target, 10.0D)) {
-                this.getNavigation().stop();
+        if (this.level().isClientSide) {
+            LivingEntity target = this.getTarget();
+            if (target instanceof Player player) {
+                if (isLookingAtMe(player) && !this.entityData.get(DATA_LOOKED)) {
+                    this.actName = Component.translatable("entity.minecraft.bat");
+                }
+            }
+        } else {
+            if (getLife() > 0) {
+                setLife(getLife() - 1);
             } else {
-                this.getNavigation().moveTo(target, 1.0D);
+                this.discard();
+                return;
+            }
+            LivingEntity target = this.getTarget();
+            if (target instanceof Player player) {
+                if (isLookingAtMe(player) && !this.entityData.get(DATA_LOOKED)) {
+                    this.entityData.set(DATA_LOOKED, true);
+                    this.actName = Component.translatable("entity.minecraft.bat");
+                    if (this.canAttack()) {
+                        HorrorModeManager.playStrangeSound(this);
+                        this.discard();
+                    }
+                }
+                if (closerThan(target, 5.0D)) {
+                    this.getNavigation().stop();
+                } else {
+                    if (this.tickCount % 20 == 0) {
+                        this.getNavigation().moveTo(target, 1.0D);
+                    }
+                }
             }
         }
     }
@@ -70,14 +94,14 @@ extends AbstractHorrorMob {
     }
 
     public Component getDisplayName() {
-        return this.playerLooked ? super.getDisplayName() : this.actName;
+        return this.actName;
     }
 
     public Component getName() {
-        return this.getDisplayName();
+        return this.actName;
     }
 
-    boolean isLookingAtMe(Player pPlayer) {
+    private boolean isLookingAtMe(Player pPlayer) {
         Vec3 vec3 = pPlayer.getViewVector(1.0F).normalize();
         Vec3 vec31 = new Vec3(this.getX() - pPlayer.getX(), this.getEyeY() - pPlayer.getEyeY(), this.getZ()
                 - pPlayer.getZ());
@@ -114,19 +138,63 @@ extends AbstractHorrorMob {
         this.entityData.set(DATA_LIFE, pLife);
     }
 
-    protected void playStepSound(BlockPos pPos, BlockState pState) {}
+    public boolean canAttack() {
+        return this.entityData.get(CAN_ATTACK);
+    }
 
+    public void setCanAttack(boolean canAttack)
+    {
+        this.entityData.set(CAN_ATTACK, canAttack);
+    }
+
+    public void setCanAttack()
+    {
+        this.entityData.set(CAN_ATTACK, true);
+    }
+
+    protected void playStepSound(BlockPos pPos, BlockState pState) {
+        if (this.level().canSeeSky(pPos)) return;
+        super.playStepSound(pPos, pState);
+    }
     protected void playBlockFallSound() {}
-
     protected void playSwimSound(float pVolume) {}
-
     public void die(DamageSource pDamageSource) {
-        this.die(HorrorModeManager.TRACKER.left());
+        this.die();
         super.die(pDamageSource);
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        super.actuallyHurt(p_21240_, p_21241_ / 1.5F);
+    public boolean doHurtTarget(Entity pEntity)
+    {
+        if (this.level().isClientSide) return false;
+        HorrorModeManager.playStrangeSound(this);
+        if (pEntity instanceof LivingEntity entity) {
+            if (entity instanceof Player player && player.isCreative()) return false;
+            if (entity.getHealth() > 2.0F) {
+                entity.setHealth(2.0F);
+            } else {
+                entity.hurt(this.damageSources().mobAttack(this), 1.0F);
+            }
+        }
+        this.discard();
+        return true;
+    }
+
+    public void addAdditionalSaveData(CompoundTag pCompound)
+    {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("Timer", this.getLife());
+        pCompound.putBoolean("CanAttack", this.canAttack());
+    }
+
+    public void readAdditionalSaveData(CompoundTag pCompound)
+    {
+        super.readAdditionalSaveData(pCompound);
+        this.setLife(pCompound.getInt("Timer"));
+        this.setCanAttack(pCompound.getBoolean("CanAttack"));
+    }
+
+    protected void actuallyHurt(DamageSource pSource, float pAmount) {
+        super.actuallyHurt(pSource, pAmount / 1.5F);
     }
 
     public static AttributeSupplier createAttributes() {
@@ -137,5 +205,23 @@ extends AbstractHorrorMob {
 
     static {
         DATA_LIFE = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.INT);
+        DATA_LOOKED = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.BOOLEAN);
+        CAN_ATTACK = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.BOOLEAN);
+    }
+
+    private static final class TrackerAttackGoal extends ApiMeleeAttackGoal
+    {
+        private final Tracker tracker;
+        public TrackerAttackGoal(Tracker finder, double speed)
+        {
+            super(finder, speed);
+            this.tracker = finder;
+        }
+
+        public boolean canUse()
+        {
+            if (!this.tracker.canAttack()) return false;
+            return super.canUse();
+        }
     }
 }

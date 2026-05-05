@@ -8,6 +8,7 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIBlocks;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,20 +25,25 @@ public class AltarMenu extends AbstractContainerMenu {
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;
-    public AltarMenu(int pContainerId, Inventory inventory, //AltarBlockEntity entity,
-                     ContainerLevelAccess accessIn) {
+    public AltarMenu(int pContainerId, Inventory inventory, ContainerLevelAccess accessIn) {
         super(ApiGuis.ALTAR.get(), pContainerId);
         this.craftSlots = new AltarContainer(this);
         this.access = accessIn;
         this.player = inventory.player;
-        this.addSlot(new ResultSlot(player, craftSlots, resultSlots, resultSlotIndex, 183, 79));
-        this.addSlot(new Slot(craftSlots, 1, 123, 29));
-        this.addSlot(new Slot(craftSlots, 2, 87, 51));
-        this.addSlot(new Slot(craftSlots, 3, 119, 84));
-        this.addSlot(new Slot(craftSlots, 4, 158, 53));
-        this.addSlot(new Slot(craftSlots, 5, 158, 104));
-        this.addSlot(new Slot(craftSlots, 6, 120, 134));
-        this.addSlot(new Slot(craftSlots, 7, 83, 104));
+        this.addSlot(new ResultSlot(player, craftSlots, resultSlots, resultSlotIndex, 183, 79) {
+            public void onTake(Player pPlayer, ItemStack pStack)
+            {
+                super.onTake(pPlayer, pStack);
+                AltarMenu.this.onTake(pPlayer, pStack);
+            }
+        });
+        this.addSlot(new Slot(craftSlots, 0, 123, 29));
+        this.addSlot(new Slot(craftSlots, 1, 87, 51));
+        this.addSlot(new Slot(craftSlots, 2, 119, 84));
+        this.addSlot(new Slot(craftSlots, 3, 158, 53));
+        this.addSlot(new Slot(craftSlots, 4, 158, 104));
+        this.addSlot(new Slot(craftSlots, 5, 120, 134));
+        this.addSlot(new Slot(craftSlots, 6, 83, 104));
         for (int i = 0;i < 9;++i) {
             this.addSlot(new Slot(inventory, i + 9, 50 + 18 * i, 158));
         }
@@ -53,8 +59,7 @@ public class AltarMenu extends AbstractContainerMenu {
     }
 
     public static AltarMenu create(int id, Inventory inventory, FriendlyByteBuf buf) {
-        return new AltarMenu(id, inventory, //null,
-                ContainerLevelAccess.NULL);
+        return new AltarMenu(id, inventory, ContainerLevelAccess.NULL);
     }
 
     public ItemStack quickMoveStack(Player player, int pIndex) {
@@ -84,6 +89,7 @@ public class AltarMenu extends AbstractContainerMenu {
     }
 
     protected void onTake(Player pPlayer, ItemStack pStack) {
+        pPlayer.playSound(SoundEvents.WITHER_SPAWN);
     }
 
     public void createResult() {

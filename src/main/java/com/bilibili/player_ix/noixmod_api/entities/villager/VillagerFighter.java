@@ -19,7 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -163,13 +162,12 @@ implements ApiVillager, Merchant, Npc, Ownable {
     }
 
     public void startTrading(Player player) {
-        player.awardStat(Stats.TALKED_TO_VILLAGER);
-        this.openTradingScreen(player, this.getDisplayName(), 1);
         this.setTradingPlayer(player);
+        this.openTradingScreen(player, this.getDisplayName(), 1);
     }
 
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (this.isAlive() && !this.isTrading() && !this.isBaby() && this.isEffectiveAi()) {
+        if (this.isAlive() && !this.isTrading() && !this.isBaby()) {
             ItemStack itemStack = player.getItemInHand(hand);
             boolean flag = GoetyCompat.goetyLoaded() && itemStack.is(GoetyCompat.getItem(
                     "magic_emerald"));
@@ -195,12 +193,12 @@ implements ApiVillager, Merchant, Npc, Ownable {
                     ItemUtil.shrink(itemStack, player, itemStack.getCount());
                 }
                 this.setOwner(player);
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(this.isClientSide());
             } else {
                 if (player.isShiftKeyDown()) {
                     if (this.ownableData.nextFlag(player, hand)) {
                         this.ownableData.nextFlag();
-                        return InteractionResult.SUCCESS;
+                        return InteractionResult.sidedSuccess(this.level().isClientSide);
                     }
                 } else if (!this.getOffers().isEmpty() && !this.isAggressive()) {
                     if (!this.level().isClientSide) {
@@ -294,8 +292,8 @@ implements ApiVillager, Merchant, Npc, Ownable {
     public void overrideXp(int i) {
     }
 
-    public SoundEvent getTradeUpdatedSound(boolean p_35323_) {
-        return ApiVillager.super.getTradeUpdatedSound(p_35323_);
+    public SoundEvent getTradeUpdatedSound(boolean pIsYesSound) {
+        return pIsYesSound ? SoundEvents.VILLAGER_YES : SoundEvents.VILLAGER_NO;
     }
 
     public boolean showProgressBar() {
@@ -310,11 +308,13 @@ implements ApiVillager, Merchant, Npc, Ownable {
         return this.level().isClientSide;
     }
 
-    public void checkDespawn() {
-        if (this.getSpawnType() != MobSpawnType.STRUCTURE && this.getSpawnType()
-                != MobSpawnType.BREEDING) {
-            super.checkDespawn();
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
+    {
+        if (this.getSpawnType() == MobSpawnType.STRUCTURE || this.getSpawnType()
+                == MobSpawnType.BREEDING) {
+            return false;
         }
+        return super.removeWhenFarAway(pDistanceToClosestPlayer);
     }
 
     protected void customServerAiStep() {

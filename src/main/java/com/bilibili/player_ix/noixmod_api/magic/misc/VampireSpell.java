@@ -18,17 +18,14 @@ import java.util.List;
 
 public class VampireSpell
 extends Spell {
-    @Override
     public Type getSpellType() {
         return Type.MISC;
     }
 
-    @Override
     public float spellPower() {
         return 20;
     }
 
-    @Override
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
         List<LivingEntity> list = pLevel.getEntitiesOfClass(LivingEntity.class, pCaster.getBoundingBox().inflate(128),
                 living -> MobUtils.canHurt(living, pCaster));

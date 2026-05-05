@@ -96,6 +96,7 @@ extends AbstractGhost {
         return super.isHostile() || this.getSpawnType() == MobSpawnType.NATURAL;
     }
 
+    @Deprecated
     public static void init() {
         MobUtils.registerSpawn(NoixmodAPIEntities.GIRL_GHOST.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevelAccessor, mobSpawnType,

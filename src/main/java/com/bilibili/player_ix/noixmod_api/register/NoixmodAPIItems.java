@@ -2,8 +2,11 @@
 package com.bilibili.player_ix.noixmod_api.register;
 
 import com.bilibili.player_ix.noixmod_api.entities.servant.CreeperServant;
+import com.bilibili.player_ix.noixmod_api.item.magic.BoneStuff;
+import com.bilibili.player_ix.noixmod_api.register.data.ApiDataHelper;
 import com.github.NineAbyss9.ix_api.api.item.ApiSpawnEgg;
 import com.github.NineAbyss9.ix_api.api.item.UseItem;
+import net.minecraft.util.Mth;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.item.*;
@@ -23,11 +26,9 @@ import com.bilibili.player_ix.noixmod_api.item.ritual.*;
 import com.bilibili.player_ix.noixmod_api.item.util.*;
 import com.bilibili.player_ix.noixmod_api.item.util.InfernalIronAxe;
 import com.bilibili.player_ix.noixmod_api.item.weapon.*;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -36,9 +37,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import javax.annotation.Nullable;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -47,6 +46,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class NoixmodAPIItems {
     public static Set<RegistryObject<? extends Item>> SPAWN_EGGS = new LinkedHashSet<>();
+    public static Set<RegistryObject<? extends Item>> HORROR_SPAWN_EGGS = new LinkedHashSet<>();
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, NoixmodAPI.MOD_ID);
 
     //Spawn eggs
@@ -63,7 +63,8 @@ public class NoixmodAPIItems {
             NoixmodAPIEntities.ARCHER_SERVANT, 5451574, 9804699);
     public static final RegistryObject<Item> ARMORER_SPAWN_EGG = REGISTRY.register("armorer_spawn_egg",
             ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.ARMORER, 9804699, 2580065, new Item.Properties()));
-    public static final RegistryObject<Item> BONE_SWORD = REGISTRY.register("bone_sword", BoneSword::new);
+    public static final RegistryObject<Item> BONE_SPELLCASTER_EGG = spawnEggItemWithData("bone_spellcaster",
+            NoixmodAPIEntities.BONE_SPELLCASTER, 12698049, 4802889);
     public static final RegistryObject<Item> CREEPER_SERVANT_SPAWN_EGG = spawnEggItem("creeper_servant",
             NoixmodAPIEntities.CREEPER_SERVANT, 894731, 0);
     public static final RegistryObject<Item> CULTIST_SPAWN_EGG = REGISTRY.register("cultist_spawn_egg", ()->
@@ -115,6 +116,8 @@ public class NoixmodAPIItems {
             NoixmodAPIEntities.SHADOW_WALKER, -10092442, -13434727, Rarity.UNCOMMON);
     public static final RegistryObject<Item> SILVERFISH_SERVANT_SPAWN_EGG = spawnEggItem("silverfish_servant",
             NoixmodAPIEntities.SILVERFISH_SERVANT, 7237230, 3158064);
+    public static final RegistryObject<Item> SKELETON_SERVANT_SPAWN_EGG = spawnEggItemWithData("skeleton_servant",
+            NoixmodAPIEntities.SKELETON_SERVANT, 12698049, 4802889);
     public static final RegistryObject<Item> STAR_GUARDIAN_SPAWN_EGG = spawnEggItem("star_guardian", NoixmodAPIEntities.STAR_GUARDIAN,
             14283506, 1001033, Rarity.EPIC);
     public static final RegistryObject<Item> SUICIDE_ZOMBIE_SPAWN_EGG = spawnEggItem("suicide_zombie", NoixmodAPIEntities.SUICIDE_ZOMBIE,
@@ -124,6 +127,10 @@ public class NoixmodAPIItems {
     );
     public static final RegistryObject<Item> SWORD_CULTIST_SPAWN_EGG = spawnEggItem("sword_cultist", NoixmodAPIEntities.SWORD_CULTIST,
             -10092442, -13434727);
+    public static final RegistryObject<Item> THE_GHOST = horrorSpawnEgg("the_ghost",
+            NoixmodAPIEntities.THE_GHOST, 0, Mth.hsvToRgb(255, 255, 255));
+    public static final RegistryObject<Item> TRACKER_EGG = horrorSpawnEgg("tracker",
+            NoixmodAPIEntities.TRACKER, 0, 0);
     public static final RegistryObject<Item> TRUMPETER_SPAWN_EGG = REGISTRY.register("trumpeter_spawn_egg", () -> new ForgeSpawnEggItem(NoixmodAPIEntities.BUGLER, 9804699, 2580065, new Item.Properties()));
     public static final RegistryObject<Item> VAMPIRE_SERVANT_SPAWN_EGG =
             spawnEggItem("vampire_servant", NoixmodAPIEntities.VAMPIRE_SERVANT, -10092544, -16777216);
@@ -142,6 +149,8 @@ public class NoixmodAPIItems {
             1001033, 3790560);
     public static final RegistryObject<Item> WIND_ZOMBIE_SPAWN_EGG = spawnEggItem("wind_zombie", NoixmodAPIEntities.WIND_ZOMBIE,
             11506911, 9529055);
+    public static final RegistryObject<Item> WITHER_BONE_S_S_EGG = spawnEggItemWithData("wither_bone_spellcaster",
+            NoixmodAPIEntities.WITHER_BONE_SPELLCASTER, 1315860, 4672845);
     public static final RegistryObject<Item> WORM_MASTER_SPAWN_EGG = spawnEggItem("worm_master", NoixmodAPIEntities.WORM_MASTER,
             -10066432, -16764160, Rarity.RARE);
     public static final RegistryObject<Item> YETI_SPAWN_EGG = apiSpawnEgg("yeti", NoixmodAPIEntities.YETI, 5592575, 11184810);
@@ -183,6 +192,7 @@ public class NoixmodAPIItems {
     //Weapon
     public static final RegistryObject<Item> AXE_OF_HUNTER = REGISTRY.register("hunters_axe",
             AxeOfHunter::new);
+    public static final RegistryObject<Item> BONE_SWORD = REGISTRY.register("bone_sword", BoneSword::new);
     public static final RegistryObject<Item> BOW_BOW = REGISTRY.register("bow_bow", BowBow::new);
     public static final RegistryObject<Item> GRAVE_SWORD = REGISTRY.register(sword("grave"), GraveSword::new);
     public static final RegistryObject<Item> HEAD_HUNTERS_CROSSBOW = REGISTRY.register("head_hunters_crossbow",
@@ -267,6 +277,8 @@ public class NoixmodAPIItems {
                 }
                 return ItemUtils.startUsingInstantly(level, player, interactionHand);
             }));
+    public static final RegistryObject<Item> BONE_STAFF =
+            item("bone_staff", BoneStuff::new);
 
     //Ritual
     /// For index
@@ -294,21 +306,13 @@ public class NoixmodAPIItems {
     /// For index
     public static final Object BLOCKS = null;
     public static final RegistryObject<Item> ALTAR = REGISTRY.register("altar",
-            ()-> new BlockItem(NoixmodAPIBlocks.ALTAR.get(), properties()) {
-                public void appendHoverText(ItemStack p_40572_, @Nullable Level p_40573_, List<Component> p_40574_,
-                                            TooltipFlag p_40575_) {
-                    p_40574_.add(Component.literal("Not complete yet."));
-                    super.appendHoverText(p_40572_, p_40573_, p_40574_, p_40575_);
-                }
-            });
+            ()-> new BlockItem(NoixmodAPIBlocks.ALTAR.get(), properties()));
     public static final RegistryObject<Item> BLOOD = blockToItem(NoixmodAPIBlocks.BLOOD);
     public static final RegistryObject<Item> CURSED_CHEST = blockToItem(NoixmodAPIBlocks.CURSED_CHEST);
     public static final RegistryObject<Item> INFERNAL_IRON_ANVIL = blockToItem(NoixmodAPIBlocks.INFERNAL_IRON_ANVIL);
     public static final RegistryObject<Item> SPIRIT_STONE_ORE = blockToItem(
             NoixmodAPIBlocks.SPIRIT_STONE_ORE
     );
-    //public static final RegistryObject<Item> TELEPORT_PLATE = blockToItem(NoixmodAPIBlocks.TELEPORT_PLATE);
-
 
     private NoixmodAPIItems() {}
 
@@ -317,8 +321,11 @@ public class NoixmodAPIItems {
                     NoixmodAPIEntities.GRAVE_KEEPER, -16777216, -13697024,
             new Item.Properties().rarity(Rarity.UNCOMMON)));
 
-    private static <T> Supplier<T> supplier(T t) {
-        return ()->t;
+    public static RegistryObject<Item> item(String name, Supplier<? extends Item> supplier)
+    {
+        RegistryObject<Item> obj = REGISTRY.register(name, supplier);
+        ApiDataHelper.ITEMS.add(obj);
+        return obj;
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -336,6 +343,26 @@ public class NoixmodAPIItems {
 
     public static Item.Properties properties() {
         return new Item.Properties();
+    }
+
+    public static RegistryObject<Item> spawnEggItemWithData(String path, Supplier<? extends EntityType<? extends Mob>>
+            supplier, int g, int b)
+    {
+        RegistryObject<Item> n = REGISTRY.register(path + spawnEgg(), ()-> new ApiSpawnEgg(supplier,
+                g, b, properties()));
+        SPAWN_EGGS.add(n);
+        ApiDataHelper.ITEMS.add(n);
+        return n;
+    }
+
+    public static RegistryObject<Item> horrorSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> supplier,
+                                                      int g, int b)
+    {
+        RegistryObject<Item> n = REGISTRY.register(name + spawnEgg(), ()-> new ApiSpawnEgg(supplier,
+                g, b, properties()));
+        HORROR_SPAWN_EGGS.add(n);
+        ApiDataHelper.ITEMS.add(n);
+        return n;
     }
 
     public static RegistryObject<Item> spawnEggItem(String path, Supplier<? extends EntityType<? extends Mob>>

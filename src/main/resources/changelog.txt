@@ -42,6 +42,8 @@ Changes : Drunkenness, flagmen and GraveKeepers will join raids now.Remastered h
 1.3.903 : Fixed some bugs.50% of Allays will be replaced by Heallings, use gold nugget to own them.
 1.3.904 : Try to fix a bug about apostle in server.Added Yeti.Make warden servants more powerful.
 Maybe the altar system will be completed next version.
-1.4.0 : Added : Altar.Some recipes.
+1.4.0 :
+Complete altar!
+Added : Altar, bone staff.Some recipes.Bone spellcaster, wither bone spellcaster, skeleton servant.
 Changes : Improve Horror Mode.
 Fix : A bug that make world crash when NoixmodAPIEvents#onFinalizeSpawn(1.3.908-pre1).

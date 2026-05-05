@@ -2,7 +2,6 @@
 package com.bilibili.player_ix.noixmod_api.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,10 +14,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class APISkeletonModel<T extends Mob> extends HumanoidModel<T> {
     public APISkeletonModel(ModelPart p_170677_) {
         super(p_170677_);

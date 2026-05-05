@@ -6,9 +6,11 @@ import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class NoixmodAPIMainConfig {
+    private static ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
     //Villager
     public static final ForgeConfigSpec.DoubleValue VillagerMasterHealAmount;
     public static final ForgeConfigSpec.ConfigValue<List<String>> VILLAGERS_IGNORE;
@@ -28,12 +30,12 @@ public class NoixmodAPIMainConfig {
     public static final ForgeConfigSpec.IntValue TrumpeterCheerCooldown;
 
     //Raid count
-    public static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> ArmorerRaidCount;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> DrunkennessRaidCount;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> FlagmanRaidCount;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> GraveKeeperRaidCount;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> HunterRaidCount;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> BuglerRaidCount;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> ArmorerRaidCount;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> DrunkennessRaidCount;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> FlagmanRaidCount;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> GraveKeeperRaidCount;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> HunterRaidCount;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> BuglerRaidCount;
     //Raid count End
 
     public static final ForgeConfigSpec.IntValue ArmorerDistributeArmorConfig;
@@ -52,6 +54,7 @@ public class NoixmodAPIMainConfig {
 
     //Spawn
     public static final ForgeConfigSpec.BooleanValue AquaticWormWillSpawn;
+    public static final ForgeConfigSpec.BooleanValue BoneSpellcasterSpawn;
     public static final ForgeConfigSpec.BooleanValue IntruderWillSpawn;
     public static final ForgeConfigSpec.BooleanValue WormWillSpawn;
     public static final ForgeConfigSpec.BooleanValue VampireWillSpawn;
@@ -60,13 +63,13 @@ public class NoixmodAPIMainConfig {
     public static final ForgeConfigSpec.BooleanValue PlateauBeastCanSummon;
     public static final ForgeConfigSpec.BooleanValue WindZombieCanSpawn;
     public static final ForgeConfigSpec.BooleanValue NihilisticOrderSpawn;
+    public static final ForgeConfigSpec.BooleanValue WitherBoneSpellcasterSpawn;
     public static final ForgeConfigSpec.BooleanValue YetiWillSpawn;
     //Spawn End
     //Horror Mode
     public static final ForgeConfigSpec.BooleanValue TERRIBLE_SKY;
     public static final ForgeConfigSpec.BooleanValue HorrorMode;
     public static final ForgeConfigSpec.BooleanValue SpawnHorror;
-    public static final ForgeConfigSpec.BooleanValue disableXMinMap;
     // /Horror Mode
     public static final ForgeConfigSpec.BooleanValue PlayBossMusic;
 
@@ -79,14 +82,28 @@ public class NoixmodAPIMainConfig {
         config.setConfig(file);
     }
 
+    private static List<? extends Integer> asList(Integer... i) {
+        return Arrays.asList(i);
+    }
+
+    private static void push(String mes) {
+        builder.push(mes);
+    }
+
+    private static ForgeConfigSpec.Builder comment(String mes) {
+        return builder.comment(mes);
+    }
+
+    private static void pop() {
+        builder.pop();
+    }
+
     static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.push("NoixmodAPIMainConfig");
         builder.push("HorrorMode");
         HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false.Enable the following settings for a better experience.").define("API恐怖模式", false);
         TERRIBLE_SKY = builder.comment("If true, the sky will become ???.").define("TerribleSky", false);
         SpawnHorror = builder.comment("Will scaring mobs spawn?Default:false").worldRestart().define("SpawnScaringMobs", false);
-        disableXMinMap = builder.comment("Disable Xaero's Minimap?Default:true(Enable horror mode first)").define("DisableXsMinimap", true);
         builder.pop();
         builder.push("Sounds");
         PlayBossMusic = builder.comment("Will bosses play music?Default:true(Deprecated)").define("是否播放Boss音乐", true);
@@ -105,7 +122,7 @@ public class NoixmodAPIMainConfig {
         builder.push("Villagers");
         builder.push("All");
         VILLAGERS_IGNORE = builder.translation("config.noixmodapi.villager_ignore").define("VillagersIgnore",
-                List.of("guardvillagers:guard","jerotesvillage:carved_hound","jerotesvillage:carved_llama"
+                Arrays.asList("guardvillagers:guard","jerotesvillage:carved_hound","jerotesvillage:carved_llama"
                         ,"jerotesvillage:carved_iron_golem",
                         "jerotesvillage:carved_allay","jerotesvillage:carved_villager","noixmodapi:villager_golem",
                         "noixmodapi:villager_master","noixmodapi:villager_spellcaster","noixmodapi:ambusher","noixmodapi:exorcist"
@@ -134,12 +151,12 @@ public class NoixmodAPIMainConfig {
         TrumpeterCheerCooldown = builder.comment("How long will trumpeters cheer illagers, Default:500").defineInRange("吹号手鼓舞灾厄村民冷却", 500, 1, Integer.MAX_VALUE);
         TrumpeterJoinRaids = builder.comment("Can trumpeters join raids, Default:true").worldRestart().define("吹号手是否加入袭击", true);
         BuglerRaidCount = builder.comment("Bugler number in Raids.Default:0, 1, 3, 0, 2, 7, 4, 6")
-                .define("号手袭击数量", List.of(0, 1, 3, 0, 2, 7, 4, 6), (i) -> i instanceof Integer);
+                .define("号手袭击数量", asList(0, 1, 3, 0, 2, 7, 4, 6), (i) -> i instanceof Integer);
         builder.pop();
         builder.push("Drunkenness");
         DrunkennessJoinRaids = builder.comment("Will drunkenness join raids?Default:true").worldRestart().define("酒徒是否加入袭击", true);
         DrunkennessRaidCount = builder.comment("Drunkenness number in Raids").worldRestart()
-                .define("酒徒袭击数量", List.of(0, 0, 0, 1, 2, 1, 3, 2));
+                .define("酒徒袭击数量", asList(0, 0, 0, 1, 2, 1, 3, 2), i -> i instanceof Integer);
         builder.pop();
         builder.push("Bloodsucker");
         VampireWillSpawn = builder.comment("Can bloodsuckers spawn, Default:true").worldRestart().define("吸血鬼是否生成", true);
@@ -148,13 +165,13 @@ public class NoixmodAPIMainConfig {
         builder.push("Flagman");
         FlagmanJoinRaids = builder.comment("Will flagmen join Raids?Default:true").worldRestart().define("旗手是否生成", true);
         FlagmanRaidCount = builder.comment("Flagman number in Raids.Default:1,1,1,1,1,1,1,1").worldRestart()
-                .define("旗手袭击数量", List.of(1, 1, 1, 1, 1, 1, 1, 1), i -> i instanceof Integer);
+                .define("旗手袭击数量", asList(1, 1, 1, 1, 1, 1, 1, 1), i -> i instanceof Integer);
         builder.pop();
         builder.push("GraveKeeper");
         GraveKeeperJoinRaids = builder.comment("Will GraveKeepers join raids?Default:true").worldRestart()
                 .define("守墓人是否加入袭击", true);
         GraveKeeperRaidCount = builder.comment("GraveKeepers number in Raids.Default:0,0,0,0,0,0,0,1")
-                .define("守墓人袭击数量", List.of(0, 0, 0, 0, 0, 0, 0, 1));
+                .define("守墓人袭击数量", asList(0, 0, 0, 0, 0, 0, 0, 1), i -> i instanceof Integer);
         builder.pop();
         builder.push("Intruder");
         IntruderWillSpawn = builder.comment("Will Intruders spawn?Default:true").worldRestart().define("不速之客是否生成", true);
@@ -168,16 +185,22 @@ public class NoixmodAPIMainConfig {
                 .defineInRange("盔甲师分发何种盔甲", 0, 0, 4);
         ArmorerJoinRaid = builder.comment("Will armorers join raids ?Default:true").worldRestart().define("盔甲师加入袭击", true);
         ArmorerRaidCount = builder.comment("Armorer number in Raids.Default:0, 1, 0, 3, 4, 0, 4, 6").worldRestart().define("盔甲师加入袭击数量",
-                List.of(0, 1, 0, 3, 4, 0, 4, 6), (count) -> count instanceof Integer);
+                asList(0, 1, 0, 3, 4, 0, 4, 6), (count) -> count instanceof Integer);
         builder.pop();
         builder.push("Hunter");
         HunterCanJoinRaid = builder.comment("Will hunters join raids ? Default:true").worldRestart().define("猎人加入袭击", true);
         HunterRaidCount = builder.comment("Hunter number in Raids.Default:0, 0, 1, 0, 3, 4, 6, 6").define("猎人袭击数量",
-                List.of(0, 0, 1, 0, 3, 4, 6, 6), (count) -> count instanceof Integer);
+                asList(0, 0, 1, 0, 3, 4, 6, 6), (count) -> count instanceof Integer);
         builder.pop();
         builder.push("Mourner");
         MournerDamage = builder.comment("Max damage amount for mourners, Default:17").defineInRange("哀悼者最大伤害", 17D, 0D, 114514D);
         builder.pop();
+        push("BoneSpellcaster");
+        BoneSpellcasterSpawn = comment("Will bone spellcasters spawn?Default:true")
+                .define("BoneSpellcasterSpawn", true);
+        WitherBoneSpellcasterSpawn = comment("Will wither bone spellcasters spawn?Default:true")
+                .define("WitherBoneSpellcasterSpawn", true);
+        pop();
         builder.pop();
         builder.push("OwnableEntity");
         builder.push("GirlGhost");

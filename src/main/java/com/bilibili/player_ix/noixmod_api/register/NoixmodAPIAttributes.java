@@ -86,9 +86,9 @@ public class NoixmodAPIAttributes {
     }
 
     public static AttributeSupplier.Builder createWitherSkeletonServantAttributes() {
-        return NoixmodAPIAttributes.baseAttributes(4, 0.27, 0.1)
-                .add(Attributes.ARMOR, 2).add(Attributes.FOLLOW_RANGE, 42)
-                .add(Attributes.MAX_HEALTH, 20);
+        return NoixmodAPIAttributes.baseAttributes(4.0D, 0.27D, 0.1D)
+                .add(Attributes.ARMOR, 2.0D).add(Attributes.FOLLOW_RANGE, 42)
+                .add(Attributes.MAX_HEALTH, 20.0D);
     }
 
     public static AttributeSupplier.Builder createGirlGhostAttributes() {

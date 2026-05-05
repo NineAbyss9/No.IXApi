@@ -71,18 +71,20 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
     }
 
     public boolean matches(CraftingContainer pInv, Level pLevel) {
-        boolean flag = true;
         for (int i = 0;i < RECIPE_COUNT;i++) {
-            var list = pInv.getItems();
-            //try {
-                if (list.get(i).isEmpty() && !recipeItems.get(i).isEmpty()) {
-                    flag = false;
-                } else if (!recipeItems.get(i).test(list.get(i))) {
-                    flag = false;
-                }
-            //}
+            ItemStack stackInSlot = pInv.getItem(i);
+            Ingredient required = recipeItems.get(i);
+            if (!required.isEmpty() && stackInSlot.isEmpty()) {
+                return false;
+            }
+            if (!required.isEmpty() && !required.test(stackInSlot)) {
+                return false;
+            }
+            if (required.isEmpty() && !stackInSlot.isEmpty()) {
+                return false;
+            }
         }
-        return flag;
+        return true;
     }
 
     public ItemStack assemble(@Nullable CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
@@ -108,7 +110,10 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
         public RitualRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
             String s = GsonHelper.getAsString(pJson, "group", "");
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(RECIPE_COUNT, Ingredient.EMPTY);
-            nonnulllist.replaceAll(ingredient -> Ingredient.fromJson(pJson));
+            var list = GsonHelper.getAsJsonArray(pJson, "materials").asList();
+            for (int i = 0; i < RECIPE_COUNT; i++) {
+                nonnulllist.set(i, Ingredient.fromJson(list.get(i)));
+            }
             ItemStack itemstack = RitualRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
             boolean flag = GsonHelper.getAsBoolean(pJson, "show_notification", true);
             return new RitualRecipe(pRecipeId, s, nonnulllist, itemstack, flag);
@@ -117,7 +122,9 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
         public RitualRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
             String s = pBuffer.readUtf();
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(RECIPE_COUNT, Ingredient.EMPTY);
-            nonnulllist.replaceAll(ingredient -> Ingredient.fromNetwork(pBuffer));
+            for (int i = 0; i < RECIPE_COUNT; i++) {
+                nonnulllist.set(i, Ingredient.fromNetwork(pBuffer));
+            }
             ItemStack itemstack = pBuffer.readItem();
             boolean flag = pBuffer.readBoolean();
             return new RitualRecipe(pRecipeId, s, nonnulllist, itemstack, flag);

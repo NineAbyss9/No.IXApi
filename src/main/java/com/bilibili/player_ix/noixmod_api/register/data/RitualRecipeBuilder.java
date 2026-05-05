@@ -99,7 +99,7 @@ implements RecipeBuilder {
                 RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId))
                 .requirements(RequirementsStrategy.OR);
         pFinishedRecipeConsumer.accept(new Result(pRecipeId, this.result, this.count, this.group == null ? "" :
-                this.group, this.category, this.materials, this.advancement, pRecipeId
+                this.group, this.materials, this.advancement, pRecipeId
                 .withPrefix("recipes/" + this.category.getFolderName() + "/"), this.showNotification));
     }
 
@@ -113,7 +113,7 @@ implements RecipeBuilder {
         private final ResourceLocation advancementId;
         private final boolean showNotification;
 
-        public Result(ResourceLocation pId, Item pResult, int pCount, String pGroup, RecipeCategory pCategory,
+        public Result(ResourceLocation pId, Item pResult, int pCount, String pGroup,
                       NonNullList<Ingredient> ingredients, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId,
                       boolean pShowNotification) {
             this.id = pId;

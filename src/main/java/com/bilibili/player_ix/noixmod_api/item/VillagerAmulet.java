@@ -4,15 +4,16 @@ package com.bilibili.player_ix.noixmod_api.item;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.villager.VillagerGolemSpell;
 import com.github.NineAbyss9.ix_api.util.ItemUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class VillagerAmulet
 extends Item {
@@ -27,5 +28,10 @@ extends Item {
             ItemUtil.shrink(pPlayer.getItemInHand(pUsedHand), pPlayer);
         }
         return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
+    }
+
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    {
+        pTooltipComponents.add(Component.translatable("info.noixmodapi.villager_amulet"));
     }
 }

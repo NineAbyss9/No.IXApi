@@ -7,6 +7,7 @@ import com.github.NineAbyss9.ix_api.util.ItemUtil;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -18,6 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class MagicalSword
 extends SwordItem {
@@ -63,6 +67,11 @@ extends SwordItem {
 
     public int getUseDuration(ItemStack p_41454_) {
         return 72000;
+    }
+
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    {
+        pTooltipComponents.add(Component.translatable("info.noixmodapi.magical_sword"));
     }
 
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {

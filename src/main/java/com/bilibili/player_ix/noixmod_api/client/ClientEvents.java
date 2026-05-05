@@ -52,7 +52,8 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void setupFogColor(ViewportEvent.ComputeFogColor color) {
+    public static void setupFogColor(ViewportEvent.ComputeFogColor color)
+    {
         if (NoixmodAPIMainConfig.TERRIBLE_SKY.get()) {
             color.setRed(FogHandler.currentRed);
             color.setGreen(FogHandler.currentGreen);
@@ -60,18 +61,19 @@ public class ClientEvents {
             return;
         }
         Player player = Minecraft.getInstance().player;
-        if (player != null) {
-            ApostleBoss apostle = ClientEvents.findApostle(player);
-            HorrorCamera camera = ClientEvents.findCamera(player);
-             if (apostle != null) {
-                color.setRed(0.1F);
-                color.setBlue(0);
-                color.setGreen(0);
-            } else if (camera != null) {
-                color.setGreen(0);
-                color.setBlue(0);
-                color.setRed(0.05F);
-            }
+        if (player == null) {
+            return;
+        }
+        ApostleBoss apostle = ClientEvents.findApostle(player);
+        HorrorCamera camera = ClientEvents.findCamera(player);
+        if (apostle != null) {
+            color.setRed(0.1F);
+            color.setBlue(0);
+            color.setGreen(0);
+        } else if (camera != null) {
+            color.setGreen(0);
+            color.setBlue(0);
+            color.setRed(0.05F);
         }
     }
 
@@ -197,11 +199,6 @@ public class ClientEvents {
 
     public static void onWorldTick(TickEvent.LevelTickEvent event) {
         Level level = event.level;
-        if (NoixmodAPIMainConfig.HorrorMode.get() && level.isClientSide) {
-            HorrorModeManager manager = HorrorModeManager.horrorModeManagers.get(level);
-            if (manager == null) return;
-            manager.tick(level);
-        }
     }
 
     //From Polarice's codes

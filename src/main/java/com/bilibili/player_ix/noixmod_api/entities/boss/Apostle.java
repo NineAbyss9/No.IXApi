@@ -104,7 +104,8 @@ import java.util.function.Predicate;
  * */
 public class Apostle
 extends SpellcasterNihilist
-implements ApiRangedAttackMob, Ownable, ApiTargeting {
+implements ApiRangedAttackMob, Ownable, ApiTargeting
+{
     protected ApiBossEvent bossEvent;
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID;
     private static final EntityDataAccessor<Optional<UUID>> DATA_TARGET_UUID;
@@ -464,11 +465,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     public boolean isShadow() {
-        return this instanceof ApostleShadow;
+        return false;
     }
 
     public boolean isClone() {
-        return this instanceof ApostleServant;
+        return false;
     }
 
     public boolean isBoss() {
@@ -505,18 +506,9 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
         if (this.getCancelRegenTick() > 0) {
             this.setCancelRegenTick(this.getCancelRegenTick() - 1);
         }
+        this.handleBossEvent();
         if (this.lavaCooldown > 0) {
             this.lavaCooldown--;
-        }
-        if (!this.isClone()) {
-            if (NoixmodAPIMainConfig.HorrorMode.get()) {
-                this.horrorEvent.setProgress(this.getHealth() / this.getMaxHealth());
-            } else {
-                if (this.tickCount % 5 == 0) {
-                    this.bossEvent.update();
-                }
-                this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
-            }
         }
         if (this.invTime > 0) {
             this.invTime--;
@@ -544,6 +536,20 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
         }
         if (this.afraidTick > 0) {
             this.afraidTick--;
+        }
+    }
+
+    protected void handleBossEvent()
+    {
+        if (!this.isClone()) {
+            if (NoixmodAPIMainConfig.HorrorMode.get()) {
+                this.horrorEvent.setProgress(this.getHealth() / this.getMaxHealth());
+            } else {
+                if (this.tickCount % 5 == 0) {
+                    this.bossEvent.update();
+                }
+                this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+            }
         }
     }
 
@@ -849,7 +855,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     }
 
     public void summonServants() {
-        if (!this.level().isClientSide()) {
+        if (!this.level().isClientSide) {
             if (this.isSecondPhase()) {
                 this.getSummon().summonWithSummonEntity(NoixmodAPIEntities.NIHILISTIC_SERVANT.get(),
                         8, true);
@@ -1692,7 +1698,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
         float chance = pRandom.nextFloat();
         boolean secondPhase = this.isSecondPhase();
         if (secondPhase) {
-            if (this.getCooldown() == 0) {
+            if (this.getCooldown() <= 0) {
                 if (flag) {
                     if (chance >= 0.9F) {
                         this.setApostleSpell(9);
@@ -1710,7 +1716,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
                 this.setApostleSpell(-1);
             }
         } else {
-            if (this.getCooldown() == 0) {
+            if (this.getCooldown() <= 0) {
                 if (chance > 0.95) {
                     this.setApostleSpell(5);
                 } else if (chance > 0.8) {
@@ -1809,12 +1815,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting {
     protected void onEffectAdded(MobEffectInstance p_147190_, @Nullable Entity p_147191_) {
         if (NoixmodAPITags.CAN_EFFECT_APOSTLE.test(p_147190_.getEffect())) {
             super.onEffectAdded(p_147190_, p_147191_);
-        }
-    }
-
-    public void remove(RemovalReason pReason) {
-        if (!this.isAlive()) {
-            super.remove(pReason);
         }
     }
 

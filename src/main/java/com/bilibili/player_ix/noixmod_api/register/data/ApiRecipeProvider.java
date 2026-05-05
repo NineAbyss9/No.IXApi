@@ -24,8 +24,11 @@ extends RecipeProvider {
 
     protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
         //Shaped
+        shaped(RecipeCategory.MISC, NoixmodAPIItems.ALTAR.get(), Items.OBSIDIAN, NoixmodAPIItems.NIHILISTIC_ESSENCE.get(),
+                getHasName(Items.OBSIDIAN), has(Items.OBSIDIAN), "ixi", " i ", "iii", pWriter);
+
         shaped(RecipeCategory.TOOLS, NoixmodAPIItems.GRAVE_AXE.get(), Items.IRON_INGOT,
-                getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT), "iii", " i ", " i ", pWriter);
+                getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT), "ii", "ii", " i", pWriter);
         shaped(RecipeCategory.COMBAT, NoixmodAPIItems.GRAVE_SWORD.get(), Items.IRON_INGOT,
                 getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT), "i", "i", "i", pWriter);
 

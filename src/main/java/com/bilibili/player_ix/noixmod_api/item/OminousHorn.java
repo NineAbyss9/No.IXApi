@@ -21,6 +21,8 @@ import net.minecraft.world.level.Level;
 
 public class OminousHorn
 extends Item {
+    public static final String USE_COUNT = "NumberOfUses";
+    public static final int MAX_USE_COUNT = 3;
     public OminousHorn() {
         super(new Properties().rarity(Rarity.UNCOMMON).stacksTo(1));
     }
@@ -33,23 +35,52 @@ extends Item {
         return 20;
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        p_41433_.getCooldowns().addCooldown(this, 60);
-        p_41433_.awardStat(Stats.ITEM_USED.get(this));
-        if (p_41433_ instanceof ServerPlayer player) {
+    public static boolean shouldDiscard(ItemStack stack)
+    {
+        var tag = stack.getOrCreateTag();
+        int current = 0;
+        if (tag.contains(USE_COUNT)) {
+            current = tag.getInt(USE_COUNT);
+        }
+        return current > MAX_USE_COUNT;
+    }
+
+    public static void increaseUseCount(ItemStack stack)
+    {
+        var tag = stack.getOrCreateTag();
+        int current = 0;
+        if (tag.contains(USE_COUNT)) {
+            current = tag.getInt(USE_COUNT);
+        }
+        tag.putInt(USE_COUNT, current + 1);
+    }
+
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        var stack = pPlayer.getItemInHand(pUsedHand);
+        pPlayer.getCooldowns().addCooldown(this, 60);
+        pPlayer.awardStat(Stats.ITEM_USED.get(this));
+        if (pPlayer instanceof ServerPlayer player) {
             player.connection.send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.RECORDS,
                     player.getX(), player.getY(), player.getZ(), 98F, 1f, player.getRandom().nextLong()));
         }
-        if (p_41433_.isCrouching() && !p_41432_.isClientSide) {
-            NeoIllager illager = NoixmodAPIEntities.NEO_ILLAGER.get().create(p_41432_);
+        if (pPlayer.isCrouching() && !pLevel.isClientSide) {
+            NeoIllager illager = NoixmodAPIEntities.NEO_ILLAGER.get().create(pLevel);
             if (illager != null) {
-                illager.setOwner(p_41433_);
-                illager.moveTo(p_41433_.blockPosition(), 0, 0);
-                WorldUtil.nullableFinalizeSpawn(illager, p_41432_, p_41433_.blockPosition(), MobSpawnType.EVENT);
-                if (!p_41432_.addFreshEntity(illager))
+                illager.setOwner(pPlayer);
+                illager.moveTo(pPlayer.blockPosition(), 0, 0);
+                WorldUtil.nullableFinalizeSpawn(illager, pLevel, pPlayer.blockPosition(), MobSpawnType.EVENT);
+                if (pLevel.addFreshEntity(illager)) {
+                    if (!pPlayer.isCreative()) {
+                        increaseUseCount(stack);
+                        if (shouldDiscard(stack)) {
+                            stack.shrink(1);
+                        }
+                    }
+                } else {
                     illager.discard();
+                }
             }
         }
-        return InteractionResultHolder.consume(p_41433_.getItemInHand(p_41434_));
+        return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }
 }

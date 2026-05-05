@@ -27,7 +27,7 @@ public class ApiRecipes {
 
     public static void register(IEventBus bus)
     {
-        RECIPES.register(bus);
         RECIPE_SERS.register(bus);
+        RECIPES.register(bus);
     }
 }

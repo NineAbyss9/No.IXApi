@@ -123,7 +123,7 @@ implements Enemy {
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.5));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, LivingEntity.class, 10f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new NihilisticAvoidGoal(this));
+        this.goalSelector.addGoal(4, new NihilistAvoidGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Nihilist.class).setAlertOthers());
         this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }

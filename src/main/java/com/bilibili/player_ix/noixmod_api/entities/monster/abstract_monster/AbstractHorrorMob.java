@@ -2,7 +2,6 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
-import com.bilibili.player_ix.noixmod_api.server.HorrorModeSavedData;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
@@ -23,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractHorrorMob extends ApiPathfinderMob implements Enemy {
+public abstract class AbstractHorrorMob extends ApiPathfinderMob implements Enemy, IHorror {
     public AbstractHorrorMob(EntityType<? extends AbstractHorrorMob> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
     }
@@ -68,11 +67,11 @@ public abstract class AbstractHorrorMob extends ApiPathfinderMob implements Enem
         return super.hurt(pSource, pAmount);
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        if (NoixmodAPIDamageSource.sourceEntity(p_21240_) instanceof AbstractHorrorMob) {
+    protected void actuallyHurt(DamageSource pSource, float pAmount) {
+        if (NoixmodAPIDamageSource.sourceEntity(pSource) instanceof AbstractHorrorMob) {
             return;
         }
-        super.actuallyHurt(p_21240_, p_21241_);
+        super.actuallyHurt(pSource, pAmount);
     }
 
     public boolean startRiding(Entity pEntity, boolean pForce) {
@@ -83,10 +82,9 @@ public abstract class AbstractHorrorMob extends ApiPathfinderMob implements Enem
         return false;
     }
 
-    public void die(int pIndex) {
+    public void die() {
         if (this.isServerSide()) {
             var ser = this.serverLevel();
-            HorrorModeSavedData.load(ser).updateNextMobWillSpawn(pIndex);
             ParticleUtil.sendParticles(ser, ParticleTypes.LARGE_SMOKE, this.position(), 5,
                     0.15, 0.5, 0.15, 0.05);
         }

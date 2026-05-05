@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -124,6 +125,10 @@ extends AbstractIllager {
             return this.currentSpell;
         }
         return IllagerSpellType.getById(this.getSpell());
+    }
+
+    public ServerLevel serverLevel() {
+        return ServerLevel.class.cast(this.level());
     }
 
     protected byte getSpell() {

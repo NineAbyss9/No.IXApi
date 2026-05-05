@@ -59,6 +59,11 @@ extends Apostle {
         return Apostle.createAttributes();
     }
 
+    public boolean isClone()
+    {
+        return true;
+    }
+
     public boolean wouldHaveOwner() {
         return true;
     }

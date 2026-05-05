@@ -23,30 +23,14 @@ implements Ownable {
     }
 
     @Nullable
-    public LivingEntity getOwner() {
-        return this.owner;
-    }
-
-    @Nullable
     public UUID getOwnerUUID() {
-        if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
+        if (this.owner == null && this.ownerUUID != null && !this.level().isClientSide) {
             Entity $$0 = ((ServerLevel)this.level()).getEntity(this.ownerUUID);
             if ($$0 instanceof LivingEntity lie) {
                 this.setOwner(lie);
             }
         }
         return this.ownerUUID;
-    }
-
-    public void setOwner(@Nullable LivingEntity lie) {
-        this.owner = lie;
-        if (lie != null) {
-            this.setOwnerUUID(lie.getUUID());
-        }
-        if (lie instanceof Ownable ownable && ownable.getOwner() != null) {
-            this.owner = ownable.getOwner();
-            this.setOwnerUUID(ownable.getOwner().getUUID());
-        }
     }
 
     public void setOwnerUUID(@Nullable UUID uuid) {

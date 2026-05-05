@@ -257,6 +257,28 @@ extends APISpellcaster {
 
     public void tick() {
         super.tick();
+
+    }
+
+    public void aiStep() {
+        super.aiStep();
+        if (this.isAggressive()) {
+            if (!this.getMainHandItem().is(NoixmodAPIItems.UNINVITED_SWORD.get())) {
+                this.setItemInHand(InteractionHand.MAIN_HAND,
+                        ItemStacks.of(NoixmodAPIItems.UNINVITED_SWORD.get()));
+                if (this.level().isClientSide) {
+                    for (int i = 0; i < 15; i++) {
+                        this.level().addParticle(ParticleTypes.ENCHANT, this.getRandomX(0.5), this.getRandomY(),
+                                this.getRandomZ(0.5), 0, 0, 0);
+                    }
+                }
+            }
+        } else {
+            if (this.tickCount % 5 == 0){
+                this.heal(1F);
+            }
+        }
+        if (this.level().isClientSide) return;
         var damage = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (damage != null) {
             if (this.onGround()) {
@@ -269,10 +291,6 @@ extends APISpellcaster {
                 }
             }
         }
-    }
-
-    public void aiStep() {
-        super.aiStep();
         var target = this.getTarget();
         if (this.hurtCount >= 4) {
             this.teleport();
@@ -300,22 +318,6 @@ extends APISpellcaster {
                 if (this.getOffhandItem().is(Items.LINGERING_POTION)) {
                     this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 }
-            }
-        }
-        if (this.isAggressive()) {
-            if (!this.getMainHandItem().is(NoixmodAPIItems.UNINVITED_SWORD.get())) {
-                this.setItemInHand(InteractionHand.MAIN_HAND,
-                        ItemStacks.of(NoixmodAPIItems.UNINVITED_SWORD.get()));
-                if (this.level().isClientSide) {
-                    for (int i = 0; i < 15; i++) {
-                        this.level().addParticle(ParticleTypes.ENCHANT, this.getRandomX(0.5), this.getRandomY(),
-                                this.getRandomZ(0.5), 0, 0, 0);
-                    }
-                }
-            }
-        } else {
-            if (this.tickCount % 5 == 0){
-                this.heal(1F);
             }
         }
     }

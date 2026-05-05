@@ -61,17 +61,14 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
                 new HurtByTargetGoal(this, VillagerFighter.class).setAlertOthers());
     }
 
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide && isEating()) {
-            this.level().addParticle(ParticleUtil.getItemParticleOption(getOffhandItem()), this.getRandomX(0.8),
-                    this.getEyePosition().y - 0.1, getRandomZ(0.8), 0, 0.2, 0);
-        }
-    }
-
     public void aiStep() {
         super.aiStep();
-        if (!this.level().isClientSide) {
+        if (this.level().isClientSide) {
+            if (this.isEating()) {
+                this.level().addParticle(ParticleUtil.getItemParticleOption(getOffhandItem()), this.getRandomX(0.8),
+                        this.getEyePosition().y - 0.1, getRandomZ(0.8), 0, 0.2, 0);
+            }
+        } else {
             if (isBread()) {
                 this.increaseEatTime();
                 if (this.tickCount % 5 == 0) {
@@ -163,7 +160,7 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
         arrow.setEnchantmentEffectsFromEntity(this, pDistanceFactor);
         arrow.setOwner(this);
         if (this.isOnFire()) {
-            arrow.setSecondsOnFire(40);
+            arrow.setSecondsOnFire(8);
         }
         return arrow;
     }

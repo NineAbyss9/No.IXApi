@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.client.renderer;
+package com.bilibili.player_ix.noixmod_api.client.renderer.horror;
 
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.Tracker;
 import net.minecraft.client.model.HumanoidModel;

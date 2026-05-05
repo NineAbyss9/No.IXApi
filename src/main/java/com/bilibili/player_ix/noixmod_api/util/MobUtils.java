@@ -117,13 +117,13 @@ public record MobUtils(Entity entity) {
         return entity.level().getDifficulty().equals(Difficulty.HARD);
     }
 
-    public static void healLiving(LivingEntity living, float amount) {
+    public static void healLiving(LivingEntity living, float amount)
+    {
         if (living.isAlive()) {
-            if (amount > 0) {
-                float var = amount;
-                var = Math.min(living.getMaxHealth() - living.getHealth(), var);
-                living.setHealth(living.getHealth() + var);
-            }
+            if (amount <= 0) {return;}
+            float var = amount;
+            var = Math.min(living.getMaxHealth() - living.getHealth(), var);
+            living.setHealth(living.getHealth() + var);
         }
     }
 

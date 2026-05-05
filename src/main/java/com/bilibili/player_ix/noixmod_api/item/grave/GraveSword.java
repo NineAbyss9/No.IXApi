@@ -13,7 +13,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.NineAbyss9.math.MathSupport;
 
 public class GraveSword
-extends ApiSword {
+extends ApiSword
+implements IGraveItem
+{
     public GraveSword() {
         super(1599, 5f, 4.9f, 11, 10, Ingredient.EMPTY, 3,
                 -2.6f, new Properties().rarity(Rarity.UNCOMMON).stacksTo(1).fireResistant());
