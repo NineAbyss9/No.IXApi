@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.npc.AbstractVillager;
-import org.NineAbyss9.math.MathSupport;
 
 public class DesireForBlood extends MobEffect {
     public DesireForBlood() {
@@ -24,39 +23,40 @@ public class DesireForBlood extends MobEffect {
         return true;
     }
 
-    public void removeAttributeModifiers(LivingEntity p_19469_, AttributeMap p_19470_, int p_19471_) {
-        if (p_19469_ instanceof AbstractVillager villager) {
-            if (MathSupport.threadSafeRandom.nextBoolean()) {
-                if (!p_19469_.level().isClientSide) {
+    public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pMap, int pAmplifier) {
+        if (pLivingEntity instanceof AbstractVillager villager) {
+            if (java.util.concurrent.ThreadLocalRandom.current().nextBoolean()) {
+                if (!pLivingEntity.level().isClientSide) {
                     EntityEventHandler.broadcastEntityEvent(villager, 4);
                 }
                 villager.kill();
             } else {
-                if (!p_19469_.level().isClientSide) {
-                    VampireServant servant = NoixmodAPIEntities.VAMPIRE_SERVANT.get().spawn((ServerLevel)p_19469_.level(),
+                if (!pLivingEntity.level().isClientSide) {
+                    VampireServant servant = NoixmodAPIEntities.VAMPIRE_SERVANT.get().spawn((ServerLevel)pLivingEntity.level(),
                             villager.blockPosition(), MobSpawnType.CONVERSION);
                     if (servant != null) {
-                        servant.setOwner(p_19469_.level().getNearestPlayer(villager, 30.0));
+                        servant.setOwner(pLivingEntity.level().getNearestPlayer(villager, 30.0));
                     }
                 }
-                p_19469_.remove(Entity.RemovalReason.KILLED);
+                pLivingEntity.remove(Entity.RemovalReason.KILLED);
             }
-        } else if (p_19469_ instanceof ApiVillager) {
-            if (p_19469_.getRandom().nextBoolean()) {
-                if (!p_19469_.level().isClientSide) {
-                    p_19469_.hurt(p_19469_.damageSources().magic(), p_19469_.getMaxHealth() / 2);
+        } else if (pLivingEntity instanceof ApiVillager) {
+            if (pLivingEntity.getRandom().nextBoolean()) {
+                if (!pLivingEntity.level().isClientSide) {
+                    pLivingEntity.hurt(pLivingEntity.damageSources().magic(), pLivingEntity.getMaxHealth() / 2);
                 }
             } else {
-                if (p_19469_.level() instanceof ServerLevel level) {
+                if (!pLivingEntity.level().isClientSide) {
+                    ServerLevel level = (ServerLevel)pLivingEntity.level();
                     VampireServant servant = NoixmodAPIEntities.VAMPIRE_SERVANT.get().spawn(level,
-                            p_19469_.blockPosition(), MobSpawnType.CONVERSION);
+                            pLivingEntity.blockPosition(), MobSpawnType.CONVERSION);
                     if (servant != null) {
-                        servant.setOwner(level.getNearestPlayer(p_19469_, 30.0));
+                        servant.setOwner(level.getNearestPlayer(pLivingEntity, 30.0));
                     }
                 }
-                p_19469_.remove(Entity.RemovalReason.KILLED);
+                pLivingEntity.remove(Entity.RemovalReason.KILLED);
             }
         }
-        super.removeAttributeModifiers(p_19469_, p_19470_, p_19471_);
+        super.removeAttributeModifiers(pLivingEntity, pMap, pAmplifier);
     }
 }

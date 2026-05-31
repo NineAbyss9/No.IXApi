@@ -65,20 +65,21 @@ extends Item {
         }
         if (pPlayer.isCrouching() && !pLevel.isClientSide) {
             NeoIllager illager = NoixmodAPIEntities.NEO_ILLAGER.get().create(pLevel);
-            if (illager != null) {
-                illager.setOwner(pPlayer);
-                illager.moveTo(pPlayer.blockPosition(), 0, 0);
-                WorldUtil.nullableFinalizeSpawn(illager, pLevel, pPlayer.blockPosition(), MobSpawnType.EVENT);
-                if (pLevel.addFreshEntity(illager)) {
-                    if (!pPlayer.isCreative()) {
-                        increaseUseCount(stack);
-                        if (shouldDiscard(stack)) {
-                            stack.shrink(1);
-                        }
+            if (illager == null) {
+                return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
+            }
+            illager.setOwner(pPlayer);
+            illager.moveTo(pPlayer.blockPosition(), 0, 0);
+            WorldUtil.nullableFinalizeSpawn(illager, pLevel, pPlayer.blockPosition(), MobSpawnType.EVENT);
+            if (pLevel.addFreshEntity(illager)) {
+                if (!pPlayer.isCreative()) {
+                    increaseUseCount(stack);
+                    if (shouldDiscard(stack)) {
+                        stack.shrink(1);
                     }
-                } else {
-                    illager.discard();
                 }
+            } else {
+                illager.discard();
             }
         }
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));

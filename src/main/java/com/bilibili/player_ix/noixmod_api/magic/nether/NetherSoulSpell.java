@@ -20,8 +20,9 @@ public class NetherSoulSpell extends NetherSpell {
         return 50F;
     }
 
-    public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        for (int i =0; i<5;++i) {
+    public void castSpell(ServerLevel pLevel, LivingEntity pCaster)
+    {
+        for (int i = 0;i < 5;++i) {
             NetherSoul soul = NoixmodAPIEntities.NETHER_SOUL.get().create(pLevel);
             if (soul != null) {
                 OwnerSummon ownerSummon = new OwnerSummon(pCaster);

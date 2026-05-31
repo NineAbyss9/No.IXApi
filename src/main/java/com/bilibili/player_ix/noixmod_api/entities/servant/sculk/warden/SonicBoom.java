@@ -19,8 +19,8 @@ import java.util.List;
 
 public class SonicBoom<E extends WardenServant> extends Behavior<E> {
     public static final int COOLDOWN = 40;
-    private static final int TICKS_BEFORE_PLAYING_SOUND = Mth.ceil(34.0D);
-    private static final int DURATION = Mth.ceil(60.0F);
+    private static final int TICKS_BEFORE_PLAYING_SOUND = 34;//Mth.ceil(34.0D)
+    private static final int DURATION = 60;//Mth.ceil(60.0F)
 
     public SonicBoom() {
         super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT,
@@ -75,13 +75,15 @@ public class SonicBoom<E extends WardenServant> extends Behavior<E> {
                     List<LivingEntity> targets = pLevel.getEntitiesOfClass(LivingEntity.class, living.getBoundingBox()
                             .inflate(4.5), entity -> MobUtils.canHurt(entity, pOwner) &&
                             entity != living);
-                    if (!targets.isEmpty())
-                        targets.forEach(target -> {
-                            target.hurt(pLevel.damageSources().sonicBoom(pOwner), pOwner.getSonicBoomDamage());
-                            double d2 = 0.5D * (1.0D - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                            double d3 = 2.5D * (1.0D - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                            target.push(vec32.x * d3, vec32.y * d2, vec32.z * d3);
-                        });
+                    if (targets.isEmpty()) {
+                        return;
+                    }
+                    targets.forEach(target -> {
+                        target.hurt(pLevel.damageSources().sonicBoom(pOwner), pOwner.getSonicBoomDamage());
+                        double d2 = 0.5D * (1.0D - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                        double d3 = 2.5D * (1.0D - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                        target.push(vec32.x * d3, vec32.y * d2, vec32.z * d3);
+                    });
                     pLevel.sendParticles(ParticleTypes.SCULK_SOUL, living.getX(), living.getY() + 1, living.getZ(),
                             25, 0.75, 0.75, 0.75, 0.0);
                 } else

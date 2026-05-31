@@ -52,28 +52,29 @@ public class OwnerSummon extends Summon {
     }
 
     public <T extends Entity & Ownable> void integerSummon(T entity, int range, ServerLevel level) {
-        if (!entity.isRemoved()) {
-            entity.moveTo(this.blockPos().offset(Maths.randomInteger(range), 0, Maths.randomInteger(range)),
-                    0, 0);
-            entity.setOwner(this.getOwner());
-            MobUtils.moveToGround(entity);
-            if (entity instanceof Mob mob) {
-                WorldUtil.nullableFinalizeSpawn(mob, level, this.getDifficult(), MobSpawnType.MOB_SUMMONED);
-            }
-            level.addFreshEntity(entity);
+        if (entity.isRemoved()) {
+            return;
         }
+        entity.moveTo(this.blockPos().offset(Maths.randomInteger(range), 0, Maths.randomInteger(range)),
+                0, 0);
+        entity.setOwner(this.owner);
+        MobUtils.moveToGround(entity);
+        if (entity instanceof Mob mob) {
+            WorldUtil.nullableFinalizeSpawn(mob, level, this.getDifficult(), MobSpawnType.MOB_SUMMONED);
+        }
+        level.addFreshEntity(entity);
     }
 
     public <T extends EntityType<? extends Entity>> void summonWithSummonEntity(T entity,
                                                                                 int distance, boolean flag) {
-        SummonEntity summon = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(),
-                this.getOwner().level());
+        SummonEntity summon = NoixmodAPIEntities.SUMMON_ENTITY.get().create(this.owner.level());
+        if (summon == null) return;
         summon.entity(entity);
         summon.setDangerous(flag);
         summon.moveTo(this.blockPos().offset(Maths.randomInteger(distance), 0, Maths.randomInteger(distance)),
                 0, 0);
-        summon.setOwner(this.getOwner());
-        this.getOwner().level().addFreshEntity(summon);
+        summon.setOwner(this.owner);
+        this.owner.level().addFreshEntity(summon);
     }
 
     public void moveTo(int x, int y, int z, Entity entity) {
@@ -85,11 +86,11 @@ public class OwnerSummon extends Summon {
     }
 
     public BlockPos blockPos() {
-        return this.getOwner().blockPosition();
+        return this.owner.blockPosition();
     }
 
     public ServerLevel getServerLevel() {
-        return (ServerLevel)this.getOwner().level();
+        return (ServerLevel)this.owner.level();
     }
 
     public double[] projectileDouble(LivingEntity target) {
@@ -109,31 +110,31 @@ public class OwnerSummon extends Summon {
     }
 
     public DifficultyInstance getDifficult() {
-        return this.getOwner().level().getCurrentDifficultyAt(this.blockPos());
+        return this.owner.level().getCurrentDifficultyAt(this.blockPos());
     }
 
     public double getX() {
-        return this.getOwner().getX();
+        return this.owner.getX();
     }
 
     public double getY() {
-        return this.getOwner().getY();
+        return this.owner.getY();
     }
 
     public double getZ() {
-        return this.getOwner().getZ();
+        return this.owner.getZ();
     }
 
     public double getX(double d) {
-        return this.getOwner().getX(d);
+        return this.owner.getX(d);
     }
 
     public double getY(double d) {
-        return this.getOwner().getY(d);
+        return this.owner.getY(d);
     }
 
     public double getZ(double d) {
-        return this.getOwner().getZ(d);
+        return this.owner.getZ(d);
     }
 
     public boolean equals(Object obj) {
@@ -141,7 +142,7 @@ public class OwnerSummon extends Summon {
             return true;
         } else {
             if (obj instanceof OwnerSummon ownerSummon) {
-                return this.getOwner() == ownerSummon.getOwner();
+                return this.owner == ownerSummon.owner;
             }
             return false;
         }

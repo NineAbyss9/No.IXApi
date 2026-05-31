@@ -27,6 +27,7 @@ implements ApiRangedAttackMob {
     public ArcherServant(EntityType<? extends ArcherServant> entityType, Level level) {
         super(entityType, level);
         this.setItemInHand(InteractionHand.MAIN_HAND, ItemStacks.of(Items.BOW));
+        this.enchantSpawnedWeapon(level.random, 1.0F);
     }
 
     protected void registerGoals() {

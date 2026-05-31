@@ -25,6 +25,11 @@ extends APISpellcaster {
         return SoundEvents.EVOKER_CELEBRATE;
     }
 
+    public boolean canCastSpell()
+    {
+        return true;
+    }
+
     private class SummonSpellGoal extends UseSpellGoal {
         protected void castSpell() {
             new EndermanSpell().castSpell((ServerLevel)EnderSpellCaster.this.level(), EnderSpellCaster.this);

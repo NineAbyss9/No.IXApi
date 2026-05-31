@@ -2,10 +2,12 @@
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
 import com.github.NineAbyss9.ix_api.api.APISpells;
+import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.*;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import com.github.NineAbyss9.ix_api.util.ResourceLocations;
 import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
 import com.bilibili.player_ix.noixmod_api.compat.bo.BlueOceansCompat;
@@ -47,7 +49,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -112,8 +113,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     private static final EntityDataAccessor<Boolean> DATA_SETTING_SECOND;
     protected static final EntityDataAccessor<Byte> DATA_PHASE;
     protected static final EntityDataAccessor<Integer> DATA_APOSTLE_SPELL;
+    /// How long this apostle has been unable to recover health
     private static final EntityDataAccessor<Integer> DATA_CANCEL_REGEN_TIME;
     private static final EntityDataAccessor<Integer> DATA_HURT_COOLDOWN;
+    protected final boolean inEnd;
     private DamageSource causeKilled;
     public float spin;
     private int hurtCount;
@@ -122,7 +125,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     private int statueCooldown;
     private long statueSpeedTime;
     private int trueDeathTime;
-    private double arrowDamage;
+    private float arrowDamage;
     private float spellPower;
     public int pressureTicks;
     private boolean fast;
@@ -178,6 +181,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         this.spellPower = this.getMaxSpellPower();
         this.setPersistenceRequired();
         this.setFastSpeed();
+        this.inEnd = this.isInEnd();
     }
 
     public EntityType<?> getType() {
@@ -200,22 +204,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     }
 
     /**
-     * @return Owner of apostle
-     */
-    @Nullable
-    public LivingEntity getOwner() {
-        return null;
-    }
-
-    /**
      * @return UUID of Apostle's Owner
      */
     @Nullable
     public UUID getOwnerUUID() {
         return null;
-    }
-
-    public void setOwner(@Nullable LivingEntity lie) {
     }
 
     public void setOwnerUUID(@Nullable UUID uuid) {
@@ -282,17 +275,17 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         return spreadFireballTicks;
     }
 
-    public void summonWither() {
-        if (!this.level().isClientSide) {
-            NihilisticWither wither = new NihilisticWither(NoixmodAPIEntities.NIHILISTIC_WITHER.get(), this.level());
-            wither.moveTo(this.blockPosition(), 0, 0);
-            wither.setOwner(this);
-            wither.finalizeSpawn(this.serverLevel(), this.serverLevel().getCurrentDifficultyAt(this.blockPosition()),
-                    MobSpawnType.MOB_SUMMONED);
-            this.level().addFreshEntity(wither);
-            ParticleUtil.sendParticles(this.serverLevel(), ParticleTypes.LARGE_SMOKE, wither.position(),
-                    30, 1.5, 1.5, 1.5, 0);
-        }
+    @ServerOnly
+    public void summonWither()
+    {
+        NihilisticWither wither = new NihilisticWither(NoixmodAPIEntities.NIHILISTIC_WITHER.get(), this.level());
+        wither.moveTo(this.blockPosition(), 0, 0);
+        wither.setOwner(OwnableMob.ownerOrThis(this));
+        wither.finalizeSpawn(this.serverLevel(), this.serverLevel().getCurrentDifficultyAt(this.blockPosition()),
+                MobSpawnType.MOB_SUMMONED);
+        this.level().addFreshEntity(wither);
+        ParticleUtil.sendParticles(this.serverLevel(), ParticleTypes.LARGE_SMOKE, wither.position(),
+                30, 1.5, 1.5, 1.5, 0);
     }
 
     public void setSpreadingFireball() {
@@ -305,7 +298,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     public void handleAfraid() {
         this.afraidTick = 120;
-        this.arrowDamage -= 1D;
+        this.arrowDamage -= 1F;
     }
 
     protected void registerGoals() {
@@ -423,7 +416,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     public void addAdditionalSaveData(CompoundTag tag) {
         tag.putFloat("SpellPower", this.getSpellPower());
-        tag.putDouble("ArrowDamage", this.getArrowDamage());
+        tag.putFloat("ArrowDamage", this.getArrowDamage());
         tag.putBoolean("settingSecondPhase", this.isSettingSecondPhase());
         tag.putByte("Phase", this.getPhase());
         this.addOwnableAdditionalSaveData(tag);
@@ -433,7 +426,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     public void readAdditionalSaveData(CompoundTag tag) {
         this.spellPower = tag.getFloat("SpellPower");
-        this.arrowDamage = tag.getDouble("ArrowDamage");
+        this.arrowDamage = tag.getFloat("ArrowDamage");
         if (tag.contains("Health")) {
             tag.remove("Health");
         }
@@ -476,25 +469,29 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         return false;
     }
 
-    public void startSeenByPlayer(ServerPlayer p_20119_) {
+    public void startSeenByPlayer(ServerPlayer p_20119_)
+    {
         super.startSeenByPlayer(p_20119_);
-        if (!this.isClone()) {
-            if (NoixmodAPIMainConfig.HorrorMode.get()) {
-                this.horrorEvent.addPlayer(p_20119_);
-            } else {
-                this.bossEvent.addPlayer(p_20119_);
-            }
+        if (this.isClone()) {
+            return;
+        }
+        if (NoixmodAPIMainConfig.HorrorMode.get()) {
+            this.horrorEvent.addPlayer(p_20119_);
+        } else {
+            this.bossEvent.addPlayer(p_20119_);
         }
     }
 
-    public void stopSeenByPlayer(ServerPlayer p_20174_) {
+    public void stopSeenByPlayer(ServerPlayer p_20174_)
+    {
         super.stopSeenByPlayer(p_20174_);
-        if (!this.isClone()) {
-            if (NoixmodAPIMainConfig.HorrorMode.get()) {
-                this.horrorEvent.removePlayer(p_20174_);
-            } else {
-                this.bossEvent.removePlayer(p_20174_);
-            }
+        if (this.isClone()) {
+            return;
+        }
+        if (NoixmodAPIMainConfig.HorrorMode.get()) {
+            this.horrorEvent.removePlayer(p_20174_);
+        } else {
+            this.bossEvent.removePlayer(p_20174_);
         }
     }
 
@@ -628,7 +625,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     }
 
     public void setFastSpeed() {
-        if (this.getRandom().nextFloat() <= 0.009f) {
+        if (this.getRandomUtil().nextFloat() <= 0.009f) {
             this.setDangerDouble();
             this.fast = true;
         }
@@ -636,25 +633,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     public void setTraits(int trait) {
         switch (trait) {
-            case (0): {
-                this.arrowDamage += 0.25D;
-                break;
+            case 0 -> this.arrowDamage += 0.25F;
+            case 1 -> this.resetCooldown();
+            case truth -> {
+                this.spellPower += 90.0F;
+                this.arrowDamage += 0.5F;
             }
-            case (1): {
-                this.setNoGravity(false);
-                this.setNoAi(false);
-                this.resetCooldown();
-                break;
-            }
-            case (truth): {
-                this.spellPower += 90;
-                this.arrowDamage += 0.5D;
-                break;
-            }
-            default: {
-                this.spellPower += 20;
-                break;
-            }
+            default -> this.spellPower += 20.0F;
         }
     }
 
@@ -875,38 +860,35 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         this.summonRangedServant(1 + i, 4 + i);
     }
 
-    public void summonRangedServant(int ghastCount, int blazeCount) {
+    public void summonRangedServant(int ghastCount, int blazeCount)
+    {
         LivingEntity lie = this.getTarget();
         if (lie != null) {
-            if (this.random.nextBoolean()) {
+            if (java.util.concurrent.ThreadLocalRandom.current().nextBoolean()) {
                 for (int i = 0;i < (this.getRandomUtil().nextBoolean() ? ghastCount : ghastCount + 1);++i) {
-                    if (!this.level().isClientSide) {
-                        ServerLevel world = this.serverLevel();
-                        int j = Maths.randomInteger(6);
-                        int k = Maths.randomInteger(6);
-                        BlockPos.MutableBlockPos pos = this.blockPosition().offset(k, 0, j).mutable();
-                        SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), world);
-                        entity.entity(NoixmodAPIEntities.NIHILISTIC_GHAST.get());
-                        entity.setDangerous(true);
-                        entity.moveTo(pos, 0, 0);
-                        entity.setOwner(this);
-                        this.level().addFreshEntity(entity);
-                    }
+                    ServerLevel world = this.serverLevel();
+                    int j = Maths.randomInteger(6);
+                    int k = Maths.randomInteger(6);
+                    BlockPos.MutableBlockPos pos = this.blockPosition().offset(k, 0, j).mutable();
+                    SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), world);
+                    entity.entity(NoixmodAPIEntities.NIHILISTIC_GHAST.get());
+                    entity.setDangerous(true);
+                    entity.moveTo(pos, 0, 0);
+                    entity.setOwner(this);
+                    this.level().addFreshEntity(entity);
                 }
             } else {
                 for (int i = 0;i < (this.random.nextInt(blazeCount) + 1);++i) {
-                    if (!this.level().isClientSide) {
-                        ServerLevel level = this.serverLevel();
-                        int j = Maths.randomInteger(10);
-                        int k = Maths.randomInteger(10);
-                        BlockPos.MutableBlockPos $$2 = this.blockPosition().offset(k, 0, j).mutable();
-                        SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), level);
-                        entity.entity(NoixmodAPIEntities.NIHILISTIC_BLAZE.get());
-                        entity.setDangerous(false);
-                        entity.setOwner(this);
-                        entity.moveTo($$2, 0, 0);
-                        level.addFreshEntity(entity);
-                    }
+                    ServerLevel level = this.serverLevel();
+                    int j = Maths.randomInteger(10);
+                    int k = Maths.randomInteger(10);
+                    BlockPos.MutableBlockPos $$2 = this.blockPosition().offset(k, 0, j).mutable();
+                    SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), level);
+                    entity.entity(NoixmodAPIEntities.NIHILISTIC_BLAZE.get());
+                    entity.setDangerous(false);
+                    entity.setOwner(this);
+                    entity.moveTo($$2, 0, 0);
+                    level.addFreshEntity(entity);
                 }
             }
         }
@@ -920,7 +902,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             rain.setOwner(this);
             rain.moveTo(target.blockPosition().offset(0, 15, 0), 0, 0);
             NihilisticArrow arrow = new NihilisticArrow(NoixmodAPIEntities.NIHILISTIC_ARROW.get(), this.level());
-            arrow.setCritArrow(this.isInEnd());
+            arrow.setCritArrow(this.inEnd);
             arrow.setBaseDamage(this.getArrowDamage());
             arrow.setOwner(this);
             arrow.setEffectsFromItem(this.getMainHandItem());
@@ -998,20 +980,20 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         level.addFreshEntity(power);
     }
 
-    public void summonFireball() {
+    public void summonFireball()
+    {
         LivingEntity target = this.getTarget();
-        if (target != null) {
-            OwnerSummon ownerSummon = this.getSummon();
-            double d1 = ownerSummon.projectileDouble(target)[0];
-            double d2 = ownerSummon.projectileDouble(target)[1];
-            double d3 = ownerSummon.projectileDouble(target)[2];
-            NihilisticFireball fireBall = new NihilisticFireball(this.level(), this, d1, d2, d3);
-            fireBall.setPosRaw(fireBall.getX(), this.getY(0.5) + 0.5, fireBall.getZ());
-            fireBall.setDamage((float)this.getArrowDamage());
-            fireBall.setOwner(this);
-            fireBall.setRadius(4D);
-            this.level().addFreshEntity(fireBall);
-        }
+        if (target == null) return;
+        OwnerSummon ownerSummon = this.getSummon();
+        double d1 = ownerSummon.projectileDouble(target)[0];
+        double d2 = ownerSummon.projectileDouble(target)[1];
+        double d3 = ownerSummon.projectileDouble(target)[2];
+        NihilisticFireball fireBall = new NihilisticFireball(this.level(), this, d1, d2, d3);
+        fireBall.setPosRaw(fireBall.getX(), this.getY(0.5) + 0.5, fireBall.getZ());
+        fireBall.setDamage((float)this.getArrowDamage());
+        fireBall.setOwner(this);
+        fireBall.setRadius(4D);
+        this.level().addFreshEntity(fireBall);
     }
 
     @Nullable
@@ -1019,7 +1001,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         if (this.level().isClientSide) {
             int id = this.getTargetId();
             Entity entity = this.level().getEntity(id);
-            return (id <= -1 || !(entity instanceof LivingEntity) || entity == this) ? null : (LivingEntity)entity;
+            return (id <= -1 || !(entity instanceof LivingEntity)) ? null : (LivingEntity)entity;
         } else {
             return EntitiesFinder.getLivingEntity(this.level(), this.getTargetUuid());
         }
@@ -1082,55 +1064,12 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         if (this.getHurtCooldown() > 0) {
             this.setHurtCooldown(this.getHurtCooldown() - 1);
         }
-        if (this.getStatueCooldown() > 0) {
+        if (this.statueCooldown > 0) {
             this.statueCooldown--;
-        }
-        if (this.getSpreadFireballTicks() > 0 && this.getSpreadFireballTicks() % 5 == 0) {
-            NihilisticFireball ball = new NihilisticFireball(NoixmodAPIEntities.NIHILISTIC_FIREBALL.get(), this.level());
-            ball.moveTo(this.blockPosition().offset(Maths.randomInteger(10), 15,
-                    Maths.randomInteger(10)), 0, 0);
-            ball.setMoveDown();
-            this.level().addFreshEntity(ball);
-        }
-        if (this.pressureTicks > 0) {
-            this.pressureTicks--;
-            if (lie != null && this.isInDanger()) {
-                lie.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400, 1));
-                lie.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 1));
-            }
-        }
-        if (this.cooldown > 0) {
-            this.cooldown--;
-        }
-        if (this.fireCooldown > 0) {
-            this.fireCooldown--;
-        }
-        if (this.escapeTime <= 0 && this.isHalfHealth()) {
-            this.teleport();
-            this.escapeTime = Maths.toTick(9);
-        }
-        if (lie != null) {
-            boolean flag = this.getSensing().hasLineOfSight(lie);
-            if (((this.distanceToSqr(lie) > Maths.square(45)) || !flag)
-                    && !this.isSettingSecondPhase() && this.isAlive()) {
-                this.chaseTeleport();
-            }
-            if (!this.isNihilistic()) {
-                if (this.fireCooldown == 0 && this.isSecondPhase()) {
-                    this.fireCooldown = Maths.toTick(12);
-                    this.summonSoul();
-                    this.arrowDamage++;
-                }
-                if (this.tickSummon == 0 && !this.isShadow()) {
-                    this.tickSummon = Maths.toTick(45) + Maths.toTick(this.getRandom().nextInt(5));
-                    this.summonServants();
-                    this.summonServant();
-                }
-            }
         }
         if (this.level().isClientSide) {
             if (this.isCastingSpell()) {
-                double d = 0.5 - this.random.nextDouble();
+                double d = 0.5D - this.random.nextDouble();
                 double di = this.random.nextGaussian() * 0.1;
                 double d1 = this.random.nextGaussian() * 0.1;
                 double d2 = this.random.nextGaussian() * 0.1;
@@ -1140,14 +1079,60 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                     this.clientLevel().addParticle(this.getApostleSpellParticle(), this.getX(), this.getY(), this.getZ(), di, d1, d2);
                 } else {
                     this.clientLevel().addParticle(this.getApostleSpellParticle(), this.getX(), this.getY(), this.getZ(),
-                            d, 0.2, d);
+                            d, 0.2D, d);
                 }
             }
-            if (this.lightningCooldown <= 0 && this.random.nextFloat() <= 0.005F && this.isSecondPhase()
+            if (this.lightningCooldown <= 0 && java.util.concurrent.ThreadLocalRandom.current().nextFloat() <= 0.05F && this.isSecondPhase()
                     && this.clientLevel().getSkyFlashTime() <= 0 && this.isInOverworld()) {
                 this.clientLevel().setSkyFlashTime(3);
                 this.clientLevel().playLocalSound(this.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER
                         , SoundSource.WEATHER, 2f, 1f, true);
+                this.lightningCooldown = 600;
+            }
+        } else {
+            if (this.getSpreadFireballTicks() > 0 && this.getSpreadFireballTicks() % 5 == 0) {
+                NihilisticFireball ball = new NihilisticFireball(NoixmodAPIEntities.NIHILISTIC_FIREBALL.get(),
+                        this.level());
+                ball.moveTo(this.blockPosition().offset(Maths.randomInteger(10), 15,
+                        Maths.randomInteger(10)), 0, 0);
+                ball.setMoveDown();
+                this.level().addFreshEntity(ball);
+            }
+            if (this.pressureTicks > 0) {
+                this.pressureTicks--;
+                if (lie != null && this.isInDanger()) {
+                    lie.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400, 1));
+                    lie.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 1));
+                }
+            }
+            if (this.cooldown > 0) {
+                this.cooldown--;
+            }
+            if (this.fireCooldown > 0) {
+                this.fireCooldown--;
+            }
+            if (this.escapeTime <= 0 && this.isHalfHealth()) {
+                this.teleport();
+                this.escapeTime = Maths.toTick(9);
+            }
+            if (lie != null) {
+                boolean flag = this.getSensing().hasLineOfSight(lie);
+                if (((this.distanceToSqr(lie) > Maths.square(45)) || !flag)
+                        && !this.isSettingSecondPhase() && this.isAlive()) {
+                    this.chaseTeleport();
+                }
+                if (!this.isNihilistic()) {
+                    if (this.fireCooldown == 0 && this.isSecondPhase()) {
+                        this.fireCooldown = Maths.toTick(12);
+                        this.summonSoul();
+                        this.arrowDamage++;
+                    }
+                    if (this.tickSummon == 0 && !this.isShadow()) {
+                        this.tickSummon = Maths.toTick(45) + Maths.toTick(this.getRandom().nextInt(5));
+                        this.summonServants();
+                        this.summonServant();
+                    }
+                }
             }
         }
         if (this.isAlive()) {
@@ -1165,16 +1150,17 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                         this.clientLevel().addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, this.getX(),
                                 this.getY() + 0.5, this.getZ(), d, d1, d2);
                     }
-                }
-                this.getNavigation().stop();
-                this.heal(this.getMaxHealth() / 320);
-                this.healSelf(this.getMaxHealth() / 160);
-                if (this.getHealth() == this.getMaxHealth()) {
-                    if (this instanceof ApostleBoss) {
-                        this.sendSystemMessage(ApostleBoss.horror("You have no way out."));
+                } else {
+                    this.getNavigation().stop();
+                    this.heal(this.getMaxHealth() / 320.0F);
+                    this.healSelf(this.getMaxHealth() / 160.0F);
+                    if (this.getHealth() == this.getMaxHealth()) {
+                        if (this.isBoss()) {
+                            this.sendSystemMessage(ApostleBoss.horror("You have no way out."));
+                        }
+                        this.setPhase(Maths.TWO_BYTE);
+                        this.setSettingSecondPhase(false);
                     }
-                    this.setPhase(Maths.TWO_BYTE);
-                    this.setSettingSecondPhase(false);
                 }
             }
         }
@@ -1236,7 +1222,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     protected SoundEvent getAmbientSound() {
         if (this.getTarget() != null) {
             if (GoetyCompat.goetyLoaded()) {
-                return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+                return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocations.parse(
                         "goety:apostle_ambient"));
             }
             return NoixmodAPISounds.APOSTLE_IDLE.get();
@@ -1250,7 +1236,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     }
 
     public boolean isInOtherDimensions() {
-        return !this.isInOverworld() && !this.isInEnd();
+        return !this.isInOverworld() && !this.inEnd;
     }
 
     public boolean isInEnd() {
@@ -1312,7 +1298,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         } else {
             float cap = NoixmodAPIAttributesConfig.apostleDamageCap.get().floatValue();
             if (pAmount >= 15f) {
-                arrowDamage -= 0.25D;
+                arrowDamage -= 0.25F;
             }
             pAmount = Math.min(cap, pAmount);
             Entity entity = pSource.getEntity();
@@ -1321,8 +1307,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             } else {
                 pAmount *= 0.85f;
             }
-            if (this.isInEnd()) {
-                pAmount *= 0.75f;
+            if (this.inEnd) {
+                pAmount *= 0.75F;
             }
             if (this.isInOtherDimensions()) {
                 pAmount *= 0.85F;
@@ -1358,10 +1344,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                 }
             }
             if (this.isNihilistic()) {
-                pAmount = 2.0F;
+                pAmount = 4.0F;
             }
             setHurtCooldown(20);
-            arrowDamage -= pSource.getEntity() instanceof Player ? 1D : 0.05D;
+            arrowDamage -= pSource.getEntity() instanceof Player ? 1.0F : 0.05F;
             hurtCount++;
             if (!this.isCastingSpell() && !this.isSettingSecondPhase()) {
                 if (hurtCount >= (isSecondPhase() ? 2 : 4)) {
@@ -1377,7 +1363,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         if (this.isSettingSecondPhase()) {
             return;
         }
-        float f = this.isNihilistic() ? 2F : Math.min(var0, NoixmodAPIAttributesConfig.apostleDamageCap
+        float f = this.isNihilistic() ? 4F : Math.min(var0, NoixmodAPIAttributesConfig.apostleDamageCap
                 .get().floatValue());
         super.actuallyHurt(ds, f);
     }
@@ -1387,10 +1373,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     }
 
     public boolean killedEntity(ServerLevel pLevel, LivingEntity pEntity) {
-        int ran = this.random.nextInt(10);
-        this.healSelf(pEntity.getMaxHealth() / 20);
+        int ran = this.getRandomUtil().nextInt(10);
+        this.healSelf(pEntity.getMaxHealth() / 20.0F);
         if (this.getOwner() != null) {
-            this.getOwner().heal(pEntity.getMaxHealth() / 40);
+            this.getOwner().heal(pEntity.getMaxHealth() / 40.0F);
         }
         if (this.isSecondPhase()) {
             WrongedSoul soul = new WrongedSoul(NoixmodAPIEntities.WRONGED_SOUL.get(), this.level());
@@ -1400,8 +1386,8 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                     pEntity.blockPosition()), MobSpawnType.MOB_SUMMONED);
             pLevel.addFreshEntity(soul);
         }
-        if (this.arrowDamage < 4D) {
-            this.arrowDamage = 4D;
+        if (this.arrowDamage < 4.0F) {
+            this.arrowDamage = 4.0F;
         }
         this.setTraits(ran);
         return super.killedEntity(pLevel, pEntity);
@@ -1417,7 +1403,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return NoixmodAPISounds.APOSTLE_HURT_HORROR.get();
         } else {
             if (GoetyCompat.goetyLoaded()) {
-                return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("goety:apostle_hurt"));
+                return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocations.parse("goety:apostle_hurt"));
             }
             return NoixmodAPISounds.APOSTLE_HURT.get();
         }
@@ -1425,10 +1411,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     protected SoundEvent getDeathSound() {
         return NoixmodAPISounds.APOSTLE_DEATH.get();
-    }
-
-    public boolean canChangeDimensions() {
-        return false;
     }
 
     public NihilistArmPose getArmPose() {
@@ -1502,30 +1484,30 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         if (this.getTitleNumber() == 9) {
             if (this.lavaCooldown <= 0) {
                 LavaTrapSpell spell = new LavaTrapSpell(2);
-                if (!this.level().isClientSide) {
-                    spell.castSpell(this.serverLevel(), this);
-                }
+                spell.castSpell(this.serverLevel(), this);
                 this.lavaCooldown = 30 + this.getRandomUtil().nextInt(4);
             }
         } else if (this.getTitleNumber() == 8) {
             List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class,
                     this.getBoundingBox().inflate(4),
                     entity -> !MobUtils.areAllies(this, entity) && MobUtils.canHurt(entity, this));
-            if (!entities.isEmpty()) {
-                for (LivingEntity living : entities) {
-                    living.addDeltaMovement(Vec9.moveToVec(this, living, 0.05));
-                }
+            if (entities.isEmpty()) {
+                return;
+            }
+            for (LivingEntity living : entities) {
+                living.addDeltaMovement(Vec9.moveToVec(this, living, 0.05));
             }
         } else if (this.getTitleNumber() == 5) {
-            if (this.getTarget() != null && this.getRandomUtil().nextInt(3) == 0
-                    && !this.isAfraid()) {
-                int i = this.getTicksUsingItem();
-                this.performRangedAttack(this.getTarget(), BowItem.getPowerForTime(i) / 1.5F);
+            if (this.getTarget() == null || this.getRandomUtil().nextInt(3) != 0 || this.isAfraid()) {
+                return;
             }
+            int i = this.getTicksUsingItem();
+            this.performRangedAttack(this.getTarget(), BowItem.getPowerForTime(i) / 1.5F);
         } else if (this.getTitleNumber() == 2) {
-            if (this.getTarget() != null) {
-                this.getTarget().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 0));
+            if (this.getTarget() == null) {
+                return;
             }
+            this.getTarget().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 0));
         }
     }
 
@@ -1543,7 +1525,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     @Nullable
     protected SoundEvent getCastingSoundEvent() {
         if (GoetyCompat.goetyLoaded()) {
-            return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("goety:apostle_cast_spell"));
+            return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocations.parse("goety:apostle_cast_spell"));
         }
         return NoixmodAPISounds.APOSTLE_CAST_SPELL.get();
     }
@@ -1551,7 +1533,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     private SoundEvent getShootSound() {
         SoundEvent apostleShoot = null;
         if (GoetyCompat.goetyLoaded()) {
-            apostleShoot = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("goety:apostle_shoot"));
+            apostleShoot = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocations.parse("goety:apostle_shoot"));
         }
         return apostleShoot == null ? SoundEvents.SKELETON_SHOOT : apostleShoot;
     }
@@ -1585,11 +1567,9 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         this.level().addFreshEntity(arrow);
     }
 
-    public AbstractArrow getArrow(@Nullable ItemStack stack, float pDistanceFactor) {
+    public AbstractArrow getArrow(ItemStack stack, float pDistanceFactor) {
         NihilisticArrow arrow = new NihilisticArrow(this.level(), this);
-        if (stack != null) {
-            arrow.setEffectsFromItem(stack);
-        }
+        arrow.setEffectsFromItem(stack);
         arrow.setEnchantmentEffectsFromEntity(this, pDistanceFactor);
         int t = this.isSecondPhase() ? 1 : 0;
         arrow.setOwner(this);
@@ -1602,26 +1582,26 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         return arrow;
     }
 
-    public double getArrowDamage() {
-        double var = 0;
+    public float getArrowDamage() {
+        float var = 0.0F;
         if (!this.isInEnd()) {
             if (this.isHalfHealth()) {
-                var += 0.25D;
+                var += 0.25F;
             }
             if (this.isHard()) {
-                var += 0.25D;
+                var += 0.25F;
             }
             if (this.getTitleNumber() == 3 || this.getTitleNumber() == 1) {
-                this.arrowDamage += 1;
+                this.arrowDamage += 1.0F;
             }
         }
-        double finalDamage = Math.max(this.arrowDamage + var, 4D) + this.getSpellPower() / 1000;
+        float finalDamage = Math.max(this.arrowDamage + var, 4.0F) + this.getSpellPower() / 1000.0F;
         if (BlueOceansCompat.isLoaded() && this.isRisingRedPlum())
-            return finalDamage * 1.1D;
+            return finalDamage * 1.1F;
         return finalDamage;
     }
 
-    public void setArrowDamage(double damage) {
+    public void setArrowDamage(float damage) {
         this.arrowDamage = damage;
     }
 
@@ -1635,49 +1615,50 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     public void setCastingSpeed() {
         AttributeInstance speed = this.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speed != null) {
-            if (this.isFast()) {
-                if (!speed.hasModifier(FAST_SPEED)) {
-                    speed.addTransientModifier(FAST_SPEED);
-                }
-            } else {
-                if (speed.hasModifier(FAST_SPEED)) {
-                    speed.removeModifier(FAST_SPEED);
-                }
+        if (speed == null) {
+            return;
+        }
+        if (this.isFast()) {
+            if (!speed.hasModifier(FAST_SPEED)) {
+                speed.addTransientModifier(FAST_SPEED);
             }
-            if (this.isCastingSpell() && !isInEnd()) {
-                if (!speed.hasModifier(CASTING_SPEED))
-                    speed.addTransientModifier(CASTING_SPEED);
-            } else {
-                if (speed.hasModifier(CASTING_SPEED))
-                    speed.removeModifier(CASTING_SPEED);
+        } else {
+            if (speed.hasModifier(FAST_SPEED)) {
+                speed.removeModifier(FAST_SPEED);
             }
-            if (this.statueSpeedTime > 0) {
-                if (!speed.hasModifier(STATUE_COOLDOWN_SPEED)) {
-                    speed.addTransientModifier(STATUE_COOLDOWN_SPEED);
-                }
-            } else {
-                if (speed.hasModifier(STATUE_COOLDOWN_SPEED)) {
-                    speed.removeModifier(STATUE_COOLDOWN_SPEED);
-                }
+        }
+        if (this.isCastingSpell() && !isInEnd()) {
+            if (!speed.hasModifier(CASTING_SPEED))
+                speed.addTransientModifier(CASTING_SPEED);
+        } else {
+            if (speed.hasModifier(CASTING_SPEED))
+                speed.removeModifier(CASTING_SPEED);
+        }
+        if (this.statueSpeedTime > 0) {
+            if (!speed.hasModifier(STATUE_COOLDOWN_SPEED)) {
+                speed.addTransientModifier(STATUE_COOLDOWN_SPEED);
             }
-            if (this.isSettingSecondPhase()) {
-                if (!speed.hasModifier(ZERO_SPEED)) {
-                    speed.addTransientModifier(ZERO_SPEED);
-                }
-            } else {
-                if (!this.isDeadOrDying() && speed.hasModifier(ZERO_SPEED)) {
-                    speed.removeModifier(ZERO_SPEED);
-                }
+        } else {
+            if (speed.hasModifier(STATUE_COOLDOWN_SPEED)) {
+                speed.removeModifier(STATUE_COOLDOWN_SPEED);
             }
-            if (this.isDeadOrDying()) {
-                if (!speed.hasModifier(ZERO_SPEED)) {
-                    speed.addTransientModifier(ZERO_SPEED);
-                }
-            } else {
-                if (!this.isSettingSecondPhase() && speed.hasModifier(ZERO_SPEED)) {
-                    speed.addTransientModifier(ZERO_SPEED);
-                }
+        }
+        if (this.isSettingSecondPhase()) {
+            if (!speed.hasModifier(ZERO_SPEED)) {
+                speed.addTransientModifier(ZERO_SPEED);
+            }
+        } else {
+            if (!this.isDeadOrDying() && speed.hasModifier(ZERO_SPEED)) {
+                speed.removeModifier(ZERO_SPEED);
+            }
+        }
+        if (this.isDeadOrDying()) {
+            if (!speed.hasModifier(ZERO_SPEED)) {
+                speed.addTransientModifier(ZERO_SPEED);
+            }
+        } else {
+            if (!this.isSettingSecondPhase() && speed.hasModifier(ZERO_SPEED)) {
+                speed.addTransientModifier(ZERO_SPEED);
             }
         }
     }
@@ -1698,7 +1679,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         float chance = pRandom.nextFloat();
         boolean secondPhase = this.isSecondPhase();
         if (secondPhase) {
-            if (this.getCooldown() <= 0) {
+            if (this.getCooldown() <= 5) {
                 if (flag) {
                     if (chance >= 0.9F) {
                         this.setApostleSpell(9);
@@ -1716,10 +1697,10 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                 this.setApostleSpell(-1);
             }
         } else {
-            if (this.getCooldown() <= 0) {
-                if (chance > 0.95) {
+            if (this.getCooldown() <= 5) {
+                if (chance > 0.95F) {
                     this.setApostleSpell(5);
-                } else if (chance > 0.8) {
+                } else if (chance > 0.8F) {
                     this.setApostleSpell(8);
                 } else {
                     this.setApostleSpell(3);
@@ -1769,7 +1750,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             }
             if (NoixmodAPIMainConfig.HorrorMode.get()) {
                 SoundEvent event = ForgeRegistries.SOUND_EVENTS.getValue(
-                        new ResourceLocation("goety:apostle_predeath")
+                        ResourceLocations.parse("goety:apostle_predeath")
                 );
                 if (GoetyCompat.goetyLoaded() && event != null)
                     this.playSound(event);
@@ -1886,7 +1867,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             {
                 var entity = ValueHolder.nullToOther(this.getTarget(), this.getApostleTarget());
                 if (entity != null && entity.getType() == ForgeRegistries.ENTITY_TYPES.getValue(
-                        new ResourceLocation("goety:apostle")))
+                        ResourceLocations.parse("goety:apostle")))
                 {
                     entity.setPosRaw(Double.NaN, Double.NaN, Double.NaN);
                     entity.discard();
@@ -1947,7 +1928,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     {
         this.dangerDouble = 6;
-        this.arrowDamage = 4D;
+        this.arrowDamage = 4.0F;
     }
 
     protected static class ApostleBowAttackGoal extends Goal {
@@ -2257,13 +2238,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         @Nullable
         protected SoundEvent prepareSound() {
             return ForgeRegistries.SOUND_EVENTS
-                    .getValue(new ResourceLocation("goety:apostle_prepare_spell"));
+                    .getValue(ResourceLocations.parse("goety:apostle_prepare_spell"));
         }
 
         @Nullable
         protected SoundEvent summonSound() {
             return ForgeRegistries.SOUND_EVENTS
-                    .getValue(new ResourceLocation("goety:apostle_prepare_summon"));
+                    .getValue(ResourceLocations.parse("goety:apostle_prepare_summon"));
         }
     }
 
@@ -2283,7 +2264,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
 
         public boolean canUse() {
-            if (this.clone.tickCount >= 6000) {
+            if (this.clone.tickCount >= 6000 && this.clone.getOwner() instanceof Apostle) {
                 if (this.clone.isSecondPhase()) {
                     return false;
                 }
@@ -2410,17 +2391,16 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             super(apostle);
         }
 
-        protected void castSpell() {
+        protected void castSpell()
+        {
             if (this.apostle.isSecondPhase()) {
                 this.apostle.roar();
             } else {
                 this.apostle.quake();
             }
-            if (!this.apostle.level().isClientSide) {
-                this.apostle.serverLevel().sendParticles(new CircleParticleOption(0, 0, 0, 6, 0.3F),
-                        this.apostle.getX(), this.apostle.getY() + 0.1, this.apostle.getZ(),
-                        1, 0, 0, 0, 0);
-            }
+            this.apostle.serverLevel().sendParticles(new CircleParticleOption(0, 0, 0, 6, 0.3F),
+                    this.apostle.getX(), this.apostle.getY() + 0.1, this.apostle.getZ(),
+                    1, 0, 0, 0, 0);
             this.apostle.resetCooldown();
         }
 
@@ -2473,7 +2453,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
 
         protected void castSpell() {
-            for (int t = 0;t < this.apostle.getRandom().nextInt(3) + 2;++t) {
+            for (int t = 0;t < this.apostle.getRandomUtil().nextInt(3) + 2;++t) {
                 this.apostle.summonServants();
             }
         }
@@ -2497,21 +2477,18 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return NoixmodAPISounds.APOSTLE_SUMMON.get();
         }
 
-        public boolean canUse() {
-            if (this.apostle.isServerSide()) {
-                ServerLevel level = this.apostle.serverLevel();
-                if (this.apostle.isSecondPhase()) {
-                    if (!OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
-                            lie -> lie instanceof NihilisticServant zombie &&
-                                    zombie.getOwner() == OwnableMob.ownerOrThis(this.apostle, this.apostle))) {
-                        return false;
-                    }
-                } else {
-                    if (!OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
-                            lie -> lie instanceof Golem zombie &&
-                                    zombie.getOwner() == OwnableMob.ownerOrThis(this.apostle, this.apostle))) {
-                        return false;
-                    }
+        public boolean canUse()
+        {
+            ServerLevel level = this.apostle.serverLevel();
+            if (this.apostle.isSecondPhase()) {
+                if (!OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
+                        lie -> lie instanceof NihilisticServant)) {
+                    return false;
+                }
+            } else {
+                if (!OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
+                        lie -> lie instanceof Golem)) {
+                    return false;
                 }
             }
             return super.canUse();
@@ -2542,7 +2519,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         public ShootFireballGoal(Apostle apostle) {
             super(apostle);
         }
-
 
         public boolean canUse() {
             if (this.apostle.isSecondPhase()) {
@@ -2682,7 +2658,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
 
         protected int getCastingInterval() {
-            if (this.apostle.isInEnd()) {
+            if (this.apostle.inEnd) {
                 return 400;
             }
             return 500;
@@ -2757,23 +2733,23 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             this.apostle.cancelHealTick += 99;
             if (this.apostle.getTarget() != null) {
                 MobUtils.disableShield(8, 8, 8, this.apostle);
-                MobUtils.rangeHurt(8, 8, 8, this.apostle, this.apostle.damageSources().starve(),
+                MobUtils.rangeHurt(8, 8, 8, this.apostle, NoixmodAPIDamageSource.nihility(this.apostle),
                         (this.apostle.getTarget().getMaxHealth() / 4) + 32 + f);
                 if (this.apostle.getTitleNumber() == 1 || this.apostle.getTitleNumber() == 3) {
                     this.apostle.healSelf(10F);
                 }
-                if (!this.apostle.level().isClientSide())
-                    WorldUtil.getServerLevel(this.apostle).sendParticles(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(),
-                            this.apostle.getX(), this.apostle.getY(), this.apostle.getZ(), 99, 5,
-                            0, 5, 0);
+                WorldUtil.getServerLevel(this.apostle).sendParticles(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(),
+                        this.apostle.getX(), this.apostle.getY(), this.apostle.getZ(), 99, 5,
+                        0, 5, 0);
             }
             List<LivingEntity> list = this.apostle.getApostleTargets();
-            if (!list.isEmpty()) {
-                for (LivingEntity living : list) {
-                    living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.NIHILISTIC.get()), living);
-                    living.hurt(this.apostle.damageSources().starve(), 10 + living.getMaxHealth() / 5);
-                    break;
-                }
+            if (list.isEmpty()) {
+                return;
+            }
+            for (LivingEntity living : list) {
+                living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.NIHILISTIC.get()), living);
+                living.hurt(this.apostle.damageSources().starve(), 10 + living.getMaxHealth() / 5);
+                break;
             }
         }
 
@@ -2915,16 +2891,14 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return true;
         }
 
-        protected void castSpell() {
-            if (!this.apostle.level().isClientSide) {
-                ServerLevel level = this.apostle.serverLevel();
-                SummonApostle summonApostle = new SummonApostle(NoixmodAPIEntities.SUMMON_APOSTLE.get(),
-                        level);
-                summonApostle.setBoss(false);
-                summonApostle.setOwner(this.apostle);
-                level.addFreshEntity(summonApostle);
-                this.apostle.resetCooldown();
-            }
+        protected void castSpell()
+        {
+            ServerLevel level = this.apostle.serverLevel();
+            SummonApostle summonApostle = new SummonApostle(NoixmodAPIEntities.SUMMON_APOSTLE.get(), level);
+            summonApostle.setBoss(false);
+            summonApostle.setOwner(this.apostle);
+            level.addFreshEntity(summonApostle);
+            this.apostle.resetCooldown();
         }
 
         protected int getCastingTime() {
@@ -2975,20 +2949,19 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return true;
         }
 
-        protected void castSpell() {
-            for (int i = 0;i < this.apostle.getRandom().nextInt(2) + 1;++i) {
-                if (this.apostle.isServerSide()) {
-                    ServerLevel level = this.apostle.serverLevel();
-                    NihilisticStatue statue = new NihilisticStatue(NoixmodAPIEntities.NIHILISTIC_STATUE.get(), level);
-                    BlockPos pos = this.apostle.blockPosition().offset(Maths.randomInteger(12), 0,
-                            Maths.randomInteger(12));
-                    statue.setOwner(OwnableMob.ownerOrThis(this.apostle, this.apostle));
-                    statue.moveTo(pos, 0, 0);
-                    MobUtils.moveToGround(statue);
-                    statue.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED);
-                    level.addFreshEntity(statue);
-                    this.apostle.cancelHealTick += 40;
-                }
+        protected void castSpell()
+        {
+            for (int i = 0;i < this.apostle.getRandomUtil().nextInt(2) + 1;++i) {
+                ServerLevel level = this.apostle.serverLevel();
+                NihilisticStatue statue = new NihilisticStatue(NoixmodAPIEntities.NIHILISTIC_STATUE.get(), level);
+                BlockPos pos = this.apostle.blockPosition().offset(Maths.randomInteger(12), 0,
+                        Maths.randomInteger(12));
+                statue.setOwner(OwnableMob.ownerOrThis(this.apostle, this.apostle));
+                statue.moveTo(pos, 0, 0);
+                MobUtils.moveToGround(statue);
+                statue.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED);
+                level.addFreshEntity(statue);
+                this.apostle.cancelHealTick += 40;
             }
         }
 
@@ -3015,13 +2988,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return APISpells.APISpell.NIHILISTIC;
         }
 
-        public boolean canUse() {
-            if (this.apostle.isServerSide()) {
-                if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle), 4,
-                        lie -> lie instanceof NihilisticStatue statue && (statue.getOwner() ==
-                                OwnableMob.ownerOrThis(this.apostle, this.apostle)))) {
-                    return false;
-                }
+        public boolean canUse()
+        {
+            if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle), 4,
+                    lie -> lie instanceof NihilisticStatue)) {
+                return false;
             }
             if (this.apostle.getStatueCooldown() > 0) {
                 return false;
@@ -3183,15 +3154,14 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return 199F;
         }
 
-        public boolean canUse() {
-            if (this.apostle.isServerSide()) {
-                if (!OwnerSummon.canSummon(this.apostle.serverLevel(), this.apostle, 3, entity -> entity instanceof
-                        NihilisticArrowRain)) {
-                    return false;
-                }
+        public boolean canUse()
+        {
+            if (!OwnerSummon.canSummon(this.apostle.serverLevel(), this.apostle, 3, entity -> entity instanceof
+                    NihilisticArrowRain)) {
+                return false;
             }
             if (!NoixmodAPIMainConfig.HorrorMode.get() && this.apostle.getTitleNumber() != 1) {
-                if (!this.apostle.isInEnd() && this.apostle.getRandom().nextFloat() > 0.005f) {
+                if (!this.apostle.inEnd && this.apostle.getRandomUtil().nextFloat() > 0.005f) {
                     return false;
                 }
             }

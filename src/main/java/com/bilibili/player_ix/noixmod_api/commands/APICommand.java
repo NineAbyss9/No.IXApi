@@ -50,14 +50,18 @@ public class APICommand {
                                                                         BoolArgumentType.getBool(commandContext, "flag"))))))
                                 .then(Commands.literal("tracker")
                                         .executes(commandContext ->
-                                                HorrorModeCommand.spawnTracker(commandContext.getSource())))
+                                                HorrorModeCommand.spawnTracker(commandContext.getSource()))
+                                        .then(Commands.argument("type", IntegerArgumentType.integer())
+                                                .executes(commandContext ->
+                                                        HorrorModeCommand.spawnTracker(commandContext.getSource(),
+                                                                IntegerArgumentType.getInteger(commandContext, "type")))))
                                 .then(Commands.literal("the_ghost")
                                         .executes(commandContext ->
-                                                HorrorModeCommand.spawnTheGhost(commandContext.getSource()))))
-                        .then(Commands.literal("nihilisticOrder")
-                                .then(Commands.literal("spawnNow")
-                                        .executes(context ->
-                                                spawnNihilisticOrder(context.getSource()))))));
+                                                HorrorModeCommand.spawnTheGhost(commandContext.getSource())))))
+                .then(Commands.literal("nihilisticOrder")
+                        .then(Commands.literal("spawnNow")
+                                .executes(context ->
+                                        spawnNihilisticOrder(context.getSource())))));
     }
 
     private static int spawnNihilisticOrder(CommandSourceStack stack) {

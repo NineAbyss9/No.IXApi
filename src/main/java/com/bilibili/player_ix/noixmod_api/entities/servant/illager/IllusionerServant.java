@@ -36,7 +36,7 @@ implements ApiRangedAttackMob {
         this.setItemInHand(InteractionHand.MAIN_HAND, ItemStacks.of(Items.BOW));
         this.xpReward = 5;
         this.clientSideIllusionOffsets = new Vec3[2][4];
-        for(int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             this.clientSideIllusionOffsets[0][i] = Vec3.ZERO;
             this.clientSideIllusionOffsets[1][i] = Vec3.ZERO;
         }
@@ -52,7 +52,7 @@ implements ApiRangedAttackMob {
             if (this.hurtTime != 1 && this.tickCount % 1200 != 0) {
                 if (this.hurtTime == this.hurtDuration - 1) {
                     this.clientSideIllusionTicks = 3;
-                    for(int k = 0; k < 4; ++k) {
+                    for (int k = 0; k < 4; ++k) {
                         this.clientSideIllusionOffsets[0][k] = this.clientSideIllusionOffsets[1][k];
                         this.clientSideIllusionOffsets[1][k] = new Vec3(0.0, 0.0, 0.0);
                     }
@@ -98,7 +98,7 @@ implements ApiRangedAttackMob {
             double d0 = (this.clientSideIllusionTicks - pPartialTick) / 3.0F;
             d0 = Math.pow(d0, 0.25);
             Vec3[] avec3 = new Vec3[4];
-            for(int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4; ++i) {
                 avec3[i] = this.clientSideIllusionOffsets[1][i].scale(1.0 - d0).add(this.clientSideIllusionOffsets[0][i].scale(d0));
             }
             return avec3;
@@ -156,7 +156,7 @@ implements ApiRangedAttackMob {
         }
 
         protected void castSpell() {
-            illusionerServant.addEffect(EffectInstance.create(() -> MobEffects.INVISIBILITY, 1200));
+            illusionerServant.addEffect(EffectInstance.create(MobEffects.INVISIBILITY, 1200));
         }
 
         protected int getCastingTime() {

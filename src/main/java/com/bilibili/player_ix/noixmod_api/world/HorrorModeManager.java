@@ -4,34 +4,43 @@ package com.bilibili.player_ix.noixmod_api.world;
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPISounds;
+import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.ApiMeleeAttackGoal;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.booleans.BooleanArrayList;
 import it.unimi.dsi.fastutil.booleans.BooleanList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.NineAbyss9.util.pair.Pair;
 import org.slf4j.Logger;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HorrorModeManager {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private final ThreadLocalRandom random = ThreadLocalRandom.current();
     private int tickCount;
     private int apostleLookingTime = 0;
     private float apostleSummonChance = 0F;
     private int spawnInterval;
-    private static final Map<Integer, Integer> SPAWN_MAP = new LinkedHashMap<>();
+    private static final Map<Integer, Integer> SPAWN_MAP =
+            new LinkedHashMap<Integer, Integer>();
+    private final Map<Integer, Pair<Goal, Goal>> attackableMobs =
+            new HashMap<Integer, Pair<Goal, Goal>>();
     public static final Pair<Integer, Integer> TRACKER = Pair.of(0, 2);
     public static final int TRACKER_MAX_SPAWN_INTERVAL = Maths.toTick(300);
     public static final Pair<Integer, Integer> THE_GHOST = Pair.of(1, 1);
@@ -41,6 +50,7 @@ public class HorrorModeManager {
     private BooleanList mobsWillSpawn = new BooleanArrayList(new boolean[] {
             true, false
     });
+    private int removeAttackMobsTime;
     public HorrorModeManager() {
     }
 
@@ -70,18 +80,19 @@ public class HorrorModeManager {
                 this.apostleLookingTime = 99;
             }*/
         if (tickCount % 1200 == 0) {
-            if ((random.nextFloat() < 0.005F || this.spawnInterval > TRACKER_MAX_SPAWN_INTERVAL) &&
+            if ((random().nextFloat() < 0.005F || this.spawnInterval > TRACKER_MAX_SPAWN_INTERVAL) &&
                     this.shouldSpawnTracker()) {
                 var player = this.spawnTracker(pLevel);
                 if (player == null) {
-                    LOGGER.info("WTF?Can't spawn Tracker?");
+                    LOGGER.warn("WTF?Can't spawn Tracker?");
                 } else {
-                    player.sendSystemMessage(Component.translatable("info.noixmodapi.tracker_look"));
+                    player.connection.connection.send(
+                            new ClientboundSetActionBarTextPacket(Component.translatable("info.noixmodapi.tracker_look")));
                     this.updateSpawnCache();
                 }
                 this.resetSpawnInterval();
             }
-            if (random.nextFloat() < 0.0005F) {
+            if (random().nextFloat() < 0.0005F) {
                 if (!serverLevel.players().isEmpty()) {
                     for (var player : serverLevel.players()) {
                         serverLevel.playSound(player, player.blockPosition(), NoixmodAPISounds.APOSTLE_IDLE.get(),
@@ -91,12 +102,45 @@ public class HorrorModeManager {
                 if (this.shouldSpawnTheGhost()) {
                     var player = this.spawnTheGhost(pLevel);
                     if (player == null) {
-                        LOGGER.info("WTF?Can't spawn \"Ghost\"?");
+                        LOGGER.warn("WTF?Can't spawn \"Ghost\"?");
                     } else {
-                        player.sendSystemMessage(Component.translatable("info.noixmodapi.ghost_look"));
+                        player.connection.send(new ClientboundSetActionBarTextPacket(
+                                Component.translatable("info.noixmodapi.ghost_look")));
                         this.resetSpawnInterval();
                     }
                 }
+            }
+            if (tickCount % 7200 == 0 && ThreadLocalRandom.current().nextFloat() < 0.1F) {
+                var list = pLevel.players();
+                if (list.isEmpty()) return;
+                var player = list.get(ThreadLocalRandom.current().nextInt(list.size()));
+                for (Animal animal : pLevel.getEntitiesOfClass(Animal.class, player.getBoundingBox().inflate(32)))
+                {
+                    if (ThreadLocalRandom.current().nextFloat() < 0.05F) {
+                        var instance = animal.getAttribute(Attributes.ATTACK_DAMAGE);
+                        if (instance == null) {
+                            continue;
+                        }
+                        if (instance.getValue() <= 0.0D) {
+                            instance.setBaseValue(1.0D);
+                        }
+                        var goal = new ApiMeleeAttackGoal(animal, 0.8D);
+                        var goal1 = new NearestAttackableTargetGoal<>(animal, Player.class, true);
+                        attackableMobs.putIfAbsent(animal.getId(), Pair.of(goal, goal1));
+                        animal.goalSelector.addGoal(1, goal);
+                        animal.targetSelector.addGoal(1, goal1);
+                    }
+                }
+                this.removeAttackMobsTime = this.tickCount + Maths.toTick(15);
+            }
+            if (this.tickCount == removeAttackMobsTime) {
+                for (var id : attackableMobs.entrySet()) {
+                    var mob = (Mob)pLevel.getEntity(id.getKey());
+                    //if (!(entity instanceof Mob mob)) continue; Improve memory
+                    mob.goalSelector.removeGoal(id.getValue().left());
+                    mob.targetSelector.removeGoal(id.getValue().right());
+                }
+                attackableMobs.clear();
             }
         }
     }
@@ -114,28 +158,28 @@ public class HorrorModeManager {
 
     public void updateSpawnCache()
     {
-        ///No update if the index of {@linkplain spawnCache} is larger than {@linkplain mobsWillSpawn#size}
+        ///Stop updating if the index of {@linkplain spawnCache} is larger than {@linkplain mobsWillSpawn#size}
         if (this.mobsWillSpawn.size() <= spawnCache.left()) return;
         if (spawnCache.right() > SPAWN_MAP.get(spawnCache.left())) {
             this.updateNextMobWillSpawn(spawnCache.left());
             LOGGER.info("SpawnCache 's right value is max, turning to next part.");
-            spawnCache.setKey(spawnCache.left() + 1);
-            spawnCache.setValue(0);
+            spawnCache.setLeft(spawnCache.left() + 1);
+            spawnCache.setRight(0);
             return;
         }
-        spawnCache.setValue(spawnCache.right() + 1);
+        spawnCache.setRight(spawnCache.right() + 1);
     }
 
-    public Player spawnTheGhost(Level pLevel) {
+    public ServerPlayer spawnTheGhost(Level pLevel) {
         var ghost = NoixmodAPIEntities.THE_GHOST.get().create(pLevel);
         if (ghost == null) return null;
         var list = pLevel.players();
         if (list.isEmpty()) return null;
-        Player player = list.get(random.nextInt(list.size()));
+        ServerPlayer player = (ServerPlayer)list.get(random().nextInt(list.size()));
         for (int i = 0;i < 20;i++) {
-            double x = player.getX() + random.nextDouble(-10, 10);
-            double y = player.getY() + random.nextDouble(-10, 10);
-            double z = player.getZ() + random.nextDouble(-10, 10);
+            double x = player.getX() + random().nextDouble(-10, 10);
+            double y = player.getY() + random().nextDouble(-10, 10);
+            double z = player.getZ() + random().nextDouble(-10, 10);
             if (pLevel.noCollision(ghost.getBoundingBox().move(x, y, z))) {
                 ghost.moveTo(x, y, z, 0F, 0F);
                 if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player))
@@ -145,23 +189,27 @@ public class HorrorModeManager {
             }
         }
         if (!pLevel.isLoaded(pLevel.getSharedSpawnPos())) return null;
-        ghost.moveTo(pLevel.getSharedSpawnPos().getX(), pLevel.getSharedSpawnPos().getY(), pLevel.getSharedSpawnPos()
-                        .getZ(), 0F, 0F);
+        ghost.moveTo(pLevel.getSharedSpawnPos(), 0F, 0F);
         return pLevel.addFreshEntity(ghost) ? player : null;
     }
 
-    public Player spawnTracker(Level pLevel) {
+    public ServerPlayer spawnTracker(Level pLevel) {
+        return this.spawnTracker(pLevel, 0);
+    }
+
+    public ServerPlayer spawnTracker(Level pLevel, int type) {
         var ghost = NoixmodAPIEntities.TRACKER.get().create(pLevel);
         if (ghost == null) return null;
         var list = pLevel.players();
         if (list.isEmpty()) return null;
-        Player player = list.get(random.nextInt(list.size()));
+        ServerPlayer player = (ServerPlayer)list.get(random().nextInt(list.size()));
         for (int i = 0;i < 20;i++) {
-            double x = player.getX() + random.nextDouble(-10, 10);
-            double y = player.getY() + random.nextDouble(-10, 10);
-            double z = player.getZ() + random.nextDouble(-10, 10);
+            double x = player.getX() + random().nextDouble(-10, 10);
+            double y = player.getY() + random().nextDouble(-10, 10);
+            double z = player.getZ() + random().nextDouble(-10, 10);
             if (pLevel.noCollision(ghost.getBoundingBox().move(x, y, z))) {
                 ghost.moveTo(x, y, z, 0F, 0F);
+                ghost.setType(type);
                 if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player))
                     ghost.setTarget(player);
                 player = pLevel.addFreshEntity(ghost) ? player : null;
@@ -169,8 +217,8 @@ public class HorrorModeManager {
             }
         }
         if (!pLevel.isLoaded(pLevel.getSharedSpawnPos())) return null;
-        ghost.moveTo(pLevel.getSharedSpawnPos().getX(), pLevel.getSharedSpawnPos().getY(), pLevel.getSharedSpawnPos()
-                .getZ(), 0F, 0F);
+        ghost.setType(type);
+        ghost.moveTo(pLevel.getSharedSpawnPos(), 0F, 0F);
         return pLevel.addFreshEntity(ghost) ? player : null;
     }
 
@@ -182,8 +230,13 @@ public class HorrorModeManager {
         return this.mobsWillSpawn.getBoolean(THE_GHOST.left());
     }
 
+    public ThreadLocalRandom random()
+    {
+        return ThreadLocalRandom.current();
+    }
+
     public void load(CompoundTag pCompound) {
-        LOGGER.info("Loading {} from nbt...", HorrorModeManager.class.getSimpleName());
+        LOGGER.debug("Loading {} from nbt...", HorrorModeManager.class.getSimpleName());
         this.apostleLookingTime = pCompound.getInt("ApostleLookingTime");
         this.apostleSummonChance = pCompound.getFloat("ApostleSummonChance");
         this.tickCount = pCompound.getInt("TickCount");
@@ -194,6 +247,13 @@ public class HorrorModeManager {
         var spawnCache = pCompound.getCompound("SpawnCache");
         this.spawnCache.setKey(spawnCache.getInt("Index"));
         this.spawnCache.setValue(spawnCache.getInt("Count"));
+        if (this.tickCount != Integer.MAX_VALUE) {
+            return;
+        }
+        LOGGER.info("Oh, you played so much time!Resetting the tickCount of {} to 0.And thank for your playing." +
+                        "Remember to take a break!",
+                this.getClass().getSimpleName());
+        this.tickCount = 0;
     }
 
     public void save(CompoundTag pCompound) {

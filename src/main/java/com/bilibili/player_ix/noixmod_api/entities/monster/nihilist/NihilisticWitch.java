@@ -29,11 +29,9 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -47,17 +45,15 @@ implements RangedAttackMob, Enemy {
     private int usingTime;
     private NearestAttackableWitchTargetGoal<LivingEntity> attackPlayersGoal;
     private NearestHealableRaiderTargetGoal<Nihilist> healRaidersGoal;
-    public NihilisticWitch(EntityType<? extends Nihilist> entityType, Level level) {
+    public NihilisticWitch(EntityType<? extends NihilisticWitch> entityType, Level level) {
         super(entityType, level);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_USING_ITEM, false);
     }
 
-    @Override
     protected void registerGoals() {
         this.healRaidersGoal = new NearestHealableRaiderTargetGoal<>(this, Nihilist.class,
                 false, entity -> true);
@@ -84,7 +80,7 @@ implements RangedAttackMob, Enemy {
                             this.addEffect(new MobEffectInstance($$2));
                         }
                     }
-                    Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(SPEED_MODIFIER_DRINKING);
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(SPEED_MODIFIER_DRINKING);
                 }
             } else {
                 Potion $$3 = null;
@@ -128,7 +124,6 @@ implements RangedAttackMob, Enemy {
                 .add(Attributes.MOVEMENT_SPEED, 0.3).add(Attributes.FOLLOW_RANGE, 120);
     }
 
-    @Override
     protected float getStandingEyeHeight(Pose p_34146_, EntityDimensions p_34147_) {
         return 1.62F;
     }
@@ -141,38 +136,38 @@ implements RangedAttackMob, Enemy {
         this.entityData.set(DATA_USING_ITEM, b);
     }
 
-    @Override
-    public void performRangedAttack(@NotNull LivingEntity p_34143_, float v) {
-        if (!this.isDrinkingPotion()) {
-            Vec3 $$2 = p_34143_.getDeltaMovement();
-            double $$3 = p_34143_.getX() + $$2.x - this.getX();
-            double $$4 = p_34143_.getEyeY() - 1.100000023841858 - this.getY();
-            double $$5 = p_34143_.getZ() + $$2.z - this.getZ();
-            double $$6 = Math.sqrt($$3 * $$3 + $$5 * $$5);
-            Potion $$7 = Potions.HARMING;
-            if (p_34143_ instanceof Raider) {
-                if (p_34143_.getHealth() <= 4.0F) {
-                    $$7 = Potions.HEALING;
-                } else {
-                    $$7 = Potions.REGENERATION;
-                }
-                this.setTarget(null);
-            } else if ($$6 >= 8.0 && !p_34143_.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
-                $$7 = Potions.SLOWNESS;
-            } else if (p_34143_.getHealth() >= 8.0F && !p_34143_.hasEffect(MobEffects.POISON)) {
-                $$7 = Potions.POISON;
-            } else if ($$6 <= 3.0 && !p_34143_.hasEffect(MobEffects.WEAKNESS) && this.random.nextFloat() < 0.25F) {
-                $$7 = Potions.WEAKNESS;
-            }
-            ThrownPotion $$8 = new ThrownPotion(this.level(), this);
-            $$8.setItem(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), $$7));
-            $$8.setXRot($$8.getXRot() - -20.0F);
-            $$8.shoot($$3, $$4 + $$6 * 0.2, $$5, 0.75F, 8.0F);
-            if (!this.isSilent()) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.WITCH_THROW, this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
-            }
-            this.level().addFreshEntity($$8);
+    public void performRangedAttack(LivingEntity p_34143_, float v) {
+        if (this.isDrinkingPotion()) {
+            return;
         }
+        Vec3 $$2 = p_34143_.getDeltaMovement();
+        double $$3 = p_34143_.getX() + $$2.x - this.getX();
+        double $$4 = p_34143_.getEyeY() - 1.100000023841858 - this.getY();
+        double $$5 = p_34143_.getZ() + $$2.z - this.getZ();
+        double $$6 = Math.sqrt($$3 * $$3 + $$5 * $$5);
+        Potion $$7 = Potions.HARMING;
+        if (p_34143_ instanceof Raider) {
+            if (p_34143_.getHealth() <= 4.0F) {
+                $$7 = Potions.HEALING;
+            } else {
+                $$7 = Potions.REGENERATION;
+            }
+            this.setTarget(null);
+        } else if ($$6 >= 8.0 && !p_34143_.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
+            $$7 = Potions.SLOWNESS;
+        } else if (p_34143_.getHealth() >= 8.0F && !p_34143_.hasEffect(MobEffects.POISON)) {
+            $$7 = Potions.POISON;
+        } else if ($$6 <= 3.0 && !p_34143_.hasEffect(MobEffects.WEAKNESS) && this.random.nextFloat() < 0.25F) {
+            $$7 = Potions.WEAKNESS;
+        }
+        ThrownPotion $$8 = new ThrownPotion(this.level(), this);
+        $$8.setItem(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), $$7));
+        $$8.setXRot($$8.getXRot() - -20.0F);
+        $$8.shoot($$3, $$4 + $$6 * 0.2, $$5, 0.75F, 8.0F);
+        if (!this.isSilent()) {
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.WITCH_THROW, this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
+        }
+        this.level().addFreshEntity($$8);
     }
 
     static {

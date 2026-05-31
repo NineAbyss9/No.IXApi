@@ -19,17 +19,19 @@ extends BaseItem {
     }
 
     public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        if (!p_41432_.isClientSide) {
-            Healing healing = NoixmodAPIEntities.HEALING.get().create(p_41432_);
-            if (healing != null) {
-                if (!p_41433_.isCreative()) {
-                    p_41433_.getItemInHand(p_41434_).shrink(1);
-                }
-                healing.moveTo(p_41433_.position().add(Maths.randomInt(2), 0, Maths.randomInt(2)));
-                healing.setOwner(p_41433_);
-                p_41432_.addFreshEntity(healing);
-            }
+        if (p_41432_.isClientSide) {
+            return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
         }
+        Healing healing = NoixmodAPIEntities.HEALING.get().create(p_41432_);
+        if (healing == null) {
+            return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
+        }
+        if (!p_41433_.isCreative()) {
+            p_41433_.getItemInHand(p_41434_).shrink(1);
+        }
+        healing.moveTo(p_41433_.position().add(Maths.randomInt(2), 0, Maths.randomInt(2)));
+        healing.setOwner(p_41433_);
+        p_41432_.addFreshEntity(healing);
         return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
     }
 }

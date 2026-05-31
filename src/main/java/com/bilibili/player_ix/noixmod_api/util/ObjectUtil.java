@@ -1,6 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
+import java.io.Serial;
+
 /**A util about objects
  * @see Object
  * @author Player_IX*/
@@ -16,6 +18,8 @@ public final class ObjectUtil {
 
     public static class UnsupportedTypeException
     extends IllegalArgumentException {
+        @Serial
+        private static final long serialVersionUID = 1944636053911014900L;
         private final String string;
         public UnsupportedTypeException(String more) {
             super(more);

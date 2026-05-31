@@ -22,11 +22,12 @@ extends Item {
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
-            ISpell spell = new VillagerGolemSpell(false);
-            spell.castSpell((ServerLevel)pLevel, pPlayer);
-            ItemUtil.shrink(pPlayer.getItemInHand(pUsedHand), pPlayer);
+        if (pLevel.isClientSide) {
+            return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
         }
+        ISpell spell = new VillagerGolemSpell(false);
+        spell.castSpell((ServerLevel)pLevel, pPlayer);
+        ItemUtil.shrink(pPlayer.getItemInHand(pUsedHand), pPlayer);
         return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
     }
 

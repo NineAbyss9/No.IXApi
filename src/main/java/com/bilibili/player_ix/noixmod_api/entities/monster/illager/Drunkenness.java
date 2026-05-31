@@ -71,7 +71,8 @@ public class Drunkenness extends APISpellcaster {
         }
     }
 
-    public boolean canCastSpell() {
+    public boolean canCastSpell()
+    {
         return false;
     }
 

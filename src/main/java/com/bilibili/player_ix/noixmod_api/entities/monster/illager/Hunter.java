@@ -58,6 +58,11 @@ extends APISpellcaster {
         return SoundEvents.VINDICATOR_CELEBRATE;
     }
 
+    public boolean canCastSpell()
+    {
+        return false;
+    }
+
     public IllagerArmPose getArmPose() {
         if (this.isAggressive()) {
             return IllagerArmPose.ATTACKING;

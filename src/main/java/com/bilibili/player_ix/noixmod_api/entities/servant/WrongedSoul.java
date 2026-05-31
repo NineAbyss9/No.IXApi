@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.servant;
 
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.api.mobs.IProjectile;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
@@ -215,10 +216,10 @@ implements IProjectile {
     }
 
     public void onHit(HitResult result) {
-        if (result instanceof EntityHitResult hitResult && this.isAggressive()) {
+        if (result instanceof EntityHitResult hitResult) {
             this.onHitEntity(hitResult);
         }
-        if (result instanceof BlockHitResult block && this.isAggressive()) {
+        if (result instanceof BlockHitResult block) {
             this.onHitBlock(block);
         }
         for (int i = 0; i < 2; ++i) {
@@ -273,7 +274,7 @@ implements IProjectile {
     }
 
     protected void explosion() {
-        MobUtils.rangeHurt(5, 5, 5, this, this.damageSources().starve(), this.damage);
+        MobUtils.rangeHurt(5, 5, 5, this, NoixmodAPIDamageSource.nihility(this, this.getOwner()), this.damage);
         if (!this.level().isClientSide) {
             serverLevel().sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 0.5, this.getZ(),
                     50, 0, 0, 0, 0.5);

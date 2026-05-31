@@ -22,7 +22,7 @@ public class BloodiedSword extends SwordItem {
     public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
         if (p_43279_.level() instanceof ServerLevel level) {
             level.sendParticles(NoixmodAPIParticleTypes.BLOOD.get(), p_43279_.getX(), p_43279_.getY(), p_43279_.getZ(),
-                    10, 0, 0, 0, MathSupport.random.nextGaussian() * 0.2);
+                    10, 0, 0, 0, java.util.concurrent.ThreadLocalRandom.current().nextGaussian() * 0.2);
         }
         return super.hurtEnemy(p_43278_, p_43279_, p_43280_);
     }

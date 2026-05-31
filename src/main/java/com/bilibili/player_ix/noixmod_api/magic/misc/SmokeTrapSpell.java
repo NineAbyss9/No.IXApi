@@ -20,21 +20,19 @@ extends Spell {
         this(4);
     }
 
-    @Override
     public Type getSpellType() {
         return Type.MISC;
     }
 
-    @Override
     public float spellPower() {
         return 25f;
     }
 
-    @Override
-    public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        for (int i =0 ;i < trapCount; i++) {
+    public void castSpell(ServerLevel pLevel, LivingEntity pCaster)
+    {
+        OwnerSummon ownerSummon = new OwnerSummon(pCaster);
+        for (int i = 0;i < trapCount;i++) {
             SmokeTrap trap = new SmokeTrap(NoixmodAPIEntities.SMOKE_TRAP.get(), pLevel);
-            OwnerSummon ownerSummon = new OwnerSummon(pCaster);
             ownerSummon.integerSummon(trap, 2);
         }
     }

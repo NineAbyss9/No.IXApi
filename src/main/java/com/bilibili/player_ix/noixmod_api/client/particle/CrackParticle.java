@@ -9,15 +9,17 @@ public class CrackParticle
 extends TextureSheetParticle {
     protected CrackParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSet) {
         super(pLevel, pX, pY, pZ, 0, 0, 0);
-        setLifetime(200);
-        pickSprite(pSet);
+        this.setLifetime(200);
+        this.pickSprite(pSet);
+        this.gravity = 0.0F;
+        this.hasPhysics = false;
     }
 
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.TERRAIN_SHEET;
     }
 
-    public record Provider(SpriteSet set) implements ParticleProvider<SimpleParticleType> {
+    public static record Provider(SpriteSet set) implements ParticleProvider<SimpleParticleType> {
         public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ,
                                        double pXSpeed, double pYSpeed, double pZSpeed) {
             return new CrackParticle(pLevel, pX, pY, pZ, set);

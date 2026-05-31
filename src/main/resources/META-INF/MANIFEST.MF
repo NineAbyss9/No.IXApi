@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Specification-Title: noixmodapi
 Specification-Vendor: Player_IX
 Specification-Version: 1
-Implementation-Title: No.IXAPI 1.3.908
+Implementation-Title: No.IXAPI 1.4.0
 Implementation-Version: 1.3
 Implementation-Vendor: Player_IX
-Implementation-Timestamp: 2026-4-17T09:03:00+0800
+Implementation-Timestamp: 2026-5-30T09:03:00+0800
 MixinConfigs: noixmodapi.mixin.json
 

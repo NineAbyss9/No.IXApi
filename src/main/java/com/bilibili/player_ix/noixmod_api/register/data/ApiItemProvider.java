@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.register.data;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.item.magic.Staff;
+import com.bilibili.player_ix.noixmod_api.item.ritual.RitualSupplies;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -29,6 +30,11 @@ extends ItemModelProvider
                 spawnEgg(item);
             } else if (item instanceof Staff) {
                 staff(obj, item);
+            } else if (item instanceof RitualSupplies)
+            {
+                ritualSupplies(obj);
+            } else {
+                basic(obj.getId().getPath(), obj.getId().getPath());
             }
         }
     }
@@ -45,6 +51,11 @@ extends ItemModelProvider
         getBuilder(regToString(item)).parent(new ModelFile.UncheckedModelFile(
                 NoixmodAPI.location("item/staff")
         )).texture("0", NoixmodAPI.location("item/magic/" + object.getId().getPath()));
+    }
+
+    private void ritualSupplies(RegistryObject<?> object)
+    {
+        basic(object.getId().getPath(), "ritual_supplies/" + object.getId().getPath());
     }
 
     private void spawnEgg(Item pItem) {

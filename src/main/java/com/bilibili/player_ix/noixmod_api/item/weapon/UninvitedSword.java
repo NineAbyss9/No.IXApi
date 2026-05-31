@@ -39,7 +39,7 @@ extends ApiSword {
             caster.getCooldowns().addCooldown(this, 300);
             return ItemUtils.startUsingInstantly(p_41432_, caster, p_41434_);
         }
-        return super.use(p_41432_, caster, p_41434_);
+        return InteractionResultHolder.fail(caster.getItemInHand(p_41434_));
     }
 
     private boolean spawnPotion(Level level, LivingEntity entity) {

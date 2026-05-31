@@ -11,10 +11,10 @@ import java.util.List;
 
 @OnlyInClient
 public class FogHandler {
-    public static float currentDensity = 1.0f;
-    public static float currentRed = 0.5f;
-    public static float currentGreen = 0.5f;
-    public static float currentBlue = 0.5f;
+    public static float currentDensity = 1.0F;
+    public static float currentRed = 0.5F;
+    public static float currentGreen = 0.5F;
+    public static float currentBlue = 0.5F;
     public static float targetRed;
     public static float targetGreen;
     public static float targetBlue;
@@ -68,9 +68,9 @@ public class FogHandler {
         targetGreen = 0.9f;
         targetBlue = 0.95f;
 
-        limitFogDis = lerp(limitFogDis, targetNear, 0.1f);
-        maxFogDis = lerp(maxFogDis, targetFar, 0.1f);
-        setFogColor(lerp(currentRed, targetRed, 0.1f), lerp(currentGreen, targetGreen, 0.1f), lerp(currentBlue, targetBlue, 0.1f));
+        limitFogDis = lerp(limitFogDis, targetNear, 0.1F);
+        maxFogDis = lerp(maxFogDis, targetFar, 0.1F);
+        setFogColor(lerp(currentRed, targetRed, 0.1F), lerp(currentGreen, targetGreen, 0.1F), lerp(currentBlue, targetBlue, 0.1F));
     }
 
     public static void setFogColor(float r, float g, float b) {

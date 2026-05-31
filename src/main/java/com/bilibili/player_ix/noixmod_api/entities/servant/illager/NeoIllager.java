@@ -13,6 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -25,47 +26,73 @@ extends OwnableIllager {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1.0));
-        this.addBehaviorGoal(5, 0.6, 10F, true, false);
+        this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1.0D));
+        this.addBehaviorGoal(5, 0.6D, 10F, true, false);
     }
 
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand)
+    {
         ItemStack stack = pPlayer.getItemInHand(pHand);
         if (!pPlayer.isCrouching() &&
                 !stack.is(NoixmodAPIItems.NEO_ILLAGER_SPAWN_EGG.get()) &&
                 this.getOwner() == pPlayer) {
-            if (stack.is(Items.IRON_AXE)) {
+            if (stack.is(NoixmodAPIItems.AXE_OF_HUNTER.get())) {
+                HunterServant servant = NoixmodAPIEntities.HUNTER_SERVANT.get().create(this.level());
+                this.copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
+                return success(stack, pPlayer);
+            } else if (stack.getItem() instanceof AxeItem) {
                 VindicatorServant servant = NoixmodAPIEntities.VINDICATOR_SERVANT.get().create(level());
-                if (servant != null) {
-                    copyTo(servant);
-                    if (level().addFreshEntity(servant))
-                        discard();
-                }
+                servant.setMainHandItem(stack.getItem());
+                copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
                 return success(stack, pPlayer);
             } else if (stack.is(Items.BOW)) {
                 ArcherServant servant = NoixmodAPIEntities.ARCHER_SERVANT.get().create(level());
-                if (servant != null) {
-                    copyTo(servant);
-                    if (level().addFreshEntity(servant))
-                        discard();
-                }
+                copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
                 return success(stack, pPlayer);
             } else if (stack.is(Items.TOTEM_OF_UNDYING)) {
                 EvokerServant servant = NoixmodAPIEntities.EVOKER_SERVANT.get().create(level());
-                if (servant != null) {
-                    copyTo(servant);
-                    if (level().addFreshEntity(servant))
-                        discard();
-                }
+                copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
                 return InteractionResult.sidedSuccess(pPlayer.level().isClientSide);
             } else if (stack.is(Items.CROSSBOW)) {
                 PillagerServant servant = NoixmodAPIEntities.PILLAGER_SERVANT.get().create(level());
-                if (servant != null) {
-                    copyTo(servant);
-                    if (level().addFreshEntity(servant))
-                        discard();
-                }
+                copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
                 return success(stack, pPlayer);
+            } else if (stack.is(NoixmodAPIItems.WINE.get())) {
+                DrunkennessServant servant = NoixmodAPIEntities.DRUNKENNESS_SERVANT.get().create(level());
+                copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
+                return success(stack, pPlayer);
+            } else if (stack.is(Items.BLUE_BANNER)) {
+                IllusionerServant servant = NoixmodAPIEntities.ILLUSIONER_SERVANT.get().create(level());
+                copyTo(servant);
+                if (level().addFreshEntity(servant))
+                    discard();
+                else
+                    servant.discard();
+                return success(stack, servant);
             }
         }
         return super.mobInteract(pPlayer, pHand);

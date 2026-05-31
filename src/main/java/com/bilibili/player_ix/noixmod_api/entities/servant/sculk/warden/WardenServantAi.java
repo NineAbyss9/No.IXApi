@@ -27,7 +27,7 @@ import java.util.List;
 public class WardenServantAi {
     //private static final int DIGGING_DURATION = Mth.ceil(100.0F);
     public static final int EMERGE_DURATION = Mth.ceil(133.59999F);
-    public static final int ROAR_DURATION = Mth.ceil(84.0F);
+    public static final int ROAR_DURATION = 84;//Mth.ceil(84.0F)
     private static final int SNIFFING_DURATION = Mth.ceil(83.2F);
     private static final List<SensorType<? extends Sensor<? super WardenServant>>> SENSOR_TYPES;
     private static final List<MemoryModuleType<?>> MEMORY_TYPES;

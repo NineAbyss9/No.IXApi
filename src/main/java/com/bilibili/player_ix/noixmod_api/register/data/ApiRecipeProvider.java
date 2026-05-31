@@ -42,6 +42,14 @@ extends RecipeProvider {
         shapeless(RecipeCategory.COMBAT, NoixmodAPIItems.BOW_BOW.get(), Items.BOW, 2, pWriter);
 
         //Ritual
+        ritual(RecipeCategory.COMBAT, NoixmodAPIItems.FROST_STAFF.get(), 1,
+                List.of(ing(NoixmodAPIItems.ICE_CORE.get()), ing(NoixmodAPIItems.PLATEAU_FRAGMENT.get()),
+                        ing(Items.SNOWBALL), ing(Items.SNOWBALL), ing(Items.SNOWBALL),
+                        ing(Items.SNOWBALL)), pWriter);
+        ritual(RecipeCategory.COMBAT, NoixmodAPIItems.NIHILISTIC_STAFF.get(), 1,
+                List.of(ing(NoixmodAPIItems.NIHILISTIC_ESSENCE.get()), ing(NoixmodAPIItems.NIHILISTIC_ASH.get()),
+                        ing(NoixmodAPIItems.NIHILISTIC_ASH.get()), ing(Items.DIAMOND),
+                        ing(Items.OBSIDIAN)), pWriter);
         ritual(RecipeCategory.MISC, NoixmodAPIItems.BANNED_BOOK.get(), 1,
                 List.of(ing(Items.END_CRYSTAL), ing(NoixmodAPIItems.NIHILISTIC_ESSENCE.get()),
                         ing(Items.NETHERITE_INGOT)), pWriter);

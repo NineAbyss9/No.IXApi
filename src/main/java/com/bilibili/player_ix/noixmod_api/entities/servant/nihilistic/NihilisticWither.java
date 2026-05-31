@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilityMobs;
@@ -26,7 +27,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
@@ -49,7 +49,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -84,26 +83,25 @@ implements PowerableMob, RangedAttackMob {
     private final int[] idleHeadUpdates = new int[2];
     private static final ParticleOptions PURPLE_CIRCLE = new CircleParticleOption(Colors.DARK_PURPLE,
             9f, 0);
-    public final WitherBoss boss = new WitherBoss(EntityType.WITHER, this.level());
     private int hurtCooldown;
     private int destroyBlocksTick;
     private int summonCooldown;
     private float damageAmounts = 0.0f;
-    private final ServerBossEvent bossEvent;
+    protected final ServerBossEvent bossEvent;
     private final TargetingConditions TARGETING_CONDITIONS;
-    public NihilisticWither(EntityType<? extends NihilisticWither> type, Level level) {
+    public NihilisticWither(EntityType<? extends NihilisticWither> type, Level level)
+    {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
-        this.bossEvent = (ServerBossEvent) new ServerBossEvent(this.getDisplayName().copy()
+        this.bossEvent = (ServerBossEvent)new ServerBossEvent(this.getDisplayName().copy()
                 .withStyle(ChatFormatting.DARK_PURPLE)
                 , BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS).setCreateWorldFog(true);
-        TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20)
-                .selector(living -> {
-                    if (living instanceof Nihilistic) {
-                        return false;
-                    }
-                    return MobUtils.canHurt(living, this) && !ApiMobType.isNihilistic(living.getMobType());
-                });
+        TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20).selector(living -> {
+            if (living instanceof Nihilistic) {
+                return false;
+            }
+            return MobUtils.canHurt(living, this) && !ApiMobType.isNihilistic(living.getMobType());
+        });
     }
 
     protected void defineSynchedData() {
@@ -120,12 +118,15 @@ implements PowerableMob, RangedAttackMob {
         this.goalSelector.addGoal(0, new WitherDoNothingGoal());
         this.goalSelector.addGoal(2, new WitherRangedAttackGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal<>(
+                this, 0.8D, 20.0F, 8.0F, true));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LivingEntity.class,
                 12F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
     protected void addTargetGoals() {
+        super.addTargetGoals();
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, NihilityMobs.class) {
             protected boolean canAttack(@Nullable LivingEntity pPotentialTarget, TargetingConditions pTargetPredicate) {
                 if (pPotentialTarget == null) {
@@ -136,15 +137,6 @@ implements PowerableMob, RangedAttackMob {
         });
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this,
                 LivingEntity.class, false, this::canAttack));
-        /*targetSelector.addGoal(2, new OwnableTargetGoal<>(this, false) {
-            @Override
-            public boolean canUse() {
-                if (isUnowned()) {
-                    return false;
-                }
-                return super.canUse();
-            }
-        });*/
         targetSelector.addGoal(2, new OwnerHurtTargetGoal<>(this));
     }
 
@@ -270,7 +262,7 @@ implements PowerableMob, RangedAttackMob {
                     this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextGaussian(),
                             this.getY() + this.random.nextFloat() * 3.3F,
                             this.getZ() + this.random.nextGaussian(),
-                            0.699999988079071, 0.699999988079071, 0.8999999761581421);
+                            0.7D, 0.7D, 0.9D);
                 }
             }
         }
@@ -291,7 +283,7 @@ implements PowerableMob, RangedAttackMob {
                             target.getBoundingBox().inflate(16), living -> MobUtils.canHurt(living, this));
                     if (!list.isEmpty()) {
                         for (LivingEntity living : list) {
-                            living.hurt(this.damageSources().starve(), this.damageAmounts);
+                            living.hurt(NoixmodAPIDamageSource.nihility(this), this.damageAmounts);
                         }
                         if (this.getInvulnerableTicks() <= 0 && !this.isSilent()) {
                             this.level().levelEvent(null, 1022, blockPosition(), 0);
@@ -304,7 +296,7 @@ implements PowerableMob, RangedAttackMob {
                 }
             } else {
                 if (this.getTarget() != null) {
-                    this.hurt(this.damageSources().starve(), 20f);
+                    this.hurt(NoixmodAPIDamageSource.nihility(this), 20f);
                 }
             }
             this.damageAmounts = 0.0f;
@@ -313,7 +305,7 @@ implements PowerableMob, RangedAttackMob {
             j1 = this.getInvulnerableTicks() - 1;
             this.bossEvent.setProgress(1.0F - (float)j1 / 220.0F);
             if (j1 <= 0) {
-                MobUtils.rangeHurt(4, 4, 4, this, this.damageSources().starve(), 50.0f);
+                MobUtils.rangeHurt(4, 4, 4, this, NoixmodAPIDamageSource.nihility(this), 50.0f);
                 if (!this.isSilent()) {
                     this.level().globalLevelEvent(1023, this.blockPosition(), 0);
                 }
@@ -391,15 +383,15 @@ implements PowerableMob, RangedAttackMob {
                     j2 = Mth.floor(this.getZ());
                     boolean flag = false;
                     int j = -1;
-                    while(true) {
+                    while (true) {
                         if (j > 1) {
                             if (flag) {
                                 this.level().levelEvent(null, 1022, this.blockPosition(), 0);
                             }
                             break;
                         }
-                        for(int k2 = -1; k2 <= 1; ++k2) {
-                            for(int k = 0; k <= 3; ++k) {
+                        for (int k2 = -1; k2 <= 1; ++k2) {
+                            for (int k = 0; k <= 3; ++k) {
                                 int l2 = i2 + j;
                                 int l = j1 + k;
                                 int i1 = j2 + k2;
@@ -420,7 +412,6 @@ implements PowerableMob, RangedAttackMob {
                     this.getOwner().heal(1f);
                 }
             }
-            this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         }
     }
 
@@ -550,11 +541,11 @@ implements PowerableMob, RangedAttackMob {
         this.entityData.set(DATA_BACK_DAMAGE_TIME, time);
     }
 
-    public void handleSpawnEvent() {
-        if (this.isUnowned()) {
-            this.setInvulnerableTicks(220);
-            this.bossEvent.setProgress(0.0F);
-        }
+    public void handleSpawnEvent()
+    {
+        if (!this.isUnowned()) return;
+        this.setInvulnerableTicks(220);
+        this.bossEvent.setProgress(0.0F);
     }
 
     @Nullable
@@ -569,16 +560,6 @@ implements PowerableMob, RangedAttackMob {
     @Nullable
     protected SoundEvent getDeathSound() {
         return SoundEvents.WITHER_DEATH;
-    }
-
-    public void startSeenByPlayer(ServerPlayer p_31483_) {
-        super.startSeenByPlayer(p_31483_);
-        this.bossEvent.addPlayer(p_31483_);
-    }
-
-    public void stopSeenByPlayer(ServerPlayer p_31488_) {
-        super.stopSeenByPlayer(p_31488_);
-        this.bossEvent.removePlayer(p_31488_);
     }
 
     public void makeStuckInBlock(BlockState p_31471_, Vec3 p_31472_) {}
@@ -602,16 +583,15 @@ implements PowerableMob, RangedAttackMob {
     }
 
     public double getHeadY(int p_31517_) {
-        return p_31517_ <= 0 ? this.getY() + 3.0 : this.getY() + 2.2;
+        return p_31517_ <= 0 ? this.getY() + 3.0D : this.getY() + 2.2D;
     }
 
     public double getHeadZ(int p_31519_) {
         if (p_31519_ <= 0) {
             return this.getZ();
         } else {
-            float f = (this.yBodyRot + (float)(180 * (p_31519_ - 1))) * 0.017453292F;
-            float f1 = Mth.sin(f);
-            return this.getZ() + (double)f1 * 1.3;
+            float f = (this.yBodyRot + (float)(180F * (p_31519_ - 1))) * 0.017453292F;
+            return this.getZ() + Math.sin(f) * 1.3D;
         }
     }
 
@@ -667,11 +647,10 @@ implements PowerableMob, RangedAttackMob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return NihilisticWither.createPathAttributes().add(Attributes.FOLLOW_RANGE, 140)
-                .add(Attributes.MAX_HEALTH, 600)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.85).add(Attributes.ARMOR, 10)
-                .add(Attributes.ATTACK_DAMAGE, 7).add(Attributes.FLYING_SPEED,
-                        0.6000000238418579);
+        return NihilisticWither.createPathAttributes().add(Attributes.FOLLOW_RANGE, 140.0D)
+                .add(Attributes.MAX_HEALTH, 600.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.85D).add(Attributes.ARMOR, 10.0D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D).add(Attributes.FLYING_SPEED, 0.6D);
     }
 
     private void performRangedAttack(int p_31458_, LivingEntity p_31459_) {
@@ -689,7 +668,8 @@ implements PowerableMob, RangedAttackMob {
         double d3 = p_31450_ - d0;
         double d4 = p_31451_ - d1;
         double d5 = p_31452_ - d2;
-        boolean flag = this.isHalfHealth() ? this.level().random.nextBoolean() : this.level().random.nextInt(6) == 0;
+        boolean flag = this.isHalfHealth() ? java.util.concurrent.ThreadLocalRandom.current().nextBoolean() :
+                java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.18F;
         if (flag) {
             NihilisticWitherSkull skull = new NihilisticWitherSkull(this.level(), this, d3, d4, d5);
             skull.setOwner(this);
@@ -773,7 +753,6 @@ implements PowerableMob, RangedAttackMob {
         }
 
         public void tick() {
-            assert this.target != null;
             double $$0 = this.wither.distanceToSqr(this.target.getX(), this.target.getY(), this.target.getZ());
             boolean $$1 = this.wither.getSensing().hasLineOfSight(this.target);
             if ($$1) {

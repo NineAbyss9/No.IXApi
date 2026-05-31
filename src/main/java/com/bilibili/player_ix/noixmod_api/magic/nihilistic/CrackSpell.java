@@ -12,12 +12,14 @@ extends NihilisticSpell {
         return 50.0F;
     }
 
-    public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
+    public void castSpell(ServerLevel pLevel, LivingEntity pCaster)
+    {
         NihilisticCrack crack = NoixmodAPIEntities.NIHILISTIC_CRACK.get().create(pLevel);
-        if (crack != null) {
-            crack.setOwner(pCaster);
-            crack.moveTo(pCaster.position());
-            pLevel.addFreshEntity(crack);
+        if (crack == null) {
+            return;
         }
+        crack.setOwner(pCaster);
+        crack.moveTo(pCaster.position());
+        pLevel.addFreshEntity(crack);
     }
 }

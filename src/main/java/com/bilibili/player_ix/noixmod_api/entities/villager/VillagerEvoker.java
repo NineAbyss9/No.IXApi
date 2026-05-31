@@ -1,11 +1,11 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.villager;
 
+import com.bilibili.player_ix.noixmod_api.magic.Spells;
 import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.VillagerFangs;
 import com.bilibili.player_ix.noixmod_api.entities.villager.trades.ApiVillagerTrades;
-import com.bilibili.player_ix.noixmod_api.magic.villager.VillagerGolemSpell;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -53,7 +52,6 @@ extends VillagerFighter {
         this.targetSelector.addGoal(3, new VillagerFighterHurtByTargetGoal(this));
     }
 
-    @Nullable
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return new VillagerEvoker(NoixmodAPIEntities.VILLAGER_EVOKER.get(), this.level());
     }
@@ -69,7 +67,6 @@ extends VillagerFighter {
                 .add(Attributes.FOLLOW_RANGE, 64);
     }
 
-    @Nullable
     protected VillagerTrades.ItemListing[] getTradeLists() {
         return ApiVillagerTrades.EVOKER_TRADES;
     }
@@ -106,10 +103,7 @@ extends VillagerFighter {
         SummonSpellGoal() {}
 
         protected void performSpellCasting() {
-            if (level() instanceof ServerLevel level) {
-                VillagerGolemSpell spell = new VillagerGolemSpell();
-                spell.castSpell(level, evoker);
-            }
+            Spells.VILLAGER_GOLEM.get().castSpell((ServerLevel)VillagerEvoker.this.level(), VillagerEvoker.this);
         }
 
         public boolean canUse() {

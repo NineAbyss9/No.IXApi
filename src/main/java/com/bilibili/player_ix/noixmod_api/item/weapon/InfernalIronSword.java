@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-//Repair use InfernalIron
 public class InfernalIronSword
 extends ApiSword {
     public InfernalIronSword() {

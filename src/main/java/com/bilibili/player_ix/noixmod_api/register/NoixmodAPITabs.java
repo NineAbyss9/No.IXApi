@@ -26,7 +26,8 @@ public class NoixmodAPITabs {
             ()-> CreativeModeTab.builder().title(Component.translatable("item_group.noixmodapi.noixapi")
             .withStyle(ChatFormatting.DARK_PURPLE)).icon(()-> new ItemStack(
             NoixmodAPIItems.HALO_OF_APOSTLE.get()
-    )).withSearchBar().displayItems((itemDisplayParameters, output) -> {
+    )).withSearchBar().withBackgroundLocation(NoixmodAPI.location("textures/gui/main_tab.png"))
+                    .displayItems((itemDisplayParameters, output) -> {
                 output.accept(NoixmodAPIItems.ALTAR.get());
                 output.accept(NoixmodAPIItems.CURSED_CHEST.get());
                 output.accept(NoixmodAPIItems.INFERNAL_IRON_ANVIL.get());
@@ -47,9 +48,11 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.VILLAGER_AMULET.get());
                 output.accept(NoixmodAPIItems.WARDEN_DOLL.get());
                 output.accept(NoixmodAPIItems.WITHER_DOLL.get());
+                output.accept(NoixmodAPIItems.CROSS.get());
                 output.accept(NoixmodAPIItems.COPPER_NUGGET.get());
                 output.accept(NoixmodAPIItems.GRAVE_AXE.get());
                 output.accept(NoixmodAPIItems.GRAVE_SWORD.get());
+                output.accept(NoixmodAPIItems.ICE_CORE.get());
                 output.accept(NoixmodAPIItems.INFERNAL_IRON_INGOT.get());
                 output.accept(NoixmodAPIItems.INFERNAL_IRON_AXE.get());
                 output.accept(NoixmodAPIItems.INFERNAL_IRON_PICKAXE.get());
@@ -70,6 +73,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.TELEPORTER.get());
                 output.accept(NoixmodAPIItems.ICE_PICKAXE.get());
                 output.accept(NoixmodAPIItems.BONE_STAFF.get());
+                output.accept(NoixmodAPIItems.FROST_STAFF.get());
                 output.accept(NoixmodAPIItems.MAGICAL_SWORD.get());
                 output.accept(NoixmodAPIItems.STAR_SWORD.get());
                 output.accept(NoixmodAPIItems.SPIRIT_STONE_HELMET.get());

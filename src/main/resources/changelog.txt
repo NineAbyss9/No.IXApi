@@ -44,6 +44,9 @@ Changes : Drunkenness, flagmen and GraveKeepers will join raids now.Remastered h
 Maybe the altar system will be completed next version.
 1.4.0 :
 Complete altar!
-Added : Altar, bone staff.Some recipes.Bone spellcaster, wither bone spellcaster, skeleton servant.
-Changes : Improve Horror Mode.
-Fix : A bug that make world crash when NoixmodAPIEvents#onFinalizeSpawn(1.3.908-pre1).
+Added : Altar, some staffs, some spells, cross.Some recipes.Bone spellcaster, wither bone spellcaster, skeleton servant.
+Changes : Improve Horror Mode.The damage type of nihilistic mobs.Girl Ghosts can stop Creeper explosions now.
+Wither doll summons nihilistic wither servant instead of nihilistic wither boss when you have defeated nihilistic wither boss
+and are shifting now.
+Fixed : A bug that make world crash when NoixmodAPIEvents#onFinalizeSpawn.(1.3.908-pre1),
+a bug about villager fighters

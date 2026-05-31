@@ -136,7 +136,7 @@ extends NihilitySummonedMobs {
         DATA_FLAGS_ID = SynchedEntityData.defineId(NihilisticBlaze.class, EntityDataSerializers.BYTE);
     }
 
-    static class BlazeAttackGoal extends Goal {
+    protected static class BlazeAttackGoal extends Goal {
         private final NihilisticBlaze blaze;
         private int attackStep;
         private int attackTime;
@@ -147,29 +147,24 @@ extends NihilitySummonedMobs {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
-        @Override
         public boolean canUse() {
             LivingEntity $$0 = this.blaze.getTarget();
             return $$0 != null && $$0.isAlive() && this.blaze.canAttack($$0);
         }
 
-        @Override
         public void start() {
             this.attackStep = 0;
         }
 
-        @Override
         public void stop() {
             this.blaze.setCharged(false);
             this.lastSeen = 0;
         }
 
-        @Override
         public boolean requiresUpdateEveryTick() {
             return true;
         }
 
-        @Override
         public void tick() {
             --this.attackTime;
             LivingEntity $$0 = this.blaze.getTarget();
@@ -189,10 +184,10 @@ extends NihilitySummonedMobs {
                         this.attackTime = 20;
                         this.blaze.doHurtTarget($$0);
                     }
-                    this.blaze.getMoveControl().setWantedPosition($$0.getX(), $$0.getY(), $$0.getZ(), 1.0);
+                    this.blaze.getMoveControl().setWantedPosition($$0.getX(), $$0.getY(), $$0.getZ(), 1.0D);
                 } else if ($$2 < this.getFollowDistance() * this.getFollowDistance() && $$1) {
                     double $$3 = $$0.getX() - this.blaze.getX();
-                    double $$4 = $$0.getY(0.5) - this.blaze.getY(0.5);
+                    double $$4 = $$0.getY(0.5D) - this.blaze.getY(0.5D);
                     double $$5 = $$0.getZ() - this.blaze.getZ();
                     if (this.attackTime <= 0) {
                         ++this.attackStep;
@@ -222,7 +217,6 @@ extends NihilitySummonedMobs {
                 } else if (this.lastSeen < 5) {
                     this.blaze.getMoveControl().setWantedPosition($$0.getX(), $$0.getY(), $$0.getZ(), 1.0);
                 }
-                super.tick();
             }
         }
         private double getFollowDistance() {

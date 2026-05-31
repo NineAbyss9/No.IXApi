@@ -108,13 +108,13 @@ extends OwnableMob {
             LivingEntity target = this.mob.getTarget();
             if (target == null) {
                 RandomSource $$0 = this.mob.getRandom();
-                double $$1 = this.mob.getX() + (double) (($$0.nextFloat() * 2.0F - 1.0F) * 16.0F);
-                double $$2 = this.mob.getY() + (double) (($$0.nextFloat() * 2.0F - 1.0F) * 16.0F);
-                double $$3 = this.mob.getZ() + (double) (($$0.nextFloat() * 2.0F - 1.0F) * 16.0F);
-                this.mob.getMoveControl().setWantedPosition($$1, $$2, $$3, 5);
+                double $$1 = this.mob.getX() + ($$0.nextDouble() * 2.0D - 1.0D) * 16.0D;
+                double $$2 = this.mob.getY() + ($$0.nextFloat() * 2.0F - 1.0F) * 16.0F;
+                double $$3 = this.mob.getZ() + ($$0.nextFloat() * 2.0F - 1.0F) * 16.0F;
+                this.mob.getMoveControl().setWantedPosition($$1, $$2, $$3, 0.25D);
             } else {
                 this.mob.getMoveControl().setWantedPosition(target.getRandomX(0.8), target.getY()
-                        + 3, target.getRandomZ(0.8), 5);
+                        + 3, target.getRandomZ(0.8), 0.25D);
             }
         }
     }

@@ -18,14 +18,17 @@ extends MobEffect {
         this.multiplier = -3;
     }
 
-    public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {
-        if (p_19467_.getMobType() != MobType.UNDEAD) {
-            p_19467_.hurt(p_19467_.level().damageSources().wither(), 1f);
-            if (p_19467_ instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 1));
-            } else {
-                p_19467_.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0));
-            }
+    public void applyEffectTick(LivingEntity p_19467_, int p_19468_)
+    {
+        if (p_19467_.getMobType() == MobType.UNDEAD) {
+            p_19467_.removeEffect(this);
+            return;
+        }
+        p_19467_.hurt(p_19467_.level().damageSources().wither(), 1f);
+        if (p_19467_ instanceof Player player) {
+            player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 1));
+        } else {
+            p_19467_.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0));
         }
     }
 

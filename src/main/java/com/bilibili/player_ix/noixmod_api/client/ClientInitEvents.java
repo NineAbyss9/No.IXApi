@@ -158,6 +158,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.DETRACTOR.get(), DetractorRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.DROWNED_SERVANT.get(), DrownedServantRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.DRUNKENNESS.get(), DrunkennessRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.DRUNKENNESS_SERVANT.get(), ServantRenderer.Drunkenness::new);
         event.registerEntityRenderer(NoixmodAPIEntities.ELDER_G_S.get(), GuardianRenderer.Elder::new);
         event.registerEntityRenderer(NoixmodAPIEntities.ENDER_MAN_SERVANT.get(), EnderManServantRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.EVIL_SUMMONER.get(), EvilSummonerRenderer::new);
@@ -183,6 +184,8 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.H_WIND_ZOMBIE.get(), HostileWindZombieRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HUNTED_VILLAGER.get(), HuntedVillagerRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.HUNTER.get(), HunterRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.HUNTER_SERVANT.get(), ServantRenderer.Hunter::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.ILLUSIONER_SERVANT.get(), IllusionerSRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.INTRUDER.get(), IntruderRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.LAVA_TRAP.get(), LavaTrapRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.LAVA_ZOMBIE_SERVANT.get(), LavaZombieRenderer::new);
@@ -225,6 +228,7 @@ public class ClientInitEvents {
         event.registerEntityRenderer(NoixmodAPIEntities.SMALL_WORM.get(), SmallWormRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SMOKE_TRAP.get(), SmokeTrapRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.STAR_GUARDIAN.get(), StarGuardianRenderer::new);
+        event.registerEntityRenderer(NoixmodAPIEntities.STRAY_SERVANT.get(), ServantRenderer.Stray::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SUICIDE_ZOMBIE.get(), SuicideZombieRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SUMMON_APOSTLE.get(), SummonApostleRenderer::new);
         event.registerEntityRenderer(NoixmodAPIEntities.SUMMON_ENTITY.get(), SummonEntityRenderer::new);

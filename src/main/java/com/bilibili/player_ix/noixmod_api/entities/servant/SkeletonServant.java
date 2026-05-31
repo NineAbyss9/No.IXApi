@@ -5,23 +5,19 @@ import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.servant.core.AbstractSkeletonServant;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
-import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 public class SkeletonServant
 extends AbstractSkeletonServant
-implements ApiRangedAttackMob
 {
     private final OwnerSummon ownerSummon = new OwnerSummon(this);
     public SkeletonServant(EntityType<? extends SkeletonServant> p_21683_, Level p_21684_)
@@ -38,14 +34,6 @@ implements ApiRangedAttackMob
         this.goalSelector.addGoal(3, new FollowOwnerGoal<>(this, 1, 30F,
                 10F, false));
         super.registerGoals();
-    }
-
-    public AbstractArrow getArrow(ItemStack stack, float pDistanceFactor) {
-        Arrow arrow = new Arrow(this.level(), this);
-        arrow.setEnchantmentEffectsFromEntity(this, pDistanceFactor);
-        arrow.setOwner(this);
-        arrow.setEffectsFromItem(stack);
-        return arrow;
     }
 
     public boolean burnInSun() {
@@ -69,7 +57,7 @@ implements ApiRangedAttackMob
         this.setMainHandItem(Items.BOW);
     }
 
-    private static class AttackGoal extends ApiMeleeAttackGoal
+    public static class AttackGoal extends ApiMeleeAttackGoal
     {
         public AttackGoal(PathfinderMob finder, double speed) {
             super(finder, speed, Maths.square(2.5));

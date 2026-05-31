@@ -64,7 +64,6 @@ implements HeadedModel, ArmedModel {
         return LayerDefinition.create(createMesh(), 64, 64);
     }
 
-    @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw * (Maths.CLOSER_PI / 180F);
         this.head.xRot = headPitch * (Maths.CLOSER_PI / 180);
@@ -134,12 +133,10 @@ implements HeadedModel, ArmedModel {
         return arm ==HumanoidArm.LEFT?this.leftArm:this.rightArm;
     }
 
-    @Override
     public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
         this.getArm(humanoidArm).translateAndRotate(poseStack);
     }
 
-    @Override
     public ModelPart getHead() {
         return this.head;
     }

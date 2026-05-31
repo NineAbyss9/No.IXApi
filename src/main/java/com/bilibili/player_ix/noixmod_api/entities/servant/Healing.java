@@ -61,7 +61,7 @@ implements IAllay {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide) {
-            if (this.randomUtil.nextFloat() < 0.3F) {
+            if (this.getRandomUtil().nextFloat() < 0.3F) {
                 this.clientLevel().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1),
                         this.getRandomY(), this.getRandomZ(1), 0, 0, 0);
             }

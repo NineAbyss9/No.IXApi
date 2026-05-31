@@ -31,6 +31,15 @@ public class HorrorModeCommand {
         return r;
     }
 
+    public static int spawnTracker(CommandSourceStack stack, int type) {
+        ServerLevel ser = stack.getLevel();
+        int r = HorrorModeSavedData.get(ser).getHorrorModeManager().spawnTracker(ser, type) == null ? 1 : 0;
+        if (r == 0) {
+            stack.sendSuccess(() -> Component.translatable("info.noixmodapi.tracker_look"), false);
+        }
+        return r;
+    }
+
     public static int spawnTheGhost(CommandSourceStack stack) {
         ServerLevel ser = stack.getLevel();
         int r = HorrorModeSavedData.get(ser).getHorrorModeManager().spawnTheGhost(ser) == null ? 1 : 0;

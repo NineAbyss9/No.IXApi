@@ -2,8 +2,11 @@
 package com.bilibili.player_ix.noixmod_api.magic;
 
 import com.bilibili.player_ix.noixmod_api.magic.end.EndermanSpell;
+import com.bilibili.player_ix.noixmod_api.magic.ice.StraySpell;
+import com.bilibili.player_ix.noixmod_api.magic.ice.YetiSpell;
 import com.bilibili.player_ix.noixmod_api.magic.illager.EscapeSpell;
 import com.bilibili.player_ix.noixmod_api.magic.illager.SelfFangsSpell;
+import com.bilibili.player_ix.noixmod_api.magic.illager.TargetFangsSpell;
 import com.bilibili.player_ix.noixmod_api.magic.illager.VexArcherSpell;
 import com.bilibili.player_ix.noixmod_api.magic.misc.*;
 import com.bilibili.player_ix.noixmod_api.magic.nether.LavaTrapSpell;
@@ -34,13 +37,19 @@ public class Spells {
     public static final SpellType NETHER_SOUL = register("nether_soul", NetherSoulSpell::new);
     public static final SpellType NIHILISTIC_ROAR = register("nihilistic_roar", NihilisticRoarSpell::new);
     public static final SpellType NIHILISTIC_SERVANT = register("nihilistic_servant", NihilisticServantSpell::new);
+    public static final SpellType SCULK_ZOMBIE = register("sculk_zombie", SculkZombieSpell::new);
     public static final SpellType SELF_FANGS = register("self_fangs", SelfFangsSpell::new);
     public static final SpellType SKELETON = register("skeleton", SkeletonSpell::new);
     public static final SpellType SMOKE_TRAP = register("smoke_trap", SmokeTrapSpell::new);
+    public static final SpellType SONIC_BOOM = register("sonic_boom", SonicBoomSpell::new);
+    public static final SpellType STRAY = register("stray", StraySpell::new);
+    public static final SpellType TARGET_FANGS = register("target_fangs", TargetFangsSpell::new);
     public static final SpellType VAMPIRE = register("vampire", VampireSpell::new);
     public static final SpellType VEX_ARCHER = register("vex_archer", VexArcherSpell::new);
+    public static final SpellType VILLAGER_FANGS = register("villager_fangs", VillagerFangsSpell::new);
     public static final SpellType VILLAGER_GOLEM = register("villager_golem", VillagerGolemSpell::new);
     public static final SpellType WITHER_SKELETON = register("wither_skeleton", WitherSkeletonServantSpell::new);
+    public static final SpellType YETI = register("yeti", YetiSpell::new);
     private Spells() {
     }
 

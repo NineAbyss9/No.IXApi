@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.github.NineAbyss9.ix_api.util.Vec9;
 import com.bilibili.player_ix.noixmod_api.client.particle.CircleParticleOption;
@@ -37,7 +38,7 @@ public class NihilisticWitherSkull extends AbstractHurtingProjectile {
         if (!this.level().isClientSide) {
             Entity entity = p_37259_.getEntity();
             Entity entity1 = this.getOwner();
-            boolean flag = entity.hurt(this.damageSources().starve(), 8.0F);
+            boolean flag = entity.hurt(NoixmodAPIDamageSource.nihilityOwner(this), 8.0F);
             LivingEntity living;
             if (entity1 instanceof LivingEntity) {
                 living = (LivingEntity)entity1;
@@ -79,7 +80,7 @@ public class NihilisticWitherSkull extends AbstractHurtingProjectile {
             if (!list.isEmpty()) {
                 for (LivingEntity living : list) {
                     living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.NIHILISTIC.get(), 30, 0));
-                    living.hurt(this.damageSources().starve(), 4);
+                    living.hurt(NoixmodAPIDamageSource.nihilityOwner(this), 4);
                 }
             }
             this.discard();

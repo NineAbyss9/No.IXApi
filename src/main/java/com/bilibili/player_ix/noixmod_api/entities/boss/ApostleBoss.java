@@ -73,6 +73,11 @@ implements ApiNihilisticBoss {
                         .withStyle(ChatFormatting.DARK_PURPLE));
     }
 
+    public boolean canChangeDimensions()
+    {
+        return false;
+    }
+
     public boolean isHostile() {
         return true;
     }

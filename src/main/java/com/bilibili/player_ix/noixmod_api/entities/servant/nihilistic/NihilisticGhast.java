@@ -3,7 +3,6 @@ package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
-import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFireball;
 import com.bilibili.player_ix.noixmod_api.entities.servant.WrongedSoul;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
@@ -37,10 +36,27 @@ extends NihilitySummonedMobs {
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING =
             SynchedEntityData.defineId(NihilisticGhast.class, EntityDataSerializers.BOOLEAN);
     public float explosionPower = 12F;
-    private int cooldown = 0;
+    private boolean stunned = false;
+    public NihilisticGhast(EntityType<? extends NihilisticGhast> $$0, Level $$1) {
+        super($$0, $$1);
+        this.xpReward = 5;
+        this.moveControl = new NihilityGhastMoveControl(this);
+    }
+
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1,
+                30, 10, true));
+        this.goalSelector.addGoal(5, new RandomFloatAroundGoal(this));
+        this.goalSelector.addGoal(7, new GhastLookGoal(this));
+        this.goalSelector.addGoal(7, new GhastShootFireballGoal(this));
+        this.targetSelector.addGoal(1, new OwnerHurtTargetGoal<>(this));
+        this.targetSelector.addGoal(2, new OwnableTargetGoal<>(this, false));
+    }
 
     public boolean removeWhenFarAway(double d) {
-        return d > Maths.square(100) && this.getOwner() == null;
+        return this.getOwner() == null
+                && d > 96;
     }
 
     public void travel(Vec3 p_20818_) {
@@ -72,46 +88,11 @@ extends NihilitySummonedMobs {
         this.calculateEntityAnimation(false);
     }
 
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        if (this.getCooldown() > 0) {
-            --this.cooldown;
-        }
-    }
-
-    public void tick() {
-        if (this.isCharging()) {
-            this.cooldown = Maths.toTick(1);
-        }
-        super.tick();
-    }
-
-    public int getCooldown() {
-        return this.cooldown;
-    }
-
     public boolean onClimbable() {
         return false;
     }
 
     protected void checkFallDamage(double p_20809_, boolean p_20810_, BlockState p_20811_, BlockPos p_20812_) {
-    }
-
-    public NihilisticGhast(EntityType<? extends NihilisticGhast> $$0, Level $$1) {
-        super($$0, $$1);
-        this.xpReward = 5;
-        this.moveControl = new NihilityGhastMoveControl(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1,
-                30, 10, true));
-        this.goalSelector.addGoal(5, new RandomFloatAroundGoal(this));
-        this.goalSelector.addGoal(7, new GhastLookGoal(this));
-        this.goalSelector.addGoal(7, new GhastShootFireballGoal(this));
-        this.targetSelector.addGoal(1, new OwnerHurtTargetGoal<>(this));
-        this.targetSelector.addGoal(2, new OwnableTargetGoal<>(this, false));
     }
 
     public boolean hurt(DamageSource pSource, float pAmount) {
@@ -124,6 +105,7 @@ extends NihilitySummonedMobs {
 
     public void aiStep() {
         super.aiStep();
+        this.stunned = this.isCharging();
     }
 
     public boolean isCharging() {
@@ -140,8 +122,8 @@ extends NihilitySummonedMobs {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return ApiPathfinderMob.createPathAttributes().add(Attributes.MAX_HEALTH, 20.0)
-                .add(Attributes.FOLLOW_RANGE, 1000.0)
+        return ApiPathfinderMob.createPathAttributes().add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.FOLLOW_RANGE, 1000.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
@@ -196,7 +178,7 @@ extends NihilitySummonedMobs {
                 Vec3 $$0 = new Vec3(this.wantedX - this.ghast.getX(), this.wantedY - this.ghast.getY(),
                         this.wantedZ - this.ghast.getZ());
                 double $$1 = $$0.length();
-                if (this.ghast.cooldown <= 0) {
+                if (!this.ghast.stunned) {
                     if (this.canReach($$0 = $$0.normalize(), Mth.ceil($$1))) {
                         this.ghast.setDeltaMovement(this.ghast.getDeltaMovement().add($$0.scale(0.1)));
                     } else {
@@ -337,7 +319,7 @@ extends NihilitySummonedMobs {
 
         public boolean canUse() {
             MoveControl $$0 = this.ghast.getMoveControl();
-            if (this.ghast.getCooldown() > 0) {
+            if (this.ghast.stunned) {
                 return false;
             }
             if (!$$0.hasWanted()) {

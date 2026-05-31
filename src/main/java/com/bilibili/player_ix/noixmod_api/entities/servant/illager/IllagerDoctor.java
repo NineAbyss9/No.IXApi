@@ -18,12 +18,13 @@ extends OwnableIllager {
 
     public void aiStep() {
         super.aiStep();
-        if (!this.level().isClientSide) {
-            if (this.tickCount % 600 == 0) {
-                this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(16),
-                                e -> MobUtils.areAllies(e, this))
-                        .forEach(this::healOther);
-            }
+        if (this.level().isClientSide) {
+            return;
+        }
+        if (this.tickCount % 600 == 0) {
+            this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(16),
+                            e -> MobUtils.areAllies(e, this))
+                    .forEach(this::healOther);
         }
     }
 

@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.mob_effects;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import net.minecraft.world.effect.MobEffect;
@@ -23,7 +24,7 @@ extends MobEffect {
                 p_19467_.removeEffect(this);
                 return;
             }
-            p_19467_.hurt(p_19467_.damageSources().starve(), 4.9f + p_19468_);
+            p_19467_.hurt(NoixmodAPIDamageSource.nihility(p_19467_.level()), 4.9f + p_19468_);
         }
     }
 

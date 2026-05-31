@@ -423,7 +423,7 @@ implements IFlagMob {
                     AttributeModifier.Operation.MULTIPLY_BASE);
 
     public void handleStatusAndFlag() {
-        float chance = this.randomUtil.nextFloat();
+        float chance = this.getRandomUtil().nextFloat();
         if (this.canAttack()) {
             if (chance < 0.6F) {
                 setFlag(ATTACK);

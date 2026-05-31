@@ -36,23 +36,23 @@ extends SwordItem {
         return this.setCooldown(new ItemStack(this), 0);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_43243_, Player p_43244_, InteractionHand p_43245_) {
-        p_43244_.playSound(SoundEvents.ILLUSIONER_MIRROR_MOVE);
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        pPlayer.playSound(SoundEvents.ILLUSIONER_MIRROR_MOVE);
         for (int i = 0; i < 5;++i) {
-            if (p_43243_ instanceof ServerLevel serverLevel) {
-                MagicalClone clone = new MagicalClone(NoixmodAPIEntities.MAGICAL_CLONE.get(), p_43243_);
+            if (pLevel instanceof ServerLevel serverLevel) {
+                MagicalClone clone = new MagicalClone(NoixmodAPIEntities.MAGICAL_CLONE.get(), pLevel);
                 int d = Maths.randomInteger(3);
                 int d1 = Maths.randomInteger(3);
-                BlockPos pos = p_43244_.blockPosition().offset(d, 0, d1);
-                clone.setOwner(p_43244_);
+                BlockPos pos = pPlayer.blockPosition().offset(d, 0, d1);
+                clone.setOwner(pPlayer);
                 clone.moveTo(pos, 0, 0);
-                clone.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED);
+                clone.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pos), MobSpawnType.EVENT);
                 serverLevel.addFreshEntity(clone);
                 clone.spawnAnim();
             }
-            p_43244_.getCooldowns().addCooldown(this, 60);
+            pPlayer.getCooldowns().addCooldown(this, 60);
         }
-        return ItemUtils.startUsingInstantly(p_43243_, p_43244_, p_43245_);
+        return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
     }
 
     public int getCooldown(ItemStack stack) {
@@ -69,7 +69,8 @@ extends SwordItem {
         return 72000;
     }
 
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents,
+                                TooltipFlag pIsAdvanced)
     {
         pTooltipComponents.add(Component.translatable("info.noixmodapi.magical_sword"));
     }

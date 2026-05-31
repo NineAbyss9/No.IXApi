@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.register;
 
 import com.bilibili.player_ix.noixmod_api.entities.servant.CreeperServant;
-import com.bilibili.player_ix.noixmod_api.item.magic.BoneStuff;
+import com.bilibili.player_ix.noixmod_api.item.magic.*;
 import com.bilibili.player_ix.noixmod_api.register.data.ApiDataHelper;
 import com.github.NineAbyss9.ix_api.api.item.ApiSpawnEgg;
 import com.github.NineAbyss9.ix_api.api.item.UseItem;
@@ -17,8 +17,6 @@ import com.bilibili.player_ix.noixmod_api.item.food.GoldenRabbitFoot;
 import com.bilibili.player_ix.noixmod_api.item.food.Wine;
 import com.bilibili.player_ix.noixmod_api.item.grave.GraveAxe;
 import com.bilibili.player_ix.noixmod_api.item.grave.GraveSword;
-import com.bilibili.player_ix.noixmod_api.item.magic.HealingDoll;
-import com.bilibili.player_ix.noixmod_api.item.magic.WormReagent;
 import com.bilibili.player_ix.noixmod_api.item.ritual.BannedBook;
 import com.bilibili.player_ix.noixmod_api.item.plot.StartItem;
 import com.bilibili.player_ix.noixmod_api.item.potion.OminousBottle;
@@ -194,6 +192,7 @@ public class NoixmodAPIItems {
             AxeOfHunter::new);
     public static final RegistryObject<Item> BONE_SWORD = REGISTRY.register("bone_sword", BoneSword::new);
     public static final RegistryObject<Item> BOW_BOW = REGISTRY.register("bow_bow", BowBow::new);
+    public static final RegistryObject<Item> CROSS = item("cross", Cross::new);
     public static final RegistryObject<Item> GRAVE_SWORD = REGISTRY.register(sword("grave"), GraveSword::new);
     public static final RegistryObject<Item> HEAD_HUNTERS_CROSSBOW = REGISTRY.register("head_hunters_crossbow",
             HeadHuntersCrossbow::new);
@@ -278,7 +277,11 @@ public class NoixmodAPIItems {
                 return ItemUtils.startUsingInstantly(level, player, interactionHand);
             }));
     public static final RegistryObject<Item> BONE_STAFF =
-            item("bone_staff", BoneStuff::new);
+            item("bone_staff", BoneStaff::new);
+    public static final RegistryObject<Item> FROST_STAFF
+            = item("frost_staff", FrostStaff::new);
+    public static final RegistryObject<Item> NIHILISTIC_STAFF
+            = item("nihilistic_staff", NihilisticStaff::new);
 
     //Ritual
     /// For index

@@ -5,7 +5,6 @@ import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIAttributes;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
-import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,10 +16,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 
-public class NetherSoul extends OwnableMob implements Enemy {
+public class NetherSoul extends OwnableMob
+{
     private static final EntityDataAccessor<Integer> DATA_FLAGS;
     private int attackTick;
     public AnimationState attacking = new AnimationState();
@@ -44,8 +43,12 @@ public class NetherSoul extends OwnableMob implements Enemy {
             }
         });
         this.addBehaviorGoal(4, 0.8, 12F);
-        this.targetSelector.addGoal(2, new OwnableHurtByTargetGoal(this, NetherSoul.class));
-        this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
+    }
+
+    protected void addTargetGoals()
+    {
+        super.addTargetGoals();
+        this.targetSelector.addGoal(1, new OwnerHurtTargetGoal<>(this));
     }
 
     public void aiStep() {

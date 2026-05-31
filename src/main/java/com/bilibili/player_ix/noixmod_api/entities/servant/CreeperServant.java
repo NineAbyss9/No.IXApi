@@ -150,17 +150,18 @@ implements PowerableMob, ICreeper {
     protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
         super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
         Entity $$3 = pSource.getEntity();
-        if ($$3 != this) {
-            if ($$3 instanceof Creeper creeper) {
-                if (creeper.canDropMobsSkull()) {
-                    creeper.increaseDroppedSkulls();
-                    this.spawnAtLocation(Items.CREEPER_HEAD);
-                }
-            } else if ($$3 instanceof CreeperServant servant) {
-                if (servant.canDropMobsSkull()) {
-                    servant.increaseDroppedSkulls();
-                    this.spawnAtLocation(Items.CREEPER_HEAD);
-                }
+        if ($$3 == this) {
+            return;
+        }
+        if ($$3 instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(Items.CREEPER_HEAD);
+            }
+        } else if ($$3 instanceof CreeperServant servant) {
+            if (servant.canDropMobsSkull()) {
+                servant.increaseDroppedSkulls();
+                this.spawnAtLocation(Items.CREEPER_HEAD);
             }
         }
     }
@@ -186,7 +187,6 @@ implements PowerableMob, ICreeper {
     }
 
     public void thunderHit(ServerLevel pLevel, LightningBolt pLightning) {
-        super.thunderHit(pLevel, pLightning);
         this.heal(this.getMaxHealth());
         this.entityData.set(DATA_IS_POWERED, true);
     }

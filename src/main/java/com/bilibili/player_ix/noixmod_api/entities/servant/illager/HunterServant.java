@@ -24,6 +24,10 @@ extends OwnableIllager {
     public HunterServant(EntityType<? extends HunterServant> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 5;
+    }
+
+    protected void populateDefaultItems()
+    {
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.AXE_OF_HUNTER.get()));
     }
 
@@ -33,7 +37,7 @@ extends OwnableIllager {
     }
 
     protected void addAttackGoal() {
-        this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1, Maths.square(2.5)));
+        this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1, Maths.square(2.5D)));
     }
 
     protected SoundEvent getAmbientSound() {

@@ -140,7 +140,7 @@ mixin {
 }
 
 repositories {
-    /*maven {
+    maven {
         name = "CurseForge"
         url = "https://www.cursemaven.com"
         content {
@@ -154,7 +154,7 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
-    maven {
+    /*maven {
         name = "Curios"
         url = "https://maven.theillusivec4.top"
     }
@@ -179,14 +179,14 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation "blank:ix_api-1.0.7"
+    implementation "blank:ix_api-1.0.8"
+    implementation fg.deobf("curse.maven:jei-238222:7920915")
     //compile 'org.spongepowered:mixin:0.8.5'
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    //compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:15.20.0.112")
-    //compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.20.0.112")
-    //runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.20.0.112")
-
+    //compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:${jei_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge-api:${jei_version}")
+    implementation fg.deobf("curse.maven:jade-324717:5493390")
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"

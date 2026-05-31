@@ -352,6 +352,11 @@ extends APISpellcaster {
         return IntruderArmPose.CROSSED;
     }
 
+    public boolean canCastSpell()
+    {
+        return false;
+    }
+
     public boolean canJoinRaid() {return false;}
     public void setCanJoinRaid(boolean p_37898_) {}
     public boolean canBeLeader() {return false;}

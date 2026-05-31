@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.core;
 
+import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.api.mobs.MobUtils;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import net.minecraft.core.BlockPos;
@@ -10,13 +11,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
 public abstract class AbstractSkeletonServant
-extends OwnableMob {
+extends OwnableMob
+implements ApiRangedAttackMob
+{
     public AbstractSkeletonServant(EntityType<? extends AbstractSkeletonServant> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
     }
@@ -39,6 +45,14 @@ extends OwnableMob {
         if (this.getStepSound() != null) {
             this.playSound(this.getStepSound());
         }
+    }
+
+    public AbstractArrow getArrow(ItemStack stack, float pDistanceFactor) {
+        Arrow arrow = new Arrow(this.level(), this);
+        arrow.setEnchantmentEffectsFromEntity(this, pDistanceFactor);
+        arrow.setOwner(this);
+        arrow.setEffectsFromItem(stack);
+        return arrow;
     }
 
     public boolean burnInSun() {

@@ -64,12 +64,10 @@ extends AbstractIllager {
         return SoundEvents.PILLAGER_AMBIENT;
     }
 
-    @Override
     protected SoundEvent getHurtSound(DamageSource p_33034_) {
         return SoundEvents.PILLAGER_HURT;
     }
 
-    @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.PILLAGER_DEATH;
     }

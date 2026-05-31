@@ -40,7 +40,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.NineAbyss9.math.MathSupport;
+import org.NineAbyss9.math.AbyssMath;
 import org.joml.Matrix4f;
 
 import javax.annotation.Nullable;
@@ -79,10 +79,12 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void renderFog(ViewportEvent.RenderFog event) {
-        if (!NoixmodAPIMainConfig.TERRIBLE_SKY.get() || findApostle(Minecraft.getInstance().player) != null) return;
-        event.setNearPlaneDistance(FogHandler.limitFogDis);  // 开始起雾
-        event.setFarPlaneDistance(FogHandler.maxFogDis);   // 完全看不清
-        event.setCanceled(true);//Disable the Vanilla logic
+        if (NoixmodAPIMainConfig.TERRIBLE_SKY.get())
+        {
+	event.setNearPlaneDistance(FogHandler.limitFogDis);  // 开始起雾
+        	event.setFarPlaneDistance(FogHandler.maxFogDis);   // 完全看不清
+        	event.setCanceled(true);//Disable the Vanilla logic
+        }
     }
 
     public static final ResourceLocation SUN_LOCATION = new ResourceLocation(NoixmodAPI.MOD_ID, "textures/environment/sun.png");
@@ -144,28 +146,31 @@ public class ClientEvents {
             BlockPos pos = player.blockPosition();
             if (level.canSeeSky(pos)) {
                 if (level.getGameTime() % 600L == 0L) {
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.005F) {
+                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.005F) {
                         level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(), SoundSource.HOSTILE,
                                 0.5F, 1.0F, false);
                     }
                 }
             } else {
                 if (level.getGameTime() % 300L == 0L) {
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.008F) {
+                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.008F) {
                         level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(), SoundSource.HOSTILE,
                                 0.5F, 1.0F, false);
                     }
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.01F) {
-                        if (MathSupport.threadSafeRandom.nextBoolean()) {
-                            level.playLocalSound(pos, randomAmbientSounds.get(MathSupport.threadSafeRandom.nextInt(
+                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.01F) {
+                        if (java.util.concurrent.ThreadLocalRandom.current().nextBoolean()) {
+                            level.playLocalSound(pos.offset(AbyssMath.random(5), 0, AbyssMath.random(5)),
+                                    randomAmbientSounds.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(
                                     randomAmbientSounds.size())), SoundSource.HOSTILE, 0.25F, 1.0F, false);
                         } else {
-                            level.playLocalSound(pos, terribleSounds.get(MathSupport.threadSafeRandom.nextInt(
+                            level.playLocalSound(pos.offset(AbyssMath.random(5), 0, AbyssMath.random(5)),
+                                    terribleSounds.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(
                                     terribleSounds.size())), SoundSource.HOSTILE, 0.75F, 1.0F, false);
                         }
                     }
-                    if (MathSupport.threadSafeRandom.nextFloat() < 0.02F) {
-                        level.playLocalSound(pos, SoundEvents.AMBIENT_CAVE.value(), SoundSource.NEUTRAL,
+                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.02F) {
+                        level.playLocalSound(pos.offset(AbyssMath.random(5), 0, AbyssMath.random(5)),
+                                SoundEvents.AMBIENT_CAVE.value(), SoundSource.NEUTRAL,
                                 0.5F, 1.0F, false);
                     }
                 }

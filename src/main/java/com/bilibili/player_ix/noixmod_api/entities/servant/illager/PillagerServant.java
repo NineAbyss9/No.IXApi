@@ -67,8 +67,7 @@ implements ApiCrossbowAttackMob {
     }
 
     public void performRangedAttack(LivingEntity p_33272_, float p_33273_) {
-        this.performCrossbowAttack(this,
-                1.6F);
+        this.performCrossbowAttack(this, 1.6F);
     }
 
     public void shootCrossbowProjectile(LivingEntity p_33275_, ItemStack p_33276_, Projectile p_33277_, float p_33278_) {

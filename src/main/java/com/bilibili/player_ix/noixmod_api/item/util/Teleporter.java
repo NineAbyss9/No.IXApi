@@ -1,6 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.item.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -22,10 +24,15 @@ extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         List<Entity> entities = pLevel.getEntitiesOfClass(Entity.class, pPlayer.getBoundingBox().inflate(999),
                 EntitySelector.NO_CREATIVE_OR_SPECTATOR);
-        if (!entities.isEmpty()) {
-            for (Entity entity : entities) {
-                entity.setPos(pPlayer.position());
+        if (entities.isEmpty()) {
+            if (pLevel.isClientSide) {
+                Minecraft.getInstance().gui.setOverlayMessage(Component.literal("Entity not found"),
+                        false);
             }
+            return InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
+        }
+        for (Entity entity : entities) {
+            entity.setPos(pPlayer.position());
         }
         return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
     }

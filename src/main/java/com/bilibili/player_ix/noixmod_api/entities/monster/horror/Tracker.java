@@ -4,6 +4,7 @@ package com.bilibili.player_ix.noixmod_api.entities.monster.horror;
 import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.AbstractHorrorMob;
 import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.ApiMeleeAttackGoal;
+import com.github.NineAbyss9.ix_api.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -31,12 +32,18 @@ public class Tracker
 extends AbstractHorrorMob {
     private final int actNameId;
     private Component actName;
+    private int trackingTime;
+    public static final int NORMAL = 0;
+    public static final int CAVE = 1;
+    public static final int ATTACKABLE = 2;
+    public static final int BACK = 3;
     private static final EntityDataAccessor<Integer> DATA_LIFE;
     private static final EntityDataAccessor<Boolean> DATA_LOOKED;
     private static final EntityDataAccessor<Boolean> CAN_ATTACK;
+    private static final EntityDataAccessor<Integer> DATA_TYPE;
     public Tracker(EntityType<? extends Tracker> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
-        this.actNameId = MathSupport.random.nextInt(4);
+        this.actNameId = java.util.concurrent.ThreadLocalRandom.current().nextInt(4);
         this.actName = this.getActName(this.actNameId);
     }
 
@@ -45,11 +52,21 @@ extends AbstractHorrorMob {
         this.entityData.define(DATA_LIFE, 6000);
         this.entityData.define(DATA_LOOKED, false);
         this.entityData.define(CAN_ATTACK, false);
+        this.entityData.define(DATA_TYPE, 0);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TrackerAttackGoal(this, 1.0D));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    }
+
+    public void tick()
+    {
+        if (this.getDataType() == BACK) {
+            this.setNoGravity(true);
+            this.noPhysics = true;
+        }
+        super.tick();
     }
 
     public void aiStep() {
@@ -73,14 +90,27 @@ extends AbstractHorrorMob {
                 if (isLookingAtMe(player) && !this.entityData.get(DATA_LOOKED)) {
                     this.entityData.set(DATA_LOOKED, true);
                     this.actName = Component.translatable("entity.minecraft.bat");
-                    if (this.canAttack()) {
+                    if (this.canAttack() || this.getDataType() == BACK) {
                         HorrorModeManager.playStrangeSound(this);
                         this.discard();
+                        return;
                     }
                 }
-                if (closerThan(target, 5.0D)) {
-                    this.getNavigation().stop();
+                if (closerThan(target, 2.5D)) {
+                    if (!this.navigation.isDone()) {
+                        this.getNavigation().stop();
+                    }
                 } else {
+                    if (this.getDataType() == NORMAL) {
+                        this.trackingTime++;
+                        if (this.trackingTime > Maths.toTick(30)) {
+                            this.moveTo(player.blockPosition().relative(player.getDirection()).above(), 0, 0);
+                            this.setBack();
+                            HorrorModeManager.playStrangeSound(player);
+                            this.setLife(600);
+                            return;
+                        }
+                    }
                     if (this.tickCount % 20 == 0) {
                         this.getNavigation().moveTo(target, 1.0D);
                     }
@@ -130,28 +160,21 @@ extends AbstractHorrorMob {
         this.actName = this.getActName(pPacket.getData());
     }
 
-    public int getLife() {
-        return this.entityData.get(DATA_LIFE);
-    }
-
-    public void setLife(int pLife) {
-        this.entityData.set(DATA_LIFE, pLife);
-    }
-
-    public boolean canAttack() {
-        return this.entityData.get(CAN_ATTACK);
-    }
-
-    public void setCanAttack(boolean canAttack)
+    public boolean isInvulnerable()
     {
-        this.entityData.set(CAN_ATTACK, canAttack);
+        return this.getDataType() == CAVE || this.getDataType() == BACK;
     }
-
-    public void setCanAttack()
-    {
-        this.entityData.set(CAN_ATTACK, true);
-    }
-
+    public void setAttackable() {this.setType(ATTACKABLE);}
+    public void setBack() {this.setType(BACK);}
+    public void setCave() {this.setType(CAVE);}
+    public int getLife() {return this.entityData.get(DATA_LIFE);}
+    public void setLife(int pLife) {this.entityData.set(DATA_LIFE, pLife);}
+    public boolean canAttack() {return this.entityData.get(CAN_ATTACK);}
+    public void setCanAttack(boolean canAttack) {this.entityData.set(CAN_ATTACK, canAttack);}
+    public void setCanAttack() {this.entityData.set(CAN_ATTACK, true);
+    this.setAttackable();}
+    public int getDataType() {return this.entityData.get(DATA_TYPE);}
+    public void setType(int pType) {this.entityData.set(DATA_TYPE, pType);}
     protected void playStepSound(BlockPos pPos, BlockState pState) {
         if (this.level().canSeeSky(pPos)) return;
         super.playStepSound(pPos, pState);
@@ -159,7 +182,7 @@ extends AbstractHorrorMob {
     protected void playBlockFallSound() {}
     protected void playSwimSound(float pVolume) {}
     public void die(DamageSource pDamageSource) {
-        this.die();
+        //this.die();
         super.die(pDamageSource);
     }
 
@@ -184,6 +207,7 @@ extends AbstractHorrorMob {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("Timer", this.getLife());
         pCompound.putBoolean("CanAttack", this.canAttack());
+        pCompound.putInt("Type", this.getDataType());
     }
 
     public void readAdditionalSaveData(CompoundTag pCompound)
@@ -207,6 +231,7 @@ extends AbstractHorrorMob {
         DATA_LIFE = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.INT);
         DATA_LOOKED = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.BOOLEAN);
         CAN_ATTACK = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.BOOLEAN);
+        DATA_TYPE = SynchedEntityData.defineId(Tracker.class, EntityDataSerializers.INT);
     }
 
     private static final class TrackerAttackGoal extends ApiMeleeAttackGoal

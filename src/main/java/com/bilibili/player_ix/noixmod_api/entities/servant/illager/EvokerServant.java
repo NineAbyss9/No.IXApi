@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class EvokerServant
 extends OwnableIllager {
     public EvokerServant(EntityType<? extends EvokerServant> entityType, Level level) {
@@ -99,23 +101,22 @@ extends OwnableIllager {
             servant = finder;
         }
 
-        protected void castSpell() {
-            for (int i = 0; i < 3;i++) {
-                if (!mob.level().isClientSide) {
-                    OwnableMob ownableMob;
-                    ServerLevel serverLevel = (ServerLevel) mob.level();
-                    boolean flag = mob.getRandom().nextBoolean();
-                    if (flag) {
-                        ownableMob = new VexArcher(NoixmodAPIEntities.VEX_ARCHER.get(), serverLevel);
-                    } else {
-                        ownableMob = new VexServant(NoixmodAPIEntities.VEX_SERVANT.get(), serverLevel);
-                    }
-                    ownableMob.setOwner(ownerOrThis(servant, servant));
-                    ownableMob.moveTo(servant.position().add(Vec9.of(Maths.randomInteger(2), 0,
-                            Maths.randomInteger(2))));
-                    serverLevel.addFreshEntity(ownableMob);
-                    ParticleUtil.spawnAnim(ownableMob);
+        protected void castSpell()
+        {
+            for (int i = 0;i < 3;i++) {
+                OwnableMob ownableMob;
+                ServerLevel serverLevel = (ServerLevel)mob.level();
+                boolean flag = ThreadLocalRandom.current().nextBoolean();
+                if (flag) {
+                    ownableMob = new VexArcher(NoixmodAPIEntities.VEX_ARCHER.get(), serverLevel);
+                } else {
+                    ownableMob = new VexServant(NoixmodAPIEntities.VEX_SERVANT.get(), serverLevel);
                 }
+                ownableMob.setOwner(ownerOrThis(servant, servant));
+                ownableMob.moveTo(servant.position().add(Vec9.of(Maths.randomInteger(2), 0,
+                        Maths.randomInteger(2))));
+                serverLevel.addFreshEntity(ownableMob);
+                ParticleUtil.spawnAnim(ownableMob);
             }
         }
 
@@ -152,33 +153,32 @@ extends OwnableIllager {
             return 100;
         }
 
-        protected void castSpell() {
+        protected void castSpell()
+        {
             LivingEntity livingentity = evokerServant.getTarget();
-            if (livingentity != null) {
-                double d0 = Math.min(livingentity.getY(), evokerServant.getY());
-                double d1 = Math.max(livingentity.getY(), evokerServant.getY()) + 1.0;
-                float f = (float) Mth.atan2(livingentity.getZ() - evokerServant.getZ(), livingentity.getX()
-                        - evokerServant.getX());
-                int k;
-                if (evokerServant.distanceToSqr(livingentity) < 9.0) {
-                    float f2;
-                    for (k = 0;k < 5;++k) {
-                        f2 = f + (float) k * 3.1415927F * 0.4F;
-                        this.createSpellEntity(evokerServant.getX() + Mth.cos(f2) * 1.5,
-                                evokerServant.getZ() + Mth.sin(f2) * 1.5, d0, d1, f2, 0);
-                    }
-
-                    for (k = 0;k < 8;++k) {
-                        f2 = f + k * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
-                        this.createSpellEntity(evokerServant.getX() + Mth.cos(f2) * 2.5,
-                                evokerServant.getZ() + (double) Mth.sin(f2) * 2.5, d0, d1, f2, 3);
-                    }
-                } else {
-                    for (k = 0;k < 16;++k) {
-                        double d2 = 1.25 * (double) (k + 1);
-                        this.createSpellEntity(evokerServant.getX() + Mth.cos(f) * d2,
-                                evokerServant.getZ() + Mth.sin(f) * d2, d0, d1, f, k);
-                    }
+            if (livingentity == null) return;
+            double d0 = Math.min(livingentity.getY(), evokerServant.getY());
+            double d1 = Math.max(livingentity.getY(), evokerServant.getY()) + 1.0;
+            float f = (float)Mth.atan2(livingentity.getZ() - evokerServant.getZ(), livingentity.getX()
+                    - evokerServant.getX());
+            int k;
+            if (evokerServant.closerThan(livingentity, 3.0D)) {
+                float f2;
+                for (k = 0;k < 5;++k) {
+                    f2 = f + (float)k * 3.1415927F * 0.4F;
+                    this.createSpellEntity(evokerServant.getX() + Mth.cos(f2) * 1.5,
+                            evokerServant.getZ() + Mth.sin(f2) * 1.5, d0, d1, f2, 0);
+                }
+                for (k = 0;k < 8;++k) {
+                    f2 = f + k * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
+                    this.createSpellEntity(evokerServant.getX() + Mth.cos(f2) * 2.5,
+                            evokerServant.getZ() + (double)Mth.sin(f2) * 2.5, d0, d1, f2, 3);
+                }
+            } else {
+                for (k = 0;k < 16;++k) {
+                    double d2 = 1.25 * (double)(k + 1);
+                    this.createSpellEntity(evokerServant.getX() + Mth.cos(f) * d2,
+                            evokerServant.getZ() + Mth.sin(f) * d2, d0, d1, f, k);
                 }
             }
         }

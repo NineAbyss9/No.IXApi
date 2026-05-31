@@ -35,12 +35,12 @@ extends AbstractZombieServant {
         targetSelector.addGoal(1, new OwnableTargetGoal<>(this, false));
     }
 
-    public void affect(LivingEntity living) {
-        if (!this.level().isClientSide) {
-            ParticleUtil.sendParticles((ServerLevel)this.level(), ParticleTypes.SCULK_SOUL, living.position(), 2,
-                    0.3, 0.5, 0.3, 0);
-            living.hurt(this.damageSources().indirectMagic(this, this), 0.5F);
-        }
+    public void affect(LivingEntity living)
+    {
+        if (this.level().isClientSide) return;
+        ParticleUtil.sendParticles((ServerLevel)this.level(), ParticleTypes.SCULK_SOUL, living.position(), 2,
+                0.3, 0.5, 0.3, 0);
+        living.hurt(this.damageSources().indirectMagic(this, this), 0.5F);
     }
 
     public boolean shouldBurn() {

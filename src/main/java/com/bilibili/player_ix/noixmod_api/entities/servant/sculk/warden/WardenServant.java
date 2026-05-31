@@ -67,8 +67,8 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 public class WardenServant
@@ -107,7 +107,7 @@ implements VibrationSystem {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(3, new FollowOwnerGoal<>(this, 0.8,
+        this.goalSelector.addGoal(3, new FollowOwnerGoal<>(this, 0.8D,
                 25.0F, 7.0F, false));
         //this.targetSelector.addGoal(0, new WardenTargetGoal(this));
         //this.targetSelector.addGoal(1, new WardenAttackTargetGoal<>(this));
@@ -152,7 +152,7 @@ implements VibrationSystem {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, 72)
-                .add(Attributes.MAX_HEALTH, 500.0).add(Attributes.MOVEMENT_SPEED, 0.30000001192092896)
+                .add(Attributes.MAX_HEALTH, 500.0).add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0).add(Attributes.ATTACK_KNOCKBACK, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 30.0);
     }
@@ -210,8 +210,8 @@ implements VibrationSystem {
 
     public void tick() {
         Level var2 = this.level();
-        if (!var2.isClientSide && var2 instanceof ServerLevel $$0) {
-            VibrationSystem.Ticker.tick($$0, this.vibrationData, this.vibrationUser);
+        if (!var2.isClientSide) {
+            VibrationSystem.Ticker.tick(var2, this.vibrationData, this.vibrationUser);
             /*if (this.isPersistenceRequired() || this.requiresCustomPersistence()) {
                 WardenServantAi.setDigCooldown(this);
             }*/
@@ -225,7 +225,7 @@ implements VibrationSystem {
                             this.getSoundSource(), 5.0F, this.getVoicePitch(), false);
                 }
             }
-            if (this.isPowerful() && this.level().random.nextBoolean())
+            if (this.isPowerful() && ThreadLocalRandom.current().nextBoolean())
                 this.level().addParticle(ParticleTypes.SCULK_SOUL, this.getRandomX(0.8), this.getRandomY(),
                         this.getRandomZ(0.8), 0, 0, 0);
             this.tendrilAnimationO = this.tendrilAnimation;
@@ -392,11 +392,9 @@ implements VibrationSystem {
         DataResult<?> var10000 = AngerManagement.codec(this::canTargetEntity).encodeStart(NbtOps.INSTANCE,
                 this.angerManagement);
         Logger var10001 = LOGGER;
-        Objects.requireNonNull(var10001);
         var10000.resultOrPartial(var10001::error).ifPresent((p_219437_) -> p_219434_.put("anger",
                 (Tag)p_219437_));
         var10000 = VibrationSystem.Data.CODEC.encodeStart(NbtOps.INSTANCE, this.vibrationData);
-        Objects.requireNonNull(var10001);
         var10000.resultOrPartial(var10001::error).ifPresent((p_219418_) -> p_219434_.put("listener",
                 (Tag)p_219418_));
         p_219434_.putInt("PowerLevel", this.getPowerLevel());
@@ -410,7 +408,6 @@ implements VibrationSystem {
             var10000 = AngerManagement.codec(this::canTargetEntity).parse(new Dynamic<>(NbtOps.INSTANCE, p_219415_
                     .get("anger")));
             var10001 = LOGGER;
-            Objects.requireNonNull(var10001);
             var10000.resultOrPartial(var10001::error).ifPresent((p_219394_) -> this.angerManagement =
                     (AngerManagement) p_219394_);
             this.syncClientAngerLevel();
@@ -419,7 +416,6 @@ implements VibrationSystem {
             var10000 = VibrationSystem.Data.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, p_219415_
                     .getCompound("listener")));
             var10001 = LOGGER;
-            Objects.requireNonNull(var10001);
             var10000.resultOrPartial(var10001::error).ifPresent((p_281093_) -> this.vibrationData =
                     (Data)p_281093_);
         }

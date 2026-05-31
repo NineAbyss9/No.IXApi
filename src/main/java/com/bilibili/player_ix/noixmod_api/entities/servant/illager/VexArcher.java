@@ -47,7 +47,6 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
 
     protected void registerGoals() {
         super.registerGoals();
-        //this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(4, new ApiRangedBowAttackGoal(this, 1.5, 14,
                 20f));
         this.goalSelector.addGoal(8, new VexRandomMoveGoal(this));

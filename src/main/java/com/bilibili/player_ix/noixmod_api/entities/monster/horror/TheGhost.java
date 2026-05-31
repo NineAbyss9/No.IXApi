@@ -12,6 +12,7 @@ import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.MeleeGoal;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,15 +23,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.NineAbyss9.math.MathSupport;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TheGhost
 extends AbstractHorrorMob
@@ -42,9 +43,7 @@ implements IFlagMob {
     public TheGhost(EntityType<? extends TheGhost> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.BONE_SWORD.get()));
-        if (this.getNavigation() instanceof GroundPathNavigation n) {
-            n.setCanOpenDoors(true);
-        }
+        ((GroundPathNavigation)this.navigation).setCanOpenDoors(true);
     }
 
     protected void defineSynchedData() {
@@ -56,17 +55,17 @@ implements IFlagMob {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide) {
-            if (this.tickCount % 5 != 0) return;
-            this.level().addParticle(NoixmodAPIParticleTypes.CORRUPTION.get(),
-                    this.getRandomX(0.8), this.getRandomY() - 0.2, this.getRandomZ(0.8),
-                    0, 0.1D, 0);
+            if (this.tickCount % 5 == 0)
+                this.level().addParticle(NoixmodAPIParticleTypes.CORRUPTION.get(),
+                        this.getRandomX(0.8), this.getRandomY() - 0.2, this.getRandomZ(0.8),
+                        0, 0.1D, 0);
         } else {
             if (this.tickCount % 20 == 0) {
                 this.heal(0.5F);
             }
             if (this.isFlag(0) && this.getTarget() != null) {
-                if (this.closerThan(this.getTarget(), 3.1D)) {
-                    if (this.randomUtil.nextFloat() < 0.8F)
+                if (this.closerThan(this.getTarget(), 3.0D)) {
+                    if (this.getRandomUtil().nextFloat() < 0.8F)
                         this.setFlag(1);
                     else
                         this.setFlag(2);
@@ -84,7 +83,7 @@ implements IFlagMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new MeleeGoal(this, 1.0));
         this.goalSelector.addGoal(2, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new OpenDoorGoal(this, false));
+        this.goalSelector.addGoal(3, new HorrorOpenDoorGoal(this));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.8));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(2, new HorrorHurtByTargetGoal(this));
@@ -116,8 +115,9 @@ implements IFlagMob {
         increaseAniTick();
         if (this.aniTickEquals(10)) {
             MobUtils.areaAttack(this, 3.1F, 3F, 90F,
-                    ((float)this.getAttributeValue(Attributes.ATTACK_DAMAGE)) * (MathSupport.random.nextFloat() + 0.2F),
-                    0.05F, 5, this.damageSources().mobAttack(this), false, e -> {
+                    ((float)this.getAttributeValue(Attributes.ATTACK_DAMAGE)) * (ThreadLocalRandom.current()
+                            .nextFloat() + 0.2F), 0.05F, 5, this.damageSources().mobAttack(this),
+                    false, e -> {
                         EntityEventHandler.broadcastEntityEvent(e, 4);
                         this.heal(3F);
                     }, false);
@@ -160,11 +160,17 @@ implements IFlagMob {
 
     public void setTarget(@Nullable LivingEntity pTarget) {
         super.setTarget(pTarget);
-        if (pTarget != null) {
+        if (pTarget != null && !pTarget.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
             pTarget.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0));
             pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 0));
             pTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
         }
+    }
+
+    public boolean killedEntity(ServerLevel pLevel, LivingEntity pEntity)
+    {
+        this.discard();
+        return true;
     }
 
     protected void actuallyHurt(DamageSource pSource, float pAmount) {

@@ -6,6 +6,8 @@ import com.github.NineAbyss9.ix_api.api.mobs.ApiPoseMob;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -36,9 +38,18 @@ implements ApiPoseMob {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide && this.level().random.nextBoolean()) {
-            this.clientLevel().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
+            this.level().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
                     this.getRandomX(1), this.getRandomY(), this.getRandomZ(1),
                     0, 0, 0);
+        }
+    }
+
+    public void spawnAnim()
+    {
+        if (this.level().isClientSide) {
+            ParticleUtil.spawnAnim(this, ParticleTypes.LARGE_SMOKE);
+        } else {
+            this.level().broadcastEntityEvent(this, (byte)20);
         }
     }
 

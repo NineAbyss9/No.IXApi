@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.magic.nihilistic;
 
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIAttributes;
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.server.level.ServerLevel;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticRoarSpell extends NihilisticSpell {
     public NihilisticRoarSpell() {
@@ -21,7 +23,7 @@ public class NihilisticRoarSpell extends NihilisticSpell {
     }
 
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        MobUtils.rangeHurt(6, 0.2, 6, pCaster, pCaster.damageSources().starve(), 9);
+        MobUtils.rangeHurt(6, 0.2, 6, pCaster, NoixmodAPIDamageSource.nihility(pCaster), 9);
         List<LivingEntity> list = pLevel.getEntitiesOfClass(LivingEntity.class, pCaster.getBoundingBox()
                         .inflate(6, 0.3, 6), living -> MobUtils.canHurt(living, pCaster));
         if (!list.isEmpty()) {
@@ -34,7 +36,7 @@ public class NihilisticRoarSpell extends NihilisticSpell {
             }
         }
         pLevel.sendParticles(NoixmodAPIParticleTypes.PURPLE_FLAME.get(), pCaster.getX(), pCaster.getY(), pCaster.getZ(),
-                30, 1.5, 2, 1.5, this.random.nextGaussian() * 0.2);
+                30, 1.5, 2, 1.5, ThreadLocalRandom.current().nextGaussian() * 0.2);
         pLevel.sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), pCaster.getX(), pCaster.getY(), pCaster.getZ(),
                 25, 1, 2, 1, 0);
         pCaster.playSound(SoundEvents.FIRE_EXTINGUISH, 2, 0.75F);

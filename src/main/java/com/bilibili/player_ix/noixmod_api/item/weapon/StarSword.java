@@ -25,8 +25,10 @@ public class StarSword extends ApiSword {
                 -2.3F, new Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1));
     }
 
-    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity player) {
-        player.heal(1F);
+    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity player) {
+        if (player.getHealth() < player.getMaxHealth()) {
+            player.heal(1F);
+        }
         return true;
     }
 
@@ -35,11 +37,11 @@ public class StarSword extends ApiSword {
         pTooltipComponents.add(Component.translatable("info.noixmodapi.star_sword"));
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        List<Apostle> bosses = p_41432_.getEntitiesOfClass(Apostle.class, p_41433_.getBoundingBox()
-                .inflate(99, 3,  99), apostle -> apostle.getOwner() != p_41433_);
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        List<Apostle> bosses = pLevel.getEntitiesOfClass(Apostle.class, pPlayer.getBoundingBox()
+                .inflate(99, 3,  99), apostle -> apostle.getOwner() != pPlayer);
         if (!bosses.isEmpty()) {
-            p_41433_.getCooldowns().addCooldown(this, 600);
+            pPlayer.getCooldowns().addCooldown(this, 600);
             for (Apostle boss : bosses) {
                 boss.handleAfraid();
                 if (boss.isShadow()) {
@@ -47,13 +49,13 @@ public class StarSword extends ApiSword {
                 }
             }
         }
-        List<PowerEntity> powers = p_41432_.getEntitiesOfClass(PowerEntity.class, p_41433_.getBoundingBox()
-                        .inflate(66), power -> power.getOwner() != p_41433_);
+        List<PowerEntity> powers = pLevel.getEntitiesOfClass(PowerEntity.class, pPlayer.getBoundingBox()
+                        .inflate(66), power -> power.getOwner() != pPlayer);
         if (!powers.isEmpty()) {
             for (PowerEntity entity : powers) {
-                entity.hurt(p_41432_.damageSources().playerAttack(p_41433_), 30f);
+                entity.hurt(pLevel.damageSources().playerAttack(pPlayer), 30f);
             }
         }
-        return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
+        return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
     }
 }

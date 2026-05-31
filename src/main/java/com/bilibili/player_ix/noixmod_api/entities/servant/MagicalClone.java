@@ -51,15 +51,11 @@ extends OwnableMob {
         return super.doHurtTarget(p_21372_);
     }
 
-    public void tick() {
-        super.tick();
+    public void aiStep() {
+        super.aiStep();
         if (invTicks > 0) {
             --this.invTicks;
         }
-    }
-
-    public void aiStep() {
-        super.aiStep();
     }
 
     public boolean hurt(DamageSource pSource, float pAmount) {
@@ -89,7 +85,8 @@ extends OwnableMob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return OwnableMob.createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.35).add(Attributes.FOLLOW_RANGE,
-                        128).add(Attributes.MAX_HEALTH, 20).add(Attributes.ATTACK_DAMAGE, 5);
+        return OwnableMob.createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.FOLLOW_RANGE, 128).add(Attributes.MAX_HEALTH, 20)
+                .add(Attributes.ATTACK_DAMAGE, 5);
     }
 }

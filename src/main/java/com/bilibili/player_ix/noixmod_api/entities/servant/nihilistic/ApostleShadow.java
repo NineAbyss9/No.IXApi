@@ -3,11 +3,11 @@ package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
-import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
+import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.ApiOwnerTargetGoal;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -20,20 +20,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class ApostleShadow
 extends Apostle {
+    private int ownerId;
     private long teleportCooldown = 60L;
     public ApostleShadow(EntityType<? extends Apostle> apostle, Level world) {
         super(apostle, world);
-    }
-
-    public ApostleShadow(PlayMessages.SpawnEntity entity, Level world) {
-        this(NoixmodAPIEntities.APOSTLE_SHADOW.get(), world);
     }
 
     public EntityType<?> getType() {
@@ -42,11 +38,6 @@ extends Apostle {
 
     public boolean wouldHaveOwner() {
         return true;
-    }
-
-    @Nullable
-    public LivingEntity getOwner() {
-        return this.owner;
     }
 
     @Nullable
@@ -60,11 +51,14 @@ extends Apostle {
         return this.ownerUUID;
     }
 
-    public void setOwner(@Nullable LivingEntity lie) {
-        this.owner = lie;
-        if (lie != null) {
-            this.setOwnerUUID(lie.getUUID());
-        }
+    public void setOwnerId(int ownerId)
+    {
+        this.ownerId = ownerId;
+    }
+
+    public int getOwnerId()
+    {
+        return ownerId;
     }
 
     public void setOwnerUUID(@Nullable UUID uuid) {
@@ -88,7 +82,7 @@ extends Apostle {
 
     public void tick() {
         super.tick();
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.clientLevel().addParticle(this.getParticleType(), this.getRandomX(0.5), this.getRandomY(),
                     this.getRandomZ(0.5), 0, 0.015, 0);
         }
@@ -129,9 +123,14 @@ extends Apostle {
 
     public void makeParticle() {
         if (!this.level().isClientSide) {
-            WorldUtil.sendParticles(ParticleTypes.LARGE_SMOKE, this, 30, this.random.nextGaussian()
-                    * 0.2);
+            WorldUtil.sendParticles(ParticleTypes.LARGE_SMOKE, this, 30,
+                    this.random.nextGaussian() * 0.2D);
         }
+    }
+
+    public boolean canChangeDimensions()
+    {
+        return false;
     }
 
     public SimpleParticleType getParticleType() {

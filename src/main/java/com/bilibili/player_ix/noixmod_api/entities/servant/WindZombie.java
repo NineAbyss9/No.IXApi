@@ -40,9 +40,10 @@ extends AbstractZombieServant {
 
     public void aiStep() {
         super.aiStep();
-        if (this.tickCount % 100 == 0) {
-            this.summonWind();
+        if (this.tickCount % 100 != 0 || this.level().isClientSide) {
+            return;
         }
+        this.summonWind();
     }
 
     protected boolean shouldDropLoot() {
@@ -56,14 +57,13 @@ extends AbstractZombieServant {
         return super.isInvulnerableTo(pSource);
     }
 
-    private void summonWind() {
-        if (!this.level().isClientSide) {
-            ServerLevel serverLevel = this.serverLevel();
-            WindEntity windEntity = new WindEntity(NoixmodAPIEntities.WIND_ENTITY.get(), serverLevel);
-            windEntity.moveTo(this.position().add(Maths.randomInt(1), 1, Maths.randomInt(1)));
-            windEntity.setOwner(this);
-            serverLevel.addFreshEntity(windEntity);
-        }
+    private void summonWind()
+    {
+        ServerLevel serverLevel = this.serverLevel();
+        WindEntity windEntity = new WindEntity(NoixmodAPIEntities.WIND_ENTITY.get(), serverLevel);
+        windEntity.moveTo(this.position().add(Maths.randomInt(1), 1, Maths.randomInt(1)));
+        windEntity.setOwner(this);
+        serverLevel.addFreshEntity(windEntity);
     }
 
     protected void populateDefaultEquipmentEnchantments(RandomSource pRandom, DifficultyInstance pDifficulty) {

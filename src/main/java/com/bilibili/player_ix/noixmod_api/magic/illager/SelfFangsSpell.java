@@ -9,15 +9,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 
 public class SelfFangsSpell extends IllagerSpell {
-    @Override
     public float spellPower() {
-        return 0;
+        return 10.0F;
     }
 
-    @Override
-    public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        for (int j = 0; j < 5; ++j) {
-            for (int i = 0; i < 5; ++i) {
+    public void castSpell(ServerLevel pLevel, LivingEntity pCaster)
+    {
+        for (int j = 0;j < 5;++j) {
+            for (int i = 0;i < 5;++i) {
                 EvokerFangs fangs = EntityType.EVOKER_FANGS.create(pLevel);
                 if (fangs == null) continue;
                 if (j < 3) {

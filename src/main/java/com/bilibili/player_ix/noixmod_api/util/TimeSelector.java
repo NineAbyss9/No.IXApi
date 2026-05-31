@@ -5,6 +5,7 @@ import java.time.MonthDay;
 import java.util.Calendar;
 
 public class TimeSelector {
+    public static final boolean unupdatedBirthday = birthday();
     public static final int SEC_1D4;
     public static final int HALF_SEC;
     public static final int SEC_Q;

@@ -10,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.NineAbyss9.math.MathSupport;
 
 public class GraveSword
 extends ApiSword
@@ -23,7 +22,7 @@ implements IGraveItem
 
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         if (!pAttacker.level().isClientSide) {
-            if (MathSupport.random.nextFloat() < 0.25F) {
+            if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.25F) {
                 pAttacker.playSound(SoundEvents.SOUL_ESCAPE, 0.6f, 1f);
                 if (pTarget.isAlive()) {
                     pTarget.setHealth(Math.max(pTarget.getHealth() - 5.0F, 0.0F));

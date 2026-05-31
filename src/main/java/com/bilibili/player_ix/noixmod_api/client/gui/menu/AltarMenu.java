@@ -30,7 +30,7 @@ public class AltarMenu extends AbstractContainerMenu {
         this.craftSlots = new AltarContainer(this);
         this.access = accessIn;
         this.player = inventory.player;
-        this.addSlot(new ResultSlot(player, craftSlots, resultSlots, resultSlotIndex, 183, 79) {
+        this.addSlot(new ResultSlot(player, craftSlots, resultSlots, resultSlotIndex, 184, 79) {
             public void onTake(Player pPlayer, ItemStack pStack)
             {
                 super.onTake(pPlayer, pStack);

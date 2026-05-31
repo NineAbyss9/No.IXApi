@@ -462,8 +462,8 @@ implements ApiNihilisticBoss, IFlagMob {
     }
 
     private void selectFlag() {
-        Random randomUtil = this.getRandomUtil();
-        int i = randomUtil.nextInt(26);
+        Random rand = this.getRandomUtil();
+        int i = rand.nextInt(26);
         if (i < 10 && this.data.canAttack()) {
             if (i < 2) {
                 this.setFlag(1);
@@ -484,7 +484,7 @@ implements ApiNihilisticBoss, IFlagMob {
             if (data.isHalfHealth())
                 this.setFlag(8);
             else {
-                if (randomUtil.nextBoolean())
+                if (rand.nextBoolean())
                     this.setFlag(7);
                 else
                     this.setFlag(6);
@@ -643,7 +643,7 @@ implements ApiNihilisticBoss, IFlagMob {
         }
     }
 
-    private float getAttackDamage() {
+    public float getAttackDamage() {
         return 20.0F;
     }
 

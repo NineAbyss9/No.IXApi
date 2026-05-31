@@ -6,21 +6,32 @@ import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ApostleServant
 extends Apostle {
-    public ApostleServant(EntityType<? extends ApostleServant> $$0, Level $$1) {
-        super($$0, $$1);
+    private static final EntityDataAccessor<Optional<UUID>> DATA_OWNER_UNIQUE_ID;
+    private static final EntityDataAccessor<Integer> DATA_OWNER_ID;
+    public ApostleServant(EntityType<? extends ApostleServant> type, Level level) {
+        super(type, level);
+    }
+
+    protected void defineSynchedData()
+    {
+        super.defineSynchedData();
+        this.entityData.define(DATA_OWNER_ID, -1);
+        this.entityData.define(DATA_OWNER_UNIQUE_ID, Optional.empty());
     }
 
     public EntityType<?> getType() {
@@ -68,33 +79,6 @@ extends Apostle {
         return true;
     }
 
-    @Nullable
-    public LivingEntity getOwner() {
-        return this.owner;
-    }
-
-    @Nullable
-    public UUID getOwnerUUID() {
-        if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
-            Entity $$0 = ((ServerLevel)this.level()).getEntity(this.ownerUUID);
-            if ($$0 instanceof LivingEntity lie) {
-                this.setOwner(lie);
-            }
-        }
-        return this.ownerUUID;
-    }
-
-    public void setOwner(@Nullable LivingEntity lie) {
-        this.owner = lie;
-        if (lie != null) {
-            this.setOwnerUUID(lie.getUUID());
-        }
-    }
-
-    public void setOwnerUUID(@Nullable UUID uuid) {
-        this.ownerUUID = uuid;
-    }
-
     public void addAdditionalSaveData(CompoundTag tag) {
         this.addOwnableAdditionalSaveData(tag);
         super.addAdditionalSaveData(tag);
@@ -107,7 +91,7 @@ extends Apostle {
 
     public int healTick() {
         if (this.getOwner() != null) {
-            if (this.isInEnd()) {
+            if (this.inEnd) {
                 return this.healTicker() / 2;
             } else {
                 return this.healTicker();
@@ -128,5 +112,32 @@ extends Apostle {
                 return (int)(30 * health);
             }
         }
+    }
+
+    @Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(DATA_OWNER_UNIQUE_ID).orElse(null);
+    }
+
+    public void setOwnerUUID(@Nullable UUID uuid) {
+        this.entityData.set(DATA_OWNER_UNIQUE_ID, Optional.ofNullable(uuid));
+    }
+
+    public int getOwnerId() {
+        return this.entityData.get(DATA_OWNER_ID);
+    }
+
+    public void setOwnerId(int id) {
+        this.entityData.set(DATA_OWNER_ID, id);
+    }
+
+    public boolean isHostile() {
+        return this.getOwner() instanceof Enemy;
+    }
+
+    static {
+        DATA_OWNER_ID = SynchedEntityData.defineId(ApostleServant.class, EntityDataSerializers.INT);
+        DATA_OWNER_UNIQUE_ID = SynchedEntityData.defineId(ApostleServant.class,
+                EntityDataSerializers.OPTIONAL_UUID);
     }
 }

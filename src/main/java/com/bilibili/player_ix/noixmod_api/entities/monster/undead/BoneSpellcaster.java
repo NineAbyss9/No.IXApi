@@ -25,7 +25,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
-import org.NineAbyss9.math.MathSupport;
 
 public class BoneSpellcaster
 extends OwnableMob
@@ -37,7 +36,7 @@ implements ApiPoseMob, SpellCasterMob
     public BoneSpellcaster(EntityType<? extends BoneSpellcaster> pEntityType, Level pLevel)
     {
         super(pEntityType, pLevel);
-        this.setHostile(true);
+        this.setHostile();
     }
 
     protected void defineSynchedData()
@@ -162,7 +161,7 @@ implements ApiPoseMob, SpellCasterMob
 
         protected void castSpell()
         {
-            for (int i = 0;i < 2 + MathSupport.threadSafeRandom.nextInt(2);i++) {
+            for (int i = 0;i < 2 + java.util.concurrent.ThreadLocalRandom.current().nextInt(2);i++) {
                 var summoned = this.spellcaster.getSummoned();
                 summoned.setHostile(true);
                 this.spellcaster.ownerSummon.integerSummon(summoned, 3);

@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile.summon;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
@@ -40,7 +41,7 @@ extends OwnedEntity {
                     if (!MobUtils.canHurt(living, owner)) {
                         continue;
                     }
-                    living.hurt(this.damageSources().starve(), 6F);
+                    living.hurt(NoixmodAPIDamageSource.nihility(this, this.getOwner()), 6F);
                 }
             }
         }

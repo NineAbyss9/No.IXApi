@@ -12,7 +12,6 @@ import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihi
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.SpellcasterNihilist;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.NihilisticFireball;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticServant;
-import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.Spells;
 import com.bilibili.player_ix.noixmod_api.register.*;
 import com.bilibili.player_ix.noixmod_api.util.EntitiesFinder;
@@ -84,6 +83,10 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     private float power = 1F;
     public int setHurtCooldown;
     Vec3 finalVec = position();
+    private static final int ATTACK = 1;
+    public static final int AVOID = 3;
+    public static final int DIE = 4;
+    public static final int SWEEP = 5;
     public AnimationState attack = new AnimationState();
     public AnimationState avoid = new AnimationState();
     public AnimationState die = new AnimationState();
@@ -155,11 +158,6 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 }
             }
         }
-        if (this.needChangePhase()) {
-            this.setPhase(2);
-            this.setHealth(this.getMaxHealth());
-            this.setPowerPlus();
-        }
         if (this.level().isClientSide) {
             if (this.getRandomUtil().nextBoolean()) {
                 this.level().addParticle(ParticleTypes.END_ROD, this.getRandomX(0.8), this.getRandomY(),
@@ -169,42 +167,23 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                             this.getRandomZ(0.8), 0, 0, 0);
                 }
             }
-        }
-        if (this.summonCooldown <= 0) {
-            NihilisticServant servant = new NihilisticServant(NoixmodAPIEntities.NIHILISTIC_SERVANT.get(), this.level());
-            this.ownerSummonUtil.integerSummon(servant, 4);
-            this.summonCooldown = Maths.toTick(30);
-            if (!this.level().isClientSide) {
-                ParticleUtil.sendParticles((ServerLevel)this.level(), ParticleTypes.LARGE_SMOKE, servant.position(),
-                        15, 1, 0, 1, 0);
+        } else {
+            if (this.needChangePhase()) {
+                this.setPhase(2);
+                this.setHealth(this.getMaxHealth());
+                this.setPowerPlus();
             }
-        }
-        int chance = this.getRandomUtil().nextInt(31);
-        if (target != null) {
-            if (this.cooldown <= 0 && this.isFlag(0)) {
-                if (chance < 5 && this.canAttack()) {
-                    this.setFlag(1);
-                } else if (chance < 6 && this.closerThan(target, 3)) {
-                    this.setFlag(3);
-                } else if (chance < 9 && this.canAttack()) {
-                    this.setFlag(5);
-                } else if (chance < 12) {
-                    this.setFlag(6);
-                } else if (chance < 15 && this.canAttack()) {
-                    this.setFlag(9);
-                } else if (chance < 18) {
-                    this.setFlag(8);
-                } else if (chance < 22) {
-                    setFlag(12);
-                } else if (chance < 25 && canAttack()) {
-                    this.setFlag(10);
-                } else if (chance < 28 && canAttack()) {
-                    this.setFlag(11);
-                } else {
-                    this.setFlag(7);
+            if (this.summonCooldown <= 0) {
+                NihilisticServant servant = new NihilisticServant(NoixmodAPIEntities.NIHILISTIC_SERVANT.get(), this.level());
+                this.ownerSummonUtil.integerSummon(servant, 4);
+                this.summonCooldown = Maths.toTick(30);
+                if (!this.level().isClientSide) {
+                    ParticleUtil.sendParticles((ServerLevel)this.level(), ParticleTypes.LARGE_SMOKE, servant.position(),
+                            15, 1, 0, 1, 0);
                 }
             }
         }
+        this.pickFlag(target);
         if (this.isFlag(0)) return;
         if (this.isFlag(1)) {
             increaseAniTick();
@@ -215,6 +194,15 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 this.doHeal();
             }
             if (this.aniTick(20)) {
+                this.resetState();
+            }
+        } else if (this.isFlag(2))
+        {
+            increaseAniTick();
+            if (this.aniTickEquals(10)) {
+                this.summon();
+            }
+            if (this.aniTick(45)) {
                 this.resetState();
             }
         } else if (this.isFlag(3)) {
@@ -252,7 +240,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                             ParticleUtil.sendParticles((ServerLevel)this.level(), new BlockParticleOption(ParticleTypes.BLOCK,
                                             living.getFeetBlockState()), living.position(), 30, 1.5, 0, 1.5, 0);
                         }
-                        living.hurt(this.damageSources().starve(), this.getAttackDamage(25.0F));
+                        living.hurt(NoixmodAPIDamageSource.nihility(this), this.getAttackDamage(25.0F));
                     }
                 }
             }
@@ -271,7 +259,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                         double d3 = ownerSummonUtil.projectileDouble(target)[2];
                         NihilisticFireball fireBall = new NihilisticFireball(this.level(), this, d1, d2, d3);
                         BlockPos pos = this.blockPosition().offset(n, 4, t).mutable();
-                        fireBall.setDamage(12f + this.randomUtil.nextFloat() * 3);
+                        fireBall.setDamage(12f + this.getRandomUtil().nextFloat() * 3);
                         fireBall.moveTo(pos.getX(), pos.getY() + i, pos.getZ());
                         fireBall.setPosRaw(fireBall.getX(), this.getY(0.5) + 0.5, fireBall.getZ());
                         fireBall.setOwner(this);
@@ -340,8 +328,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                             e.hurt(damageSources().magic(), 12F);
                             setPowerPlus();
                         });
-                    ISpell spell = Spells.CRACK.get();
-                    spell.castSpell(serverLevel(), this);
+                    Spells.CRACK.get().castSpell(serverLevel(), this);
                 }
             }
             if (this.aniTick(40)) {
@@ -402,6 +389,42 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         }
     }
 
+    private void pickFlag(LivingEntity target)
+    {
+        int chance = this.getRandomUtil().nextInt(35);
+        if (target != null) {
+            if (this.cooldown <= 0 && this.isFlag(0)) {
+                if (chance < 5 && this.canAttack()) {
+                    this.setFlag(1);
+                } else if (chance < 3) {
+                    this.setFlag(2);
+                } else if (chance < 6 && this.closerThan(target, 3)) {
+                    this.setFlag(3);
+                } else if (chance < 9 && this.canAttack()) {
+                    this.setFlag(5);
+                } else if (chance < 12) {
+                    this.setFlag(6);
+                } else if (chance < 15 && this.canAttack()) {
+                    this.setFlag(9);
+                } else if (chance < 18) {
+                    this.setFlag(8);
+                } else if (chance < 22) {
+                    setFlag(12);
+                } else if (chance < 25 && canAttack()) {
+                    this.setFlag(10);
+                } else if (chance < 28 && canAttack()) {
+                    this.setFlag(11);
+                } else {
+                    if (this.getRandomUtil().nextFloat() < 0.2F) {
+                        this.setFlag(2);
+                        return;
+                    }
+                    this.setFlag(7);
+                }
+            }
+        }
+    }
+
     public float getSpeed() {
         if (this.immobile()) {
             return 0.0F;
@@ -423,8 +446,8 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             this.setFlag(4);
         }
         if (this.deathTick > 20) {
-            if (this.level() instanceof ServerLevel level) {
-                level.sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), this.getX(), this.getY(), this.getZ(),
+            if (!this.level().isClientSide) {
+                serverLevel().sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), this.getX(), this.getY(), this.getZ(),
                         30, 0.5, 1, 0.5, 0);
             }
             this.remove(RemovalReason.KILLED);
@@ -432,7 +455,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     public boolean killedEntity(ServerLevel pLevel, LivingEntity pEntity) {
-        this.heal(1f + this.getPower() + pEntity.getMaxHealth() / 40);
+        this.heal(1f + this.getPower() + pEntity.getMaxHealth() / 40.0F);
         return super.killedEntity(pLevel, pEntity);
     }
 
@@ -447,7 +470,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
                 this.getCombatTracker().recheckStatus();
                 Level level = this.level();
                 if (!this.level().isClientSide) {
-                    ServerLevel serverlevel = (ServerLevel) this.level();
+                    ServerLevel serverlevel = (ServerLevel)this.level();
                     if (entity == null || entity.killedEntity(serverlevel, this)) {
                         ExperienceOrb.award(serverlevel, this.position(), this.getExperienceReward());
                         this.spawnAtLocation(NoixmodAPIItems.STAR_SWORD.get());
@@ -611,8 +634,8 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     public void avoid() {
-        this.setDeltaMovement(this.getLookAngle().x * -5, this.getDeltaMovement().y,
-                this.getLookAngle().z * -5);
+        this.setDeltaMovement(this.getLookAngle().x * -5.0D, this.getDeltaMovement().y,
+                this.getLookAngle().z * -5.0D);
     }
 
     public int getShieldTick() {
@@ -635,15 +658,15 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         if (this.getPower() < 1F) {
             this.setPower(1F);
         }
-        this.setPower(this.getPower() + 1);
+        this.setPower(this.getPower() + 1.0F);
     }
 
-    public Integer getPhase() {
+    public int getPhase() {
         return this.entityData.get(PHASE);
     }
 
-    public void setPhase(Integer phase) {
-        this.entityData.set(PHASE, Mth.clamp(phase, 1, 2));
+    public void setPhase(int phase) {
+        this.entityData.set(PHASE, phase);
     }
 
     public boolean isSecondPhase() {
@@ -673,7 +696,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         if (this.isSecondPhase()) {
             return false;
         }
-        return this.getHealth() <= this.getMaxHealth() / 3;
+        return this.getHealth() <= this.getMaxHealth() / 3.0F;
     }
 
     @ServerOnly
@@ -690,68 +713,55 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         if (GUARDIAN_FLAG.equals(pKey)) {
             if (this.level().isClientSide()) {
                 switch (this.getFlag()) {
-                    case 0: {
-                        break;
+                    case 0 -> {
                     }
-                    case 1: {
+                    case 1 -> {
                         this.stopAllAnimations();
                         this.attack.startIfStopped(tickCount);
-                        break;
                     }
-                    case 3: {
-                        this.stopAllAnimations();
-                        this.avoid.startIfStopped(tickCount);
-                        break;
-                    }
-                    case 4: {
-                        this.stopAllAnimations();
-                        this.die.start(tickCount);
-                        break;
-                    }
-                    case 5: {
-                        this.stopAllAnimations();
-                        this.sweep.startIfStopped(tickCount);
-                        break;
-                    }
-                    case 6: {
+                    case 2, 6 -> {
                         this.stopAllAnimations();
                         this.summon.startIfStopped(tickCount);
-                        break;
                     }
-                    case 7: {
+                    case 3 -> {
+                        this.stopAllAnimations();
+                        this.avoid.startIfStopped(tickCount);
+                    }
+                    case 4 -> {
+                        this.stopAllAnimations();
+                        this.die.start(tickCount);
+                    }
+                    case 5 -> {
+                        this.stopAllAnimations();
+                        this.sweep.startIfStopped(tickCount);
+                    }
+                    case 7 -> {
                         this.stopAllAnimations();
                         this.teleportAttack.startIfStopped(tickCount);
-                        break;
                     }
-                    case 8: {
+                    case 8 -> {
                         this.stopAllAnimations();
                         this.trust.startIfStopped(tickCount);
-                        break;
                     }
-                    case 9: {
+                    case 9 -> {
                         this.stopAllAnimations();
                         this.sweep1.startIfStopped(tickCount);
-                        break;
                     }
-                    case 10: {
+                    case 10 -> {
                         stopAllAnimations();
                         attack1.startIfStopped(tickCount);
-                        break;
                     }
-                    case 11: {
+                    case 11 -> {
                         stopAllAnimations();
                         ground.startIfStopped(tickCount);
-                        break;
                     }
-                    case 12: {
+                    case 12 -> {
                         stopAllAnimations();
                         trust1.startIfStopped(tickCount);
-                        break;
                     }
-                    default: {
+                    default -> {
                         LOGGER.warn("Can't handle SynchedEvent in {}.", this.getClass());
                         this.setFlag(0);
-                        break;
                     }
                 }
             }
@@ -784,22 +794,35 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         this.heal(healAmount);
     }
 
+    private void summon()
+    {
+        var servant = java.util.concurrent.ThreadLocalRandom.current().nextBoolean() ?
+                NoixmodAPIEntities.NIHILISTIC_STATUE.get().create(this.level()) :
+                NoixmodAPIEntities.GOLEM.get().create(this.level());
+        if (servant == null) return;
+        servant.moveTo(this.position().add(AbyssMath.random(5.0D), 0.0D, AbyssMath.random(5.0D)));
+        servant.setOwner(this);
+        if (this.level().addFreshEntity(servant))
+        {
+            servant.spawnAnim();
+        } else {
+            servant.discard();
+        }
+    }
+
     public boolean doHurtTarget(Entity pEntity) {
-        float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE) + (this.getPower() * 2) +
+        float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE) + (this.getPower() * 2.0F) +
                 (this.getPhase() == 2 ? 3 : 0);
         float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
         this.setPowerPlus();
         float healAmount;
         if (this.isSecondPhase()) {
-            healAmount = this.getMaxHealth() / 150 + this.getPower();
+            healAmount = this.getMaxHealth() / 150.0F + this.getPower();
         } else {
-            healAmount = this.getMaxHealth() / 150;
+            healAmount = this.getMaxHealth() / 150.0F;
         }
         this.heal(healAmount);
-        if (this.getFlag() != 5 && this.getFlag() != 6) {
-            this.setFlag(1);
-        }
-        if (this.level() instanceof ServerLevel && this.isSecondPhase()) {
+        if (!this.level().isClientSide && this.isSecondPhase()) {
             this.spreadStarParticles(pEntity);
         }
         if (pEntity instanceof LivingEntity living) {

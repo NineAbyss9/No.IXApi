@@ -33,18 +33,17 @@ extends RitualSupplies {
     public void onUseTick(Level p_41428_, LivingEntity p_41429_, ItemStack p_41430_, int p_41431_) {
         p_41429_.addEffect(new MobEffectInstance(MobEffects.HUNGER, 10, 0));
         p_41429_.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 10, 0));
-        if (p_41428_.isClientSide()) {
+        if (p_41428_.isClientSide) {
             p_41428_.addParticle(NoixmodAPIParticleTypes.BLOOD.get(), p_41429_.getRandomX(0.5),
                     p_41429_.getY() + 1, p_41429_.getRandomZ(0.5), 0, 0, 0);
         }
-        super.onUseTick(p_41428_, p_41429_, p_41430_, p_41431_);
     }
 
     public ItemStack finishUsingItem(ItemStack p_41409_, Level p_41410_, LivingEntity p_41411_) {
-        if (p_41411_ instanceof Player player) {
+        if (p_41411_ instanceof Player player && !player.isCreative()) {
             ItemUtil.shrink(p_41409_, player);
             player.addItem(new ItemStack(Items.GLASS_BOTTLE));
         }
-        return super.finishUsingItem(p_41409_, p_41410_, p_41411_);
+        return p_41409_;
     }
 }

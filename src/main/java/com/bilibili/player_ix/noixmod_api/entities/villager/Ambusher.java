@@ -40,7 +40,8 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
     public Ambusher(EntityType<Ambusher> type, Level level) {
         super(type, level);
         this.ownerSummon = new OwnerSummon(this);
-        ItemStack stack = Option.of(ItemStacks.of(Items.BOW)).ifOrElse(level.random.nextBoolean(),
+        ItemStack stack = Option.of(ItemStacks.of(Items.BOW)).ifOrElse(
+                java.util.concurrent.ThreadLocalRandom.current().nextBoolean(),
                 ItemStacks.of(Items.IRON_SWORD));
         this.setItemInHand(InteractionHand.MAIN_HAND, stack);
         this.enchantSpawnedWeapon(level.random, 1.0F);
@@ -85,7 +86,8 @@ public class Ambusher extends VillagerFighter implements ApiRangedAttackMob {
                     this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.BREAD));
                 }
             }
-            if (this.tickCount % 80 == 0 && this.isInvisible()) {
+            if (!this.isInvisible()) return;
+            if (this.tickCount % 80 == 0) {
                 heal(1f);
             }
         }

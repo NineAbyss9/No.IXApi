@@ -9,15 +9,15 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 
 public abstract class IllagerServantRenderer<T extends OwnableIllager>
 extends MobRenderer<T, IXIllagerModel<T>> {
-    public IllagerServantRenderer(EntityRendererProvider.Context p_174304_, IXIllagerModel<T> p_174305_,
+    public IllagerServantRenderer(EntityRendererProvider.Context pContext, IXIllagerModel<T> pModel,
                                   float scale) {
-        super(p_174304_, p_174305_, scale);
+        super(pContext, pModel, scale);
     }
 
-    protected void scale(T p_115314_, PoseStack p_115315_, float p_115316_) {
+    protected void scale(T pLivingEntity, PoseStack pPoseStack, float pPartialTickTime) {
         float a = 0.7f;
         float b = 0.975f;
-        float c = p_115314_.isBaby() ? a : b;
-        p_115315_.scale(c, c, c);
+        float c = pLivingEntity.isBaby() ? a : b;
+        pPoseStack.scale(c, c, c);
     }
 }

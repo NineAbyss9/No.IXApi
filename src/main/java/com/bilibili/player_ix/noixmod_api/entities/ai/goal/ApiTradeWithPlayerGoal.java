@@ -17,7 +17,6 @@ public class ApiTradeWithPlayerGoal extends Goal {
         this.setFlags(EnumSet.of(Flag.JUMP, Flag.MOVE));
     }
 
-    @Override
     public boolean canUse() {
         if (!this.mob.isAlive()) {
             return false;
@@ -33,29 +32,25 @@ public class ApiTradeWithPlayerGoal extends Goal {
             Player $$0 = this.merchant.getTradingPlayer();
             if ($$0 == null) {
                 return false;
-            } else return !(this.mob.distanceToSqr($$0) > 16.0);
+            } else
+                return !(this.mob.distanceToSqr($$0) > 16.0);
         }
     }
 
-    @Override
-    public boolean canContinueToUse() {
-        return super.canContinueToUse();
-    }
-
-    @Override
     public void start() {
-        this.mob.getNavigation().stop();
+        if (!this.mob.getNavigation().isDone())
+            this.mob.getNavigation().stop();
     }
 
-    @Override
-    public void tick() {
+    public void tick()
+    {
         Player player = this.merchant.getTradingPlayer();
-        if (player != null) {
-            this.mob.getLookControl().setLookAt(player, 30, 30);
+        if (player == null || this.mob.tickCount % 10 != 0) {
+            return;
         }
+        this.mob.getLookControl().setLookAt(player, 30, 30);
     }
 
-    @Override
     public void stop() {
         this.merchant.setTradingPlayer(null);
     }

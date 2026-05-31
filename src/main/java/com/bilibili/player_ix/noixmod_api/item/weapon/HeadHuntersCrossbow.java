@@ -3,7 +3,6 @@ package com.bilibili.player_ix.noixmod_api.item.weapon;
 
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
-import com.google.common.base.Predicates;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+import org.NineAbyss9.util.function.FunctionCollector;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -37,7 +37,7 @@ extends ProjectileWeaponItem {
     }
 
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-        return Predicates.alwaysFalse();
+        return FunctionCollector.alwaysFalse();
     }
 
     public int getDefaultProjectileRange() {

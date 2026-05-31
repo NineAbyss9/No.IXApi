@@ -8,7 +8,6 @@ public abstract class EndSpell extends Spell {
         super();
     }
 
-    @Override
     public Type getSpellType() {
         return Type.END;
     }

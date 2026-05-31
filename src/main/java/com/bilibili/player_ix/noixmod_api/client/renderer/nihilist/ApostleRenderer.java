@@ -73,7 +73,7 @@ extends MobRenderer<T, NihilistIllagerModel<T>> {
     public ResourceLocation getTextureLocation(T t) {
         if (NoixmodAPIMainConfig.HorrorMode.get())
             return HORROR;
-        else if (TimeSelector.birthday())
+        else if (TimeSelector.unupdatedBirthday)
             return BIRTHDAY;
         else if (t.isSecondPhase())
             return SECOND;

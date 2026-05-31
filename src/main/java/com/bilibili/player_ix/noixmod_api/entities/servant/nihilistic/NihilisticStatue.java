@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
@@ -30,7 +31,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,10 +45,6 @@ implements Nihilistic {
     private int ownerInvTicks;
     public NihilisticStatue(EntityType<? extends NihilisticStatue> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
-    }
-
-    public NihilisticStatue(PlayMessages.SpawnEntity entity, Level world) {
-        this(NoixmodAPIEntities.NIHILISTIC_STATUE.get(), world);
     }
 
     public boolean isAlliedTo(@Nullable Entity p_20355_) {
@@ -81,7 +77,7 @@ implements Nihilistic {
                 f9, this.getZ() + f11, 0.0, 0.0, 0.0);
         LivingEntity owner = this.getOwner();
         if (owner != null) {
-            if (this.tickCount %this.getHealCoolDown() == 0) {
+            if (this.tickCount % this.getHealCoolDown() == 0) {
                 this.heal(this.getHealValue());
                 if (this.level() instanceof ServerLevel level) level.sendParticles(ParticleTypes.SOUL, this.getX(),
                         this.getRandomY(), this.getZ(), 12, 2, 0, 2,
@@ -165,7 +161,8 @@ implements Nihilistic {
                 this.getOwner().addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400, 0));
             }
         }
-        MobUtils.rangeHurt(6, 6, 6, this, this.damageSources().starve(), 12, lie -> lie != this.getOwner()
+        MobUtils.rangeHurt(6, 6, 6, this, NoixmodAPIDamageSource.nihility(this),
+                12, lie -> lie != this.getOwner()
                 && lie != this);
         this.playSound(SoundEvents.FIRE_EXTINGUISH);
         if (!this.level().isClientSide) {
@@ -248,8 +245,8 @@ implements Nihilistic {
                 }
             }
             BlockPos pos = this.blockPosition();
-            BlockPos d = pos.offset(Maths.randomInteger(3, this.randomUtil), 0,
-                    Maths.randomInteger(3, this.randomUtil));
+            BlockPos d = pos.offset(Maths.randomInteger(3, this.getRandomUtil()), 0,
+                    Maths.randomInteger(3, this.getRandomUtil()));
             if (ownable != null) {
                 if (ownable instanceof Mob mob) {
                     SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), p_21684_);

@@ -10,29 +10,45 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public record EntitiesFinder(Entity sourceEntity) {
+/// All are {@linkplain Nullable}
+public record EntitiesFinder(Level source) {
+    public Entity getEntity(UUID uuid)
+    {
+        return getEntity(source, uuid);
+    }
 
-    @Nullable
+    public Entity getEntity(int id)
+    {
+        return getEntity(source, id);
+    }
+
+    public LivingEntity getLivingEntity(UUID uuid)
+    {
+        return getLivingEntity(source, uuid);
+    }
+
+    public LivingEntity getLivingEntity(int id)
+    {
+        return getLivingEntity(source, id);
+    }
+
     @ServerOnly
-    public static Entity getEntity(Level level, @Nullable UUID uuid) {
+    public static Entity getEntity(Level level, UUID uuid) {
         if (uuid == null) {
             return null;
         }
         return ((ServerLevel)level).getEntity(uuid);
     }
 
-    @Nullable
     public static Entity getEntity(Level level, int id) {
         return level.getEntity(id);
     }
 
     @ServerOnly
-    @Nullable
-    public static LivingEntity getLivingEntity(Level level, @Nullable UUID uuid) {
+    public static LivingEntity getLivingEntity(Level level, UUID uuid) {
         return getEntity(level, uuid) instanceof LivingEntity living ? living : null;
     }
 
-    @Nullable
     public static LivingEntity getLivingEntity(Level level, int id) {
         return getEntity(level, id) instanceof LivingEntity living ? living : null;
     }

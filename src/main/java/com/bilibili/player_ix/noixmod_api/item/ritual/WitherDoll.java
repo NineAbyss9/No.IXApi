@@ -2,8 +2,13 @@
 package com.bilibili.player_ix.noixmod_api.item.ritual;
 
 import com.bilibili.player_ix.noixmod_api.entities.boss.NihilisticWitherBoss;
+import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticWither;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
+import com.bilibili.player_ix.noixmod_api.world.ApiSavedData;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -23,31 +28,61 @@ extends Item {
         super(new Item.Properties().rarity(Rarity.RARE));
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        if (p_41432_.isClientSide) {
-            p_41433_.playSound(SoundEvents.EVOKER_CAST_SPELL);
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        if (pLevel.isClientSide) {
+            pPlayer.playSound(SoundEvents.EVOKER_CAST_SPELL);
         } else {
             boolean flag = false;
-            if (p_41432_.dimension() == Level.NETHER) {
-                WitherBoss boss = EntityType.WITHER.create(p_41432_);
+            if (pLevel.dimension() == Level.NETHER) {
+                WitherBoss boss = EntityType.WITHER.create(pLevel);
                 if (boss != null) {
-                    boss.moveTo(p_41433_.position());
+                    boss.moveTo(pPlayer.position());
                     boss.makeInvulnerable();
-                    flag = p_41432_.addFreshEntity(boss);
+                    flag = pLevel.addFreshEntity(boss);
                 }
             } else {
-                NihilisticWitherBoss wither = NoixmodAPIEntities.NIHILISTIC_WITHER_BOSS.get().create(p_41432_);
-                if (wither != null) {
-                    ServerLevel level = (ServerLevel)p_41432_;
-                    wither.moveTo(p_41433_.position());
-                    wither.finalizeSpawn(level, level.getCurrentDifficultyAt(p_41433_.blockPosition()), MobSpawnType.EVENT);
-                    flag = level.addFreshEntity(wither);
+                ServerLevel level = (ServerLevel)pLevel;
+                boolean killed = ApiSavedData.get(level).isNihilisticWitherKilled();
+                if (killed && pPlayer.isCrouching()) {
+                    if (killed && level.getEntitiesOfClass(NihilisticWither.class,
+                                    pPlayer.getBoundingBox().inflate(64.0D),
+                                    e -> e.isOwnedBy(pPlayer)).isEmpty()) {
+                        NihilisticWither wither = NoixmodAPIEntities.NIHILISTIC_WITHER.get().create(pLevel);
+                        if (wither != null) {
+                            wither.moveTo(pPlayer.position());
+                            wither.finalizeSpawn(level, level.getCurrentDifficultyAt(pPlayer.blockPosition()),
+                                    MobSpawnType.EVENT);
+                            wither.setOwner(pPlayer);
+                            if (level.addFreshEntity(wither))
+                            {
+                                pPlayer.getCooldowns().addCooldown(this, 400);
+                                return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
+                            } else {
+                                wither.discard();
+                            }
+                        }
+                    } else {
+                        ServerPlayer player = (ServerPlayer)pPlayer;
+                        player.connection.send(new ClientboundSetActionBarTextPacket(!killed ?
+                                Component.translatable(
+                                "info.noixmodapi.summon_nihilistic_wither.failed") :
+                                Component.translatable("info.noixmodapi.servant.too_many")));
+                        flag = true;
+                    }
+                } else {
+                    NihilisticWitherBoss wither = NoixmodAPIEntities.NIHILISTIC_WITHER_BOSS.get().create(pLevel);
+                    if (wither != null) {
+                        wither.moveTo(pPlayer.position());
+                        wither.finalizeSpawn(level, level.getCurrentDifficultyAt(pPlayer.blockPosition()),
+                                MobSpawnType.EVENT);
+                        flag = level.addFreshEntity(wither);
+                    }
                 }
             }
             if (flag) {
-                p_41433_.getCooldowns().addCooldown(this, 40);
+                pPlayer.getCooldowns().addCooldown(this, 400);
             }
         }
-        return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
+        return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
     }
 }

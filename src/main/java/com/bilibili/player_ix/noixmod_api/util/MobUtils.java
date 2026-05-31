@@ -1,6 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.util;
 
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
 import com.github.NineAbyss9.ix_api.util.Maths;
@@ -42,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -76,7 +79,7 @@ public record MobUtils(Entity entity) {
         Vec3 pos = pTarget.position();
         double d2 = pos.x - pLooker.getX();
         double d1 = pos.z - pTarget.getZ();
-        float rotate = -((float) Mth.atan2(d2, d1)) * (180F / Maths.PI);
+        float rotate = -((float)Mth.atan2(d2, d1)) * (180F / Maths.PI);
         pLooker.setYRot(rotate);
         pLooker.yBodyRot = rotate;
         pLooker.yHeadRot = rotate;
@@ -528,7 +531,73 @@ public record MobUtils(Entity entity) {
         return false;
     }
 
-    //Based on Polarice's MobUtil
+    //Based on Polarice3's MobUtil
+    public static void push(Entity pEntity, Vec3 vec3, double reduction) {
+        push(pEntity, vec3.x, vec3.y, vec3.z, reduction);
+    }
+
+    public static void push(Entity pEntity, double pX, double pY, double pZ) {
+        push(pEntity, pX, pY, pZ, 1.0D);
+    }
+
+    public static void push(Entity pEntity, double pX, double pY, double pZ, double reduction) {
+        if (pEntity instanceof Player player) {
+            if (player.isCreative()) {
+                return;
+            }
+            player.hurtMarked = true;
+            if (!player.level().isClientSide) {
+                player.setOnGround(false);
+            }
+        }
+        double resist = 0.0D;
+        if (pEntity instanceof LivingEntity living && living.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
+            resist = living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) * reduction;
+        }
+        double resist1 = Math.max(0.0D, 1.0D - resist);
+        pEntity.setDeltaMovement(pEntity.getDeltaMovement().add(pX, pY, pZ).scale(resist1));
+        pEntity.hasImpulse = true;
+    }
+
+    @Nullable
+    public static Entity getSingleTarget(Level pLevel, LivingEntity pSource, double pRange, double pRadius) {
+        return getSingleTarget(pLevel, pSource, pRange, pRadius, EntitySelector.NO_CREATIVE_OR_SPECTATOR
+                .and(EntitySelector.ENTITY_STILL_ALIVE).and(entity -> !areAllies(entity, pSource) && entity.isPickable()));
+    }
+
+    @Nullable
+    public static Entity getSingleTarget(Level pLevel, LivingEntity pSource, double pRange, double pRadius,
+                                         Predicate<? super Entity> predicate) {
+        Entity target = null;
+        Vec3 srcVec = pSource.getEyePosition();
+        Vec3 lookVec = pSource.getViewVector(1.0F);
+        double[] lookRange = new double[] {lookVec.x() * pRange, lookVec.y() * pRange, lookVec.z() * pRange};
+        Vec3 destVec = srcVec.add(lookRange[0], lookRange[1], lookRange[2]);
+        List<Entity> possibleList = pLevel.getEntities(pSource, pSource.getBoundingBox().expandTowards(lookRange[0], lookRange[1],
+                        lookRange[2]).inflate(pRadius, pRadius, pRadius), predicate);
+        double hitDist = 0.0D;
+        for (Entity hit : possibleList) {
+            if (pSource.hasLineOfSight(hit) && hit != pSource) {
+                float borderSize = Math.max(0.8F, hit.getPickRadius());
+                AABB collisionBB = hit.getBoundingBox().inflate(borderSize, borderSize, borderSize);
+                Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
+                if (collisionBB.contains(srcVec)) {
+                    if (0.0D <= hitDist) {
+                        target = hit;
+                        hitDist = 0.0D;
+                    }
+                } else if (interceptPos.isPresent()) {
+                    double possibleDist = srcVec.distanceTo(interceptPos.get());
+                    if (possibleDist < hitDist || hitDist == 0.0D) {
+                        target = hit;
+                        hitDist = possibleDist;
+                    }
+                }
+            }
+        }
+        return target;
+    }
+
     public static void moveToGround(Entity entity) {
         HitResult rayTrace = rayTrace(entity);
         if (rayTrace.getType() == HitResult.Type.BLOCK) {

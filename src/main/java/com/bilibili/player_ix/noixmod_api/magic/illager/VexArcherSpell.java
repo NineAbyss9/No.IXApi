@@ -7,19 +7,22 @@ import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class VexArcherSpell extends IllagerSpell {
     public float spellPower() {
         return 100f;
     }
 
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        for (int i = 0;i < pLevel.getRandom().nextInt(3) + 2;i++) {
+        OwnerSummon ownerSummon = new OwnerSummon(pCaster);
+        for (int i = 0;i < ThreadLocalRandom.current().nextInt(3) + 2;i++) {
             VexArcher archer = NoixmodAPIEntities.VEX_ARCHER.get().create(pLevel);
-            if (archer != null) {
-                OwnerSummon ownerSummon = new OwnerSummon(pCaster);
-                ownerSummon.integerSummon(archer, 3);
-                archer.spawnAnim();
+            if (archer == null) {
+                continue;
             }
+            ownerSummon.integerSummon(archer, 3);
+            archer.spawnAnim();
         }
     }
 }

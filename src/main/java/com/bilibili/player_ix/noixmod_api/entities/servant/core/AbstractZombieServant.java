@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractZombieServant
 extends OwnableMob {
@@ -35,7 +36,7 @@ extends OwnableMob {
             "1Player_IX2-931-Zombie-BabySpeed", 0.2, AttributeModifier.Operation.ADDITION);
     public AbstractZombieServant(EntityType<? extends AbstractZombieServant> entityType, Level level) {
         super(entityType, level);
-        if (this.getRandom().nextFloat() <= 0.05F) {
+        if (ThreadLocalRandom.current().nextFloat() <= 0.05F) {
             this.setBaby(true);
         }
     }
@@ -74,12 +75,13 @@ extends OwnableMob {
     public void setBaby(boolean b) {
         super.setBaby(b);
         AttributeInstance instance = this.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (instance != null) {
-            if (b) {
-                instance.addTransientModifier(BABY_SPEED);
-            } else {
-                instance.removeModifier(BABY_SPEED);
-            }
+        if (instance == null) {
+            return;
+        }
+        if (b) {
+            instance.addTransientModifier(BABY_SPEED);
+        } else {
+            instance.removeModifier(BABY_SPEED);
         }
     }
 
@@ -110,27 +112,29 @@ extends OwnableMob {
     }
 
     protected boolean getParticleChance() {
-        return this.random.nextFloat() < 0.1F;
+        return ThreadLocalRandom.current().nextFloat() < 0.1F;
     }
 
     @Nullable
     public abstract ParticleOptions getAmbientParticle();
 
     public void makeParticle() {
-        if (this.level().isClientSide) {
-            double x = this.getRandomX(0.45);
-            double y = this.getRandomY() - 0.01;
-            double z = this.getRandomZ(0.45);
-            if (this.getAmbientParticle() != null) {
-                this.level().addParticle(this.getAmbientParticle(), x, y, z, 0, 0, 0);
-            }
+        if (!this.level().isClientSide) {
+            return;
         }
+        if (this.getAmbientParticle() == null) {
+            return;
+        }
+        double x = this.getRandomX(0.45);
+        double y = this.getRandomY() - 0.01;
+        double z = this.getRandomZ(0.45);
+        this.level().addParticle(this.getAmbientParticle(), x, y, z, 0, 0, 0);
     }
 
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
-        if (this.getRandom().nextInt(5) == 0) {
+        if (ThreadLocalRandom.current().nextInt(5) == 0) {
             ItemStack stack;
-            if (this.getRandom().nextBoolean()) {
+            if (ThreadLocalRandom.current().nextBoolean()) {
                 stack = ItemStacks.of(Items.IRON_SWORD);
             } else {
                 stack = ItemStacks.of(Items.STONE_AXE);
@@ -148,6 +152,7 @@ extends OwnableMob {
 
     public void aiStep() {
         super.aiStep();
+        if (this.tickCount % 10 != 0) return;
         MobUtils.burnInTheSun(this.shouldBurn(), this, 8);
     }
 
@@ -198,12 +203,13 @@ extends OwnableMob {
 
         protected void checkAndPerformAttack(LivingEntity p_25557_, double p_25558_) {
             double d0 = this.getAttackReachSqr(p_25557_);
-            if (p_25558_ <= d0 && this.ticksUntilNextAttack <= 0) {
-                this.zombieServant.affect(p_25557_);
-                this.resetAttackCooldown();
-                this.mob.swing(InteractionHand.MAIN_HAND);
-                this.mob.doHurtTarget(p_25557_);
+            if (!(p_25558_ <= d0) || this.ticksUntilNextAttack > 0) {
+                return;
             }
+            this.zombieServant.affect(p_25557_);
+            this.resetAttackCooldown();
+            this.mob.swing(InteractionHand.MAIN_HAND);
+            this.mob.doHurtTarget(p_25557_);
         }
     }
 }

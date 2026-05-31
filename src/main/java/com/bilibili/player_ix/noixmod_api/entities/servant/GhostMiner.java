@@ -22,8 +22,6 @@ extends AbstractGhost {
         this.setItemInHand(InteractionHand.MAIN_HAND, Items.IRON_AXE.getDefaultInstance());
     }
 
-
-
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new MineBlockGoal(this));
         this.addBehaviorGoal(3, 0.8D, 10.0F);
@@ -33,6 +31,7 @@ extends AbstractGhost {
         protected final Mob mob;
         protected boolean hasBlock;
         protected BlockPos blockPos = BlockPos.ZERO;
+        @SuppressWarnings("unused")
         private static final int DEFAULT_DOOR_BREAK_TIME = 240;
         protected int breakTime;
         protected int lastBreakProgress = -1;

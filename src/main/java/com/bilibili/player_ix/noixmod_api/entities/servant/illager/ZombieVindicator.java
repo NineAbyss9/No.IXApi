@@ -160,25 +160,26 @@ implements Ownable, IConversion {
         this.entityData.set(CONVERSION_TICK, tick);
     }
 
-    public void performConvert() {
-        if (!this.level().isClientSide) {
-            Mob mob;
-            ServerLevel serverLevel = this.serverLevel();
-            if (this.hasEffect(MobEffects.LUCK))
-                mob = EntityType.VILLAGER.create(serverLevel);
-            else if (this.hasEffect(MobEffects.WEAKNESS))
-                mob = NoixmodAPIEntities.PILLAGER_SERVANT.get().create(serverLevel);
-            else
-                mob = null;
-            if (mob != null) {
-                this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED);
-                mob.moveTo(position());
-                WorldUtil.nullableFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(blockPosition()),
-                        MobSpawnType.CONVERSION);
-                serverLevel.addFreshEntity(mob);
-                this.discard();
-            }
+    public void performConvert()
+    {
+        if (this.level().isClientSide) {
+            return;
         }
+        Mob mob;
+        ServerLevel serverLevel = this.serverLevel();
+        if (this.hasEffect(MobEffects.WEAKNESS))
+            mob = NoixmodAPIEntities.PILLAGER_SERVANT.get().create(serverLevel);
+        else
+            mob = EntityType.VILLAGER.create(serverLevel);
+        if (mob == null) {
+            return;
+        }
+        this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED);
+        mob.moveTo(position());
+        WorldUtil.nullableFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(blockPosition()),
+                MobSpawnType.CONVERSION);
+        serverLevel.addFreshEntity(mob);
+        this.discard();
     }
 
     public void addEffect() {
@@ -232,7 +233,7 @@ implements Ownable, IConversion {
     }
 
     public void makeParticle() {
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             double x = this.getRandom().nextGaussian() * 0.2;
             double y = this.getRandom().nextGaussian() * 0.2;
             double z = this.getRandom().nextGaussian() * 0.2;

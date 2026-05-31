@@ -132,7 +132,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             this.spin = (-Maths.CLOSER_PI);
         }
         this.abyssData.tickPhase();
-        int chance = randomUtil.nextInt(19);
+        int chance = getRandomUtil().nextInt(19);
         if (this.canChangeFlag()) {
             if (this.isSecondPhase()) {
                 if (chance < 7) {

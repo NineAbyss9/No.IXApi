@@ -62,28 +62,27 @@ extends VillagerFighter {
 
     public void aiStep() {
         super.aiStep();
-        if (this.tickCount % 20 == 0) {
-            this.heal(1F);
+        if (this.tickCount % 20 != 0) {
+            return;
         }
+        this.heal(1F);
     }
 
     private class FireSpellGoal
     extends UseSpellGoal {
-
-        @Override
-        protected void performSpellCasting() {
+        protected void performSpellCasting()
+        {
             LivingEntity living = Exorcist.this.getTarget();
-            if (living != null) {
-                List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, living.getBoundingBox().inflate(4),
-                        target -> MobUtils.canHurt(target, Exorcist.this));
-                for (LivingEntity target : list) {
-                    target.hurt(damageSources().indirectMagic(Exorcist.this, Exorcist.this), 6.0f);
-                }
-                if (!level().isClientSide()) {
-                    EntityEventHandler.broadcastEntityEvent(living, 2);
-                }
-                living.playSound(SoundEvents.FIRE_EXTINGUISH);
+            if (living == null) {
+                return;
             }
+            List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, living.getBoundingBox().inflate(4),
+                    target -> MobUtils.canHurt(target, Exorcist.this));
+            for (LivingEntity target : list) {
+                target.hurt(damageSources().indirectMagic(Exorcist.this, Exorcist.this), 6.0f);
+            }
+            EntityEventHandler.broadcastEntityEvent(living, 2);
+            living.playSound(SoundEvents.FIRE_EXTINGUISH);
         }
 
         @Override
@@ -110,30 +109,29 @@ extends VillagerFighter {
 
     private class AttackSpellGoal
     extends UseSpellGoal {
-
-        @Override
         protected void performSpellCasting() {
             LivingEntity livingentity = Exorcist.this.getTarget();
-            if (livingentity != null) {
-                double d0 = Math.min(livingentity.getY(), Exorcist.this.getY());
-                double d1 = Math.max(livingentity.getY(), Exorcist.this.getY()) + 1.0;
-                float f = (float)Mth.atan2(livingentity.getZ() - Exorcist.this.getZ(), livingentity.getX() -
-                        Exorcist.this.getX());
-                int k;
-                for (int i = 0; i < 9; ++i) {
-                    float f2;
-                    for (k = 0; k < 5; ++k) {
-                        f2 = f + (float) k * 3.1415927F * 0.4F;
-                        this.createSpellEntity(livingentity.getX() + (double) Mth.cos(f2) * 1.5,
-                                livingentity.getZ() + (double) Mth.sin(f2) * 1.5, d0, d1, f2, 0);
-                    }
-                    for (k = 0; k < 8; ++k) {
-                        f2 = f + (float) k * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
-                        this.createSpellEntity(livingentity.getX() + (double) Mth.cos(f2) * 2.5,
-                                livingentity.getZ() + (double) Mth.sin(f2) * 2.5, d0, d1, f2, 3);
-                    }
-                    this.createSpellEntity(livingentity.getX(), livingentity.getZ(), d0, d1, 0, 5);
+            if (livingentity == null) {
+                return;
+            }
+            double d0 = Math.min(livingentity.getY(), Exorcist.this.getY());
+            double d1 = Math.max(livingentity.getY(), Exorcist.this.getY()) + 1.0;
+            float f = (float)Mth.atan2(livingentity.getZ() - Exorcist.this.getZ(), livingentity.getX() -
+                    Exorcist.this.getX());
+            int k;
+            for (int i = 0; i < 9; ++i) {
+                float f2;
+                for (k = 0; k < 5; ++k) {
+                    f2 = f + (float) k * 3.1415927F * 0.4F;
+                    this.createSpellEntity(livingentity.getX() + (double) Mth.cos(f2) * 1.5,
+                            livingentity.getZ() + (double) Mth.sin(f2) * 1.5, d0, d1, f2, 0);
                 }
+                for (k = 0; k < 8; ++k) {
+                    f2 = f + (float) k * 3.1415927F * 2.0F / 8.0F + 1.2566371F;
+                    this.createSpellEntity(livingentity.getX() + (double) Mth.cos(f2) * 2.5,
+                            livingentity.getZ() + (double) Mth.sin(f2) * 2.5, d0, d1, f2, 3);
+                }
+                this.createSpellEntity(livingentity.getX(), livingentity.getZ(), d0, d1, 0, 5);
             }
         }
 
@@ -191,8 +189,6 @@ extends VillagerFighter {
     }
 
     private class KnockbackSpellGoal extends UseSpellGoal {
-
-        @Override
         protected void performSpellCasting() {
             double x = Exorcist.this.getX();
             double y = Exorcist.this.getY();
@@ -200,7 +196,7 @@ extends VillagerFighter {
             MobUtils.rangeHurt(4, 4, 4, Exorcist.this, Exorcist.this.damageSources().indirectMagic(
                     Exorcist.this, Exorcist.this
             ), 10F);
-            if (!Exorcist.this.level().isClientSide()) EntityEventHandler.broadcastEntityEvent(Exorcist.this, 2);
+            EntityEventHandler.broadcastEntityEvent(Exorcist.this, 2);
             MobUtils.push(4, 4, 4, Exorcist.this, x / z * 1.2, 0.1, y / z * 1.2);
         }
 

@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.util;
 
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
+import net.minecraft.core.particles.ParticleOptions;
 import org.NineAbyss9.util.Option;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**The {@linkplain EntityEventHandler} class provides prepared codes for coders.
  * The method {@linkplain #broadcastEntityEvent(Entity, int)} is the main content.For example:
@@ -37,24 +39,15 @@ public class EntityEventHandler {
 
     public static void broadcastEntityEvent(Entity entity, int event) {
         switch (event) {
-            case 0 :{
-                ((ServerLevel)entity.level()).sendParticles(ParticleTypes.SMOKE,
-                        entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
-                        0.5, 0.1);
-                break;
-            }
-            case 1: {
-                ((ServerLevel)entity.level()).sendParticles(ParticleTypes.CRIT,
-                        entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
-                        0.5, 0.1);
-                break;
-            }
-            case 2: {
-                ((ServerLevel)entity.level()).sendParticles(NoixmodAPIParticleTypes.GOLDEN_FLAME.get(),
-                        entity.getX(), entity.getY(), entity.getZ(), 30, 1, 2, 1, 0);
-                break;
-            }
-            case 3: {
+            case 0 -> ((ServerLevel)entity.level()).sendParticles(ParticleTypes.SMOKE,
+                    entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
+                    0.5, 0.1);
+            case 1 -> ((ServerLevel)entity.level()).sendParticles(ParticleTypes.CRIT,
+                    entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
+                    0.5, 0.1);
+            case 2 -> ((ServerLevel)entity.level()).sendParticles(NoixmodAPIParticleTypes.GOLDEN_FLAME.get(),
+                    entity.getX(), entity.getY(), entity.getZ(), 30, 1, 2, 1, 0);
+            case 3 ->  {
                 if (entity instanceof LivingEntity living) {
                     MobEffectInstance instance = living.getEffect(NoixmodAPIMobEffects.TETANUS.get());
                     if (living.hasEffect(NoixmodAPIMobEffects.TETANUS.get()) && instance != null) {
@@ -64,15 +57,11 @@ public class EntityEventHandler {
                         living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 60, 0));
                     }
                 }
-                break;
             }
-            case 4: {
-                ((ServerLevel)entity.level()).sendParticles(NoixmodAPIParticleTypes.BLOOD.get(),
-                        entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
-                        0.5, 0.1);
-                break;
-            }
-            case 5: {
+            case 4 -> ((ServerLevel)entity.level()).sendParticles(NoixmodAPIParticleTypes.BLOOD.get(),
+                    entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
+                    0.5, 0.1);
+            case 5 -> {
                 if (entity instanceof Mourner mourner) {
                     Option<LivingEntity> var10000 = Option.ofNullable(mourner.getTarget());
                     var10000.filter(living ->  MobUtils.canHurt(living, mourner)).filter((p_217707_) ->
@@ -94,10 +83,9 @@ public class EntityEventHandler {
                         double $$9 = 2.5 * (1.0 - p_217704_.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                         p_217704_.push($$5.x() * $$9, $$5.y() * $$8, $$5.z() * $$9);
                     });
-                    break;
                 }
             }
-            case 6: {
+            case 6 -> {
                 if (entity instanceof Mob mob) {
                     Option<LivingEntity> var10000 = Option.ofNullable(mob.getTarget());
                     var10000.filter(living ->  MobUtils.canHurt(living, mob)).filter(target ->
@@ -128,14 +116,28 @@ public class EntityEventHandler {
                         }
                     });
                 }
-                break;
             }
-            default:{
-                NoixmodAPI.LOGGER.warn("Cannot handle event {} in EntityEventHandler.Error code: {}",
-                        event, ErrorCodes.ENTITY_EVENT_HANDLER);
-                break;
-            }
+            default -> NoixmodAPI.LOGGER.warn("Cannot handle event {} in EntityEventHandler.Error code: {}",
+                    event, ErrorCodes.ENTITY_EVENT_HANDLER);
         }
+    }
+
+    @ServerOnly
+    public static void wardenBoom(Entity entity, LivingEntity var1, double var2, ParticleOptions pParticle,
+                                  Consumer<LivingEntity> action) {
+        Option<LivingEntity> var10000 = Option.of(var1);
+        var10000.filter(living ->  MobUtils.canHurt(living, entity)).filter((target) ->
+                entity.closerThan(target, Mth.square(var2))).ifPresent((target) -> {
+            Vec3 $$3 = entity.position().add(0.0, 1.600000023841858, 0.0);
+            Vec3 $$4 = target.getEyePosition().subtract($$3);
+            Vec3 $$5 = $$4.normalize();
+            for (int $$6 = 1; $$6 < Mth.floor($$4.length()) + 7; ++$$6) {
+                Vec3 $$7 = $$3.add($$5.scale($$6));
+                ((ServerLevel)target.level()).sendParticles(pParticle, $$7.x, $$7.y, $$7.z, 1,
+                        0.0, 0.0, 0.0, 0.0);
+            }
+            action.accept(target);
+        });
     }
 
     @ServerOnly

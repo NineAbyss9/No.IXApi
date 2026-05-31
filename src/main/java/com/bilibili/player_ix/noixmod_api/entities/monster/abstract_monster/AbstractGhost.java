@@ -12,6 +12,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
+/**We have overridden {@linkplain #getPoses()} method*/
 public abstract class AbstractGhost
 extends OwnableMob
 implements ApiPoseMob {
@@ -38,6 +39,10 @@ implements ApiPoseMob {
     }
 
     public ApiPose getPoses() {
-        return ApiPose.NATURAL;
+        if (this.isAggressive()) {
+            return ApiPose.ATTACKING;
+        } else {
+            return ApiPose.CROSSED;
+        }
     }
 }

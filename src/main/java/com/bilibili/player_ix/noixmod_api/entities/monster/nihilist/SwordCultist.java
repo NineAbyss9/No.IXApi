@@ -58,7 +58,7 @@ public class SwordCultist extends Nihilist implements Enemy {
     public boolean doHurtTarget(Entity p_21372_) {
         if (!p_21372_.level().isClientSide) {
             WorldUtil.sendParticles(NoixmodAPIParticleTypes.PURPLE_FLAME.get(), p_21372_,
-                    9, 0, 2, 0, this.randomUtil.nextGaussian() * 0.3);
+                    9, 0, 2, 0, this.getRandomUtil().nextGaussian() * 0.3);
         }
         return super.doHurtTarget(p_21372_);
     }
@@ -66,7 +66,7 @@ public class SwordCultist extends Nihilist implements Enemy {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         float damage = Math.min(10f, pAmount);
-        if (this.randomUtil.nextInt(3) == 0) {
+        if (this.getRandomUtil().nextInt(3) == 0) {
             if (!this.level().isClientSide) {
                 WorldUtil.sendParticles(NoixmodAPIParticleTypes.PURPLE_FLAME.get(),
                         this, 4, 1, 2, 1, 0);

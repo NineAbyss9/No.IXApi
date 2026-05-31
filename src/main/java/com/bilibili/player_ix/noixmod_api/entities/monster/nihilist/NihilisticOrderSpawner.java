@@ -19,10 +19,9 @@ import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.Iterator;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticOrderSpawner {
-    private final Random random = new Random();
     private int tickDelay;
     private int spawnDelay;
     private int spawnChance;
@@ -48,7 +47,7 @@ public class NihilisticOrderSpawner {
                 this.spawnDelay = Maths.toTick(2400);
                 int $$3 = this.spawnChance;
                 this.spawnChance = Mth.clamp(this.spawnChance + 25, 25, 75);
-                if (this.random.nextInt(100) > $$3) {
+                if (ThreadLocalRandom.current().nextInt(100) > $$3) {
                     return 0;
                 } else if (this.spawn(level)) {
                     this.spawnChance = 25;

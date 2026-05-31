@@ -7,6 +7,8 @@ import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class LavaZombieSpell
 extends NetherSpell {
     public LavaZombieSpell() {
@@ -18,7 +20,7 @@ extends NetherSpell {
     }
 
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        for (int i = 0; i < this.random.nextInt(3) + 2; ++i) {
+        for (int i = 0;i < ThreadLocalRandom.current().nextInt(3) + 2;++i) {
             LavaZombieServant servant = new LavaZombieServant(NoixmodAPIEntities.LAVA_ZOMBIE_SERVANT.get(), pLevel);
             OwnerSummon ownerSummon = new OwnerSummon(pCaster);
             ownerSummon.integerSummon(servant, 2);

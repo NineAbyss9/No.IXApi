@@ -13,20 +13,17 @@ extends Spell {
         super();
     }
 
-    @Override
     public Type getSpellType() {
         return Type.MISC;
     }
 
-    @Override
     public float spellPower() {
         return 12;
     }
 
-    @Override
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
         BlockPos pos = pCaster.blockPosition().below();
         pLevel.removeBlock(pos, true);
-        pLevel.setBlock(pos, Blocks.GOLD_BLOCK.defaultBlockState(), 1);
+        pLevel.setBlock(pos, Blocks.GOLD_BLOCK.defaultBlockState(), 3);
     }
 }

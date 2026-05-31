@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.projectile.arrow;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIDamageSource;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.github.NineAbyss9.ix_api.util.Vec9;
@@ -69,7 +70,7 @@ implements Nihilistic {
     }
 
     public void makeHurt() {
-        MobUtils.rangeHurt(2, 2, 2, this, this.damageSources().starve(), 6);
+        MobUtils.rangeHurt(2, 2, 2, this, NoixmodAPIDamageSource.nihilityOwner(this), 6);
         if (!level().isClientSide) {
             ServerLevel level = (ServerLevel)level();
             level.sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), this.getX(), this.getY(), this.getZ(),

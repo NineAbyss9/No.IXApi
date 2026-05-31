@@ -15,7 +15,7 @@ extends AbstractTouhouEntity
     }
 
     public boolean isHorror() {
-        return HorrorModeManager.spawnTerribleMobs();
+        return HorrorModeManager.horrorModeEnabled();
     }
 
     /// Except 觉

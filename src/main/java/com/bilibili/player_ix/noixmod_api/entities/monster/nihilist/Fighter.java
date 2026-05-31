@@ -5,7 +5,6 @@ import com.github.NineAbyss9.ix_api.api.mobs.ApiNeutralMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IActive;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Nihilist;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,7 +28,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -48,14 +46,12 @@ implements ApiNeutralMob, IActive {
         EnchantmentHelper.enchantItem(level.random, this.getMainHandItem(), 4, false);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_ACTIVE, false);
         this.entityData.define(DATA_FAILED, false);
     }
 
-    @Override
     public NihilistArmPose getArmPose() {
         if (this.isAggressive()) {
             return NihilistArmPose.ATTACKING;
@@ -63,11 +59,6 @@ implements ApiNeutralMob, IActive {
             return NihilistArmPose.SPELL_CASTING;
         }
         return NihilistArmPose.CROSSED;
-    }
-
-    public Fighter(PlayMessages.SpawnEntity entity, Level level) {
-        this(NoixmodAPIEntities.FIGHTER.get(), level);
-        entity.getEntity();
     }
 
     @Nullable

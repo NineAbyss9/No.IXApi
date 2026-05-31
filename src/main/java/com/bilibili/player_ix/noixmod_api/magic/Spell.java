@@ -11,8 +11,6 @@ import java.util.function.BiConsumer;
 
 public abstract class Spell
 implements ISpell {
-    protected final ThreadLocalRandom random
-            = ThreadLocalRandom.current();
     protected Spell() {
     }
 
@@ -24,6 +22,31 @@ implements ISpell {
 
     public boolean defaultCastSpell(ServerLevel pLevel, LivingEntity pCaster) {
         return MinecraftForge.EVENT_BUS.post(new SpellCastEvent(pLevel, pCaster, this.getSpellType(), this));
+    }
+
+    protected ThreadLocalRandom random()
+    {
+        return ThreadLocalRandom.current();
+    }
+
+    protected double nextDouble(double start, double end)
+    {
+        return random().nextDouble(start, end);
+    }
+
+    protected float nextFloat(float start, float end)
+    {
+        return random().nextFloat(start, end);
+    }
+
+    protected double nextDouble()
+    {
+        return random().nextDouble();
+    }
+
+    protected float nextFloat()
+    {
+        return random().nextFloat();
     }
 
     public static ISpell of(Type type, float spellPower, BiConsumer<ServerLevel, LivingEntity> consumer) {
@@ -45,7 +68,7 @@ implements ISpell {
     }
 
     public enum Type {
-        OVER_WORLD,
+        OVERWORLD,
         WATER,
         NETHER,
         END,

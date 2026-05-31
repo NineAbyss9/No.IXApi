@@ -69,9 +69,10 @@ extends SavedData {
 
     public void loadInstance(CompoundTag pCompoundTag)
     {
-        LOGGER.info("Loading instance...");
+        LOGGER.debug("Loading instance...");
         tick = pCompoundTag.getLong("Tick");
         CompoundTag tag = pCompoundTag.getCompound("HorrorModeManager");
+        if (tag.isEmpty()) return;
         manager.load(tag);
     }
 

@@ -13,11 +13,11 @@ public class Stun extends MobEffect {
         super(MobEffectCategory.HARMFUL, 16762624);
     }
 
-    public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {
-        if (p_19467_ instanceof Mob mob) {
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+        if (pLivingEntity instanceof Mob mob) {
             mob.setNoAi(true);
         }
-        p_19467_.setJumping(false);
+        pLivingEntity.setJumping(false);
     }
 
     public double getAttributeModifierValue(int p_19457_, AttributeModifier p_19458_) {

@@ -4,6 +4,7 @@ package com.bilibili.player_ix.noixmod_api.entities.servant.nether;
 import com.bilibili.player_ix.noixmod_api.entities.projectile.LittleFireball;
 import com.bilibili.player_ix.noixmod_api.entities.servant.core.FlyingOwnable;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
+import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -81,10 +82,10 @@ extends FlyingOwnable {
         this.calculateEntityAnimation(false);
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1, 30, 10, true));
+        this.goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1, 30,
+                10, true));
         this.goalSelector.addGoal(5, new GhastRandomMoveGoal(this));
         this.goalSelector.addGoal(7, new GhastLookGoal(this));
         this.goalSelector.addGoal(7, new ShootFireballGoal(this));
@@ -118,8 +119,9 @@ extends FlyingOwnable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return FlyingOwnable.createPathAttributes().add(Attributes.MAX_HEALTH, 10).add(Attributes.MOVEMENT_SPEED,
-                        0.5).add(Attributes.FOLLOW_RANGE, 100).add(Attributes.FLYING_SPEED, 8);
+        return ApiPathfinderMob.createPathAttributes().add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.FOLLOW_RANGE, 1000.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     public boolean isCharging() {
@@ -167,7 +169,7 @@ extends FlyingOwnable {
             if ($$0 == null) {
                 return;
             }
-            if ($$0.distanceToSqr(this.ghast) < 4096.0 && this.ghast.hasLineOfSight($$0)) {
+            if ($$0.distanceToSqr(this.ghast) < 4096.0D && this.ghast.hasLineOfSight($$0)) {
                 Level $$2 = this.ghast.level();
                 ++this.chargeTime;
                 if (this.chargeTime == 10 && !this.ghast.isSilent()) {

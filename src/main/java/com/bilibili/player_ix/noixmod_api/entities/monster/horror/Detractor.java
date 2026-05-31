@@ -27,7 +27,7 @@ public class Detractor extends AbstractHorrorMob {
 
     public void aiStep() {
         super.aiStep();
-        if (!this.level().isClientSide || MathSupport.random.nextBoolean()) {
+        if (!this.level().isClientSide || java.util.concurrent.ThreadLocalRandom.current().nextBoolean()) {
             return;
         }
         ParticleUtil.addRedStoneParticle(this, this.getRandomX(0.5), this.getRandomY(),

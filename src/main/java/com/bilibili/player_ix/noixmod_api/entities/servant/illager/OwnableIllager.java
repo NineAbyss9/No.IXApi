@@ -34,8 +34,8 @@ extends OwnableMob
 implements ApiPoseMob, SpellCasterMob {
     protected static final EntityDataAccessor<Integer> SPELL_TICK;
     protected static final EntityDataAccessor<APISpells.APISpell> SPELL;
-    protected OwnableIllager(EntityType<? extends OwnableIllager> entityType, Level level) {
-        super(entityType, level);
+    protected OwnableIllager(EntityType<? extends OwnableIllager> entityType, Level levelIn) {
+        super(entityType, levelIn);
         this.xpReward = 3;
     }
 

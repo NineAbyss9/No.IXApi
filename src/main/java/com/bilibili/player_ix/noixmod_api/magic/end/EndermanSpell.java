@@ -9,6 +9,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class EndermanSpell extends EndSpell {
     public EndermanSpell() {super();}
 
@@ -17,7 +19,7 @@ public class EndermanSpell extends EndSpell {
     }
 
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster) {
-        for (int i = 0; i < this.random.nextInt(3) + 1;i++) {
+        for (int i = 0;i < ThreadLocalRandom.current().nextInt(3) + 1;i++) {
             EnderManServant man = NoixmodAPIEntities.ENDER_MAN_SERVANT.get().create(pLevel);
             OwnerSummon ownerSummon = new OwnerSummon(pCaster);
             if (man != null) {

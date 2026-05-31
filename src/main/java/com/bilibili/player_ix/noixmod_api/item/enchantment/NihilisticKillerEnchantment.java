@@ -19,12 +19,12 @@ public class NihilisticKillerEnchantment extends Enchantment {
         super(Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.values());
     }
 
-    public int getMinCost(int p_44572_) {
-        return 1 + (p_44572_ - 1) * 12;
+    public int getMinCost(int pLevel) {
+        return 1 + (pLevel - 1) * 12;
     }
 
-    public int getMaxCost(int p_44574_) {
-        return this.getMinCost(p_44574_) + 17;
+    public int getMaxCost(int pLevel) {
+        return this.getMinCost(pLevel) + 17;
     }
 
     public int getMaxLevel() {
@@ -39,16 +39,16 @@ public class NihilisticKillerEnchantment extends Enchantment {
     }
 
     @SuppressWarnings("deprecation")
-    public float getDamageBonus(int p_44682_, MobType p_44683_) {
-        if (ApiMobType.isNihilistic(p_44683_)) {
-            return Maths.smite(p_44682_);
+    public float getDamageBonus(int pLevel, MobType pType) {
+        if (ApiMobType.isNihilistic(pType)) {
+            return Maths.smite(pLevel);
         }
         return 0.0f;
     }
 
-    public void doPostHurt(LivingEntity p_44692_, Entity p_44693_, int p_44694_) {
-        if (p_44693_ instanceof LivingEntity $$3 && ApiMobType.isNihilistic($$3.getMobType())){
-            int $$4 = 20 + p_44692_.getRandom().nextInt(10 * p_44694_);
+    public void doPostHurt(LivingEntity pTarget, Entity pAttacker, int pLevel) {
+        if (pAttacker instanceof LivingEntity $$3 && ApiMobType.isNihilistic($$3.getMobType())){
+            int $$4 = 20 + pTarget.getRandom().nextInt(10 * pLevel);
             $$3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, $$4, 3));
         }
     }

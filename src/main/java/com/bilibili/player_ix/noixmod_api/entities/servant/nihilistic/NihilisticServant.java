@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic;
 
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
@@ -8,6 +9,7 @@ import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.control.FlyingVexMoveControl;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
+import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +22,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -49,7 +52,7 @@ implements Nihilistic {
         super($$0, $$1);
         this.xpReward = this.isHostile() ? 5 : 0;
         this.moveControl = new FlyingVexMoveControl(this);
-        this.setDangerous(RandomSource.create().nextFloat() <= 0.05f);
+        this.setDangerous(java.util.concurrent.ThreadLocalRandom.current().nextFloat() <= 0.05f);
     }
 
     protected void registerGoals() {
@@ -72,13 +75,13 @@ implements Nihilistic {
         this.noPhysics = true;
         this.setNoGravity(true);
         if (this.getLifeTick() <= 0) {
-            if (this.tickCount %20 == 0) {
+            if (this.tickCount % 20 == 0) {
                 if (!this.hurt(this.damageSources().starve(), 1f)) {
                     this.discard();
                 }
             }
         }
-        if (this.level().isClientSide() && this.level().isRaining()) {
+        if (this.level().isClientSide && this.level().isRaining()) {
             this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5), this.getRandomY(),
                     this.getRandomZ(0.5), Maths.randomBetween(this.random,
                             -0.15f, 0.15f), 0.1,
@@ -116,7 +119,7 @@ implements Nihilistic {
 
     protected void populateDefaultEquipmentSlots(RandomSource p_217055_, DifficultyInstance p_217056_) {
         if (p_217056_.getDifficulty().getId() > 1) {
-            if (p_217055_.nextFloat() <= 0.05) {
+            if (p_217055_.nextFloat() <= 0.05F) {
                 this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
             }
         }
@@ -190,24 +193,22 @@ implements Nihilistic {
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
-        @Override
         public boolean canUse() {
-            return !NihilisticServant.this.moveControl.hasWanted() && NihilisticServant.this.random.nextInt(reducedTickDelay(7)) == 0;
+            return !NihilisticServant.this.moveControl.hasWanted() && NihilisticServant
+                    .this.random.nextInt(reducedTickDelay(7)) == 0;
         }
 
-        @Override
         public boolean canContinueToUse() {
             return false;
         }
 
-        @Override
         public void tick() {
             super.tick();
             LivingEntity owner = NihilisticServant.this.getOwner();
             BlockPos pos = Objects.requireNonNullElse(owner, NihilisticServant.this).blockPosition();
             for (int i = 0; i < 3; ++i) {
-                RandomSource source = RandomSource.create();
-                BlockPos position = pos.offset(source.nextInt(15) - 7, source.nextInt(11) - 5, source.nextInt(15) - 7);
+                BlockPos position = pos.offset(java.util.concurrent.ThreadLocalRandom.current().nextInt(15) - 7, java.util.concurrent.ThreadLocalRandom.current().nextInt(11) - 5,
+                        java.util.concurrent.ThreadLocalRandom.current().nextInt(15) - 7);
                 if (NihilisticServant.this.level().isEmptyBlock(position)) {
                     if (!NihilisticServant.this.moveControl.hasWanted()) {
                         NihilisticServant.this.moveControl.setWantedPosition(position.getX(), position.getY(), position.getZ(), 0.25);
@@ -221,28 +222,32 @@ implements Nihilistic {
         }
     }
 
-    private class NihilisticServantChargeAttackGoal extends Goal {
-        public NihilisticServantChargeAttackGoal() {
+    private class NihilisticServantChargeAttackGoal extends Goal
+    {
+        public NihilisticServantChargeAttackGoal()
+        {
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
-        @Override
-        public boolean canUse() {
+        public boolean canUse()
+        {
             LivingEntity $$0 = NihilisticServant.this.getTarget();
-            if ($$0 != null && $$0.isAlive() && !NihilisticServant.this.getMoveControl().hasWanted() && NihilisticServant.this.random.nextInt(reducedTickDelay(7)) == 0) {
+            if ($$0 != null && $$0.isAlive() && !NihilisticServant.this.getMoveControl().hasWanted() && NihilisticServant
+                    .this.random.nextInt(reducedTickDelay(7)) == 0) {
                 return NihilisticServant.this.distanceToSqr($$0) > 4.0;
             } else {
                 return false;
             }
         }
 
-        @Override
-        public boolean canContinueToUse() {
-            return NihilisticServant.this.getMoveControl().hasWanted() && NihilisticServant.this.getTarget() != null && NihilisticServant.this.getTarget().isAlive();
+        public boolean canContinueToUse()
+        {
+            return NihilisticServant.this.getMoveControl().hasWanted() && NihilisticServant.this.getTarget() != null && NihilisticServant
+                    .this.getTarget().isAlive();
         }
 
-        @Override
-        public void start() {
+        public void start()
+        {
             LivingEntity $$0 = NihilisticServant.this.getTarget();
             if ($$0 != null) {
                 Vec3 $$1 = $$0.getEyePosition();
@@ -251,45 +256,53 @@ implements Nihilistic {
             NihilisticServant.this.setAggressive(true);
         }
 
-        @Override
-        public void stop() {
+        public void stop()
+        {
             NihilisticServant.this.setAggressive(false);
         }
 
-        @Override
-        public boolean requiresUpdateEveryTick() {
+        public boolean requiresUpdateEveryTick()
+        {
             return true;
         }
 
-        @Override
-        public void tick() {
+        public void tick()
+        {
             LivingEntity $$0 = NihilisticServant.this.getTarget();
-            if ($$0 != null) {
-                if (NihilisticServant.this.getBoundingBox().intersects($$0.getBoundingBox())) {
-                    if (NihilisticServant.this.isDangerous() || NihilisticServant.this.dying()) {
-                        NihilisticServant.this.level().explode(NihilisticServant.this, NihilisticServant.this.getX(), NihilisticServant.this.getY(), NihilisticServant.this.getZ(), 1.5f, false, Level.ExplosionInteraction.MOB);
-                        if (NihilisticServant.this.getOwner() != null) {
-                            NihilisticServant.this.getOwner().heal(3f);
-                            NihilisticServant.this.setLifeTick(0);
-                            if (NihilisticServant.this.getOwner() instanceof Apostle apostle && apostle.getCancelHealTick() < Maths.toTick(2)) {
-                                apostle.setCancelHealTick(Maths.toTick(2));
-                            }
-                        }
-                        NihilisticServant.this.discard();
-                    } else {
-                        NihilisticServant.this.doHurtTarget($$0);
-                        NihilisticServant.this.heal(1F);
-                        if (NihilisticServant.this.getOwner() != null) {
-                            NihilisticServant.this.getOwner().heal(1f);
+            if ($$0 == null)
+                return;
+            if (NihilisticServant.this.getBoundingBox().intersects($$0.getBoundingBox())) {
+                if (NihilisticServant.this.isDangerous() || NihilisticServant.this.dying()) {
+                    NihilisticServant.this.level().explode(NihilisticServant.this, NihilisticServant.this.getX(), NihilisticServant
+                            .this.getY(), NihilisticServant.this.getZ(), 3.0F, false, Level.ExplosionInteraction.MOB);
+                    ParticleUtil.sendParticles(NihilisticServant.this.serverLevel(), ParticleTypes.LARGE_SMOKE,
+                            NihilisticServant.this.position(), 30, 0.0D, 0.0D, 0.0D, 0.15D);
+                    for (LivingEntity entity : NihilisticServant.this.level().getEntitiesOfClass(LivingEntity.class,
+                            NihilisticServant.this.getBoundingBox().inflate(4), NihilisticServant.this::canAttack)) {
+                        entity.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.NIHILISTIC.get(),
+                                40, 0), entity);
+                    }
+                    if (NihilisticServant.this.getOwner() != null) {
+                        NihilisticServant.this.getOwner().heal(3.0F);
+                        NihilisticServant.this.setLifeTick(0);
+                        if (NihilisticServant.this.getOwner() instanceof Apostle apostle && apostle.getCancelHealTick() < Maths.toTick(2)) {
+                            apostle.setCancelHealTick(Maths.toTick(2));
                         }
                     }
-                    NihilisticServant.this.setAggressive(false);
+                    NihilisticServant.this.discard();
                 } else {
-                    double $$1 = NihilisticServant.this.distanceToSqr($$0);
-                    if ($$1 < 9.0) {
-                        Vec3 $$2 = $$0.getEyePosition();
-                        NihilisticServant.this.getMoveControl().setWantedPosition($$2.x, $$2.y - 1, $$2.z, 1.0);
+                    NihilisticServant.this.doHurtTarget($$0);
+                    NihilisticServant.this.heal(1F);
+                    if (NihilisticServant.this.getOwner() != null) {
+                        NihilisticServant.this.getOwner().heal(1f);
                     }
+                }
+                NihilisticServant.this.setAggressive(false);
+            } else {
+                double $$1 = NihilisticServant.this.distanceToSqr($$0);
+                if ($$1 < 9.0) {
+                    Vec3 $$2 = $$0.getEyePosition();
+                    NihilisticServant.this.getMoveControl().setWantedPosition($$2.x, $$2.y - 1, $$2.z, 1.0);
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.bilibili.player_ix.noixmod_api.config.*;
 import com.bilibili.player_ix.noixmod_api.network.ApiNetwork;
 import com.bilibili.player_ix.noixmod_api.register.*;
 import com.bilibili.player_ix.noixmod_api.server.ServerAgent;
+import com.github.NineAbyss9.ix_api.util.ResourceLocations;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -69,12 +70,17 @@ public class NoixmodAPI {
         NoixmodAPIEntities.init(event);
     }
 
+    private void bootstrap()
+    {
+
+    }
+
     public static ResourceLocation location(String s) {
-        return new ResourceLocation(MOD_ID, s);
+        return ResourceLocations.fromNamespaceAndPath(MOD_ID, s);
     }
 
     public static ResourceLocation entity(String st) {
-        return new ResourceLocation(MOD_ID, "textures/entities/" + st + ".png");
+        return ResourceLocations.fromNamespaceAndPath(MOD_ID, "textures/entities/" + st + ".png");
     }
 
     public static ResourceLocation servant(String st)
@@ -84,11 +90,11 @@ public class NoixmodAPI {
 
     public static ResourceLocation monster(String st)
     {
-        return new ResourceLocation(MOD_ID, "textures/entities/monsters/" + st + ".png");
+        return ResourceLocations.fromNamespaceAndPath(MOD_ID, "textures/entities/monsters/" + st + ".png");
     }
 
     public static ResourceLocation horror(String st) {
-        return new ResourceLocation(MOD_ID, "textures/entities/monsters/horror/" + st + ".png");
+        return ResourceLocations.fromNamespaceAndPath(MOD_ID, "textures/entities/monsters/horror/" + st + ".png");
     }
 
     /**Code from <a href="https://github.com/Polarice3/Goety-2/blob/1.20/src/main/java/com/Polarice3/Goety/Goety.java">link</a>*/

@@ -29,7 +29,7 @@ public class StarGuardianRenderer<S extends StarGuardian> extends MobRenderer<S,
     private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/zhuan.png");
 
     public ResourceLocation getTextureLocation(S s) {
-        if (TimeSelector.birthday()) {
+        if (TimeSelector.unupdatedBirthday) {
             return BIRTHDAY;
         }
         if (s.isFlag(4)) {

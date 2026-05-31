@@ -1,7 +1,6 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nether;
 
-import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
@@ -29,8 +28,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 
 public class WitherSkeletonServant
-extends AbstractSkeletonServant
-implements ApiRangedAttackMob {
+extends AbstractSkeletonServant {
     private final OwnerSummon ownerSummon = new OwnerSummon(this);
     public WitherSkeletonServant(EntityType<? extends WitherSkeletonServant> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);

@@ -8,6 +8,7 @@ import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.compat.goety.GoetyCompat;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiTradeWithPlayerGoal;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
+import com.github.NineAbyss9.ix_api.util.ResourceLocations;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -15,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -77,12 +77,11 @@ implements ApiVillager, Merchant, Npc, Ownable {
     }
 
     protected void registerGoals() {
-        super.registerGoals();
         if (this.getNavigation() instanceof GroundPathNavigation groundPathNavigation) {
             groundPathNavigation.setCanOpenDoors(true);
         }
-        this.goalSelector.addGoal(3, new OwnableMob.FollowOwnerGoal<>(this, 1.0,
-                20, 5, false));
+        this.goalSelector.addGoal(3, new OwnableMob.FollowOwnerGoal<>(
+                this, 1.0D, 20, 5, false));
         this.goalSelector.addGoal(3, new ApiTradeWithPlayerGoal(this));
         this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.addTargetGoal();
@@ -141,13 +140,13 @@ implements ApiVillager, Merchant, Npc, Ownable {
 
     public void updateTrades() {
         VillagerTrades.ItemListing[] listings = this.getTradeLists();
-        if (listings != null) {
-            this.addOffersFromItemListings(this.getOffers(), listings, 10);
+        if (listings == null) {
+            return;
         }
+        this.addOffersFromItemListings(this.getOffers(), listings, 10);
     }
 
     public void rewardTradeXp(MerchantOffer merchantOffer) {
-        ApiVillager.super.rewardTradeXp(merchantOffer);
     }
 
     @Nullable
@@ -175,8 +174,8 @@ implements ApiVillager, Merchant, Npc, Ownable {
                 int baseTime = itemStack.getCount() * 600 * 20;
                 int time;
                 if (player instanceof ServerPlayer serverPlayer) {
-                    ResourceLocation pLocation = new ResourceLocation("minecraft", "nether/root");
-                    Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(pLocation);
+                    Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(
+                            ResourceLocations.fromNamespaceAndPath("minecraft", "nether/root"));
                     if (advancement != null &&
                             serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
                         time = -1;
@@ -266,10 +265,11 @@ implements ApiVillager, Merchant, Npc, Ownable {
     }
 
     public void notifyTradeUpdated(ItemStack itemStack) {
-        if (!this.level().isClientSide && this.ambientSoundTime > -this.getAmbientSoundInterval() + 20) {
-            this.ambientSoundTime = -this.getAmbientSoundInterval();
-            this.playSound(this.getTradeUpdatedSound(!itemStack.isEmpty()), this.getSoundVolume(), this.getVoicePitch());
+        if (this.level().isClientSide || this.ambientSoundTime <= -this.getAmbientSoundInterval() + 20) {
+            return;
         }
+        this.ambientSoundTime = -this.getAmbientSoundInterval();
+        this.playSound(this.getTradeUpdatedSound(!itemStack.isEmpty()), this.getSoundVolume(), this.getVoicePitch());
     }
 
     public int getVillagerXp() {
@@ -326,19 +326,20 @@ implements ApiVillager, Merchant, Npc, Ownable {
 
     public void tick() {
         super.tick();
-        if (this.level().isClientSide && this.isCastingSpell()) {
-            APISpells.APISpell spellId = this.getSpellId();
-            double $$1 = spellId.spellColor[0];
-            double $$2 = spellId.spellColor[1];
-            double $$3 = spellId.spellColor[2];
-            float $$4 = this.yBodyRot * (Mth.PI / 180) + Mth.cos(this.tickCount * 0.6662f) * 0.25f;
-            float $$5 = Mth.cos($$4);
-            float $$6 = Mth.sin($$4);
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + $$5 * 0.6, this.getY()
-                    + 1.8, this.getZ() + $$6 * 0.6, $$1, $$2, $$3);
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - $$5 * 0.6, this.getY()
-                    + 1.8, this.getZ() - $$6 * 0.6, $$1, $$2, $$3);
+        if (!this.isCastingSpell() || !this.level().isClientSide) {
+            return;
         }
+        APISpells.APISpell spellId = this.getSpellId();
+        double $$1 = spellId.spellColor[0];
+        double $$2 = spellId.spellColor[1];
+        double $$3 = spellId.spellColor[2];
+        float $$4 = this.yBodyRot * (Mth.PI / 180) + Mth.cos(this.tickCount * 0.6662f) * 0.25f;
+        float $$5 = Mth.cos($$4);
+        float $$6 = Mth.sin($$4);
+        this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + $$5 * 0.6, this.getY()
+                + 1.8, this.getZ() + $$6 * 0.6, $$1, $$2, $$3);
+        this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - $$5 * 0.6, this.getY()
+                + 1.8, this.getZ() - $$6 * 0.6, $$1, $$2, $$3);
     }
 
     public boolean isCastingSpell() {

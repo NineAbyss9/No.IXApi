@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.boss;
 
+import com.bilibili.player_ix.noixmod_api.register.*;
 import com.github.NineAbyss9.ix_api.api.APISpells;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
@@ -10,10 +11,6 @@ import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Spel
 import com.bilibili.player_ix.noixmod_api.entities.projectile.DamageEntity;
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.Spells;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIAttributes;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPISounds;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerBossEvent;
@@ -450,7 +447,7 @@ implements InventoryCarrier, ApiNihilisticBoss {
                     if (!list.isEmpty()) {
                         for (LivingEntity living : list) {
                             heal(3f);
-                            living.hurt(damageSources().starve(), 10);
+                            living.hurt(NoixmodAPIDamageSource.nihility(EvilSummoner.this), 10);
                         }
                     }
                     ParticleUtil.sendParticles(level, ParticleTypes.LARGE_SMOKE, target.position(),

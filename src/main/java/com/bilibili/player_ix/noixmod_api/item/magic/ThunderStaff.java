@@ -11,8 +11,8 @@ extends Staff {
         super(new Properties().rarity(Rarity.UNCOMMON).stacksTo(1).fireResistant());
     }
 
-    public void castSpell(ServerLevel pLevel, LivingEntity living) {
-        if (living.isShiftKeyDown()) {
+    public void castSpell(ServerLevel pLevel, LivingEntity pCaster, int pUsedTime) {
+        if (pCaster.isShiftKeyDown()) {
             pLevel.setWeatherParameters(0, ServerLevel.RAIN_DURATION.getMinValue(),
                     true, true);
         }
