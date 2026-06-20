@@ -26,11 +26,11 @@ extends Spell
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster)
     {
         if (pCaster instanceof Mob mob) {
-            EntityEventHandler.wardenBoom(mob, mob.getTarget(), 20.0D, ParticleTypes.SONIC_BOOM,
+            EntityEventHandler.sonicBoom(mob, mob.getTarget(), 20.0D, ParticleTypes.SONIC_BOOM,
                     entity -> {
                         entity.hurt(pLevel.damageSources().sonicBoom(mob), 10.0F);
                     });
-        } else {
+        } else {//Based on Polarice3's codes.
             double range = 15.0D;
             Vec3 srcVec = new Vec3(pCaster.getX(), pCaster.getEyeY(), pCaster.getZ());
             Vec3 lookVec = pCaster.getViewVector(1.0F);

@@ -46,13 +46,11 @@ implements ApiBoss {
         this.xpReward = 100;
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_SUMMON_COUNT, 0);
     }
 
-    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new NormalCastingSpellGoal(this));
         this.goalSelector.addGoal(1, new SummonSpellGoal(this));
@@ -62,19 +60,16 @@ implements ApiBoss {
         this.targetSelector.addGoal(1, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }
 
-    @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
         this.bossInfo.setProgress(this.getHealth()/this.getMaxHealth());
     }
 
-    @Override
     public void startSeenByPlayer(ServerPlayer p_20119_) {
         super.startSeenByPlayer(p_20119_);
         this.bossInfo.addPlayer(p_20119_);
     }
 
-    @Override
     public void stopSeenByPlayer(ServerPlayer p_20174_) {
         super.stopSeenByPlayer(p_20174_);
         this.bossInfo.removePlayer(p_20174_);
@@ -96,7 +91,6 @@ implements ApiBoss {
         this.entityData.set(DATA_SUMMON_COUNT, count);
     }
 
-    @Override
     public WormIllagerArmPose getArmPose() {
         if (this.isCastingSpell()) {
             return WormIllagerArmPose.SPELL_CASTING;
@@ -107,25 +101,18 @@ implements ApiBoss {
         return WormIllagerArmPose.CROSSED;
     }
 
-    @Nullable
-    @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.EVOKER_AMBIENT;
     }
 
-    @Nullable
-    @Override
     protected SoundEvent getHurtSound(DamageSource p_21239_) {
         return SoundEvents.EVOKER_HURT;
     }
 
-    @Nullable
-    @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.EVOKER_DEATH;
     }
 
-    @Override
     public float getVoicePitch() {
         return super.getVoicePitch();
     }

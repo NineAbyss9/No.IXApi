@@ -250,7 +250,7 @@ implements ApiVillager, Merchant, Npc, Ownable {
     }
 
     public void setTarget(@Nullable LivingEntity pTarget) {
-        if (pTarget instanceof ApiVillager) {
+        if (pTarget instanceof ApiVillager || pTarget instanceof AbstractVillager) {
             return;
         }
         super.setTarget(pTarget);

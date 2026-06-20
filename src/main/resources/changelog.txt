@@ -48,5 +48,6 @@ Added : Altar, some staffs, some spells, cross.Some recipes.Bone spellcaster, wi
 Changes : Improve Horror Mode.The damage type of nihilistic mobs.Girl Ghosts can stop Creeper explosions now.
 Wither doll summons nihilistic wither servant instead of nihilistic wither boss when you have defeated nihilistic wither boss
 and are shifting now.
-Fixed : A bug that make world crash when NoixmodAPIEvents#onFinalizeSpawn.(1.3.908-pre1),
+Fixed : A bug that make world crash when NoixmodAPIEvents#onFinalizeSpawn.(1.3.908-pre1)
 a bug about villager fighters
+1.4.1 : Fixed some bugs about NoixmodAPIEvents#onFinalizeSpawn,onLivingTarget,and some others.

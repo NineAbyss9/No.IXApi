@@ -37,12 +37,13 @@ public class Light extends Block {
                                 BlockPos p_55670_, boolean p_55671_) {
         if (!p_55667_.isClientSide && !NoixmodAPIMainConfig.HorrorMode.get()) {
             boolean $$6 = p_55666_.getValue(LIT);
-            if ($$6 != p_55667_.hasNeighborSignal(p_55668_)) {
-                if ($$6) {
-                    p_55667_.scheduleTick(p_55668_, this, 4);
-                } else {
-                    p_55667_.setBlock(p_55668_, p_55666_.cycle(LIT), 2);
-                }
+            if ($$6 == p_55667_.hasNeighborSignal(p_55668_)) {
+                return;
+            }
+            if ($$6) {
+                p_55667_.scheduleTick(p_55668_, this, 4);
+            } else {
+                p_55667_.setBlock(p_55668_, p_55666_.cycle(LIT), 2);
             }
         }
     }

@@ -11,6 +11,21 @@ extends Enchantment {
         super(Rarity.RARE, ApiEnchantments.ANY, EquipmentSlot.values());
     }
 
+    public boolean isAllowedOnBooks()
+    {
+        return false;
+    }
+
+    public boolean isTradeable()
+    {
+        return false;
+    }
+
+    public boolean isTreasureOnly()
+    {
+        return true;
+    }
+
     public int getMinCost(int p_44572_) {
         return 1 + (p_44572_ - 1) * 10;
     }

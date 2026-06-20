@@ -7,6 +7,7 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 
@@ -16,15 +17,19 @@ extends MobEffect {
         super(MobEffectCategory.HARMFUL, p_19452_);
     }
 
-    public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {
-        if (p_19467_ instanceof Nihilistic) {
-            p_19467_.removeEffect(this);
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier)
+    {
+        pLivingEntity.hurt(NoixmodAPIDamageSource.nihility(pLivingEntity.level()), 4.9f + pAmplifier);
+    }
+
+    public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier)
+    {
+        if (!(pLivingEntity instanceof Nihilistic) &&
+                (!(pLivingEntity instanceof Player player) || !player.getInventory().hasAnyMatching(stack ->
+                stack.is(NoixmodAPIItems.STAR_SWORD.get())))) {
+            super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
         } else {
-            if (p_19467_ instanceof Player player && player.getMainHandItem().is(NoixmodAPIItems.STAR_SWORD.get())) {
-                p_19467_.removeEffect(this);
-                return;
-            }
-            p_19467_.hurt(NoixmodAPIDamageSource.nihility(p_19467_.level()), 4.9f + p_19468_);
+            pLivingEntity.removeEffect(this);
         }
     }
 
@@ -32,7 +37,7 @@ extends MobEffect {
         return -2.9 * ( p_19457_ + 1);
     }
 
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
-        return true;
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return pDuration % 10 == 0;
     }
 }

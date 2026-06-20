@@ -19,7 +19,7 @@ public class VexArcherSpell extends IllagerSpell {
         for (int i = 0;i < ThreadLocalRandom.current().nextInt(3) + 2;i++) {
             VexArcher archer = NoixmodAPIEntities.VEX_ARCHER.get().create(pLevel);
             if (archer == null) {
-                continue;
+                break;
             }
             ownerSummon.integerSummon(archer, 3);
             archer.spawnAnim();

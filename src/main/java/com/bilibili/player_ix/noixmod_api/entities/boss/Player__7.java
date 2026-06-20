@@ -68,7 +68,6 @@ public class Player__7 extends ApiPathfinderMob {
         super.tick();
     }
 
-    @Override
     public void aiStep() {
         super.aiStep();
         if (this.getCurrentFlag() == 1) {
@@ -78,7 +77,6 @@ public class Player__7 extends ApiPathfinderMob {
         }
     }
 
-    @Override
     protected void customServerAiStep() {
         this.level().getProfiler().push("Player7Brain");
         this.getBrain().tick((ServerLevel)this.level(), this);

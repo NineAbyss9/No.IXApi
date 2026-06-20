@@ -18,25 +18,25 @@ extends MobEffect {
         this.multiplier = -3;
     }
 
-    public void applyEffectTick(LivingEntity p_19467_, int p_19468_)
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier)
     {
-        if (p_19467_.getMobType() == MobType.UNDEAD) {
-            p_19467_.removeEffect(this);
+        if (pLivingEntity.getMobType() == MobType.UNDEAD) {
+            pLivingEntity.removeEffect(this);
             return;
         }
-        p_19467_.hurt(p_19467_.level().damageSources().wither(), 1f);
-        if (p_19467_ instanceof Player player) {
+        pLivingEntity.hurt(pLivingEntity.level().damageSources().wither(), 1f);
+        if (pLivingEntity instanceof Player player) {
             player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 10, 1));
         } else {
-            p_19467_.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0));
+            pLivingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0));
         }
     }
 
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
-        return true;
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return pDuration % 3 == 0;
     }
 
-    public double getAttributeModifierValue(int p_19430_, AttributeModifier p_19431_) {
-        return this.multiplier * (double)(p_19430_ + 1);
+    public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
+        return this.multiplier * (double)(pAmplifier + 1);
     }
 }

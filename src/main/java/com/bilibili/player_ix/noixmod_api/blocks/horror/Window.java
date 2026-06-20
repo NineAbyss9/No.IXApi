@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Window
 extends IronBarsBlock {
     private final boolean isHorror;
@@ -21,9 +23,10 @@ extends IronBarsBlock {
     }
 
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (isHorror && pRandom.nextDouble() < 0.01D) {
+        if (isHorror && ThreadLocalRandom.current().nextDouble() < 0.01D) {
             pLevel.playLocalSound(pPos, SoundEvents.EMPTY, SoundSource.BLOCKS,
-                    Math.max(pRandom.nextFloat(), 0.8F), Math.max(pRandom.nextFloat(), 0.5F), false);
+                    Math.max(ThreadLocalRandom.current().nextFloat(), 0.8F), Math.max(
+                            ThreadLocalRandom.current().nextFloat(), 0.5F), false);
         }
     }
 }

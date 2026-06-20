@@ -39,31 +39,34 @@ extends Block {
     }
 
     public static void checkSpawn(Level p_58256_, BlockPos p_58257_, SkullBlockEntity p_58258_) {
-        if (!p_58256_.isClientSide) {
-            BlockState $$3 = p_58258_.getBlockState();
-            boolean $$4 = $$3.is(new NihilisticStarBlock());
-            if ($$4 && p_58257_.getY() >= p_58256_.getMinBuildHeight() && p_58256_.getDifficulty()
-                    != Difficulty.PEACEFUL) {
-                BlockPattern.BlockPatternMatch $$5 = getOrCreateWitherFull().find(p_58256_, p_58257_);
-                if ($$5 != null) {
-                    NihilisticWither wither = NoixmodAPIEntities.NIHILISTIC_WITHER.get().create(p_58256_);
-                    if (wither != null) {
-                        CarvedPumpkinBlock.clearPatternBlocks(p_58256_, $$5);
-                        BlockPos $$7 = $$5.getBlock(1, 2, 0).getPos();
-                        wither.moveTo((double)$$7.getX() + 0.5, $$7.getY() + 0.55, $$7.getZ() + 0.5,
-                                $$5.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F, 0.0F);
-                        wither.yBodyRot = $$5.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F;
-                        wither.handleSpawnEvent();
-                        for (ServerPlayer $$8 : p_58256_.getEntitiesOfClass(ServerPlayer.class, wither.getBoundingBox()
-                                .inflate(50.0))) {
-                            CriteriaTriggers.SUMMONED_ENTITY.trigger($$8, wither);
-                        }
-                        p_58256_.addFreshEntity(wither);
-                        CarvedPumpkinBlock.updatePatternBlocks(p_58256_, $$5);
-                    }
-                }
-            }
+        if (p_58256_.isClientSide) {
+            return;
         }
+        BlockState $$3 = p_58258_.getBlockState();
+        boolean $$4 = $$3.is(new NihilisticStarBlock());
+        if (!$$4 || p_58257_.getY() < p_58256_.getMinBuildHeight() || p_58256_.getDifficulty() == Difficulty.PEACEFUL) {
+            return;
+        }
+        BlockPattern.BlockPatternMatch $$5 = getOrCreateWitherFull().find(p_58256_, p_58257_);
+        if ($$5 == null) {
+            return;
+        }
+        NihilisticWither wither = NoixmodAPIEntities.NIHILISTIC_WITHER.get().create(p_58256_);
+        if (wither == null) {
+            return;
+        }
+        CarvedPumpkinBlock.clearPatternBlocks(p_58256_, $$5);
+        BlockPos $$7 = $$5.getBlock(1, 2, 0).getPos();
+        wither.moveTo((double)$$7.getX() + 0.5, $$7.getY() + 0.55, $$7.getZ() + 0.5,
+                $$5.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F, 0.0F);
+        wither.yBodyRot = $$5.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F;
+        wither.handleSpawnEvent();
+        for (ServerPlayer $$8 : p_58256_.getEntitiesOfClass(ServerPlayer.class, wither.getBoundingBox()
+                .inflate(50.0D))) {
+            CriteriaTriggers.SUMMONED_ENTITY.trigger($$8, wither);
+        }
+        p_58256_.addFreshEntity(wither);
+        CarvedPumpkinBlock.updatePatternBlocks(p_58256_, $$5);
     }
 
     private static BlockPattern getOrCreateWitherFull() {

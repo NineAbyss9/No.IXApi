@@ -21,6 +21,6 @@ extends MobEffect {
     }
 
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return true;
+        return pDuration % 10 == 0;
     }
 }

@@ -8,6 +8,7 @@ import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.Abst
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -32,7 +33,16 @@ extends AbstractGhost {
     private static final Field f = FunctionCollector.get(() -> {
         Field field = null;
         try {
-            field = Creeper.class.getField("f_32270_");
+            field = Creeper.class.getDeclaredField("f_32270_");
+        } catch (NoSuchFieldException ignore) {
+        }
+        return field;
+    });
+    @SuppressWarnings("all")
+    private static final Field DATA_IGNITED = FunctionCollector.get(() -> {
+        Field field = null;
+        try {
+            field = Creeper.class.getDeclaredField("f_32275_");
         } catch (NoSuchFieldException ignore) {
         }
         return field;
@@ -59,6 +69,7 @@ extends AbstractGhost {
         this.targetSelector.addGoal(1, new OwnableTargetGoal<>(this, false));
     }
 
+    @SuppressWarnings("unchecked")
     public void aiStep() {
         super.aiStep();
         if (this.tickCount % 10 != 0 || this.level().isClientSide) {
@@ -71,7 +82,10 @@ extends AbstractGhost {
         for (var creeper : list) {
             creeper.setSwellDir(-1);
             try {
+                f.setAccessible(true);
                 f.set(creeper, 0);
+                DATA_IGNITED.setAccessible(true);
+                creeper.getEntityData().set((EntityDataAccessor<Boolean>)DATA_IGNITED.get(creeper), false);
             } catch (IllegalAccessException ignore) {
             }
         }

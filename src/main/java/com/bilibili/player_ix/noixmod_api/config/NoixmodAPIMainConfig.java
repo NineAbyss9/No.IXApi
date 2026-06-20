@@ -63,6 +63,7 @@ public class NoixmodAPIMainConfig {
     public static final ForgeConfigSpec.BooleanValue PlateauBeastCanSummon;
     public static final ForgeConfigSpec.BooleanValue WindZombieCanSpawn;
     public static final ForgeConfigSpec.BooleanValue NihilisticOrderSpawn;
+    public static final ForgeConfigSpec.BooleanValue VillagerFighterSpawn;
     public static final ForgeConfigSpec.BooleanValue WitherBoneSpellcasterSpawn;
     public static final ForgeConfigSpec.BooleanValue YetiWillSpawn;
     //Spawn End
@@ -101,7 +102,8 @@ public class NoixmodAPIMainConfig {
     static {
         builder.push("NoixmodAPIMainConfig");
         builder.push("HorrorMode");
-        HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false.Enable the following settings for a better experience.").define("API恐怖模式", false);
+        HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false.Needs restart the game." +
+                "Enable the following settings for a better experience.").worldRestart().define("API恐怖模式", false);
         TERRIBLE_SKY = builder.comment("If true, the sky will become ???.").define("TerribleSky", false);
         SpawnHorror = builder.comment("Will scaring mobs spawn?Default:false").worldRestart().define("SpawnScaringMobs", false);
         builder.pop();
@@ -121,6 +123,8 @@ public class NoixmodAPIMainConfig {
         builder.pop();
         builder.push("Villagers");
         builder.push("All");
+        VillagerFighterSpawn = comment("Will villager fighters spawn?Default:false")
+                .define("VillagerFightersSpawn", false);
         VILLAGERS_IGNORE = builder.translation("config.noixmodapi.villager_ignore").define("VillagersIgnore",
                 Arrays.asList("guardvillagers:guard","jerotesvillage:carved_hound","jerotesvillage:carved_llama"
                         ,"jerotesvillage:carved_iron_golem",

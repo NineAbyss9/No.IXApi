@@ -20,7 +20,11 @@ public class DesireForBlood extends MobEffect {
     }
 
     public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
-        return true;
+        return false;
+    }
+
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier)
+    {
     }
 
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pMap, int pAmplifier) {

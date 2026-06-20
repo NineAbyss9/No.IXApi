@@ -13,7 +13,6 @@ extends SavedData
             = "api_saved_data";
     private boolean nihilisticWitherKilled;
     public ApiSavedData() {
-        this.setDirty();
     }
 
     public boolean isNihilisticWitherKilled()
@@ -29,7 +28,8 @@ extends SavedData
 
     public static ApiSavedData load(ServerLevel serverLevel)
     {
-        return serverLevel.getDataStorage().computeIfAbsent(ApiSavedData::load, ApiSavedData::new, API_SAVED_DATA_FILE_ID);
+        return serverLevel.getDataStorage().computeIfAbsent(ApiSavedData::load, ApiSavedData::new,
+                API_SAVED_DATA_FILE_ID);
     }
 
     public static ApiSavedData load(CompoundTag tag)

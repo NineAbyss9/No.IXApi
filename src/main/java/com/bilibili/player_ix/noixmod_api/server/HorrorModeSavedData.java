@@ -5,7 +5,6 @@ import com.bilibili.player_ix.noixmod_api.world.HorrorModeManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.slf4j.Logger;
 
@@ -17,10 +16,9 @@ extends SavedData {
     private long tick;
     public HorrorModeSavedData() {
         this.manager = new HorrorModeManager();
-        this.setDirty();
     }
 
-    public void tick(Level pLevel)
+    public void tick(ServerLevel pLevel)
     {
         ++tick;
         manager.tick(pLevel);

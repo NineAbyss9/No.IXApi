@@ -22,7 +22,6 @@ import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.entity.monster.Illusioner;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.entities.boss.*;
 import com.bilibili.player_ix.noixmod_api.entities.boss.abyss.Abyss;
@@ -66,7 +65,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@PAMAreNonnullByDefault
 public class NoixmodAPIEntities {
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, NoixmodAPI.MOD_ID);
     public static final DeferredRegister<SensorType<?>> SENSORS = DeferredRegister.create(ForgeRegistries
@@ -244,10 +242,10 @@ public class NoixmodAPIEntities {
                         APIMonster.checkAPIMonsterSpawnRules(pEntityType, pServerLevel, pSpawnType, pPos, pRandom)
                                 && NoixmodAPIMainConfig.WitherBoneSpellcasterSpawn.get(),
                 SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NoixmodAPIEntities.DETRACTOR.get(), SpawnPlacements.Type.ON_GROUND,
+        /*event.register(NoixmodAPIEntities.DETRACTOR.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 APIMonster::horrorMobsSpawnRules,
-                SpawnPlacementRegisterEvent.Operation.AND);
+                SpawnPlacementRegisterEvent.Operation.AND);*/
         event.register(NoixmodAPIEntities.GIRL_GHOST.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (entityType, serverLevelAccessor, mobSpawnType, blockPos, randomSource) ->

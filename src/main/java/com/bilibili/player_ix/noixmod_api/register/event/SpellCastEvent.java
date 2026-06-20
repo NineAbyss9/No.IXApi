@@ -14,12 +14,12 @@ import javax.annotation.Nullable;
 
 @ServerOnly
 public class SpellCastEvent extends Event {
-    private final ServerLevel level;
+    public final ServerLevel level;
     @Nullable
     private ParticleOptions spellParticle;
-    private final LivingEntity caster;
-    private final Spell.Type spellType;
-    private final Spell spell;
+    public final LivingEntity caster;
+    public final Spell.Type spellType;
+    public final Spell spell;
     public SpellCastEvent(ServerLevel pLevel, LivingEntity pCaster, Spell.Type pType, Spell pSpell) {
         this.level = pLevel;
         this.caster = pCaster;
@@ -31,20 +31,12 @@ public class SpellCastEvent extends Event {
         this((ServerLevel)pCaster.level(), pCaster, pType, pSpell);
     }
 
-    public ServerLevel level() {
-        return level;
-    }
-
     public Vec3 getCastPos() {
-        return this.getCaster().position();
+        return this.caster.position();
     }
 
     public BlockPos blockPos() {
         return this.caster.blockPosition();
-    }
-
-    public LivingEntity getCaster() {
-        return this.caster;
     }
 
     public float getSpellPower() {

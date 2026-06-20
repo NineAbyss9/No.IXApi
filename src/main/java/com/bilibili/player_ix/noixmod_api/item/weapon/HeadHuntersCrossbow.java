@@ -27,7 +27,7 @@ extends ProjectileWeaponItem {
                 var2.getBoundingBox().inflate(64), living -> MobUtils.hasLineOfSight(var2, living));
         for (LivingEntity var5 : var4) {
             if (!var1.isClientSide) {
-                EntityEventHandler.wardenBoom(var2, var2.damageSources().indirectMagic(var2, var2),
+                EntityEventHandler.sonicBoom(var2, var2.damageSources().indirectMagic(var2, var2),
                         var5, 64);
                 var2.getCooldowns().addCooldown(this, 40);
                 break;

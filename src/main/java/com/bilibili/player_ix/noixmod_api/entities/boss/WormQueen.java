@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class WormQueen
 extends AbstractWorm
@@ -22,38 +21,32 @@ implements ApiBoss {
         this.xpReward = 300;
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.addBehaviorGoal(5, 0.8, 10F);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BOSS_PHASE, Maths.ONE_BYTE);
     }
 
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         tag.putByte("BossPhase", this.getPhase());
         super.addAdditionalSaveData(tag);
     }
 
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
-        if (tag.contains("BossPhase", 1 & 2 & 3)) {
+    public void readAdditionalSaveData(CompoundTag tag) {
+        if (tag.contains("BossPhase")) {
             this.setPhase(tag.getByte("BossPhase"));
         }
         super.readAdditionalSaveData(tag);
     }
 
-    @Override
     public void tick() {
         super.tick();
     }
 
-    @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
     }
@@ -82,12 +75,10 @@ implements ApiBoss {
         this.entityData.set(BOSS_PHASE, b);
     }
 
-    @Override
     public boolean wouldHaveOwner() {
         return false;
     }
 
-    @Override
     public boolean isHostile() {
         return true;
     }

@@ -59,7 +59,8 @@ implements IRecipeCategory<RitualRecipe>
         return this.localizedName;
     }
 
-    public @Nullable IDrawable getIcon()
+    @Nullable
+    public IDrawable getIcon()
     {
         return null;
     }

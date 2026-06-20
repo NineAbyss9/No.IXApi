@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.bilibili.player_ix.noixmod_api.entities.boss.ApostleBoss;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.HuntedVillager;
 import com.bilibili.player_ix.noixmod_api.entities.monster.horror.Tracker;
 import com.bilibili.player_ix.noixmod_api.server.HorrorModeSavedData;
@@ -87,16 +88,15 @@ public class NoixmodAPIEvents {
     public static final Map<Level, NihilisticOrderSpawner> ORDER_SPAWNER = new HashMap<>();
 
     @SubscribeEvent
-    public static void onWorldLoad(LevelEvent.Load event) {
+    public static void onWorldLoad(LevelEvent.Load event)
+    {
         LevelAccessor accessor = event.getLevel();
         if (accessor.isClientSide()) return;
-        if (accessor instanceof Level) {
-            ServerLevel level = (ServerLevel)accessor;
-            HorrorModeSavedData.load(level);
-            ApiSavedData.load(level);
-            if (level.dimension() == Level.OVERWORLD) {
-                ORDER_SPAWNER.put(level, new NihilisticOrderSpawner());
-            }
+        ServerLevel level = (ServerLevel)accessor;
+        HorrorModeSavedData.load(level);
+        ApiSavedData.load(level);
+        if (level.dimension() == Level.OVERWORLD) {
+            ORDER_SPAWNER.put(level, new NihilisticOrderSpawner());
         }
     }
 
@@ -127,21 +127,22 @@ public class NoixmodAPIEvents {
         LivingEntity entity = event.getEntity();
         if (entity.level().isClientSide) return;
         if (NoixmodAPIMainConfig.ApostleCanCancelLivingHeal.get() || NoixmodAPIMainConfig.HorrorMode.get()) {
-            List<Apostle> apostles = entity.level().getEntitiesOfClass(Apostle.class, entity.getBoundingBox()
+            List<ApostleBoss> apostles = entity.level().getEntitiesOfClass(ApostleBoss.class, entity.getBoundingBox()
                     .inflate(64));
-            if (!apostles.isEmpty()) {
-                for (Apostle apostle : apostles) {
-                    if (MobUtils.canHurt(entity, apostle)) {
-                        if ((apostle.getTarget() == entity || (entity instanceof Mob mob && mob.getTarget() == apostle))
-                                && apostle.getCancelHealTick() > 0) {
-                            event.setAmount(0);
-                            event.setCanceled(true);
-                            break;
-                        } else if (NoixmodAPIMainConfig.HorrorMode.get()) {
-                            event.setAmount(0);
-                            event.setCanceled(true);
-                            break;
-                        }
+            if (apostles.isEmpty()) {
+                return;
+            }
+            for (Apostle apostle : apostles) {
+                if (MobUtils.canHurt(entity, apostle)) {
+                    if ((apostle.getTarget() == entity || (entity instanceof Mob mob && mob.getTarget() == apostle))
+                            && apostle.getCancelHealTick() > 0) {
+                        event.setAmount(0);
+                        event.setCanceled(true);
+                        break;
+                    } else if (NoixmodAPIMainConfig.HorrorMode.get()) {
+                        event.setAmount(0);
+                        event.setCanceled(true);
+                        break;
                     }
                 }
             }
@@ -189,9 +190,11 @@ public class NoixmodAPIEvents {
     public static void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event)
     {
         Mob mob = event.getEntity();
-        ServerLevel serverLevel = event.getLevel().getLevel();
+        if (!(event.getLevel() instanceof ServerLevel serverLevel) || !serverLevel.getServer().isRunning()) {
+            return;
+        }
         if (mob instanceof Villager villager && event.getSpawnType() == MobSpawnType.STRUCTURE) {
-            if (NoixmodAPIMainConfig.SpawnHorror.get()) {
+            if (HorrorModeManager.ENABLED_SPAWN) {
                 HuntedVillager huntedVillager = NoixmodAPIEntities.HUNTED_VILLAGER.get().create(serverLevel);
                 if (huntedVillager == null) return;
                 huntedVillager.moveTo(villager.position());
@@ -202,7 +205,8 @@ public class NoixmodAPIEvents {
                     event.setSpawnCancelled(true);
                     event.setCanceled(true);
                 }
-            } else if (ThreadLocalRandom.current().nextFloat() < 0.25F && !mob.isBaby()) {
+            } else if (NoixmodAPIMainConfig.VillagerFighterSpawn.get() &&
+                    ThreadLocalRandom.current().nextFloat() < 0.25F && !mob.isBaby()) {
                 int i = ThreadLocalRandom.current().nextInt(11);
                 VillagerFighter fighter;
                 if (i < 3) {
@@ -228,26 +232,28 @@ public class NoixmodAPIEvents {
         } else if (mob instanceof WanderingTrader trader && ThreadLocalRandom.current().nextFloat() < 0.25F
                 && event.getSpawnType() == MobSpawnType.EVENT && NoixmodAPIMainConfig.IntruderWillSpawn.get()) {
             Intruder intruder = NoixmodAPIEntities.INTRUDER.get().create(serverLevel);
-            if (intruder != null) {
-                intruder.moveTo(trader.position());
-                intruder.setBoss(true);
-                intruder.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(trader.blockPosition()),
-                        MobSpawnType.EVENT, null, null);
-                serverLevel.addFreshEntity(intruder);
-                event.setSpawnCancelled(true);
-                trader.setRemoved(Entity.RemovalReason.KILLED);
-                event.setCanceled(true);
+            if (intruder == null) {
+                return;
             }
+            intruder.moveTo(trader.position());
+            intruder.setBoss(true);
+            intruder.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(trader.blockPosition()),
+                    MobSpawnType.EVENT, null, null);
+            serverLevel.addFreshEntity(intruder);
+            event.setSpawnCancelled(true);
+            trader.setRemoved(Entity.RemovalReason.KILLED);
+            event.setCanceled(true);
         } else if (mob instanceof Allay allay && ThreadLocalRandom.current().nextBoolean() &&
                 event.getSpawnType() == MobSpawnType.STRUCTURE) {
             Healing healing = NoixmodAPIEntities.HEALING.get().create(serverLevel);
-            if (healing != null) {
-                healing.moveTo(allay.position());
-                if (serverLevel.addFreshEntity(healing)) {
-                    event.setSpawnCancelled(true);
-                    allay.discard();
-                    event.setCanceled(true);
-                }
+            if (healing == null) {
+                return;
+            }
+            healing.moveTo(allay.position());
+            if (serverLevel.addFreshEntity(healing)) {
+                event.setSpawnCancelled(true);
+                allay.discard();
+                event.setCanceled(true);
             }
         }
     }
@@ -260,7 +266,7 @@ public class NoixmodAPIEvents {
         var pos = event.getPos();
         float c = 0.01F;
         if (level.canSeeSky(pos)) c = 0.00005F;
-        if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() > c) return;
+        if (ThreadLocalRandom.current().nextFloat() > c) return;
         var player = event.getPlayer();
         if (player == null || player.isCreative()) return;
         if (!level.getEntitiesOfClass(Tracker.class, player.getBoundingBox().inflate(16)).isEmpty()) return;
@@ -299,7 +305,7 @@ public class NoixmodAPIEvents {
         }
     }
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.EntityInteract event) {
         Level level = event.getLevel();
         if (level.isClientSide) return;
@@ -407,18 +413,19 @@ public class NoixmodAPIEvents {
         }
     }
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void onLivingTarget(LivingChangeTargetEvent event) {
         LivingEntity target =  event.getNewTarget();
         LivingEntity entity = event.getEntity();
         List<VillagerFighter> fighters = entity.level().getEntitiesOfClass(VillagerFighter.class, entity.getBoundingBox()
                 .inflate(19));
         if (fighters.isEmpty()) return;
-        if (target instanceof AbstractVillager) {
-            for (VillagerFighter fighter : fighters) {
-                if (fighter.getTarget() == null || !fighter.isAggressive()) {
-                    fighter.setTarget(entity);
-                }
+        if (!(target instanceof AbstractVillager)) {
+            return;
+        }
+        for (VillagerFighter fighter : fighters) {
+            if (fighter.getTarget() == null || !fighter.isAggressive()) {
+                fighter.setTarget(entity);
             }
         }
     }

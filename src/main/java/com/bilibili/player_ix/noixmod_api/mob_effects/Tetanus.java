@@ -11,15 +11,15 @@ public class Tetanus extends MobEffect {
         super(MobEffectCategory.HARMFUL, -7864320);
     }
 
-    public void applyEffectTick(LivingEntity p_19467_, int pAmplifier)
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier)
     {
-        if (p_19467_.hasEffect(MobEffects.REGENERATION)) {
-            p_19467_.removeEffect(MobEffects.REGENERATION);
+        if (pLivingEntity.hasEffect(MobEffects.REGENERATION)) {
+            pLivingEntity.removeEffect(MobEffects.REGENERATION);
         }
-        p_19467_.hurt(p_19467_.damageSources().magic(), pAmplifier + 1);
+        pLivingEntity.hurt(pLivingEntity.damageSources().magic(), pAmplifier + 1);
     }
 
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
-        return true;
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return pDuration % 2 == 0;
     }
 }

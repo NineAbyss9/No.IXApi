@@ -14,7 +14,7 @@ public class Stun extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        if (pLivingEntity instanceof Mob mob) {
+        if (pLivingEntity instanceof Mob mob && !mob.isNoAi()) {
             mob.setNoAi(true);
         }
         pLivingEntity.setJumping(false);
@@ -24,7 +24,7 @@ public class Stun extends MobEffect {
         return -1;
     }
 
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
         return true;
     }
 

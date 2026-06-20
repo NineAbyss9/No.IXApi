@@ -18,15 +18,17 @@ public class SelfFangsSpell extends IllagerSpell {
         for (int j = 0;j < 5;++j) {
             for (int i = 0;i < 5;++i) {
                 EvokerFangs fangs = EntityType.EVOKER_FANGS.create(pLevel);
-                if (fangs == null) continue;
-                if (j < 3) {
+                if (fangs == null) {
+                    continue;
+                }
+                if (j < 2) {
                     fangs.moveTo(pCaster.blockPosition().offset(
-                            Mth.floor(-i * Maths.trueOrFalse() * 0.5), 0,
-                            Mth.floor(-i * Maths.trueOrFalse() * 0.5)), 0, 0);
+                            Mth.floor(-i * Maths.trueOrFalse() * 0.5D), 0,
+                            Mth.floor(-i * Maths.trueOrFalse() * 0.5D)), 0, 0);
                 } else {
                     fangs.moveTo(pCaster.blockPosition().offset(
-                            Mth.floor(i * Maths.trueOrFalse() * 0.5), 0,
-                            Mth.floor(i * Maths.trueOrFalse() * 0.5)), 0, 0);
+                            Mth.floor(i * Maths.trueOrFalse() * 0.5D), 0,
+                            Mth.floor(i * Maths.trueOrFalse() * 0.5D)), 0, 0);
                 }
                 fangs.setOwner(pCaster);
                 pLevel.addFreshEntity(fangs);

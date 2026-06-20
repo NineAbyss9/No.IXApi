@@ -26,15 +26,15 @@ implements IGraveItem
 
     public boolean mineBlock(ItemStack pStack, Level pLevel, BlockState pState, BlockPos pPos, LivingEntity pEntityLiving)
     {
-        if (!pLevel.isClientSide) {
+        if (ThreadLocalRandom.current().nextFloat() < 0.05F && !pLevel.isClientSide) {
             this.spawnSilentGhost(pLevel, pEntityLiving.position());
         }
         return super.mineBlock(pStack, pLevel, pState, pPos, pEntityLiving);
     }
 
-    public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
-        if (ThreadLocalRandom.current().nextFloat() < 0.001F) {
-            p_41406_.playSound(SoundEvents.SOUL_ESCAPE);
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int p_41407_, boolean p_41408_) {
+        if (pEntity.tickCount % 20 == 0 && ThreadLocalRandom.current().nextFloat() < 0.001F) {
+            pEntity.playSound(SoundEvents.SOUL_ESCAPE);
         }
     }
 }

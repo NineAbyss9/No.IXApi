@@ -9,6 +9,7 @@ import com.github.NineAbyss9.ix_api.util.Maths;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.booleans.BooleanArrayList;
 import it.unimi.dsi.fastutil.booleans.BooleanList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
@@ -25,6 +26,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.NineAbyss9.util.pair.Pair;
 import org.slf4j.Logger;
 
@@ -32,6 +35,8 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HorrorModeManager {
+    public static final boolean ENABLED = NoixmodAPIMainConfig.HorrorMode.get();
+    public static final boolean ENABLED_SPAWN = NoixmodAPIMainConfig.SpawnHorror.get();
     private static final Logger LOGGER = LogUtils.getLogger();
     private int tickCount;
     private int apostleLookingTime = 0;
@@ -54,9 +59,8 @@ public class HorrorModeManager {
     public HorrorModeManager() {
     }
 
-    public void tick(Level pLevel)
+    public void tick(ServerLevel pLevel)
     {
-        ServerLevel serverLevel = (ServerLevel)pLevel;
         ++spawnInterval;
         ++tickCount;
             /*if (apostleLookingTime > 0) {
@@ -79,25 +83,35 @@ public class HorrorModeManager {
             if (this.apostleSummonChance >= 1F) {
                 this.apostleLookingTime = 99;
             }*/
+        if (pLevel.players().isEmpty()) return;
         if (tickCount % 1200 == 0) {
-            if ((random().nextFloat() < 0.005F || this.spawnInterval > TRACKER_MAX_SPAWN_INTERVAL) &&
-                    this.shouldSpawnTracker()) {
-                var player = this.spawnTracker(pLevel);
-                if (player == null) {
-                    LOGGER.warn("WTF?Can't spawn Tracker?");
-                } else {
-                    player.connection.connection.send(
-                            new ClientboundSetActionBarTextPacket(Component.translatable("info.noixmodapi.tracker_look")));
-                    this.updateSpawnCache();
+            if ((random().nextFloat() < 0.005F)) {
+                Player randomPlayer = pLevel.getRandomPlayer();
+                for (BlockPos pos : BlockPos.betweenClosed(randomPlayer.blockPosition().offset(-4, -4, -4),
+                        randomPlayer.blockPosition().offset(4, 4, 4))) {
+                    BlockState state = pLevel.getBlockState(pos);
+                    if (!(state.getBlock() instanceof DoorBlock doorBlock)) {
+                        continue;
+                    }
+                    doorBlock.setOpen(randomPlayer, (ServerLevel)pLevel, state, pos, !doorBlock.isOpen(state));
                 }
-                this.resetSpawnInterval();
+                if (this.spawnInterval > TRACKER_MAX_SPAWN_INTERVAL && this.shouldSpawnTracker()) {
+                    var player = this.spawnTracker(pLevel);
+                    if (player == null) {
+                        LOGGER.warn("WTF?Can't spawn Tracker?");
+                    } else {
+                        player.connection.connection.send(
+                                new ClientboundSetActionBarTextPacket(Component.translatable("info.noixmodapi" +
+                                        ".tracker_look")));
+                        this.updateSpawnCache();
+                    }
+                    this.resetSpawnInterval();
+                }
             }
             if (random().nextFloat() < 0.0005F) {
-                if (!serverLevel.players().isEmpty()) {
-                    for (var player : serverLevel.players()) {
-                        serverLevel.playSound(player, player.blockPosition(), NoixmodAPISounds.APOSTLE_IDLE.get(),
-                                SoundSource.HOSTILE, 0.5F, 1.0F);
-                    }
+                for (var player : pLevel.players()) {
+                    pLevel.playSound(player, player.blockPosition(), NoixmodAPISounds.APOSTLE_IDLE.get(),
+                            SoundSource.HOSTILE, 0.5F, 1.0F);
                 }
                 if (this.shouldSpawnTheGhost()) {
                     var player = this.spawnTheGhost(pLevel);
@@ -112,10 +126,8 @@ public class HorrorModeManager {
             }
             if (tickCount % 7200 == 0 && ThreadLocalRandom.current().nextFloat() < 0.1F) {
                 var list = pLevel.players();
-                if (list.isEmpty()) return;
                 var player = list.get(ThreadLocalRandom.current().nextInt(list.size()));
-                for (Animal animal : pLevel.getEntitiesOfClass(Animal.class, player.getBoundingBox().inflate(32)))
-                {
+                for (Animal animal : pLevel.getEntitiesOfClass(Animal.class, player.getBoundingBox().inflate(32))) {
                     if (ThreadLocalRandom.current().nextFloat() < 0.05F) {
                         var instance = animal.getAttribute(Attributes.ATTACK_DAMAGE);
                         if (instance == null) {
@@ -158,7 +170,7 @@ public class HorrorModeManager {
 
     public void updateSpawnCache()
     {
-        ///Stop updating if the index of {@linkplain spawnCache} is larger than {@linkplain mobsWillSpawn#size}
+        ///Stop updating if the index of {@linkplain spawnCache} is larger than {@linkplain mobsWillSpawn#size()}
         if (this.mobsWillSpawn.size() <= spawnCache.left()) return;
         if (spawnCache.right() > SPAWN_MAP.get(spawnCache.left())) {
             this.updateNextMobWillSpawn(spawnCache.left());
@@ -245,8 +257,7 @@ public class HorrorModeManager {
             this.mobsWillSpawn.set(i, pCompound.getBoolean("Mob" + i));
         }
         var spawnCache = pCompound.getCompound("SpawnCache");
-        this.spawnCache.setKey(spawnCache.getInt("Index"));
-        this.spawnCache.setValue(spawnCache.getInt("Count"));
+        this.spawnCache.set(spawnCache.getInt("Index"), spawnCache.getInt("Count"));
         if (this.tickCount != Integer.MAX_VALUE) {
             return;
         }
@@ -278,12 +289,12 @@ public class HorrorModeManager {
 
     public static boolean spawnTerribleMobs()
     {
-        return NoixmodAPIMainConfig.SpawnHorror.get();
+        return ENABLED_SPAWN;
     }
 
     public static boolean horrorModeEnabled()
     {
-        return NoixmodAPIMainConfig.HorrorMode.get();
+        return ENABLED;
     }
 
     public static void playStrangeSound(Entity pEntity)

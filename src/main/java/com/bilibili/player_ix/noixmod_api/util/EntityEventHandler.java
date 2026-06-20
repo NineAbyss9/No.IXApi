@@ -123,11 +123,11 @@ public class EntityEventHandler {
     }
 
     @ServerOnly
-    public static void wardenBoom(Entity entity, LivingEntity var1, double var2, ParticleOptions pParticle,
-                                  Consumer<LivingEntity> action) {
-        Option<LivingEntity> var10000 = Option.of(var1);
+    public static void sonicBoom(Entity entity, LivingEntity pTarget, double maxDistance, ParticleOptions pParticle,
+                                 Consumer<LivingEntity> action) {
+        Option<LivingEntity> var10000 = Option.of(pTarget);
         var10000.filter(living ->  MobUtils.canHurt(living, entity)).filter((target) ->
-                entity.closerThan(target, Mth.square(var2))).ifPresent((target) -> {
+                entity.closerThan(target, Mth.square(maxDistance))).ifPresent((target) -> {
             Vec3 $$3 = entity.position().add(0.0, 1.600000023841858, 0.0);
             Vec3 $$4 = target.getEyePosition().subtract($$3);
             Vec3 $$5 = $$4.normalize();
@@ -141,10 +141,10 @@ public class EntityEventHandler {
     }
 
     @ServerOnly
-    public static void wardenBoom(Entity entity, DamageSource source, LivingEntity var1, double var2) {
-        Option<LivingEntity> var10000 = Option.of(var1);
+    public static void sonicBoom(Entity entity, DamageSource source, LivingEntity pTarget, double maxDis) {
+        Option<LivingEntity> var10000 = Option.of(pTarget);
         var10000.filter(living ->  MobUtils.canHurt(living, entity)).filter((target) ->
-                entity.closerThan(target, Mth.square(var2))).ifPresent((target) -> {
+                entity.closerThan(target, Mth.square(maxDis))).ifPresent((target) -> {
             Vec3 $$3 = entity.position().add(0.0, 1.600000023841858, 0.0);
             Vec3 $$4 = target.getEyePosition().subtract($$3);
             Vec3 $$5 = $$4.normalize();

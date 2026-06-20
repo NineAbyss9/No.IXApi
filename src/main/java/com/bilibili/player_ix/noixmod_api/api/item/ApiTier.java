@@ -13,12 +13,12 @@ public enum ApiTier implements Tier {
     NETHERITE(2891, 9.9F, 4.9F, 4, 12,
             Ingredient.of(NoixmodAPIItems.INFERNAL_IRON_INGOT.get())),
     ICE(899, 7.0F, 3.F, 3, 16, Ingredient.of(NoixmodAPITags.ICES));
-    final int uses;
-    final int level;
-    final int ev;
-    final float speed;
-    final float damage;
-    final Ingredient ingredient;
+    private final int uses;
+    private final int level;
+    private final int ev;
+    private final float speed;
+    private final float damage;
+    private final Ingredient ingredient;
     ApiTier(int pUses, float diggingSpeed, float pDamage, int pLevel, int enchantmentValue, Ingredient craft) {
         uses = pUses;
         speed = diggingSpeed;

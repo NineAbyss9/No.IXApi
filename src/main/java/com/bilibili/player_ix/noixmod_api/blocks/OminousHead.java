@@ -36,12 +36,13 @@ extends SkullBlock {
             p_60506_.playSound(SoundEvents.AMBIENT_CAVE.get());
             ServerLevel serverLevel = (ServerLevel)p_60504_;
             var headHunter = NoixmodAPIEntities.HEAD_HUNTER.get().create(serverLevel);
-            if (headHunter != null) {
-                headHunter.moveTo(Vec9.of(p_60505_));
-                headHunter.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(p_60505_), MobSpawnType.EVENT);
-                if (serverLevel.addFreshEntity(headHunter))
-                    p_60504_.removeBlock(p_60505_, false);
+            if (headHunter == null) {
+                return InteractionResult.CONSUME;
             }
+            headHunter.moveTo(Vec9.of(p_60505_));
+            headHunter.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(p_60505_), MobSpawnType.EVENT);
+            if (serverLevel.addFreshEntity(headHunter))
+                p_60504_.removeBlock(p_60505_, false);
             return InteractionResult.CONSUME;
         }
     }
