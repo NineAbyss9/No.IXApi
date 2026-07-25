@@ -45,6 +45,7 @@ import org.joml.Matrix4f;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Mod.EventBusSubscriber(modid = NoixmodAPI.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -146,29 +147,30 @@ public class ClientEvents {
             BlockPos pos = player.blockPosition();
             if (level.canSeeSky(pos)) {
                 if (level.getGameTime() % 600L == 0L) {
-                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.005F) {
+                    if (ThreadLocalRandom.current().nextFloat() < 0.005F) {
                         level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(), SoundSource.HOSTILE,
                                 0.5F, 1.0F, false);
                     }
                 }
             } else {
                 if (level.getGameTime() % 300L == 0L) {
-                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.008F) {
-                        level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(), SoundSource.HOSTILE,
-                                0.5F, 1.0F, false);
+                    if (ThreadLocalRandom.current().nextFloat() < 0.008F) {
+                        level.playLocalSound(pos, level.getBlockState(pos.below()).getSoundType().getStepSound(),
+                                SoundSource.HOSTILE, 0.5F, 1.0F, false);
                     }
-                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.01F) {
-                        if (java.util.concurrent.ThreadLocalRandom.current().nextBoolean()) {
+                    if (ThreadLocalRandom.current().nextFloat() < 0.01F) {
+                        if (ThreadLocalRandom.current().nextBoolean()) {
                             level.playLocalSound(pos.offset(AbyssMath.random(5), 0, AbyssMath.random(5)),
-                                    randomAmbientSounds.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(
-                                    randomAmbientSounds.size())), SoundSource.HOSTILE, 0.25F, 1.0F, false);
+                                    randomAmbientSounds.get(ThreadLocalRandom.current().nextInt(
+                                    randomAmbientSounds.size())), SoundSource.HOSTILE, 0.25F, 1.0F,
+                                    false);
                         } else {
                             level.playLocalSound(pos.offset(AbyssMath.random(5), 0, AbyssMath.random(5)),
-                                    terribleSounds.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(
+                                    terribleSounds.get(ThreadLocalRandom.current().nextInt(
                                     terribleSounds.size())), SoundSource.HOSTILE, 0.75F, 1.0F, false);
                         }
                     }
-                    if (java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.02F) {
+                    if (ThreadLocalRandom.current().nextFloat() < 0.02F) {
                         level.playLocalSound(pos.offset(AbyssMath.random(5), 0, AbyssMath.random(5)),
                                 SoundEvents.AMBIENT_CAVE.value(), SoundSource.NEUTRAL,
                                 0.5F, 1.0F, false);
@@ -180,7 +182,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onRenderLiving(RenderLivingEvent.Pre<AbstractHorrorMob, ?> event) {
-        if (!HorrorModeManager.horrorModeEnabled()) return;
+        if (!HorrorModeManager.ENABLED) return;
         var entity = event.getEntity();
         if (!(entity instanceof AbstractHorrorMob)) return;
         Player player = Minecraft.getInstance().player;

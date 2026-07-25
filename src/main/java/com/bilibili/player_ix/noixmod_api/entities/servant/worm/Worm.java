@@ -38,9 +38,10 @@ extends AbstractWorm {
 
     public static void init() {
         MobUtils.registerSpawn(NoixmodAPIEntities.WORM.get(), SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevelAccessor, mobSpawnType,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType,
+                                                            serverLevelAccessor, mobSpawnType,
                                                             blockPos, randomSource) ->
-                randomSource.nextDouble() <= 0.05d && APIMonster.checkAPIMonsterSpawnRules(entityType,
+                randomSource.nextFloat() <= 0.05F && APIMonster.checkAPIMonsterSpawnRules(entityType,
                         serverLevelAccessor, mobSpawnType, blockPos, randomSource) &&
                         NoixmodAPIMainConfig.WormWillSpawn.get());
     }

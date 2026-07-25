@@ -67,7 +67,7 @@ extends OwnableIllager {
         if (pEntity instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), Maths.toTick(3),
                     this.mobData.getDifficultyId()));
-            if (!living.level().isClientSide && !living.getMobType().equals(MobType.UNDEAD)) {
+            if (!living.level().isClientSide && living.getMobType() != MobType.UNDEAD) {
                 EntityEventHandler.broadcastEntityEvent(living, 4);
             }
         }

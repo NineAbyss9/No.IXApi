@@ -67,6 +67,7 @@ implements ApiNihilisticBoss, IFlagMob {
     private int priestDeathTime;
     public Priest(EntityType<Priest> type, Level world) {
         super(type, world);
+        this.xpReward = 999;
         data = new PriestData(this);
         bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.PURPLE,
                 BossEvent.BossBarOverlay.PROGRESS);

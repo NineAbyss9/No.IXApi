@@ -33,22 +33,23 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, IF
     @Inject(method = "setHealth", at = @At("HEAD"), cancellable = true)
     public void setHealth(float p_21154_, CallbackInfo ci) {
         float delta = p_21154_ - this.getHealth();
-        if (delta > 0) {
-            List<ApostleBoss> bosses = this.level().getEntitiesOfClass(ApostleBoss.class, this.getBoundingBox()
-                            .inflate(64), boss -> MobUtils.canHurt(this.self(), boss));
-            if (!bosses.isEmpty() && NoixmodAPIMainConfig.HorrorMode.get()) {
-                for (ApostleBoss boss : bosses) {
-                    if (boss != null) {
-                        if (boss.getTarget() == this.self()) {
-                            ci.cancel();
-                            break;
-                        }
-                    }
-                }
-                return;
-            }
+        if (delta <= 0) {
+            return;
+        }
+        List<ApostleBoss> bosses = this.level().getEntitiesOfClass(ApostleBoss.class, this.getBoundingBox()
+                        .inflate(64), boss -> MobUtils.canHurt(this.self(), boss));
+        if (bosses.isEmpty() || !NoixmodAPIMainConfig.HorrorMode.get()) {
             if (this.hasEffect(NoixmodAPIMobEffects.NIHILISTIC.get())) {
                 ci.cancel();
+            }
+        } else {
+            for (ApostleBoss boss : bosses) {
+                if (boss != null) {
+                    if (boss.getTarget() == this.self()) {
+                        ci.cancel();
+                        break;
+                    }
+                }
             }
         }
     }

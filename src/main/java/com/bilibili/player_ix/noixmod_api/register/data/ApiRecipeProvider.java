@@ -27,10 +27,11 @@ extends RecipeProvider {
         shaped(RecipeCategory.MISC, NoixmodAPIItems.ALTAR.get(), Items.OBSIDIAN, NoixmodAPIItems.NIHILISTIC_ESSENCE.get(),
                 getHasName(Items.OBSIDIAN), has(Items.OBSIDIAN), "ixi", " i ", "iii", pWriter);
 
-        shaped(RecipeCategory.TOOLS, NoixmodAPIItems.GRAVE_AXE.get(), Items.IRON_INGOT,
+        /*deprecated since 1.4.2
+         shaped(RecipeCategory.TOOLS, NoixmodAPIItems.GRAVE_AXE.get(), Items.IRON_INGOT,
                 getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT), "ii", "ii", " i", pWriter);
         shaped(RecipeCategory.COMBAT, NoixmodAPIItems.GRAVE_SWORD.get(), Items.IRON_INGOT,
-                getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT), "i", "i", "i", pWriter);
+                getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT), "i", "i", "i", pWriter);*/
 
         shaped(RecipeCategory.COMBAT, NoixmodAPIItems.CREEPER_EGG.get(), Items.GUNPOWDER,
                 getHasName(Items.GUNPOWDER), has(Items.GUNPOWDER), " i ", "i i", " i ",
@@ -38,10 +39,34 @@ extends RecipeProvider {
         shaped(RecipeCategory.COMBAT, NoixmodAPIItems.MAGICAL_SWORD.get(), NoixmodAPIItems.SPIRIT_STONE.get(),
                 Items.IRON_INGOT, getHasName(NoixmodAPIItems.SPIRIT_STONE.get()), has(NoixmodAPIItems.SPIRIT_STONE.get()),
                 "  x", " x ", "i  ", pWriter);
+
+        shaped(RecipeCategory.COMBAT, NoixmodAPIItems.COPPER_HELMET.get(), Items.COPPER_INGOT,
+                getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT), "iii",
+                "i i", pWriter);
+        shaped(RecipeCategory.COMBAT, NoixmodAPIItems.COPPER_CHESTPLATE.get(), Items.COPPER_INGOT,
+                getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT), "i i",
+                "iii", "iii", pWriter);
+        shaped(RecipeCategory.COMBAT, NoixmodAPIItems.COPPER_LEGGINGS.get(), Items.COPPER_INGOT,
+                getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT), "iii", "i i", "i i",
+                pWriter);
+        shaped(RecipeCategory.COMBAT, NoixmodAPIItems.COPPER_BOOTS.get(), Items.COPPER_INGOT,
+                getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT), "i i", "i i",
+                pWriter);
+
         //Shapeless
         shapeless(RecipeCategory.COMBAT, NoixmodAPIItems.BOW_BOW.get(), Items.BOW, 2, pWriter);
+        shapeless(RecipeCategory.TOOLS, NoixmodAPIItems.EXP_BOTTLE.get(), Items.EXPERIENCE_BOTTLE,
+                Items.EMERALD, pWriter);
 
         //Ritual
+        ritual(RecipeCategory.DECORATIONS, Items.WITHER_SKELETON_SKULL, 1,
+                toIng(List.of(Items.SKELETON_SKULL, Items.WITHER_ROSE, Items.COAL)),
+                pWriter);
+
+        ritual(RecipeCategory.COMBAT, NoixmodAPIItems.GRAVE_AXE.get(), 1,
+                toIng(List.of(Items.IRON_AXE, Items.DIAMOND, Items.BONE)), pWriter);
+        ritual(RecipeCategory.COMBAT, NoixmodAPIItems.GRAVE_SWORD.get(), 1,
+                toIng(List.of(Items.IRON_SWORD, Items.DIAMOND, Items.BONE)), pWriter);
         ritual(RecipeCategory.COMBAT, NoixmodAPIItems.FROST_STAFF.get(), 1,
                 List.of(ing(NoixmodAPIItems.ICE_CORE.get()), ing(NoixmodAPIItems.PLATEAU_FRAGMENT.get()),
                         ing(Items.SNOWBALL), ing(Items.SNOWBALL), ing(Items.SNOWBALL),
@@ -53,6 +78,13 @@ extends RecipeProvider {
         ritual(RecipeCategory.MISC, NoixmodAPIItems.BANNED_BOOK.get(), 1,
                 List.of(ing(Items.END_CRYSTAL), ing(NoixmodAPIItems.NIHILISTIC_ESSENCE.get()),
                         ing(Items.NETHERITE_INGOT)), pWriter);
+        ritual(RecipeCategory.COMBAT, NoixmodAPIItems.WIND_HAMMER.get(), 1,
+                toIng(List.of(NoixmodAPIItems.WIND_ESSENCE.get(), NoixmodAPIItems.WIND_SWORD.get(),
+                        Items.DIAMOND_BLOCK, NoixmodAPIItems.SPIRIT_STONE.get())), pWriter);
+
+        //Stonecutter
+        stonecutterResultFromBase(pWriter, RecipeCategory.DECORATIONS,
+                Items.SKELETON_SKULL, Items.BONE_BLOCK);
     }
 
     /**Single*/
@@ -60,6 +92,14 @@ extends RecipeProvider {
     {
         ShapelessRecipeBuilder.shapeless(pRC, pResult).requires(pMaterial)
                 .unlockedBy(getHasName(pResult), has(pMaterial)).save(pWriter,
+                        NoixmodAPI.location(pResult + "_shapeless"));
+    }
+
+    public static void shapeless(RecipeCategory pRC, ItemLike pResult, ItemLike pMaterial, ItemLike pMaterial2,
+                                 Consumer<FinishedRecipe> pWriter)
+    {
+        ShapelessRecipeBuilder.shapeless(pRC, pResult).requires(pMaterial)
+                .requires(pMaterial2).unlockedBy(getHasName(pResult), has(pMaterial)).save(pWriter,
                         NoixmodAPI.location(pResult + "_shapeless"));
     }
 
@@ -85,6 +125,15 @@ extends RecipeProvider {
                 .unlockedBy(cn, instance).save(pWriter);
     }
 
+    public static void shaped(RecipeCategory pC, ItemLike pResult, ItemLike pItem,
+                              String cn, CriterionTriggerInstance instance, String pattern1, String pattern2,
+                              Consumer<FinishedRecipe> pWriter)
+    {
+        ShapedRecipeBuilder.shaped(pC, pResult).define('i', pItem)
+                .pattern(pattern1).pattern(pattern2)
+                .unlockedBy(cn, instance).save(pWriter);
+    }
+
     public static void shaped(RecipeCategory pC, ItemLike pResult, ItemLike pItem, ItemLike pItem1,
                               String cn, CriterionTriggerInstance instance, String pattern1, String pattern2,
                               String pattern3, Consumer<FinishedRecipe> pWriter)
@@ -105,6 +154,11 @@ extends RecipeProvider {
 
     public static Ingredient ing(ItemLike like) {
         return Ingredient.of(like);
+    }
+
+    public static List<Ingredient> toIng(List<ItemLike> list)
+    {
+        return list.stream().map(ApiRecipeProvider::ing).toList();
     }
 
     public static void ritual(RecipeCategory pCategory, ItemLike pResult, int pCount,

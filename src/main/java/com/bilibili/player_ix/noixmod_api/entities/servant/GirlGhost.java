@@ -76,6 +76,7 @@ extends AbstractGhost {
             return;
         }
         MobUtils.burnInTheSun(this.isUnowned(), this, 4);
+        if (f == null || DATA_IGNITED == null) return;
         java.util.List<Creeper> list = this.level().getEntitiesOfClass(Creeper.class, this.getBoundingBox().inflate(
                 32.0D), Creeper::isIgnited);
         if (list.isEmpty()) return;
@@ -87,6 +88,7 @@ extends AbstractGhost {
                 DATA_IGNITED.setAccessible(true);
                 creeper.getEntityData().set((EntityDataAccessor<Boolean>)DATA_IGNITED.get(creeper), false);
             } catch (IllegalAccessException ignore) {
+                break;
             }
         }
     }

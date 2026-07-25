@@ -28,6 +28,8 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class AquaticWorm
 extends AbstractWorm {
     public AquaticWorm(EntityType<? extends AbstractWorm> p_21683_, Level p_21684_) {
@@ -57,7 +59,7 @@ extends AbstractWorm {
 
     public void tick() {
         super.tick();
-        if (this.level().isClientSide && this.isInWater() && this.random.nextFloat() <= 0.05F) {
+        if (this.level().isClientSide && this.isInWater() && ThreadLocalRandom.current().nextFloat() <= 0.05F) {
             this.playSound(SoundEvents.BUBBLE_COLUMN_BUBBLE_POP);
             this.level().addParticle(ParticleTypes.BUBBLE, this.getX(), this.getY(), this.getZ(), 0,
                     0.1, 0);

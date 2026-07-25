@@ -46,7 +46,7 @@ implements ApiPoseMob {
         targetSelector.addGoal(1, new OwnableTargetGoal<>(this, false));
         targetSelector.addGoal(1, new OwnerHurtTargetGoal<>(this));
     }
-    @Override
+
     public void aiStep() {
         super.aiStep();
         MobUtils.burnInTheSun(true, this, 3);
@@ -88,7 +88,7 @@ implements ApiPoseMob {
     protected SoundEvent getDeathSound() {
         return SoundEvents.SOUL_ESCAPE;
     }
-    @Override
+
     public ApiPose getPoses() {
         if (this.isAggressive()) {
             if (this.getMainHandItem().is(Items.BOW)) {
@@ -100,7 +100,8 @@ implements ApiPoseMob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.3).add(Attributes.MAX_HEALTH, 40)
+        return createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.MAX_HEALTH, 40)
                 .add(Attributes.ATTACK_DAMAGE, 3).add(Attributes.ARMOR, 2)
                 .add(Attributes.FOLLOW_RANGE, 64);
     }

@@ -63,9 +63,10 @@ implements IFlagMob {
             if (this.tickCount % 20 == 0) {
                 this.heal(0.5F);
             }
-            if (this.isFlag(0) && this.getTarget() != null) {
-                if (this.closerThan(this.getTarget(), 3.0D)) {
-                    if (this.getRandomUtil().nextFloat() < 0.8F)
+            LivingEntity target = this.getTarget();
+            if (this.isFlag(0) && target != null) {
+                if (this.closerThan(target, 3.0D)) {
+                    if (ThreadLocalRandom.current().nextFloat() < 0.8F)
                         this.setFlag(1);
                     else
                         this.setFlag(2);
@@ -102,7 +103,8 @@ implements IFlagMob {
                     this.avoid.startIfStopped(tickCount);
                 }
             } else {
-                if (this.getFlag() != 0 && this.getFlag() != 1 && this.getFlag() != 2) {
+                int flag = this.getFlag();
+                if (flag != 0 && flag != 1 && flag != 2) {
                     NoixmodAPI.LOGGER.warn("TheGhost {} has invalid flag {}, resetting to 0", this.getStringUUID(), this.getFlag());
                     this.setFlag(0);
                 }

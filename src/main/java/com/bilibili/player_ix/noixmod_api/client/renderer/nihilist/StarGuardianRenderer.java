@@ -29,13 +29,14 @@ public class StarGuardianRenderer<S extends StarGuardian> extends MobRenderer<S,
     private static ResourceLocation LOC = new ResourceLocation("noixmodapi:textures/entities/nihilistic_mobs/zhuan.png");
 
     public ResourceLocation getTextureLocation(S s) {
-        if (TimeSelector.unupdatedBirthday) {
-            return BIRTHDAY;
-        }
-        if (s.isFlag(4)) {
-            return DIE;
+        if (!TimeSelector.unupdatedBirthday) {
+            if (!s.isFlag(4)) {
+                return LOC;
+            } else {
+                return DIE;
+            }
         } else {
-            return LOC;
+            return BIRTHDAY;
         }
     }
 
@@ -49,15 +50,16 @@ public class StarGuardianRenderer<S extends StarGuardian> extends MobRenderer<S,
         }
 
         public void render(PoseStack p_116970_, MultiBufferSource p_116971_, int p_116972_, S p_116973_, float p_116974_, float p_116975_, float p_116976_, float p_116977_, float p_116978_, float p_116979_) {
-            if (p_116973_.getShieldTick() > 0) {
-                float $$10 = (float)p_116973_.tickCount + p_116976_;
-                EntityModel<S> $$11 = this.model();
-                $$11.prepareMobModel(p_116973_, p_116974_, p_116975_, p_116976_);
-                this.getParentModel().copyPropertiesTo($$11);
-                VertexConsumer $$12 = p_116971_.getBuffer(RenderType.energySwirl(this.getTextureLocation(), this.xOffset($$10) % 1.0F, $$10 * 0.01F % 1.0F));
-                $$11.setupAnim(p_116973_, p_116974_, p_116975_, p_116977_, p_116978_, p_116979_);
-                $$11.renderToBuffer(p_116970_, $$12, p_116972_, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
+            if (p_116973_.getShieldTick() <= 0) {
+                return;
             }
+            float $$10 = (float)p_116973_.tickCount + p_116976_;
+            EntityModel<S> $$11 = this.model();
+            $$11.prepareMobModel(p_116973_, p_116974_, p_116975_, p_116976_);
+            this.getParentModel().copyPropertiesTo($$11);
+            VertexConsumer $$12 = p_116971_.getBuffer(RenderType.energySwirl(this.getTextureLocation(), this.xOffset($$10) % 1.0F, $$10 * 0.01F % 1.0F));
+            $$11.setupAnim(p_116973_, p_116974_, p_116975_, p_116977_, p_116978_, p_116979_);
+            $$11.renderToBuffer(p_116970_, $$12, p_116972_, OverlayTexture.NO_OVERLAY, 0.5F, 0.5F, 0.5F, 1.0F);
         }
 
         protected float xOffset(float p_117702_) {

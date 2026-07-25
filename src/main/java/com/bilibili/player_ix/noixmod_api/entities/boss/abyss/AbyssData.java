@@ -7,8 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**Data for {@linkplain Abyss}
- * @author Player_IX*/
+/**Data for {@linkplain Abyss}, this may be useless now*/
 class AbyssData {
     final Abyss abyss;
     AbyssData(Abyss pAbyss) {

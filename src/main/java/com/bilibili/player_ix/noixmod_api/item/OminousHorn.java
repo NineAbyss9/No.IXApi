@@ -75,6 +75,8 @@ extends Item {
                 if (!pPlayer.isCreative()) {
                     increaseUseCount(stack);
                     if (shouldDiscard(stack)) {
+                        pPlayer.broadcastBreakEvent(pUsedHand);
+                        pPlayer.awardStat(Stats.ITEM_BROKEN.get(this));
                         stack.shrink(1);
                     }
                 }

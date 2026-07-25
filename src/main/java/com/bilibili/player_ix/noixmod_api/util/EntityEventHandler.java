@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.NineAbyss9.util.lister.ImmutableSubLister;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -34,31 +35,42 @@ import java.util.function.Consumer;
  * </pre></blockquote>
  * @author Player_IX*/
 public class EntityEventHandler {
-    public EntityEventHandler() {
+    private EntityEventHandler() {
     }
 
+    @ServerOnly
     public static void broadcastEntityEvent(Entity entity, int event) {
+        //if (entity == null) return;
+        ServerLevel level = (ServerLevel)entity.level();
         switch (event) {
-            case 0 -> ((ServerLevel)entity.level()).sendParticles(ParticleTypes.SMOKE,
-                    entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
-                    0.5, 0.1);
-            case 1 -> ((ServerLevel)entity.level()).sendParticles(ParticleTypes.CRIT,
-                    entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
-                    0.5, 0.1);
-            case 2 -> ((ServerLevel)entity.level()).sendParticles(NoixmodAPIParticleTypes.GOLDEN_FLAME.get(),
+            case 0 -> level.sendParticles(ParticleTypes.SMOKE,
+                    entity.getX(), entity.getY() + 1.0D, entity.getZ(), 30, 0.5D, 0.5D,
+                    0.5D, 0.1D);
+            case 1 -> level.sendParticles(ParticleTypes.CRIT,
+                    entity.getX(), entity.getY() + 1.0D, entity.getZ(), 30, 0.5D, 0.5D,
+                    0.5D, 0.1D);
+            case 2 -> level.sendParticles(NoixmodAPIParticleTypes.GOLDEN_FLAME.get(),
                     entity.getX(), entity.getY(), entity.getZ(), 30, 1, 2, 1, 0);
             case 3 ->  {
-                if (entity instanceof LivingEntity living) {
-                    MobEffectInstance instance = living.getEffect(NoixmodAPIMobEffects.TETANUS.get());
-                    if (living.hasEffect(NoixmodAPIMobEffects.TETANUS.get()) && instance != null) {
-                        living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 60,
-                                instance.getAmplifier() + 1));
-                    } else {
-                        living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 60, 0));
-                    }
+                if (!(entity instanceof LivingEntity living)) {
+                    return;
+                }
+                if (ImmutableSubLister.copyOf(living.getArmorSlots()).stream().filter(itemStack ->
+                {
+                    return  !itemStack.isEmpty();
+                }).toList().isEmpty())
+                {
+                    return;
+                }
+                MobEffectInstance instance = living.getEffect(NoixmodAPIMobEffects.TETANUS.get());
+                if (living.hasEffect(NoixmodAPIMobEffects.TETANUS.get()) && instance != null) {
+                    living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 60,
+                            instance.getAmplifier() + 1));
+                } else {
+                    living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 60, 0));
                 }
             }
-            case 4 -> ((ServerLevel)entity.level()).sendParticles(NoixmodAPIParticleTypes.BLOOD.get(),
+            case 4 -> level.sendParticles(NoixmodAPIParticleTypes.BLOOD.get(),
                     entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.5, 0.5,
                     0.5, 0.1);
             case 5 -> {
@@ -71,9 +83,9 @@ public class EntityEventHandler {
                         Vec3 $$5 = $$4.normalize();
                         for (int $$6 = 1; $$6 < Mth.floor($$4.length()) + 7; ++$$6) {
                             Vec3 $$7 = $$3.add($$5.scale($$6));
-                            ((ServerLevel)p_217704_.level()).sendParticles(ParticleTypes.SOUL, $$7.x, $$7.y - 0.5, $$7.z,
+                            level.sendParticles(ParticleTypes.SOUL, $$7.x, $$7.y - 0.5, $$7.z,
                                     7, 1.5, 1.5, 1.5, 0.0);
-                            ((ServerLevel)p_217704_.level()).sendParticles(ParticleTypes.SONIC_BOOM, $$7.x, $$7.y, $$7.z,
+                            level.sendParticles(ParticleTypes.SONIC_BOOM, $$7.x, $$7.y, $$7.z,
                                     1, 0.0, 0.0, 0.0, 0.0);
                         }
                         mourner.playSound(SoundEvents.WARDEN_SONIC_BOOM, 3.0F, 1.0F);
@@ -81,7 +93,7 @@ public class EntityEventHandler {
                                 Math.min(NoixmodAPIMainConfig.MournerDamage.get().floatValue(), mourner.getDeath()));
                         double $$8 = 0.5 * (1.0 - p_217704_.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                         double $$9 = 2.5 * (1.0 - p_217704_.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                        p_217704_.push($$5.x() * $$9, $$5.y() * $$8, $$5.z() * $$9);
+                        p_217704_.push($$5.x * $$9, $$5.y * $$8, $$5.z * $$9);
                     });
                 }
             }
@@ -95,7 +107,7 @@ public class EntityEventHandler {
                         Vec3 $$5 = $$4.normalize();
                         for (int $$6 = 1; $$6 < Mth.floor($$4.length()) + 3; ++$$6) {
                             Vec3 $$7 = $$3.add($$5.scale($$6));
-                            ((ServerLevel)target.level()).sendParticles(ParticleTypes.SMOKE, $$7.x, $$7.y, $$7.z, 6,
+                            level.sendParticles(ParticleTypes.SMOKE, $$7.x, $$7.y, $$7.z, 6,
                                     0.5, 0.5, 0.5, 0.0);
                         }
                         if (!target.isBlocking()) {
@@ -128,10 +140,10 @@ public class EntityEventHandler {
         Option<LivingEntity> var10000 = Option.of(pTarget);
         var10000.filter(living ->  MobUtils.canHurt(living, entity)).filter((target) ->
                 entity.closerThan(target, Mth.square(maxDistance))).ifPresent((target) -> {
-            Vec3 $$3 = entity.position().add(0.0, 1.600000023841858, 0.0);
+            Vec3 $$3 = entity.position().add(0.0D, 1.600000023841858D, 0.0D);
             Vec3 $$4 = target.getEyePosition().subtract($$3);
             Vec3 $$5 = $$4.normalize();
-            for (int $$6 = 1; $$6 < Mth.floor($$4.length()) + 7; ++$$6) {
+            for (int $$6 = 1;$$6 < Mth.floor($$4.length()) + 7;++$$6) {
                 Vec3 $$7 = $$3.add($$5.scale($$6));
                 ((ServerLevel)target.level()).sendParticles(pParticle, $$7.x, $$7.y, $$7.z, 1,
                         0.0, 0.0, 0.0, 0.0);

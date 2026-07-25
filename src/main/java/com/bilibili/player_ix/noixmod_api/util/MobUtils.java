@@ -66,6 +66,7 @@ public record MobUtils(Entity entity) {
             if (entity.isInWater()) {
                 entity.getDeltaMovement().scale(0.5).add(0, 0.05, 0);
             }
+            return;
         }
         if (i == 1) {
             if (entity.isInLava()) {
@@ -158,7 +159,7 @@ public record MobUtils(Entity entity) {
     }
 
     public static boolean isHalfHealth(LivingEntity living) {
-        return living.getHealth() <= living.getMaxHealth() / 2;
+        return living.getHealth() <= living.getMaxHealth() / 2.0D;
     }
 
     @Nullable

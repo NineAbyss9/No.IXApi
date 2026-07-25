@@ -55,14 +55,17 @@ public class NoixmodAPIMainConfig {
     //Spawn
     public static final ForgeConfigSpec.BooleanValue AquaticWormWillSpawn;
     public static final ForgeConfigSpec.BooleanValue BoneSpellcasterSpawn;
+    public static final ForgeConfigSpec.BooleanValue EndSlimeSpawn;
     public static final ForgeConfigSpec.BooleanValue IntruderWillSpawn;
     public static final ForgeConfigSpec.BooleanValue WormWillSpawn;
     public static final ForgeConfigSpec.BooleanValue VampireWillSpawn;
+    public static final ForgeConfigSpec.BooleanValue NetherSoulSpawn;
     public static final ForgeConfigSpec.BooleanValue NihilisticBlazeSpawn;
     public static final ForgeConfigSpec.BooleanValue GirlGhostCanSummon;
     public static final ForgeConfigSpec.BooleanValue PlateauBeastCanSummon;
     public static final ForgeConfigSpec.BooleanValue WindZombieCanSpawn;
     public static final ForgeConfigSpec.BooleanValue NihilisticOrderSpawn;
+    public static final ForgeConfigSpec.BooleanValue SilentGhostSpawn;
     public static final ForgeConfigSpec.BooleanValue VillagerFighterSpawn;
     public static final ForgeConfigSpec.BooleanValue WitherBoneSpellcasterSpawn;
     public static final ForgeConfigSpec.BooleanValue YetiWillSpawn;
@@ -71,6 +74,7 @@ public class NoixmodAPIMainConfig {
     public static final ForgeConfigSpec.BooleanValue TERRIBLE_SKY;
     public static final ForgeConfigSpec.BooleanValue HorrorMode;
     public static final ForgeConfigSpec.BooleanValue SpawnHorror;
+    public static final ForgeConfigSpec.BooleanValue DisableSpawningMobs;
     // /Horror Mode
     public static final ForgeConfigSpec.BooleanValue PlayBossMusic;
 
@@ -101,11 +105,17 @@ public class NoixmodAPIMainConfig {
 
     static {
         builder.push("NoixmodAPIMainConfig");
+        comment(
+                "Not all settings take effect immediately (for performance reasons)," +
+                        " so it is best to restart the game after changing settings.");
         builder.push("HorrorMode");
         HorrorMode = builder.comment("No.IXAPI will be different to normal......, Default:false.Needs restart the game." +
                 "Enable the following settings for a better experience.").worldRestart().define("API恐怖模式", false);
         TERRIBLE_SKY = builder.comment("If true, the sky will become ???.").define("TerribleSky", false);
         SpawnHorror = builder.comment("Will scaring mobs spawn?Default:false").worldRestart().define("SpawnScaringMobs", false);
+        DisableSpawningMobs = comment("Disable spawning mobs in the world?Default:follow spawn horror.This option" +
+                " is useless now.")
+                .worldRestart().define("DisableMobsSpawn", true);
         builder.pop();
         builder.push("Sounds");
         PlayBossMusic = builder.comment("Will bosses play music?Default:true(Deprecated)").define("是否播放Boss音乐", true);
@@ -199,27 +209,40 @@ public class NoixmodAPIMainConfig {
         builder.push("Mourner");
         MournerDamage = builder.comment("Max damage amount for mourners, Default:17").defineInRange("哀悼者最大伤害", 17D, 0D, 114514D);
         builder.pop();
-        push("BoneSpellcaster");
-        BoneSpellcasterSpawn = comment("Will bone spellcasters spawn?Default:true")
-                .define("BoneSpellcasterSpawn", true);
-        WitherBoneSpellcasterSpawn = comment("Will wither bone spellcasters spawn?Default:true")
-                .define("WitherBoneSpellcasterSpawn", true);
-        pop();
-        builder.pop();
+        builder.pop();//pop illagers
         builder.push("OwnableEntity");
         builder.push("GirlGhost");
-        GirlGhostCanSummon = builder.comment("Will girl ghosts spawn ?Default:true").worldRestart().define("女孩幽灵是否生成", true);
+        GirlGhostCanSummon = builder.comment("Will girl ghosts spawn?Default:true").worldRestart().define("女孩幽灵是否生成", true);
         builder.pop();
+        push("NetherSoul");
+        NetherSoulSpawn = builder.comment("Will nether souls spawn?Default:true").worldRestart()
+                .define("NetherSoulSpawn", true);
+        pop();
+        builder.pop();//pop OwnableEntity
+        builder.push("Monster");
         builder.push("WindZombie");
         WindZombieCanSpawn = builder.comment("Will wind zombies spawn ?Default:true").worldRestart().define("风尸是否生成", true);
         builder.pop();
-        builder.push("Monster");
         builder.push("PlateauBeast");
         PlateauBeastCanSummon = builder.comment("Will plateau beasts spawn ?Default:true").worldRestart().define("高原野兽是否生成", true);
         builder.pop();
         builder.push("Yeti");
         YetiWillSpawn = builder.comment("Will yetis spawn ?Default:true").worldRestart().define("雪怪是否生成", true);
         builder.pop();
+        push("BoneSpellcaster");
+        BoneSpellcasterSpawn = comment("Will bone spellcasters spawn?Default:true")
+                .define("BoneSpellcasterSpawn", true);
+        WitherBoneSpellcasterSpawn = comment("Will wither bone spellcasters spawn?Default:true")
+                .define("WitherBoneSpellcasterSpawn", true);
+        pop();
+        push("EndSlime");
+        EndSlimeSpawn = builder.comment("Will end slimes spawn?Default:true").worldRestart()
+                .define("EndSlimeSpawn", true);
+        pop();
+        push("SilentGhost");
+        SilentGhostSpawn = builder.comment("Will silent ghosts spawn?Default:true").worldRestart()
+                .define("SilentGhostSpawn", true);
+        pop();
         builder.push("NihilisticBlaze");
         NihilisticBlazeSpawn = builder.comment("Will nihilistic blazes spawn?Default:true").worldRestart().define("SpawnNihilisticBlaze",
                 true);

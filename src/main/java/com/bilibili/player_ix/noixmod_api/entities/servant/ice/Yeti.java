@@ -167,8 +167,7 @@ implements IFlagMob {
                 }
             } else {
                 if (this.getFlag() > HIDE_POSE || this.getFlag() < 0) {
-                    NoixmodAPI.LOGGER.warn("Can't handle synchedData in {}", this.getClass().getSimpleName());
-                    this.resetFlag();
+                    this.sendMesAndReset(NoixmodAPI.LOGGER);
                 }
             }
         }

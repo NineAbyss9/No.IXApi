@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 public class ApiRangedBowAttackGoal
@@ -72,21 +73,22 @@ extends Goal {
 
     public void tick() {
         LivingEntity livingentity = this.mob.getTarget();
-        if (livingentity != null) {
-            double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
-            boolean flag = this.mob.getSensing().hasLineOfSight(livingentity);
-            boolean flag1 = this.seeTime > 0;
-            if (flag != flag1) {
-                this.seeTime = 0;
-            }
-            if (flag) {
-                ++this.seeTime;
-            } else {
-                --this.seeTime;
-            }
-            this.stopOrStrafe(d0, livingentity);
-            this.useItem(flag, livingentity);
+        if (livingentity == null) {
+            return;
         }
+        double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
+        boolean flag = this.mob.getSensing().hasLineOfSight(livingentity);
+        boolean flag1 = this.seeTime > 0;
+        if (flag != flag1) {
+            this.seeTime = 0;
+        }
+        if (flag) {
+            ++this.seeTime;
+        } else {
+            --this.seeTime;
+        }
+        this.stopOrStrafe(d0, livingentity);
+        this.useItem(flag, livingentity);
     }
 
     public boolean checkSee() {
@@ -102,10 +104,10 @@ extends Goal {
             this.strafingTime = -1;
         }
         if (this.strafingTime >= 20) {
-            if (this.mob.getRandom().nextFloat() < 0.3) {
+            if (ThreadLocalRandom.current().nextFloat() < 0.3) {
                 this.strafingClockwise = !this.strafingClockwise;
             }
-            if (this.mob.getRandom().nextFloat() < 0.3) {
+            if (ThreadLocalRandom.current().nextFloat() < 0.3) {
                 this.strafingBackwards = !this.strafingBackwards;
             }
             this.strafingTime = 0;

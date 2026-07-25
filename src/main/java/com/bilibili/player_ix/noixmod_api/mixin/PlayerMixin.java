@@ -33,7 +33,7 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void hurt(DamageSource p_21016_, float p_21017_, CallbackInfoReturnable<Boolean> cir) {
         Entity entity = p_21016_.getEntity();
-        if (!MobUtils.canHurt(this, entity)) {
+        if (!MobUtils.canHurt(this.self(), entity)) {
             cir.setReturnValue(false);
         }
     }

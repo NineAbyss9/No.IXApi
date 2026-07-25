@@ -40,6 +40,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ZombieVindicator
 extends OwnableNihilist
@@ -61,7 +62,7 @@ implements Ownable, IConversion {
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CONVERSION_TICK, -1);
+        this.entityData.define(CONVERSION_TICK, 1201);
     }
 
     public void aiStep() {
@@ -149,7 +150,7 @@ implements Ownable, IConversion {
     }
 
     public boolean isConverting() {
-        return this.getConversionTick() != -1;
+        return this.getConversionTick() != 1201;
     }
 
     public int getConversionTick() {
@@ -234,9 +235,9 @@ implements Ownable, IConversion {
 
     public void makeParticle() {
         if (this.level().isClientSide) {
-            double x = this.getRandom().nextGaussian() * 0.2;
-            double y = this.getRandom().nextGaussian() * 0.2;
-            double z = this.getRandom().nextGaussian() * 0.2;
+            double x = ThreadLocalRandom.current().nextGaussian() * 0.2;
+            double y = ThreadLocalRandom.current().nextGaussian() * 0.2;
+            double z = ThreadLocalRandom.current().nextGaussian() * 0.2;
             this.level().addParticle(ParticleTypes.SOUL, this.getRandomX(0.5), this.getRandomY() + 0.5,
                     this.getRandomZ(0.5), x, y, z);
         }

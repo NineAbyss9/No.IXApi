@@ -2,6 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.boss.abyss;
 
 import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
+import com.github.NineAbyss9.ix_api.api.annotation.ServerOnly;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiNihilisticBoss;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.IShieldUser;
@@ -54,6 +55,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 /**重(chóng)渊 Abyss
@@ -81,7 +83,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     public AnimationState attack5 = new AnimationState();
     private static final Component ABYSS;
     private static final int XP_REWARD = 1239;
-    private static final float DAMAGE_CAPE;
+    private static final float DAMAGE_CAP;
     final UnmodifiableList<AnimationState> animations;
     final Predicate<LivingEntity> predicate;
     final DamageSource VOID;
@@ -132,7 +134,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             this.spin = (-Maths.CLOSER_PI);
         }
         this.abyssData.tickPhase();
-        int chance = getRandomUtil().nextInt(19);
+        int chance = ThreadLocalRandom.current().nextInt(19);
         if (this.canChangeFlag()) {
             if (this.isSecondPhase()) {
                 if (chance < 7) {
@@ -340,10 +342,10 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             LivingEntity target = this.getTarget();
             boolean flag;
             if (target != null) {
-                flag = this.getY() > target.getY() + 6;
+                flag = this.getY() > target.getY() + 6.0D;
                 this.targetBYO = target.getBoundingBox().getYsize();
             } else {
-                flag = WorldUtil.low(this) > targetBYO + 5;
+                flag = WorldUtil.low(this) > targetBYO + 5.0D;
             }
             if (flag) {
                 this.setDeltaMovement(Vec9.of(0, -0.15, 0));
@@ -400,62 +402,50 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         if (DATA_FLAGS.equals(pKey)) {
             if (this.level().isClientSide) {
                 switch (this.getFlag()) {
-                    case 0: {
-                        break;
+                    case 0 -> {
                     }
-                    case 1: {
+                    case 1 -> {
                         this.stopAllAnimations();
                         this.attack.startIfStopped(tickCount);
-                        break;
                     }
-                    case 2: {
+                    case 2 -> {
                         this.stopAllAnimations();
                         this.clap.startIfStopped(tickCount);
-                        break;
                     }
-                    case 3: {
+                    case 3 -> {
                         this.stopAllAnimations();
                         this.ground.startIfStopped(tickCount);
-                        break;
                     }
-                    case 4: {
+                    case 4 -> {
                         this.stopAllAnimations();
                         this.attack2.startIfStopped(tickCount);
-                        break;
                     }
-                    case 5: {
+                    case 5 -> {
                         this.stopAllAnimations();
                         this.summon.startIfStopped(tickCount);
-                        break;
                     }
-                    case 6: {
+                    case 6 -> {
                         this.stopAllAnimations();
                         this.attack3.startIfStopped(tickCount);
-                        break;
                     }
-                    case 7: {
+                    case 7 -> {
                         this.stopAllAnimations();
                         this.throw_item.startIfStopped(tickCount);
-                        break;
                     }
-                    case 8: {
+                    case 8 -> {
                         this.stopAllAnimations();
                         this.clap_second.startIfStopped(tickCount);
-                        break;
                     }
-                    case 10: {
+                    case 10 -> {
                         this.stopAllAnimations();
                         this.attack5.startIfStopped(this.tickCount);
-                        break;
                     }
-                    case 99: {
+                    case 99 -> {
                         this.idle.startIfStopped(tickCount);
-                        break;
                     }
-                    default: {
+                    default -> {
                         LOGGER.error("Cannot handle SyncedEvent {} in Abyss", this.getFlag());
                         this.setFlag(0);
-                        break;
                     }
                 }
             }
@@ -468,23 +458,27 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     private void clap() {
+        if (this.level().isClientSide) {
+            return;
+        }
         LivingEntity entity = this.getTarget();
-        if (!this.level().isClientSide) {
-            if (entity != null) {
-                List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(
-                    2, 2, 2), predicate);
-                if (!list.isEmpty()) {
-                    for (LivingEntity living : list) {
-                        if (living.onGround()) {
-                            entity.hurt(VOID, 15f);
-                            blood(living);
-                            this.abyssHeal(2.5f);
-                        }
-                    }
+        if (entity == null) {
+            return;
+        }
+        List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(
+            2, 2, 2), predicate);
+        if (list.isEmpty()) {
+            return;
+        } else {
+            for (LivingEntity living : list) {
+                if (living.onGround()) {
+                    entity.hurt(VOID, 15f);
+                    blood(living);
+                    this.abyssHeal(2.5f);
                 }
-                this.clapSound();
             }
         }
+        this.clapSound();
     }
 
     private void clapSound() {
@@ -555,14 +549,14 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         return super.isInvulnerableTo(p_20122_);
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        p_21241_ = capeDamage(p_21241_);
-        super.actuallyHurt(p_21240_, p_21241_);
+    protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
+        pDamageAmount = capDamage(pDamageAmount);
+        super.actuallyHurt(pDamageSource, pDamageAmount);
     }
 
-    protected float getDamageAfterArmorAbsorb(DamageSource p_21162_, float p_21163_) {
-        p_21163_ = capeDamage(p_21163_);
-        return super.getDamageAfterArmorAbsorb(p_21162_, p_21163_);
+    protected float getDamageAfterArmorAbsorb(DamageSource p_21162_, float pDamageAmount) {
+        pDamageAmount = capDamage(pDamageAmount);
+        return super.getDamageAfterArmorAbsorb(p_21162_, pDamageAmount);
     }
 
     public void setHealth(float newHealth) {
@@ -572,16 +566,16 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             if (this.isOnHurtCooldown()) {
                 return;
             }
-            if (delta < -DAMAGE_CAPE) {
-                newHealth = health - DAMAGE_CAPE;
+            if (delta < -DAMAGE_CAP) {
+                newHealth = health - DAMAGE_CAP;
             }
             this.setHurtCooldown(20);
         }
         super.setHealth(newHealth);
     }
 
-    private float capeDamage(float damage) {
-        damage = Math.min(DAMAGE_CAPE, damage);
+    private float capDamage(float damage) {
+        damage = Math.min(DAMAGE_CAP, damage);
         if (this.mobData.isInEnd()) {
             damage /= 1.5F;
         }
@@ -594,6 +588,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
         }
     }
 
+    @ServerOnly
     private void blood(LivingEntity living) {
         ParticleUtil.sendParticles(this.serverLevel(), NoixmodAPIParticleTypes.BLOOD_SPELL.get(), living.position(),
                 19, 1, 1, 1, 0);
@@ -700,20 +695,21 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     }
 
     private void summon() {
+        if (this.level().isClientSide) {
+            return;
+        }
         if (this.summonCooldown > 0) {
             return;
         }
-        if (!this.level().isClientSide) {
-            for (int i = 0;i < 5;i++) {
-                ServerLevel serverLevel = this.serverLevel();
-                Golem golem = new Golem(NoixmodAPIEntities.GOLEM.get(), serverLevel);
-                this.getSummon().integerSummon(golem, 3);
-                golem.setOwner(this);
-                ParticleUtil.sendParticles(serverLevel, NoixmodAPIParticleTypes.DARK_SPELL.get(),
-                        golem.position(), 12, 1, 1, 1, 0);
-            }
-            this.summonCooldown = 300;
+        ServerLevel serverLevel = this.serverLevel();
+        for (int i = 0;i < 5;i++) {
+            Golem golem = new Golem(NoixmodAPIEntities.GOLEM.get(), serverLevel);
+            this.getSummon().integerSummon(golem, 3);
+            golem.setOwner(this);
+            ParticleUtil.sendParticles(serverLevel, NoixmodAPIParticleTypes.DARK_SPELL.get(),
+                    golem.position(), 12, 1, 1, 1, 0);
         }
+        this.summonCooldown = 300;
     }
 
     private void stopAllAnimations() {
@@ -740,7 +736,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     static {
         ABYSS = Component.translatable("entity.noixmodapi.abyss")
                 .withStyle(ChatFormatting.DARK_RED);
-        DAMAGE_CAPE = 12.9f;
+        DAMAGE_CAP = 12.9f;
         DATA_ATTACK_TICK = SynchedEntityData.defineId(Abyss.class, EntityDataSerializers.INT);
         DATA_BOSS_PHASE = SynchedEntityData.defineId(Abyss.class, EntityDataSerializers.INT);
         DATA_COOLDOWN = SynchedEntityData.defineId(Abyss.class, EntityDataSerializers.INT);

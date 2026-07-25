@@ -4,7 +4,6 @@ package com.bilibili.player_ix.noixmod_api.entities.projectile;
 import com.github.NineAbyss9.ix_api.util.ParticleUtil;
 import com.bilibili.player_ix.noixmod_api.entities.servant.core.OwnedEntity;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
-import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -21,8 +20,8 @@ public class DamageEntity extends OwnedEntity {
     public float damage = 6F;
     public int lifeTicks = 40;
     public float speed = 0.0f;
-    private boolean dieSendParticles;
-    private ParticleOptions dieParticle;
+    private boolean sendParticlesWhenDie;
+    private ParticleOptions particle;
     public ParticleOptions options = ParticleTypes.EFFECT;
     public DamageEntity(EntityType<? extends DamageEntity> type, Level level) {
         super(type, level);
@@ -35,7 +34,7 @@ public class DamageEntity extends OwnedEntity {
                     this.getRandomZ(0.5), 0, 0, 0);
         }
         if (this.lifeTicks <= 0) {
-            if (this.dieSendParticles) {
+            if (this.sendParticlesWhenDie) {
                 this.dieParticles(null);
             }
             this.damage();
@@ -55,11 +54,10 @@ public class DamageEntity extends OwnedEntity {
 
     public void dieParticles(@Nullable ParticleOptions option) {
         if (this.lifeTicks > 0) {
-            this.dieParticle = option;
-            this.dieSendParticles = true;
+            this.particle = option;
+            this.sendParticlesWhenDie = true;
         } else {
-            ServerLevel level = WorldUtil.getServerLevel(this);
-            ParticleUtil.sendParticles(level, this.dieParticle, this.position(), 30, 1, 1, 1, speed);
+            ParticleUtil.sendParticles((ServerLevel)this.level(), this.particle, this.position(), 30, 1, 1, 1, speed);
         }
     }
 }

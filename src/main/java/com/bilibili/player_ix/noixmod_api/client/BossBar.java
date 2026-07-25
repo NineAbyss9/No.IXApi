@@ -52,6 +52,12 @@ public class BossBar {
         }
     }
 
+    private static ResourceLocation apostle = NoixmodAPIMainConfig.HorrorMode.get() ?
+            APOSTLE_HORROR : BOSS_BAR;
+
+    private static ResourceLocation apostle1 = NoixmodAPIMainConfig.HorrorMode.get() ?
+            APOSTLE_HORROR_1 : BOSS_BAR_1;
+
     private static void drawBar(GuiGraphics guiGraphics, int pX, int pY, float partialTicks, Mob pEntity) {
         float percent = pEntity.getHealth() / pEntity.getMaxHealth();
         int i = (int)(percent * 182.0F);
@@ -68,22 +74,22 @@ public class BossBar {
             int shake;
             int damage;
             if (i > 0) {
-                guiGraphics.blit(apostle1(), pX2, pY2, offset, 0, i, 8, 364, 64);
+                guiGraphics.blit(apostle1, pX2, pY2, offset, 0, i, 8, 364, 64);
                 if (apostleEntity.getHurtCooldown() >= 5) {
                     damage = 32 + pEntity.getRandom().nextInt(apostleEntity.getHurtCooldown());
                     shake = pEntity.getRandom().nextInt(apostleEntity.getHurtCooldown());
-                    RenderSystem.setShaderTexture(0, apostle());
-                    guiGraphics.blit(apostle(), pX2, pY2, shake, damage, i, 8, 256, 256);
+                    RenderSystem.setShaderTexture(0, apostle);
+                    guiGraphics.blit(apostle, pX2, pY2, shake, damage, i, 8, 256, 256);
                 }
                 if (apostleEntity.getCancelRegenTick() > 0){
                     float smite = 1.0F - ((float) apostleEntity.getCancelRegenTick());
-                    guiGraphics.blit(apostle1(), pX2, pY2, offset, 16, i, 8,
+                    guiGraphics.blit(apostle1, pX2, pY2, offset, 16, i, 8,
                             364, 64);
-                    guiGraphics.blit(apostle1(), pX2, pY2, offset, 0, (int)(smite * i),
+                    guiGraphics.blit(apostle1, pX2, pY2, offset, 0, (int)(smite * i),
                             8, 364, 64);
                 }
             }
-            guiGraphics.blit(apostle(), pX, pY, 0, flag ? 16 : 0, 200,
+            guiGraphics.blit(apostle, pX, pY, 0, flag ? 16 : 0, 200,
                     16, 256, 256);
         } else if (pEntity instanceof Abyss) {
             if (i > 0) {
@@ -93,14 +99,6 @@ public class BossBar {
             guiGraphics.blit(BOSS_BAR, pX, pY, 0, 64, 200, 16,
                     256, 256);
         }
-    }
-
-    private static ResourceLocation apostle() {
-        return NoixmodAPIMainConfig.HorrorMode.get() ? APOSTLE_HORROR : BOSS_BAR;
-    }
-
-    private static ResourceLocation apostle1() {
-        return NoixmodAPIMainConfig.HorrorMode.get() ? APOSTLE_HORROR_1 : BOSS_BAR_1;
     }
 
     public static boolean contains(UUID id) {

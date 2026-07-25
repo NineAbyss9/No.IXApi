@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster.illager;
 
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
-import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
+import com.github.NineAbyss9.ix_api.api.mobs.ai.goal.ApiOwnerTargetGoal;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.BlockPos;
@@ -34,8 +34,8 @@ import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
     @Nullable
@@ -51,36 +51,32 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
             = SynchedEntityData.defineId(DeadIllagerSkull.class, EntityDataSerializers.BYTE);
     public DeadIllagerSkull(EntityType<DeadIllagerSkull> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
-        this.lifeTicks = 20 * (50 + p_21684_.random.nextInt(20));
+        this.lifeTicks = 20 * (30 + ThreadLocalRandom.current().nextInt(20));
         this.moveControl = new VexMoveControl(this);
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(4, new VexChargeAttackGoal());
         this.goalSelector.addGoal(8, new VexRandomMoveGoal());
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, LivingEntity.class, 10F));
+        this.targetSelector.addGoal(1, new ApiOwnerTargetGoal(this));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this, Raider.class).setAlertOthers());
-        this.targetSelector.addGoal(3, new OwnableMob.OwnableTargetGoal<>(this, true));
+        this.targetSelector.addGoal(2, new MobUtils.HostileNearestAttackableTargetGoal(this, false));
     }
 
-    @Override
     public int getExperienceReward() {
         return 4;
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_FLAGS_ID, Maths.ZERO_BYTE);
     }
 
-    @Override
     public void applyRaidBuffs(int i, boolean b) {}
 
-    @Override
     public MobType getMobType() {
         return MobType.UNDEAD;
     }
@@ -107,11 +103,12 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
     public void addAdditionalSaveData(CompoundTag p_34015_) {
         super.addAdditionalSaveData(p_34015_);
         p_34015_.putShort("trueDeathTime", this.getTrueDeathTime());
-        if (this.boundOrigin != null) {
-            p_34015_.putInt("BoundX", this.boundOrigin.getX());
-            p_34015_.putInt("BoundY", this.boundOrigin.getY());
-            p_34015_.putInt("BoundZ", this.boundOrigin.getZ());
+        if (this.boundOrigin == null) {
+            return;
         }
+        p_34015_.putInt("BoundX", this.boundOrigin.getX());
+        p_34015_.putInt("BoundY", this.boundOrigin.getY());
+        p_34015_.putInt("BoundZ", this.boundOrigin.getZ());
     }
 
     public void tick() {
@@ -127,22 +124,8 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
         if (this.getLifeTick() <= 0) {
             this.hurt(this.damageSources().starve(), 1);
         }
-        if (this.checker()) {
-            for (ItemStack stack : this.getAllSlots()) {
-                if (!Objects.equals(stack.getEquipmentSlot(), EquipmentSlot.HEAD)) {
-                    stack.setCount(0);
-                }
-            }
-        }
     }
 
-    private boolean checker() {
-        return !this.getMainHandItem().isEmpty() || !this.getOffhandItem().isEmpty() ||
-                !this.getItemBySlot(EquipmentSlot.FEET).isEmpty() || !this.getItemBySlot(EquipmentSlot.CHEST).isEmpty() ||
-                !this.getItemBySlot(EquipmentSlot.LEGS).isEmpty();
-    }
-
-    @Override
     public void setOwner(@Nullable LivingEntity owner) {
         this.owner = owner;
     }
@@ -169,21 +152,20 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
         return this.trueDeathTime;
     }
 
-    @Override
     protected void tickDeath() {
         this.trueDeathTime++;
         if (this.trueDeathTime >= 20) {
-            if (!this.isRemoved()) {
-                if (this.level().isClientSide()) {
-                    this.spawnAnim();
-                } else {
-                    this.remove(RemovalReason.KILLED);
-                }
+            if (this.isRemoved()) {
+                return;
+            }
+            if (this.level().isClientSide) {
+                this.spawnAnim();
+            } else {
+                this.remove(RemovalReason.KILLED);
             }
         }
     }
 
-    @Override
     public void handleEntityEvent(byte p_21375_) {
         if (p_21375_ == 60) {
             if (!this.level().isClientSide()) {
@@ -194,7 +176,6 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
         }
     }
 
-    @Override
     public void move(MoverType p_19973_, Vec3 p_19974_) {
         super.move(p_19973_, p_19974_);
         this.checkInsideBlocks();
@@ -315,10 +296,10 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
 
         public boolean canUse() {
             LivingEntity $$0 = DeadIllagerSkull.this.getTarget();
-            if ($$0 != null && $$0.isAlive() && !DeadIllagerSkull.this.getMoveControl().hasWanted() && DeadIllagerSkull.this.random.nextInt(reducedTickDelay(7)) == 0) {
-                return DeadIllagerSkull.this.distanceToSqr($$0) > 4.0;
-            } else {
+            if ($$0 == null || !$$0.isAlive() || DeadIllagerSkull.this.getMoveControl().hasWanted() || DeadIllagerSkull.this.random.nextInt(reducedTickDelay(7)) != 0) {
                 return false;
+            } else {
+                return DeadIllagerSkull.this.distanceToSqr($$0) > 4.0;
             }
         }
 
@@ -346,18 +327,18 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
 
         public void tick() {
             LivingEntity $$0 = DeadIllagerSkull.this.getTarget();
-            if ($$0 != null) {
-                if (DeadIllagerSkull.this.getBoundingBox().intersects($$0.getBoundingBox())) {
-                    DeadIllagerSkull.this.doHurtTarget($$0);
-                    DeadIllagerSkull.this.setCharging(false);
-                } else {
-                    double $$1 = DeadIllagerSkull.this.distanceToSqr($$0);
-                    if ($$1 < 9.0) {
-                        Vec3 $$2 = $$0.getEyePosition();
-                        DeadIllagerSkull.this.moveControl.setWantedPosition($$2.x, $$2.y, $$2.z, 1.0);
-                    }
+            if ($$0 == null) {
+                return;
+            }
+            if (DeadIllagerSkull.this.getBoundingBox().intersects($$0.getBoundingBox())) {
+                DeadIllagerSkull.this.doHurtTarget($$0);
+                DeadIllagerSkull.this.setCharging(false);
+            } else {
+                double $$1 = DeadIllagerSkull.this.distanceToSqr($$0);
+                if ($$1 < 9.0) {
+                    Vec3 $$2 = $$0.getEyePosition();
+                    DeadIllagerSkull.this.moveControl.setWantedPosition($$2.x, $$2.y, $$2.z, 1.0);
                 }
-
             }
         }
     }
@@ -380,15 +361,16 @@ public class DeadIllagerSkull extends Raider implements Enemy, Ownable {
             if ($$0 == null) {
                 $$0 = DeadIllagerSkull.this.blockPosition();
             }
-            for(int $$1 = 0; $$1 < 3; ++$$1) {
+            for (int $$1 = 0;$$1 < 3; ++$$1) {
                 BlockPos $$2 = $$0.offset(DeadIllagerSkull.this.random.nextInt(15) - 7, DeadIllagerSkull.this.random.nextInt(11) - 5, DeadIllagerSkull.this.random.nextInt(15) - 7);
-                if (DeadIllagerSkull.this.level().isEmptyBlock($$2)) {
-                    DeadIllagerSkull.this.moveControl.setWantedPosition((double)$$2.getX() + 0.5, (double)$$2.getY() + 0.5, (double)$$2.getZ() + 0.5, 0.25);
-                    if (DeadIllagerSkull.this.getTarget() == null) {
-                        DeadIllagerSkull.this.getLookControl().setLookAt((double)$$2.getX() + 0.5, (double)$$2.getY() + 0.5, (double)$$2.getZ() + 0.5, 180.0F, 20.0F);
-                    }
-                    break;
+                if (!DeadIllagerSkull.this.level().isEmptyBlock($$2)) {
+                    continue;
                 }
+                DeadIllagerSkull.this.moveControl.setWantedPosition((double)$$2.getX() + 0.5, (double)$$2.getY() + 0.5, (double)$$2.getZ() + 0.5, 0.25);
+                if (DeadIllagerSkull.this.getTarget() == null) {
+                    DeadIllagerSkull.this.getLookControl().setLookAt((double)$$2.getX() + 0.5, (double)$$2.getY() + 0.5, (double)$$2.getZ() + 0.5, 180.0F, 20.0F);
+                }
+                break;
             }
         }
     }

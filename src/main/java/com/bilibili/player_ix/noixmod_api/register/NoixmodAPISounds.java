@@ -33,11 +33,15 @@ public class NoixmodAPISounds {
     public static final RegistryObject<SoundEvent> EVOKER_ILLAGER_DEATH = REGISTRY.register("evoker_illager_death", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "evoker_illager_death")));
     public static final RegistryObject<SoundEvent> EVOKER_ILLAGER_SHOOT_FIREBALL = REGISTRY.register("evoker_illager_shoot_fireball", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "evoker_illager_shoot_fireball")));
     public static final RegistryObject<SoundEvent> PARTY_GLITCH;
+
+    //Mace
+    public static final Supplier<SoundEvent> MACE_SMASH_AIR;
+    public static final Supplier<SoundEvent> MACE_SMASH_GROUND;
+    public static final Supplier<SoundEvent> MACE_SMASH_GROUND_HEAVY;
     private NoixmodAPISounds() {}
 
     private static SoundEvent createVariableRangeEvent(String location) {
-        return SoundEvent.createVariableRangeEvent(new ResourceLocation(NoixmodAPI.MOD_ID,
-                location));
+        return SoundEvent.createVariableRangeEvent(new ResourceLocation(NoixmodAPI.MOD_ID, location));
     }
 
     private static Supplier<SoundEvent> createVariableSupplier(String st) {
@@ -51,5 +55,8 @@ public class NoixmodAPISounds {
     static {
         CLAP = register("clap");
         PARTY_GLITCH = register("glitch");
+        MACE_SMASH_AIR = register("mace_smash_air");
+        MACE_SMASH_GROUND = register("mace_smash_ground");
+        MACE_SMASH_GROUND_HEAVY = register("mace_smash_ground_heavy");
     }
 }

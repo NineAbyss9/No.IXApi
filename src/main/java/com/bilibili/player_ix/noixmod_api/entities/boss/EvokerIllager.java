@@ -194,9 +194,6 @@ implements ApiIllagerBoss, ApiPoseMob {
             if (!EvokerIllager.this.closerThan(EvokerIllager.this.getTarget(), 6)) {
                 return false;
             }
-            if (EvokerIllager.this.level().isClientSide()) {
-                return false;
-            }
             return super.canUse();
         }
     }
@@ -583,7 +580,7 @@ implements ApiIllagerBoss, ApiPoseMob {
         protected void performSpellCasting() {
             if (!level().isClientSide) {
                 for (int $$1 = 0; $$1 < 4; ++$$1) {
-                    ServerLevel $$0 = (ServerLevel) EvokerIllager.this.level();
+                    ServerLevel $$0 = (ServerLevel)EvokerIllager.this.level();
                     int i = EvokerIllager.this.random.nextInt(3);
                     switch (i) {
                         case 0 : {
@@ -685,14 +682,12 @@ implements ApiIllagerBoss, ApiPoseMob {
 
         @Override
         protected void performSpellCasting() {
-            if (!EvokerIllager.this.level().isClientSide()) {
-                ServerLevel level = WorldUtil.getServerLevel(EvokerIllager.this);
-                SuicideZombie zombie = new SuicideZombie(NoixmodAPIEntities.SUICIDE_ZOMBIE.get(), level);
-                zombie.setOwner(EvokerIllager.this);
-                BlockPos pos = EvokerIllager.this.blockPosition().offset(Maths.randomInt(3), 0, Maths.randomInt(3));
-                zombie.moveTo(pos, 0, 0);
-                level.addFreshEntity(zombie);
-            }
+            ServerLevel level = (ServerLevel)EvokerIllager.this.level();
+            SuicideZombie zombie = new SuicideZombie(NoixmodAPIEntities.SUICIDE_ZOMBIE.get(), level);
+            zombie.setOwner(EvokerIllager.this);
+            BlockPos pos = EvokerIllager.this.blockPosition().offset(Maths.randomInt(3), 0, Maths.randomInt(3));
+            zombie.moveTo(pos, 0, 0);
+            level.addFreshEntity(zombie);
         }
 
         protected int getCastingTime() {

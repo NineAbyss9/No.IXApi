@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.nether;
 
+import com.bilibili.player_ix.noixmod_api.entities.boss.NihilisticWitherBoss;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
@@ -26,13 +27,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WitherSkeletonServant
 extends AbstractSkeletonServant {
     private final OwnerSummon ownerSummon = new OwnerSummon(this);
     public WitherSkeletonServant(EntityType<? extends WitherSkeletonServant> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
-        if (p_21684_.random.nextBoolean()) {
+        if (ThreadLocalRandom.current().nextBoolean()) {
             this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STONE_SWORD));
         } else {
             this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BOW));
@@ -107,6 +109,15 @@ extends AbstractSkeletonServant {
         this.playSound(SoundEvents.SKELETON_SHOOT, 1.0f, 1.0f / (this.getRandom().nextFloat()
                 * 0.4f + 0.8f));
         this.level().addFreshEntity(arrow);
+    }
+
+    public void die(DamageSource pDamageSource)
+    {
+        if (this.getOwner() instanceof NihilisticWitherBoss boss)
+        {
+            boss.skullHurt();
+        }
+        super.die(pDamageSource);
     }
 
     @Nullable

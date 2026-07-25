@@ -68,6 +68,7 @@ public class NoixmodAPI {
     private void commonSetUp(FMLCommonSetupEvent event) {
         ApiNetwork.register();
         NoixmodAPIEntities.init(event);
+        //Cache.put(2013, (Decomposer<LevelAccessor, BlockPos, Integer>)ApiParticleUtil::spawnSmashAttackParticles);
     }
 
     private void bootstrap()
@@ -76,7 +77,7 @@ public class NoixmodAPI {
     }
 
     public static ResourceLocation location(String s) {
-        return ResourceLocations.fromNamespaceAndPath(MOD_ID, s);
+        return new ResourceLocation(MOD_ID, s);//ResourceLocations.fromNamespaceAndPath(MOD_ID, s);
     }
 
     public static ResourceLocation entity(String st) {

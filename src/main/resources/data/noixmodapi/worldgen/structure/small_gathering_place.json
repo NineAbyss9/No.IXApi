@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#noixmodapi:has_structure/small_gathering_place",
+  "step": "underground_decoration",
+  "spawn_overrides": {},
+  "terrain_adaptation": "beard_thin",
+  "start_pool": "noixmodapi:small_gathering_place/start_pool",
+  "size": 1,
+  "start_height": {
+    "type": "minecraft:uniform",
+    "min_inclusive": {
+      "above_bottom": 32
+    },
+    "max_inclusive": {
+      "above_bottom": 64
+    }
+  },
+  "max_distance_from_center": 80,
+  "use_expansion_hack": false
+}

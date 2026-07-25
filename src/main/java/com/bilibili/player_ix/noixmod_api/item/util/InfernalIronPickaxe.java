@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 
 public class InfernalIronPickaxe
 extends ApiPickaxe {
@@ -17,10 +18,12 @@ extends ApiPickaxe {
                 .fireResistant().stacksTo(1));
     }
 
-    public boolean mineBlock(ItemStack p_40998_, Level p_40999_, BlockState p_41000_,
-                             BlockPos p_41001_, LivingEntity p_41002_) {
-        BlockEntity entity = p_40999_.getBlockEntity(p_41001_);
-        Block.dropResources(p_41000_, p_40999_, p_41001_, entity, p_41002_, ItemStack.EMPTY);
-        return super.mineBlock(p_40998_, p_40999_, p_41000_, p_41001_, p_41002_);
+    public boolean mineBlock(ItemStack pStack, Level pLevel, BlockState pState,
+                             BlockPos pPos, LivingEntity pEntityLiving) {
+        BlockEntity entity = pLevel.getBlockEntity(pPos);
+        if (pState.is(Tags.Blocks.ORES)) {
+            Block.dropResources(pState, pLevel, pPos, entity, pEntityLiving, pStack);
+        }
+        return super.mineBlock(pStack, pLevel, pState, pPos, pEntityLiving);
     }
 }

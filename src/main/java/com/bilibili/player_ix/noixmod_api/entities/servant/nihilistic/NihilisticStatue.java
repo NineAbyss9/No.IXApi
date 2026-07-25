@@ -34,6 +34,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticStatue
 extends AbstractStatue
@@ -41,7 +42,7 @@ implements Nihilistic {
     private int summonCoolDown = 60;
     @Nullable
     public Ownable ownable;
-    public int summonNum = this.random.nextInt(6);
+    public int summonNum = ThreadLocalRandom.current().nextInt(6);
     private int ownerInvTicks;
     public NihilisticStatue(EntityType<? extends NihilisticStatue> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -70,9 +71,9 @@ implements Nihilistic {
     public void aiStep() {
         super.aiStep();
         this.setYHeadRot(0);
-        float f8 = (this.random.nextFloat() - 0.5F) * 8.0F;
-        float f9 = (this.random.nextFloat() - 0.5F) * 4.0F;
-        float f11 = (this.random.nextFloat() - 0.5F) * 8.0F;
+        float f8 = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 8.0F;
+        float f9 = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 4.0F;
+        float f11 = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 8.0F;
         this.level().addParticle(ParticleTypes.WITCH, this.getX() + f8, this.getY() + 2.0 +
                 f9, this.getZ() + f11, 0.0, 0.0, 0.0);
         LivingEntity owner = this.getOwner();
@@ -81,7 +82,7 @@ implements Nihilistic {
                 this.heal(this.getHealValue());
                 if (this.level() instanceof ServerLevel level) level.sendParticles(ParticleTypes.SOUL, this.getX(),
                         this.getRandomY(), this.getZ(), 12, 2, 0, 2,
-                        this.random.nextGaussian() * 0.3);
+                        ThreadLocalRandom.current().nextGaussian() * 0.3D);
             }
         }
         if (!this.onGround()) {
@@ -109,19 +110,20 @@ implements Nihilistic {
                 }
             }
         }
-        if (this.getOwner() != null && this.isAlive()) {
-            if (this.getOwnerInvTicks() > 100) {
-                if (this.getOwner() instanceof Apostle apostle) {
+        LivingEntity owner = this.getOwner();
+        if (owner != null && this.isAlive()) {
+            if (this.ownerInvTicks > 100) {
+                if (owner instanceof Apostle apostle) {
                     apostle.setInvTime(100);
                 }
                 this.targetList().forEach(this::target);
             }
-            if (this.getOwnerInvTicks() == 100) {
-                if (this.getOwner() instanceof Apostle apostle) {
+            if (this.ownerInvTicks == 100) {
+                if (owner instanceof Apostle apostle) {
                     apostle.setInvTime(0);
                 }
             }
-            if (this.getOwnerInvTicks() <= 0) {
+            if (this.ownerInvTicks <= 0) {
                 this.setOwnerInvTicks(200);
             }
         }
@@ -148,25 +150,25 @@ implements Nihilistic {
 
     public void die(DamageSource p_21014_) {
         this.setOwnerInvTicks(0);
-        if (this.getOwner() != null) {
-            if (this.getOwner() instanceof Apostle apostle) {
+        LivingEntity owner = this.getOwner();
+        if (owner != null) {
+            if (owner instanceof Apostle apostle) {
                 apostle.setStatueCooldown();
                 apostle.setInvTime(0);
             }
-            if (!this.getOwner().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN))) {
-                this.getOwner().hurt(this.damageSources().starve(), 4);
+            if (!owner.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN))) {
+                owner.hurt(this.damageSources().starve(), 4);
             } else {
-                this.getOwner().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400,
+                owner.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400,
                         0));
-                this.getOwner().addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400, 0));
+                owner.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400, 0));
             }
         }
         MobUtils.rangeHurt(6, 6, 6, this, NoixmodAPIDamageSource.nihility(this),
-                12, lie -> lie != this.getOwner()
-                && lie != this);
+                12, lie -> lie != owner && lie != this);
         this.playSound(SoundEvents.FIRE_EXTINGUISH);
         if (!this.level().isClientSide) {
-            WorldUtil.sendParticles(ParticleTypes.LARGE_SMOKE, this, 50, 0.35);
+            WorldUtil.sendParticles(ParticleTypes.LARGE_SMOKE, this, 50, 0.35D);
         }
         this.discard();
         super.die(p_21014_);
@@ -203,59 +205,45 @@ implements Nihilistic {
 
     public float getHealValue() {
         LivingEntity lie = this.getOwner();
-        if (lie != null) {
-            float f = lie.getHealth() <= 0 ? 1 : lie.getHealth();
-            float v = lie.getMaxHealth();
-            float va = v / f;
-            return Math.min(va, 2f);
+        if (lie == null) {
+            return 1f;
         }
-        return 1f;
+        float f = lie.getHealth() <= 0 ? 1 : lie.getHealth();
+        float v = lie.getMaxHealth();
+        float va = v / f;
+        return Math.min(va, 2f);
     }
 
     public void summonServant(@Nullable Ownable ownable) {
-        if (this.level() instanceof ServerLevel p_21684_) {
+        if (this.level() instanceof ServerLevel ser) {
             int i = NoixmodAPIMainConfig.HorrorMode.get() ? Integer.MAX_VALUE : 12;
-            if (!OwnerSummon.canSummon(p_21684_, OwnableMob.ownerOrThis(this, this), i)) {
+            if (!OwnerSummon.canSummon(ser, OwnableMob.ownerOrThis(this, this), i)) {
                 return;
             }
-            switch (this.summonNum) {
-                case 0: {
-                    this.ownable = NoixmodAPIEntities.ZOMBIE_VINDICATOR.get().create(p_21684_);
-                    break;
-                }
-                case 1: {
-                    this.ownable = NoixmodAPIEntities.MAGICAL_CLONE.get().create(p_21684_);
-                    break;
-                }
-                case 2: {
-                    this.ownable = new NihilisticWither(NoixmodAPIEntities.NIHILISTIC_WITHER.get(), p_21684_);
-                    break;
-                }
-                case 3: {
-                    this.ownable = NoixmodAPIEntities.NIHILISTIC_SERVANT.get().create(p_21684_);
-                    break;
-                }
-                case 4: {
-                    this.ownable = NoixmodAPIEntities.DROWNED_SERVANT.get().create(p_21684_);
-                    break;
-                }
-                default: {
-                    this.ownable = NoixmodAPIEntities.NIHILISTIC_BLAZE.get().create(p_21684_);
-                    break;
-                }
-            }
+            this.ownable = switch (this.summonNum) {
+                case 0 ->
+                    NoixmodAPIEntities.ZOMBIE_VINDICATOR.get().create(ser);
+                case 1 ->
+                    NoixmodAPIEntities.MAGICAL_CLONE.get().create(ser);
+                case 2 ->
+                    new NihilisticWither(NoixmodAPIEntities.NIHILISTIC_WITHER.get(), ser);
+                case 3 ->
+                    NoixmodAPIEntities.NIHILISTIC_SERVANT.get().create(ser);
+                case 4 ->
+                    NoixmodAPIEntities.DROWNED_SERVANT.get().create(ser);
+                default ->
+                    NoixmodAPIEntities.NIHILISTIC_BLAZE.get().create(ser);
+            };
             BlockPos pos = this.blockPosition();
-            BlockPos d = pos.offset(Maths.randomInteger(3, this.getRandomUtil()), 0,
-                    Maths.randomInteger(3, this.getRandomUtil()));
-            if (ownable != null) {
-                if (ownable instanceof Mob mob) {
-                    SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), p_21684_);
-                    entity.entity(mob);
-                    entity.setDangerous(false);
-                    entity.setOwner(ownerOrThis(this, this));
-                    entity.moveTo(d, 0, 0);
-                    p_21684_.addFreshEntity(entity);
-                }
+            BlockPos d = pos.offset(Maths.randomInteger(3, ThreadLocalRandom.current()), 0,
+                    Maths.randomInteger(3, ThreadLocalRandom.current()));
+            if (ownable instanceof Mob mob) {
+                SummonEntity entity = new SummonEntity(NoixmodAPIEntities.SUMMON_ENTITY.get(), ser);
+                entity.entity(mob);
+                entity.setDangerous(false);
+                entity.setOwner(ownerOrThis(this, this));
+                entity.moveTo(d, 0, 0);
+                ser.addFreshEntity(entity);
             }
             if (this.ownable instanceof NihilisticWither) {
                 this.setSummonCoolDown(Maths.toTick(300));

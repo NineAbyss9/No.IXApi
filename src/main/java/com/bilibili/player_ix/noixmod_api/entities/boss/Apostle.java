@@ -97,6 +97,7 @@ import org.NineAbyss9.util.ValueHolder;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 /**
@@ -1711,6 +1712,14 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
     }
 
+    protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit)
+    {
+        if (this.level().dimension() == Level.END)
+        {
+            this.spawnAtLocation(NoixmodAPIItems.NIHILISTIC_STAFF);
+        }
+    }
+
     protected boolean isAffectedByFluids() {
         return false;
     }
@@ -1740,9 +1749,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             this.move(MoverType.SELF, new Vec3(0, -3, 0));
         }
         if (this.fallDistance <= 1 && this.trueDeathTime >= Maths.toTick(11) - 10) {
-            if (!this.level().isClientSide) {
-                this.serverLevel().sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(),
+            if (this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(),
                         200, 0.5, 0, 0.5, 0.5);
+                if (serverLevel.getLevelData().isThundering()) {
+                    serverLevel.setWeatherParameters(6000, 0, false,
+                            false);
+                }
                 if (this.causeKilled != null && flag) {
                     this.dropAllDeathLoot(this.causeKilled);
                     ExperienceOrb.award(this.serverLevel(), Vec3.ZERO, this.getExperienceReward());
@@ -1800,7 +1813,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
     }
 
     public boolean checkRainWeather(Level level) {
-        return level.getRainLevel(1f) <= 0.4f && !this.isRemoved();
+        return level.getRainLevel(1f) <= 0.4F && this.isAlive();
     }
 
     public int healTick() {
@@ -1840,8 +1853,9 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                 int l;
                 for (l = 0; l < 4; ++l) {
                     this.clientSideIllusionOffsets[0][l] = this.clientSideIllusionOffsets[1][l];
-                    this.clientSideIllusionOffsets[1][l] = new Vec3(-6.0F + this.random.nextInt(13) * 0.5,
-                            Math.max(0, this.random.nextInt(6) - 4), -6.0F + this.random.nextInt(13) * 0.5);
+                    this.clientSideIllusionOffsets[1][l] = new Vec3(-6.0D + ThreadLocalRandom.current().nextInt(13)
+                            * 0.5D, Math.max(0, ThreadLocalRandom.current().nextInt(6) - 4), -6.0D +
+                            ThreadLocalRandom.current().nextInt(13) * 0.5D);
                 }
                 for (l = 0; l < 16; ++l) {
                     this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5),
@@ -1889,7 +1903,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                         }
                     }
                 }
-                if (this.checkRainWeather(serverLevel()))
+                if (this.isBoss() && this.checkRainWeather(serverLevel()))
                     serverLevel().setWeatherParameters(0, ServerLevel.RAIN_DURATION.getMaxValue(),
                             true, true);
             }
@@ -1898,9 +1912,9 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             }
         } else {
             if (this.isDeadOrDying()) {
-                float f8 = (this.random.nextFloat() - 0.5F) * 8.0F;
-                float f9 = (this.random.nextFloat() - 0.5F) * 4.0F;
-                float f11 = (this.random.nextFloat() - 0.5F) * 8.0F;
+                float f8 = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 8.0F;
+                float f9 = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 4.0F;
+                float f11 = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 8.0F;
                 this.level().addParticle(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(), this.getX() + f8,
                         this.getY() + 2.0 + f9, this.getZ() + f11, 0.0,
                         0.0, 0.0);
@@ -2193,7 +2207,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                 if (this.apostle.getSpellPower() < this.getSpellPower()) {
                     return false;
                 }
-                if (this.apostle.getRandom().nextFloat() > 0.2F) {
+                if (ThreadLocalRandom.current().nextFloat() > 0.2F) {
                     return false;
                 }
             }
@@ -2220,7 +2234,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
 
         protected boolean checkBoss() {
-            if (this.apostle instanceof ApostleBoss) {
+            if (this.apostle.isBoss()) {
                 if (this.needPower()) {
                     return this.apostle.getSpell() == this.getSpells();
                 } else {
@@ -2420,13 +2434,12 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             return NoixmodAPISounds.APOSTLE_PREPARE_SPELL.get();
         }
 
-        public boolean canUse() {
-            if (this.apostle.getTarget() != null) {
-                if (!(this.apostle.distanceToSqr(this.apostle.getTarget()) < Maths.square(6))) {
-                    return false;
-                }
+        public boolean canUse()
+        {
+            if (!super.canUse()) {
+                return false;
             }
-            return super.canUse();
+            return this.apostle.distanceToSqr(this.apostle.getTarget()) < Maths.square(6.0D);
         }
 
         protected boolean needPower() {
@@ -2479,19 +2492,15 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
         public boolean canUse()
         {
-            ServerLevel level = this.apostle.serverLevel();
-            if (this.apostle.isSecondPhase()) {
-                if (!OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
-                        lie -> lie instanceof NihilisticServant)) {
-                    return false;
-                }
-            } else {
-                if (!OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
-                        lie -> lie instanceof Golem)) {
-                    return false;
-                }
+            if (!super.canUse())
+            {
+                return false;
             }
-            return super.canUse();
+            ServerLevel level = this.apostle.serverLevel();
+            return this.apostle.isSecondPhase() ? OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(
+                    this.apostle, this.apostle), 12, lie -> lie instanceof NihilisticServant)
+                    : OwnerSummon.canSummon(level, OwnableMob.ownerOrThis(this.apostle, this.apostle), 12,
+                    lie -> lie instanceof Golem);
         }
 
         protected boolean needPower() {
@@ -2524,7 +2533,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             if (this.apostle.isSecondPhase()) {
                 return false;
             }
-            if (!this.apostle.getRandomUtil().nextBoolean()) {
+            if (!ThreadLocalRandom.current().nextBoolean()) {
                 return false;
             }
             return super.canUse();
@@ -2582,13 +2591,12 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             this.apostle.summonServants();
         }
 
-        public boolean canUse() {
-            if (this.apostle.isServerSide()) {
-                if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle), 3,
-                        zombie -> zombie instanceof Golem vindicator &&
-                                (vindicator.getOwner() == OwnableMob.ownerOrThis(this.apostle, this.apostle)))) {
-                    return false;
-                }
+        public boolean canUse()
+        {
+            if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle), 3,
+                    zombie -> zombie instanceof Golem vindicator &&
+                            (vindicator.getOwner() == OwnableMob.ownerOrThis(this.apostle, this.apostle)))) {
+                return false;
             }
             return false;
         }
@@ -2635,14 +2643,14 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
             this.apostle.summonRangedServant();
         }
 
-        public boolean canUse() {
-            if (this.apostle.isServerSide()) {
-                if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle), 6,
-                        Apostle.ownerPredicate(this.apostle))) {
-                    return false;
-                }
+        public boolean canUse()
+        {
+            if (!super.canUse())
+            {
+                return false;
             }
-            return super.canUse();
+            return OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle),
+                    6, Apostle.ownerPredicate(this.apostle));
         }
 
         protected boolean needPower() {
@@ -2714,17 +2722,17 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
 
         protected boolean checkRange(LivingEntity living) {
-            return this.apostle.distanceToSqr(living) < Maths.square(4);
+            return this.apostle.distanceToSqr(living) < Maths.square(4.0D);
         }
 
-        public void tick() {
+        public void tick()
+        {
             super.tick();
-            if (this.apostle.getTarget() != null) {
-                if (this.attackWarmupDelay == 30) {
-                    this.x = this.apostle.getTarget().getX();
-                    this.y = this.apostle.getTarget().getY();
-                    this.z = this.apostle.getTarget().getZ();
-                }
+            if (this.attackWarmupDelay == 30) {
+                LivingEntity target = this.apostle.getTarget();
+                this.x = target.getX();
+                this.y = target.getY();
+                this.z = target.getZ();
             }
         }
 
@@ -2738,7 +2746,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                 if (this.apostle.getTitleNumber() == 1 || this.apostle.getTitleNumber() == 3) {
                     this.apostle.healSelf(10F);
                 }
-                WorldUtil.getServerLevel(this.apostle).sendParticles(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(),
+                this.apostle.serverLevel().sendParticles(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(),
                         this.apostle.getX(), this.apostle.getY(), this.apostle.getZ(), 99, 5,
                         0, 5, 0);
             }
@@ -2951,7 +2959,7 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
         protected void castSpell()
         {
-            for (int i = 0;i < this.apostle.getRandomUtil().nextInt(2) + 1;++i) {
+            for (int i = 0;i < ThreadLocalRandom.current().nextInt(2) + 1;++i) {
                 ServerLevel level = this.apostle.serverLevel();
                 NihilisticStatue statue = new NihilisticStatue(NoixmodAPIEntities.NIHILISTIC_STATUE.get(), level);
                 BlockPos pos = this.apostle.blockPosition().offset(Maths.randomInteger(12), 0,
@@ -2990,11 +2998,11 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
         public boolean canUse()
         {
-            if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle), 4,
-                    lie -> lie instanceof NihilisticStatue)) {
+            if (this.apostle.getStatueCooldown() > 0) {
                 return false;
             }
-            if (this.apostle.getStatueCooldown() > 0) {
+            if (!OwnerSummon.canSummon(this.apostle.serverLevel(), OwnableMob.ownerOrThis(this.apostle, this.apostle),
+                    4, lie -> lie instanceof NihilisticStatue)) {
                 return false;
             }
             return super.canUse();
@@ -3054,13 +3062,20 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
         }
 
         public boolean canUse() {
+            if (!super.canUse())
+            {
+                return false;
+            }
             if (!this.apostle.isSecondPhase()) {
                 return false;
             }
-            if (this.apostle.isShadow()) {
+            if (!OwnerSummon.canSummon(this.apostle.serverLevel(),
+                    this.apostle, 3, entity -> entity instanceof ApostleShadow shadow
+            && shadow.getOwner() == this.apostle))
+            {
                 return false;
             }
-            return super.canUse();
+            return !this.apostle.isShadow();
         }
 
         protected boolean needPower() {
@@ -3156,6 +3171,9 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
         public boolean canUse()
         {
+            if (this.apostle.arrowRainCooldown > 0) {
+                return false;
+            }
             if (!OwnerSummon.canSummon(this.apostle.serverLevel(), this.apostle, 3, entity -> entity instanceof
                     NihilisticArrowRain)) {
                 return false;
@@ -3164,9 +3182,6 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
                 if (!this.apostle.inEnd && this.apostle.getRandomUtil().nextFloat() > 0.005f) {
                     return false;
                 }
-            }
-            if (this.apostle.arrowRainCooldown > 0) {
-                return false;
             }
             return super.canUse();
         }
@@ -3196,14 +3211,12 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
         public void tick() {
             if (this.apostle.tickCount % 8 == 0) {
-                if (!apostle.level().isClientSide) {
-                    this.pos = this.getPos();
-                    NihilisticArrow arrow = new NihilisticArrow(apostle.level(), apostle);
-                    arrow.moveTo(apostle.position().add(this.pos));
-                    arrow.setFloating(apostle.getTarget());
-                    apostle.level().addFreshEntity(arrow);
-                    ++posId;
-                }
+                this.pos = this.getPos();
+                NihilisticArrow arrow = new NihilisticArrow(apostle.level(), apostle);
+                arrow.moveTo(apostle.position().add(this.pos));
+                arrow.setFloating(apostle.getTarget());
+                apostle.level().addFreshEntity(arrow);
+                ++posId;
             }
             super.tick();
         }
@@ -3264,9 +3277,13 @@ implements ApiRangedAttackMob, Ownable, ApiTargeting
 
     protected static class ApostleAttackPlayerGoal extends NearestAttackableTargetGoal<Player> {
         public ApostleAttackPlayerGoal(Apostle p_199891_) {
-            super(p_199891_, Player.class, true, player -> player instanceof Player players
-                    && !(players.getDisplayName().getString().equals("Player_9") &&
-                    players.getInventory().contains(NoixmodAPIItems.HALO_OF_APOSTLE.get().getDefaultInstance())));
+            super(p_199891_, Player.class, true, entity -> {
+                if (!(entity instanceof Player player)) {
+                    return true;
+                }
+                return !(player.getDisplayName().getString().equals("NineAbyss9") &&
+                        player.getInventory().contains(NoixmodAPIItems.HALO_OF_APOSTLE.get().getDefaultInstance()));
+            });
         }
     }
 }

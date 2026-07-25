@@ -95,8 +95,8 @@ extends OwnableIllager {
     }
 
     private static class SummonSpellGoal extends AbstractUseSpellGoal {
-        EvokerServant servant;
-        SummonSpellGoal(EvokerServant finder) {
+        final EvokerServant servant;
+        SummonSpellGoal(final EvokerServant finder) {
             super(finder);
             servant = finder;
         }
@@ -139,8 +139,8 @@ extends OwnableIllager {
     }
 
     private static class AttackSpellGoal extends AbstractUseSpellGoal {
-        EvokerServant evokerServant;
-        AttackSpellGoal(EvokerServant servant) {
+        final EvokerServant evokerServant;
+        AttackSpellGoal(final EvokerServant servant) {
             super(servant);
             evokerServant = servant;
         }
@@ -183,8 +183,8 @@ extends OwnableIllager {
             }
         }
 
-        private void createSpellEntity(double p_32673_, double p_32674_, double p_32675_, double p_32676_,
-                                       float p_32677_, int p_32678_) {
+        private void createSpellEntity(final double p_32673_, final double p_32674_, final double p_32675_, final double p_32676_,
+                                       final float p_32677_, final int p_32678_) {
             BlockPos blockpos = BlockPos.containing(p_32673_, p_32676_, p_32674_);
             boolean flag = false;
             double d0 = 0.0;

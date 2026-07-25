@@ -87,8 +87,11 @@ implements PowerableMob, Nihilistic
         return NihilistArmPose.CROSSED;
     }
 
-    public boolean removeWhenFarAway(double pDistanceToClosestPlayer)
-    {
+    public boolean requiresCustomPersistence() {
+        return this.getSpawnType() == MobSpawnType.STRUCTURE || super.requiresCustomPersistence();
+    }
+
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
         if (this.getSpawnType() == MobSpawnType.EVENT) return false;
         return super.removeWhenFarAway(pDistanceToClosestPlayer);
     }
@@ -153,26 +156,29 @@ implements PowerableMob, Nihilistic
 
     public static class LookAtLordGoal extends Goal {
         protected final Nihilist nihilist;
-        public LookAtLordGoal(Nihilist p_25520_) {
-            this.nihilist = p_25520_;
+        protected LivingEntity lord;//1.4.4 : improve performance
+        public LookAtLordGoal(Nihilist nihilistIn) {
+            this.nihilist = nihilistIn;
             this.setFlags(EnumSet.of(Flag.LOOK));
         }
 
         public void tick() {
-            this.nihilist.getLord().stream().findFirst().ifPresent(entity -> {
-                this.nihilist.getLookControl().setLookAt(entity, 100F, 30F);
-            });
+            this.nihilist.getLookControl().setLookAt(this.lord, 100F, 30F);
         }
 
         public boolean canUse() {
             if (this.nihilist.getTarget() != null) {
                 return false;
             }
-            return !this.nihilist.getLord().isEmpty();
+            if (this.nihilist.getLord().isEmpty()) {
+                return false;
+            }
+            this.lord = this.nihilist.getLord().get(0);
+            return true;
         }
 
         public boolean canContinueToUse() {
-            return super.canContinueToUse();
+            return this.nihilist.getTarget() != null && !this.nihilist.getLord().isEmpty();
         }
     }
 }

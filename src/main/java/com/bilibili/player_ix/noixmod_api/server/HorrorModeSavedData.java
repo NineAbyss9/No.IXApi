@@ -13,7 +13,7 @@ extends SavedData {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final String MANAGER_FILE_ID = "horror_mode";
     private HorrorModeManager manager;
-    private long tick;
+    private int tick;
     public HorrorModeSavedData() {
         this.manager = new HorrorModeManager();
     }
@@ -22,7 +22,7 @@ extends SavedData {
     {
         ++tick;
         manager.tick(pLevel);
-        if (this.tick % 200L == 0L) {
+        if (this.tick % 200 == 0) {
             this.setDirty();
         }
     }
@@ -68,7 +68,7 @@ extends SavedData {
     public void loadInstance(CompoundTag pCompoundTag)
     {
         LOGGER.debug("Loading instance...");
-        tick = pCompoundTag.getLong("Tick");
+        tick = pCompoundTag.getInt("Tick");
         CompoundTag tag = pCompoundTag.getCompound("HorrorModeManager");
         if (tag.isEmpty()) return;
         manager.load(tag);
@@ -76,7 +76,7 @@ extends SavedData {
 
     public CompoundTag save(CompoundTag pCompound)
     {
-        pCompound.putLong("Tick", this.tick);
+        pCompound.putInt("Tick", this.tick);
         CompoundTag compoundtag = new CompoundTag();
         manager.save(compoundtag);
         pCompound.put("HorrorModeManager", compoundtag);

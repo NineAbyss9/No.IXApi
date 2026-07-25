@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.network;
 
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.network.packet.BossBarUpdatePacket;
+import com.bilibili.player_ix.noixmod_api.network.packet.ClientSmashParticlePacket;
 import com.bilibili.player_ix.noixmod_api.network.packet.InfernalAnvilRenameItemPacket;
 import com.google.common.base.Predicates;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +26,8 @@ public class ApiNetwork {
         );
         INSTANCE.registerMessage(nextId(), InfernalAnvilRenameItemPacket.class, InfernalAnvilRenameItemPacket::encode,
                 InfernalAnvilRenameItemPacket::decode, InfernalAnvilRenameItemPacket::handle);
+        INSTANCE.registerMessage(nextId(), ClientSmashParticlePacket.class, ClientSmashParticlePacket::encode,
+                ClientSmashParticlePacket::decode, ClientSmashParticlePacket::handle);
     }
 
     private static int nextId() {

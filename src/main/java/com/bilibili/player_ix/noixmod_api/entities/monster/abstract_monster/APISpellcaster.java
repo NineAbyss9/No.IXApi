@@ -27,8 +27,8 @@ extends AbstractIllager {
     protected static final EntityDataAccessor<Integer> SPELL_TICKS =
             SynchedEntityData.defineId(APISpellcaster.class, EntityDataSerializers.INT);
     protected IllagerSpellType currentSpell = IllagerSpellType.NONE;
-    protected APISpellcaster(EntityType<? extends APISpellcaster> p_32105_, Level p_32106_) {
-        super(p_32105_, p_32106_);
+    protected APISpellcaster(EntityType<? extends APISpellcaster> entityType, Level level) {
+        super(entityType, level);
     }
 
     protected void defineSynchedData() {
@@ -106,17 +106,17 @@ extends AbstractIllager {
     public void tick() {
         super.tick();
         if (this.level().isClientSide && this.isCastingSpell()) {
-            IllagerSpellType spellId = this.getSpellId();
-            double $$1 = spellId.spellColor[0];
-            double $$2 = spellId.spellColor[1];
-            double $$3 = spellId.spellColor[2];
-            float $$4 = this.yBodyRot * ((float) Math.PI / 180) + Mth.cos((float) this.tickCount * 0.6662f) * 0.25f;
-            float $$5 = Mth.cos($$4);
-            float $$6 = Mth.sin($$4);
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + $$5 * 0.6,
-                    this.getY() + 1.8, this.getZ() + $$6 * 0.6, $$1, $$2, $$3);
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - $$5 * 0.6,
-                    this.getY() + 1.8, this.getZ() - $$6 * 0.6, $$1, $$2, $$3);
+            IllagerSpellType spell = this.getSpellId();
+            float red = (float)spell.spellColor[0];
+            float green = (float)spell.spellColor[1];
+            float blue = (float)spell.spellColor[2];
+            float bodyAngle = this.yBodyRot * ((float)Math.PI / 180F) + Mth.cos(((float)this.tickCount * 0.6662F)) * 0.25F;
+            float cos = Mth.cos(bodyAngle);
+            float sin = Mth.sin(bodyAngle);
+            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + cos * 0.6,
+                    this.getY() + 1.8, this.getZ() + sin * 0.6, red, green, blue);
+            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - cos * 0.6,
+                    this.getY() + 1.8, this.getZ() - sin * 0.6, red, green, blue);
         }
     }
 

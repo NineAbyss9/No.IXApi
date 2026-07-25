@@ -3,9 +3,7 @@ package com.bilibili.player_ix.noixmod_api.item.util;
 
 import com.bilibili.player_ix.noixmod_api.client.BossBar;
 import com.bilibili.player_ix.noixmod_api.entities.boss.Apostle;
-import com.bilibili.player_ix.noixmod_api.entities.boss.NihilisticLord;
 import com.github.NineAbyss9.ix_api.util.ItemUtil;
-import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,69 +26,66 @@ extends SwordItem {
     }
 
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (!(entity instanceof Player)) {
-            CompoundTag tag = new CompoundTag();
-            tag.putFloat("Health", 0);
-            try {
-                if (entity instanceof LivingEntity living) {
-                    living.readAdditionalSaveData(tag);
-                }
-            } catch (RuntimeException ignores) {
-            }
-            if (entity.level().isClientSide) {
-                if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {
-                    BossBar.removeBossBar(apostle.getUUID(), apostle);
-                }
-            }
-            entity.canUpdate(false);
-            entity.remove(Entity.RemovalReason.KILLED);
-            entity.setRemoved(Entity.RemovalReason.KILLED);
-            entity.onRemovedFromWorld();
+        if (entity instanceof Player) {
+            return super.onLeftClickEntity(stack, player, entity);
         }
-        return super.onLeftClickEntity(stack, player, entity);
+        CompoundTag tag = new CompoundTag();
+        tag.putFloat("Health", 0);
+        try {
+            if (entity instanceof LivingEntity living) {
+                living.readAdditionalSaveData(tag);
+            }
+        } catch (RuntimeException ignore) {
+        }
+        if (entity.level().isClientSide) {
+            if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {
+                BossBar.removeBossBar(apostle.getUUID(), apostle);
+            }
+        }
+        entity.canUpdate(false);
+        entity.remove(Entity.RemovalReason.KILLED);
+        entity.setRemoved(Entity.RemovalReason.KILLED);
+        entity.onRemovedFromWorld();
+        return false;
     }
 
     public InteractionResult useOn(UseOnContext p_41341_) {
-        if (p_41341_.getPlayer() != null) {
-            List<Entity> list = WorldUtil.entityList(Entity.class, p_41341_.getPlayer(), 365, 365, 365);
-            for (Entity entity : list) {
-                if (!(entity instanceof Player)) {
-                    entity.discard();
-                    if (entity instanceof NihilisticLord lord) {
-                        lord.setRemoved(Entity.RemovalReason.KILLED);
-                    }
-                }
-            }
-        }
         return super.useOn(p_41341_);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        List<Entity> list = p_41432_.getEntitiesOfClass(Entity.class, p_41433_.getBoundingBox().inflate(999));
-        if (!list.isEmpty()) {
-            for (Entity entity : list) {
-                if (!(entity instanceof Player)) {
-                    CompoundTag tag = new CompoundTag();
-                    tag.putFloat("Health", 0);
-                    if (entity instanceof LivingEntity living) {
-                        try {
-                            living.readAdditionalSaveData(tag);
-                        } catch (RuntimeException ignores) {
-                            if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {
-                                BossBar.removeBossBar(apostle.getUUID(), apostle);
-                            }
-                            entity.setRemoved(Entity.RemovalReason.KILLED);
-                            continue;
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        this.discard(pLevel, pPlayer);
+        return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
+    }
+
+    private void discard(Level pLevel, Player pPlayer) {
+        List<Entity> list = pLevel.getEntitiesOfClass(Entity.class, pPlayer.getBoundingBox().inflate(999));
+        if (list.isEmpty()) {
+            return;
+        }
+        for (Entity entity : list) {
+            if (!(entity instanceof Player)) {
+                CompoundTag tag = new CompoundTag();
+                tag.putFloat("Health", 0);
+                if (entity instanceof LivingEntity living) {
+                    try {
+                        living.readAdditionalSaveData(tag);
+                    } catch (RuntimeException ignores) {
+                        if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {
+                            BossBar.removeBossBar(apostle.getUUID(), apostle);
                         }
+                        entity.setRemoved(Entity.RemovalReason.KILLED);
+                        continue;
                     }
+                }
+                if (pLevel.isClientSide) {
                     if (entity instanceof Apostle apostle && BossBar.contains(apostle.getUUID())) {
                         BossBar.removeBossBar(apostle.getUUID(), apostle);
                     }
-                    entity.setRemoved(Entity.RemovalReason.KILLED);
                 }
+                entity.setRemoved(Entity.RemovalReason.KILLED);
             }
         }
-        return ItemUtils.startUsingInstantly(p_41432_, p_41433_, p_41434_);
     }
 
     public int getUseDuration(ItemStack p_41454_) {
@@ -101,30 +96,10 @@ extends SwordItem {
         return UseAnim.NONE;
     }
 
-    public ItemStack finishUsingItem(ItemStack p_41409_, Level p_41410_, LivingEntity p_41411_) {
-        if (p_41411_ instanceof Player player) {
-            List<Entity> list = WorldUtil.entityList(Entity.class, player, 365, 365, 365);
-            for (Entity entity : list) {
-                if (!(entity instanceof Player)) {
-                    entity.discard();
-                }
-            }
+    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
+        if (!(pLivingEntity instanceof Player player)) {
+            return;
         }
-        return super.finishUsingItem(p_41409_, p_41410_, p_41411_);
-    }
-
-    public void onUseTick(Level p_41428_, LivingEntity p_41429_, ItemStack p_41430_, int p_41431_) {
-        super.onUseTick(p_41428_, p_41429_, p_41430_, p_41431_);
-        if (p_41429_ instanceof Player player) {
-            List<Entity> list = WorldUtil.entityList(Entity.class, player, 365, 365, 365);
-            if (list.isEmpty()) {
-                return;
-            }
-            for (Entity entity : list) {
-                if (!(entity instanceof Player)) {
-                    entity.discard();
-                }
-            }
-        }
+        this.discard(pLevel, player);
     }
 }

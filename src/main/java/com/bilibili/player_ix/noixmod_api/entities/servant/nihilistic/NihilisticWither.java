@@ -62,6 +62,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticWither
 extends NihilitySummonedMobs
@@ -73,6 +74,7 @@ implements PowerableMob, RangedAttackMob {
     private static final List<EntityDataAccessor<Integer>> DATA_TARGETS;
     private static final EntityDataAccessor<Integer> DATA_ID_INV;
     private static final EntityDataAccessor<Integer> DATA_BACK_DAMAGE_TIME;
+    private static final EntityDataAccessor<Integer> DATA_SHOOT_COOLDOWN;
     private final float[] xRotHeads = new float[2];
     private final float[] yRotHeads = new float[2];
     @SuppressWarnings("ALL")
@@ -86,11 +88,10 @@ implements PowerableMob, RangedAttackMob {
     private int hurtCooldown;
     private int destroyBlocksTick;
     private int summonCooldown;
-    private float damageAmounts = 0.0f;
+    private float damageAmount = 0.0F;
     protected final ServerBossEvent bossEvent;
     private final TargetingConditions TARGETING_CONDITIONS;
-    public NihilisticWither(EntityType<? extends NihilisticWither> type, Level level)
-    {
+    public NihilisticWither(EntityType<? extends NihilisticWither> type, Level level) {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
         this.bossEvent = (ServerBossEvent)new ServerBossEvent(this.getDisplayName().copy()
@@ -111,6 +112,7 @@ implements PowerableMob, RangedAttackMob {
         this.entityData.define(DATA_TARGET_C, 0);
         this.entityData.define(DATA_ID_INV, 0);
         this.entityData.define(DATA_BACK_DAMAGE_TIME, 0);
+        this.entityData.define(DATA_SHOOT_COOLDOWN, 0);
     }
 
     protected void registerGoals() {
@@ -159,9 +161,9 @@ implements PowerableMob, RangedAttackMob {
         }
     }
 
-    public void setCustomName(@Nullable Component p_31476_) {
-        super.setCustomName(p_31476_);
-        if (p_31476_ != null) {
+    public void setCustomName(@Nullable Component pName) {
+        super.setCustomName(pName);
+        if (pName != null) {
             this.bossEvent.setName(this.getDisplayName());
         }
     }
@@ -176,7 +178,7 @@ implements PowerableMob, RangedAttackMob {
                 double d0 = vec3.y;
                 if (this.getY() < entity.getY() + 1 || !this.isPowered() && this.getY() < d1 + 5.5) {
                     d0 = Math.max(0.0, d0);
-                    d0 += 0.3 - d0 * 0.6000000238418579;
+                    d0 += 0.3D - d0 * 0.6000000238418579D;
                 }
                 vec3 = new Vec3(vec3.x, d0, vec3.z);
                 Vec3 vec31 = new Vec3(entity.getX() - this.getX(), 0.0,
@@ -196,12 +198,12 @@ implements PowerableMob, RangedAttackMob {
             --this.hurtCooldown;
         }
         int j;
-        for(j = 0; j < 2; ++j) {
+        for (j = 0; j < 2; ++j) {
             this.yRotOHeads[j] = this.yRotHeads[j];
             this.xRotOHeads[j] = this.xRotHeads[j];
         }
         int i1;
-        for(j = 0; j < 2; ++j) {
+        for (j = 0; j < 2; ++j) {
             i1 = this.getAlternativeTarget(j + 1);
             Entity entity1 = null;
             if (i1 > 0) {
@@ -227,9 +229,9 @@ implements PowerableMob, RangedAttackMob {
             double d8 = this.getHeadX(i1);
             double d10 = this.getHeadY(i1);
             double d2 = this.getHeadZ(i1);
-            this.level().addParticle(ParticleTypes.SMOKE, d8 + this.random.nextGaussian() * 0.3,
-                    d10 + this.random.nextGaussian() * 0.3, d2 + this.random.nextGaussian() * 0.3,
-                    0.0, 0.0, 0.0);
+            this.level().addParticle(ParticleTypes.SMOKE, d8 + ThreadLocalRandom.current().nextGaussian() * 0.3,
+                    d10 + ThreadLocalRandom.current().nextGaussian() * 0.3, d2 + ThreadLocalRandom.current()
+                            .nextGaussian() * 0.3, 0.0, 0.0, 0.0);
         }
         if (this.isHalfHealth()) {
             if (this.level().isClientSide) {
@@ -237,13 +239,14 @@ implements PowerableMob, RangedAttackMob {
                     double d8 = this.getHeadX(i1);
                     double d10 = this.getHeadY(i1);
                     double d2 = this.getHeadZ(i1);
-                    this.level().addParticle(ParticleTypes.SMOKE, d8 + this.random.nextGaussian() * 0.3,
-                            d10 + this.random.nextGaussian() * 0.3, d2 + this.random.nextGaussian() * 0.3,
-                            0.0, 0.0, 0.0);
-                    if (this.level().random.nextInt(4) == 0) {
+                    this.level().addParticle(ParticleTypes.SMOKE, d8 + ThreadLocalRandom.current().nextGaussian() * 0.3D,
+                            d10 + ThreadLocalRandom.current().nextGaussian() * 0.3D, d2 + ThreadLocalRandom.current()
+                                    .nextGaussian() * 0.3D, 0.0D, 0.0D, 0.0D);
+                    if (ThreadLocalRandom.current().nextInt(4) == 0) {
                         this.level().addParticle(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get(),
-                                d8 + this.random.nextGaussian() * 0.3, d10 + this.random.nextGaussian() * 0.3,
-                                d2 + this.random.nextGaussian() * 0.3, 0, 0, 0);
+                                d8 + ThreadLocalRandom.current().nextGaussian() * 0.3D, d10 +
+                                        ThreadLocalRandom.current().nextGaussian() * 0.3D, d2 + ThreadLocalRandom.current()
+                                        .nextGaussian() * 0.3D, 0, 0, 0);
                     }
                 }
             } else {
@@ -259,10 +262,10 @@ implements PowerableMob, RangedAttackMob {
         if (this.level().isClientSide) {
             if (this.getInvulnerableTicks() > 0 || this.isGivingBackDamage()) {
                 for (i1 = 0;i1 < 3;++i1) {
-                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextGaussian(),
-                            this.getY() + this.random.nextFloat() * 3.3F,
-                            this.getZ() + this.random.nextGaussian(),
-                            0.7D, 0.7D, 0.9D);
+                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() +
+                                    ThreadLocalRandom.current().nextGaussian(), this.getY() +
+                                    ThreadLocalRandom.current().nextDouble() * 3.3D, this.getZ() +
+                                    ThreadLocalRandom.current().nextGaussian(), 0.7D, 0.7D, 0.9D);
                 }
             }
         }
@@ -270,20 +273,18 @@ implements PowerableMob, RangedAttackMob {
 
     protected void customServerAiStep() {
         int j1;
-        if (this.getBackDamageTime() <= 0) {
-            this.setBackDamageTime(800);
-        } else {
-            this.setBackDamageTime(this.getBackDamageTime() - 1);
+        if (this.cannotShoot()) {
+            this.decreaseShootCooldown();
         }
-        if (this.getBackDamageTime() == 600) {
-            if (this.damageAmounts > 0.0f) {
-                LivingEntity target = this.getTarget();
+        if (this.getBackDamageTime() == 0) {
+            LivingEntity target = this.getTarget();
+            if (this.damageAmount > 0.0F) {
                 if (target != null) {
                     List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class,
                             target.getBoundingBox().inflate(16), living -> MobUtils.canHurt(living, this));
                     if (!list.isEmpty()) {
                         for (LivingEntity living : list) {
-                            living.hurt(NoixmodAPIDamageSource.nihility(this), this.damageAmounts);
+                            living.hurt(NoixmodAPIDamageSource.nihility(this), this.damageAmount);
                         }
                         if (this.getInvulnerableTicks() <= 0 && !this.isSilent()) {
                             this.level().levelEvent(null, 1022, blockPosition(), 0);
@@ -295,17 +296,24 @@ implements PowerableMob, RangedAttackMob {
                             0, 0, 0, 0);
                 }
             } else {
-                if (this.getTarget() != null) {
-                    this.hurt(NoixmodAPIDamageSource.nihility(this), 20f);
+                if (target != null) {
+                    this.hurt(NoixmodAPIDamageSource.nihility(this.level()), 20.0F);
                 }
             }
-            this.damageAmounts = 0.0f;
+            this.resetDamageAmount();
+        }
+        if (this.getBackDamageTime() <= 0) {
+            this.setBackDamageTime(800);
+        } else {
+            if (!this.isPowered()) {
+                this.setBackDamageTime(this.getBackDamageTime() - 1);
+            }
         }
         if (this.getInvulnerableTicks() > 0) {
             j1 = this.getInvulnerableTicks() - 1;
             this.bossEvent.setProgress(1.0F - (float)j1 / 220.0F);
             if (j1 <= 0) {
-                MobUtils.rangeHurt(4, 4, 4, this, NoixmodAPIDamageSource.nihility(this), 50.0f);
+                MobUtils.rangeHurt(4, 4, 4, this, NoixmodAPIDamageSource.nihility(this), 50.0F);
                 if (!this.isSilent()) {
                     this.level().globalLevelEvent(1023, this.blockPosition(), 0);
                 }
@@ -322,10 +330,8 @@ implements PowerableMob, RangedAttackMob {
             super.customServerAiStep();
             if (this.summonCooldown <= 0) {
                 if (this.isHalfHealth()) {
-                    if (!this.level().isClientSide) {
-                        ISpell spell = Spells.WITHER_SKELETON.get();
-                        spell.castSpell((ServerLevel) this.level(), this);
-                    }
+                    ISpell spell = Spells.WITHER_SKELETON.get();
+                    spell.castSpell(this.serverLevel(), this);
                     this.summonCooldown = 1200;
                 }
             } else {
@@ -333,28 +339,26 @@ implements PowerableMob, RangedAttackMob {
             }
             int i2;
             int j2;
-            for(j1 = 1; j1 < 3; ++j1) {
+            for (j1 = 1; j1 < 3; ++j1) {
                 if (this.tickCount >= this.nextHeadUpdate[j1 - 1]) {
-                    this.nextHeadUpdate[j1 - 1] = this.tickCount + 10 + this.random.nextInt(10);
-                    if (this.level().getDifficulty() == Difficulty.NORMAL || this.level().getDifficulty() == Difficulty.HARD) {
-                        i2 = j1 - 1;
-                        j2 = this.idleHeadUpdates[j1 - 1];
-                        this.idleHeadUpdates[i2] = this.idleHeadUpdates[j1 - 1] + 1;
-                        if (j2 > 15) {
-                            double d0 = Mth.nextDouble(this.random, this.getX() - 10.0, this.getX() + 10.0);
-                            double d1 = Mth.nextDouble(this.random, this.getY() - 5.0, this.getY() + 5.0);
-                            double d2 = Mth.nextDouble(this.random, this.getZ() - 10.0, this.getZ() + 10.0);
-                            this.performRangedAttack(j1 + 1, d0, d1, d2, true);
-                            this.idleHeadUpdates[j1 - 1] = 0;
-                        }
+                    this.nextHeadUpdate[j1 - 1] = this.tickCount + 10 + ThreadLocalRandom.current().nextInt(10);
+                    i2 = j1 - 1;
+                    j2 = this.idleHeadUpdates[j1 - 1];
+                    this.idleHeadUpdates[i2] = this.idleHeadUpdates[j1 - 1] + 1;
+                    if (j2 > 15) {
+                        double d0 = Mth.nextDouble(this.random, this.getX() - 10.0, this.getX() + 10.0);
+                        double d1 = Mth.nextDouble(this.random, this.getY() - 5.0, this.getY() + 5.0);
+                        double d2 = Mth.nextDouble(this.random, this.getZ() - 10.0, this.getZ() + 10.0);
+                        this.performRangedAttack(j1 + 1, d0, d1, d2, true);
+                        this.idleHeadUpdates[j1 - 1] = 0;
                     }
                     i2 = this.getAlternativeTarget(j1);
                     if (i2 > 0) {
                         LivingEntity livingentity = (LivingEntity)this.level().getEntity(i2);
-                        if (livingentity != null && this.canAttack(livingentity) && this.distanceToSqr(livingentity) <= 900.0
+                        if (livingentity != null && this.canAttack(livingentity) && this.distanceToSqr(livingentity) <= 900.0D
                                 && this.hasLineOfSight(livingentity)) {
                             this.performRangedAttack(j1 + 1, livingentity);
-                            this.nextHeadUpdate[j1 - 1] = this.tickCount + 40 + this.random.nextInt(20);
+                            this.nextHeadUpdate[j1 - 1] = this.tickCount + 40 + ThreadLocalRandom.current().nextInt(20);
                             this.idleHeadUpdates[j1 - 1] = 0;
                         } else {
                             this.setAlternativeTarget(j1, 0);
@@ -364,7 +368,7 @@ implements PowerableMob, RangedAttackMob {
                                 TARGETING_CONDITIONS, this, this.getBoundingBox()
                                         .inflate(20.0, 20.0, 20.0));
                         if (!list.isEmpty()) {
-                            LivingEntity living = list.get(this.random.nextInt(list.size()));
+                            LivingEntity living = list.get(ThreadLocalRandom.current().nextInt(list.size()));
                             this.setAlternativeTarget(j1, living.getId());
                         }
                     }
@@ -408,7 +412,7 @@ implements PowerableMob, RangedAttackMob {
             }
             if (this.tickCount % 20 == 0) {
                 this.heal(1.0F);
-                if (this.getOwner() != null) {
+                if (this.isOwned()) {
                     this.getOwner().heal(1f);
                 }
             }
@@ -432,7 +436,26 @@ implements PowerableMob, RangedAttackMob {
         return super.isInvulnerableTo(p_20122_);
     }
 
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public void skullHurt() {
+        this.setShootCooldown(100);
+        this.setBackDamageTime(this.getBackDamageTime() + 100);
+        super.hurt(NoixmodAPIDamageSource.nihility(this.level()), 20.0F);
+        this.resetDamageAmount();
+    }
+
+    boolean checkSkull(Entity entity) {
+        if (!(entity instanceof NihilisticWitherSkull skull))
+        {
+            return false;
+        }
+        return skull.getOwner() != this;
+    }
+
+    public boolean hurt(DamageSource pSource, float pAmount)
+    {
+        if (checkSkull(pSource.getDirectEntity())) {
+            return super.hurt(pSource, pAmount);
+        }
         if (pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(pSource, pAmount);
         }
@@ -461,7 +484,7 @@ implements PowerableMob, RangedAttackMob {
                     if (this.destroyBlocksTick <= 0) {
                         this.destroyBlocksTick = 20;
                     }
-                    for(int i = 0; i < this.idleHeadUpdates.length; ++i) {
+                    for (int i = 0; i < this.idleHeadUpdates.length; ++i) {
                         this.idleHeadUpdates[i] += 3;
                     }
                     return super.hurt(pSource, pAmount);
@@ -472,22 +495,33 @@ implements PowerableMob, RangedAttackMob {
         }
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        if (p_21240_.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            super.actuallyHurt(p_21240_, p_21241_);
-        } else {
-            if (p_21241_ > DATA_DAMAGE_CAPE) {
-                p_21241_ = DATA_DAMAGE_CAPE;
-            }
-            if (this.hurtCooldown <= 0) {
-                this.hurtCooldown = 10;
-                if (this.isGivingBackDamage() && this.getInvulnerableTicks() <= 0) {
-                    this.damageAmounts += p_21241_;
-                    return;
-                }
-                super.actuallyHurt(p_21240_, p_21241_);
-            }
+    protected void actuallyHurt(DamageSource pSource, float pAmount) {
+        if (pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            super.actuallyHurt(pSource, pAmount);
+            return;
         }
+        if (checkSkull(pSource.getDirectEntity())) {
+            super.actuallyHurt(pSource, pAmount);
+            return;
+        }
+        if (pAmount > DATA_DAMAGE_CAPE) {
+            pAmount = DATA_DAMAGE_CAPE;
+        }
+        if (this.hurtCooldown <= 0) {
+            this.hurtCooldown = 10;
+            if (this.isGivingBackDamage() && this.getInvulnerableTicks() <= 0) {
+                this.damageAmount += pAmount;
+                return;
+            }
+            super.actuallyHurt(pSource, pAmount);
+        }
+    }
+
+    public void heal(float pHealAmount) {
+        if (this.cannotShoot()) {
+            return;
+        }
+        super.heal(pHealAmount);
     }
 
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
@@ -505,10 +539,10 @@ implements PowerableMob, RangedAttackMob {
 
     public void spawnAnim() {
         if (this.level().isClientSide) {
-            for(int i = 0; i < 40; ++i) {
-                double d0 = this.random.nextGaussian() * 0.02;
-                double d1 = this.random.nextGaussian() * 0.02;
-                double d2 = this.random.nextGaussian() * 0.02;
+            for (int i = 0; i < 40; ++i) {
+                double d0 = ThreadLocalRandom.current().nextGaussian() * 0.02;
+                double d1 = ThreadLocalRandom.current().nextGaussian() * 0.02;
+                double d2 = ThreadLocalRandom.current().nextGaussian() * 0.02;
                 double d3 = 10.0;
                 this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(1.0) - d0 * d3,
                         this.getRandomY() - d1 * d3, this.getRandomZ(1.0) - d2 * d3, d0, d1, d2);
@@ -530,7 +564,7 @@ implements PowerableMob, RangedAttackMob {
 
     /**If {@linkplain #getBackDamageTime()} > 600, return {@code true}, else, on Cooldown*/
     public boolean isGivingBackDamage() {
-        return this.getBackDamageTime() > 600;
+        return this.getBackDamageTime() <= 200;
     }
 
     public int getBackDamageTime() {
@@ -627,7 +661,7 @@ implements PowerableMob, RangedAttackMob {
     }
 
     public boolean isPowered() {
-        return this.getHealth()<=this.getMaxHealth() / 3;
+        return this.getHealth() <= this.getMaxHealth() / 3.0D;
     }
 
     protected boolean canRide(Entity p_20339_) {
@@ -638,12 +672,16 @@ implements PowerableMob, RangedAttackMob {
         return false;
     }
 
-    public int getAlternativeTarget(int p_31513_) {
-        return this.entityData.get(DATA_TARGETS.get(p_31513_));
+    public int getAlternativeTarget(int pId) {
+        return this.entityData.get(DATA_TARGETS.get(pId));
     }
 
-    public void setAlternativeTarget(int p_31455_, int p_31456_) {
-        this.entityData.set(DATA_TARGETS.get(p_31455_), p_31456_);
+    public void setAlternativeTarget(int pHeadId, int pId) {
+        this.entityData.set(DATA_TARGETS.get(pHeadId), pId);
+    }
+
+    public void resetDamageAmount() {
+        this.damageAmount = 0.0F;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -653,12 +691,31 @@ implements PowerableMob, RangedAttackMob {
                 .add(Attributes.ATTACK_DAMAGE, 7.0D).add(Attributes.FLYING_SPEED, 0.6D);
     }
 
-    private void performRangedAttack(int p_31458_, LivingEntity p_31459_) {
-        this.performRangedAttack(p_31458_, p_31459_.getX(), p_31459_.getY() +
-                p_31459_.getEyeHeight() * 0.5, p_31459_.getZ(), p_31458_ == 0 && this.random.nextFloat() < 0.001F);
+    public boolean cannotShoot() {
+        return this.entityData.get(DATA_SHOOT_COOLDOWN) > 0;
     }
 
-    private void performRangedAttack(int p_31449_, double p_31450_, double p_31451_, double p_31452_, boolean p_31453_) {
+    public void setShootCooldown(int cooldown)
+    {
+        this.entityData.set(DATA_SHOOT_COOLDOWN, cooldown);
+    }
+
+    public void decreaseShootCooldown()
+    {
+        this.setShootCooldown(this.entityData.get(DATA_SHOOT_COOLDOWN) - 1);
+    }
+
+    private void performRangedAttack(int p_31458_, LivingEntity pTarget) {
+        this.performRangedAttack(p_31458_, pTarget.getX(), pTarget.getY() +
+                pTarget.getEyeHeight() * 0.5, pTarget.getZ(), p_31458_ == 0 && ThreadLocalRandom.current()
+                .nextFloat() < 0.001F);
+    }
+
+    private void performRangedAttack(int p_31449_, double p_31450_, double p_31451_, double p_31452_,
+                                     boolean p_31453_) {
+        if (this.cannotShoot()) {
+            return;
+        }
         if (!this.isSilent()) {
             this.level().levelEvent(null, 1024, this.blockPosition(), 0);
         }
@@ -668,8 +725,8 @@ implements PowerableMob, RangedAttackMob {
         double d3 = p_31450_ - d0;
         double d4 = p_31451_ - d1;
         double d5 = p_31452_ - d2;
-        boolean flag = this.isHalfHealth() ? java.util.concurrent.ThreadLocalRandom.current().nextBoolean() :
-                java.util.concurrent.ThreadLocalRandom.current().nextFloat() < 0.18F;
+        boolean flag = this.isHalfHealth() ? ThreadLocalRandom.current().nextBoolean() :
+                ThreadLocalRandom.current().nextFloat() < 0.18F;
         if (flag) {
             NihilisticWitherSkull skull = new NihilisticWitherSkull(this.level(), this, d3, d4, d5);
             skull.setOwner(this);
@@ -686,8 +743,8 @@ implements PowerableMob, RangedAttackMob {
         }
     }
 
-    public void performRangedAttack(LivingEntity p_31468_, float p_31469_) {
-        this.performRangedAttack(0, p_31468_);
+    public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
+        this.performRangedAttack(0, pTarget);
     }
 
     public boolean canBeAffected(MobEffectInstance p_21197_) {
@@ -701,6 +758,8 @@ implements PowerableMob, RangedAttackMob {
         DATA_TARGETS = ImmutableList.of(DATA_TARGET_A, DATA_TARGET_B, DATA_TARGET_C);
         DATA_ID_INV = SynchedEntityData.defineId(NihilisticWither.class, EntityDataSerializers.INT);
         DATA_BACK_DAMAGE_TIME = SynchedEntityData.defineId(NihilisticWither.class, EntityDataSerializers.INT);
+        DATA_SHOOT_COOLDOWN = SynchedEntityData.defineId(NihilisticWither.class,
+                EntityDataSerializers.INT);
     }
 
     private class WitherDoNothingGoal extends Goal {
@@ -727,11 +786,11 @@ implements PowerableMob, RangedAttackMob {
 
         public boolean canUse() {
             LivingEntity $$0 = this.wither.getTarget();
-            if ($$0 != null && $$0.isAlive()) {
+            if ($$0 == null || !$$0.isAlive()) {
+                return false;
+            } else {
                 this.target = $$0;
                 return true;
-            } else {
-                return false;
             }
         }
 

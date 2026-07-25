@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.client.renderer.servant;
 
 import com.bilibili.player_ix.noixmod_api.client.model.VampireServantModel;
-import com.bilibili.player_ix.noixmod_api.client.renderer.VampireRenderer;
+import com.bilibili.player_ix.noixmod_api.client.renderer.monster.VampireRenderer;
 import com.bilibili.player_ix.noixmod_api.entities.servant.VampireServant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayers;

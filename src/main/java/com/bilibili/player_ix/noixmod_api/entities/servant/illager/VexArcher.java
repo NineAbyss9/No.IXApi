@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
+import com.bilibili.player_ix.noixmod_api.api.entity.IVex;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiRangedBowAttackGoal;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiRangedAttackMob;
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
 
-public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
+public class VexArcher extends OwnableMob implements ApiRangedAttackMob, IVex {
     private static final int TICKS_PER_FLAP = Mth.ceil(3.9269907F);
     public VexArcher(EntityType<? extends VexArcher> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -150,7 +151,7 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
         }
 
         public boolean canUse() {
-            if (!mob.getNavigation().isDone()) {
+            if (!this.mob.getNavigation().isDone()) {
                 return false;
             }
             return checkRandom();
@@ -169,6 +170,52 @@ public class VexArcher extends OwnableMob implements ApiRangedAttackMob {
             if (this.mob instanceof Ownable ownable && ownable.getOwner() != null) {
                 pos = ownable.getOwner().blockPosition();
             }
+            for (int $$1 = 0; $$1 < 3; ++$$1) {
+                BlockPos $$2 = pos.offset(this.mob.getRandom().nextInt(15) - 7, this.mob
+                        .getRandom().nextInt(11) - 5, this.mob.getRandom().nextInt(15) - 7);
+                if (this.mob.level().isEmptyBlock($$2)) {
+                    this.mob.getMoveControl().setWantedPosition($$2.getX() + 0.5, $$2.getY() + 0.5,
+                            $$2.getZ() + 0.5, 0.3);
+                    last = Vec9.of($$2);
+                    if (this.mob.getTarget() == null) {
+                        this.mob.getLookControl().setLookAt($$2.getX() + 0.5, $$2.getY() + 0.5,
+                                $$2.getZ() + 0.5, 180.0F, 20.0F);
+                    }
+                    break;
+                }
+            }
+        }
+
+        //public void tick() {
+
+        //}
+    }
+
+    public static class VexRandomMoveGoalNoOwner extends Goal {
+        protected final Mob mob;
+        protected Vec9 last = Vec9.of();
+        public VexRandomMoveGoalNoOwner(Mob pmob) {
+            this.mob = pmob;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            if (this.mob.getMoveControl().hasWanted()) {
+                return false;
+            }
+            return checkRandom();
+        }
+
+        protected boolean checkRandom() {
+            return mob.getRandom().nextInt(reducedTickDelay(7)) == 0;
+        }
+
+        public boolean canContinueToUse() {
+            return false;
+        }
+
+        public void tick() {
+            BlockPos pos = this.mob.blockPosition();
             for (int $$1 = 0; $$1 < 3; ++$$1) {
                 BlockPos $$2 = pos.offset(this.mob.getRandom().nextInt(15) - 7, this.mob
                         .getRandom().nextInt(11) - 5, this.mob.getRandom().nextInt(15) - 7);

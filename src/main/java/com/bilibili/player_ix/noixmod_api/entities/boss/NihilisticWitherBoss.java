@@ -10,18 +10,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class NihilisticWitherBoss
 extends NihilisticWither
 implements ApiNihilisticBoss {
     public NihilisticWitherBoss(EntityType<NihilisticWitherBoss> type, Level level) {
         super(type, level);
+        this.xpReward = 500;
         this.setHostile(true);
     }
 
-    protected void customServerAiStep()
-    {
+    protected void customServerAiStep() {
         super.customServerAiStep();
         if (this.getInvulnerableTicks() <= 0) {
             this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
@@ -38,20 +40,32 @@ implements ApiNihilisticBoss {
         this.bossEvent.removePlayer(p_31488_);
     }
 
-    public void die(DamageSource pDamageSource)
-    {
+    public void die(DamageSource pDamageSource) {
         super.die(pDamageSource);
-        if (!this.level().isClientSide) {
-            ApiSavedData.get(this.serverLevel()).setNihilisticWitherKilled();
+        if (this.level().isClientSide || !(pDamageSource.getEntity() instanceof Player)) {
+            return;
         }
+        ApiSavedData.get(this.serverLevel()).setNihilisticWitherKilled();
+    }
+
+    public void setOwner(@Nullable LivingEntity lie) {
+    }
+
+    @Nullable
+    public LivingEntity getOwner() {
+        return null;
+    }
+
+    public boolean isOwned() {
+        return false;
+    }
+
+    public boolean isOwnedBy(LivingEntity living) {
+        return false;
     }
 
     public boolean isBoss() {
         return true;
-    }
-
-    public boolean wouldHaveOwner() {
-        return false;
     }
 
     protected void addTargetGoals() {

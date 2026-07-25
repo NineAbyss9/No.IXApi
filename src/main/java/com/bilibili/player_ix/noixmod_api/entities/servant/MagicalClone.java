@@ -73,15 +73,11 @@ extends OwnableMob {
     }
 
     public float getLightLevelDependentMagicValue() {
-        return 1f;
+        return 1.0F;
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.SKELETON_HORSE_DEATH;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.EXPERIENCE_ORB_PICKUP;
+        return SoundEvents.ALLAY_AMBIENT_WITHOUT_ITEM;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

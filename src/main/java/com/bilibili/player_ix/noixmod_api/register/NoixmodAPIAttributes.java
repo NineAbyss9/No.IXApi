@@ -12,7 +12,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 @PAMAreNonnullByDefault
 public class NoixmodAPIAttributes {
-    private NoixmodAPIAttributes(){}
+    private NoixmodAPIAttributes() {
+    }
+    /**Try to get the attribute value of a livingentity.
+     *
+     * @return the attribute value of the entity, or 0 if the attribute is not found.*/
     public static double getAttributeValue(Attribute attribute, LivingEntity entity) {
         AttributeInstance instance = entity.getAttribute(attribute);
         double d;

@@ -4,7 +4,6 @@ package com.bilibili.player_ix.noixmod_api.entities.servant;
 import com.github.NineAbyss9.ix_api.api.mobs.NihilitySummonedMobs;
 import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiOwnerTargetGoal;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -39,7 +37,6 @@ public class FreakySkeleton extends NihilitySummonedMobs implements Ownable, Ran
         this.moveControl = new NihilityGhastMoveControl(this);
     }
 
-    @Override
     protected ResourceLocation getDefaultLootTable() {
         return EntityType.WITHER_SKELETON.getDefaultLootTable();
     }
@@ -53,13 +50,9 @@ public class FreakySkeleton extends NihilitySummonedMobs implements Ownable, Ran
 
     public void aiStep() {
         super.aiStep();
-        if (this.tickCount %1200 == 0) {
+        if (this.tickCount % 1200 == 0) {
             this.discard();
         }
-    }
-
-    public FreakySkeleton(PlayMessages.SpawnEntity packet, Level world) {
-        this(NoixmodAPIEntities.FREAKY_SKELETON.get(), world);
     }
 
     protected @Nullable SoundEvent getAmbientSound() {
@@ -125,7 +118,6 @@ public class FreakySkeleton extends NihilitySummonedMobs implements Ownable, Ran
             this.ghast = $$0;
         }
 
-        @Override
         public void tick() {
             if (this.operation != MoveControl.Operation.MOVE_TO) {
                 return;

@@ -9,12 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.NineAbyss9.math.MathSupport;
 
 public class BloodiedSword extends SwordItem {
     public BloodiedSword() {
-        super(ItemUtil.getTier(
-                0, 2.8f, 7, 3, 5, Ingredient.EMPTY
+        super(ItemUtil.getTier(0, 2.8f, 7, 3, 5, Ingredient.EMPTY
         ), 1, -2.4f, new Properties().stacksTo(1)
                 .rarity(Rarity.UNCOMMON));
     }

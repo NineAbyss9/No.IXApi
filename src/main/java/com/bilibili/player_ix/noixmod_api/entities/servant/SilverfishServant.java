@@ -70,21 +70,21 @@ extends OwnableMob {
         super.tick();
     }
 
-    public void setYBodyRot(float p_33553_) {
-        this.setYRot(p_33553_);
-        super.setYBodyRot(p_33553_);
+    public void setYBodyRot(float pOffset) {
+        this.setYRot(pOffset);
+        super.setYBodyRot(pOffset);
     }
 
     protected MovementEmission getMovementEmission() {
         return MovementEmission.EVENTS;
     }
 
-    public float getWalkTargetValue(BlockPos p_33530_, LevelReader p_33531_) {
-        return InfestedBlock.isCompatibleHostBlock(p_33531_.getBlockState(p_33530_.below())) ?
-                10.0F : super.getWalkTargetValue(p_33530_, p_33531_);
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
+        return InfestedBlock.isCompatibleHostBlock(pLevel.getBlockState(pPos.below())) ?
+                10.0F : super.getWalkTargetValue(pPos, pLevel);
     }
 
-    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pDimensions) {
         return 0.13f;
     }
 
@@ -142,13 +142,14 @@ extends OwnableMob {
     public int getNext() {
         LivingEntity owner = this.getOwner();
         int next = 1;
-        if (owner != null) {
-            if (owner.getDisplayName().getString().equals("wu1wu2")) {
-                next *= 2;
-            }
-            if (this.intimacyData.getIntimacy() > 10) {
-                next *= 2;
-            }
+        if (owner == null) {
+            return next;
+        }
+        if (owner.getDisplayName().getString().equals("wu1wu2")) {
+            next *= 2;
+        }
+        if (this.intimacyData.getIntimacy() > 10) {
+            next *= 2;
         }
         return next;
     }

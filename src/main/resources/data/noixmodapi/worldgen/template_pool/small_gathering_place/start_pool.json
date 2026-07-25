@@ -1,0 +1,15 @@
+{
+  "name": "noixmodapi:small_gathering_place/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "noixmodapi:small_gathering_place",
+        "processors": "minecraft:empty"
+      }
+    }
+  ]
+}

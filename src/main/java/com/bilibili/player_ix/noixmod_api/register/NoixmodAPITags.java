@@ -34,7 +34,7 @@ public class NoixmodAPITags {
             = entityTypeTag("silver_fishes");
 
     //DamageTypeTags
-    public static TagKey<DamageType> NIHILISTIC;
+    //public static TagKey<DamageType> NIHILISTIC;
 
     //BlockTags
     public static TagKey<Block> AMBUSHER_CAN_HIDE
@@ -46,9 +46,11 @@ public class NoixmodAPITags {
     public static TagKey<Item> SCULKS = itemTag("sculks");
     public static TagKey<Item> ICES = itemTag("ices");
 
-    private NoixmodAPITags() {}
+    private NoixmodAPITags() {
+    }
 
-    public static void init() {}
+    public static void init() {
+    }
 
     public static boolean canEffectApostleTest(MobEffect mobEffect) {
         return mobEffect == MobEffects.DAMAGE_RESISTANCE || mobEffect == MobEffects.HEAL ||
@@ -81,8 +83,7 @@ public class NoixmodAPITags {
         CAN_EFFECT_APOSTLE = NoixmodAPITags::canEffectApostleTest;
         CAN_NOT_EFFECT_APOSTLE = instance -> !NoixmodAPITags
                 .canEffectApostleTest(instance.getEffect());
-
         //DamageTypeTags
-        NIHILISTIC = damageTag("nihilistic");
+        //NIHILISTIC = damageTag("nihilistic");
     }
 }

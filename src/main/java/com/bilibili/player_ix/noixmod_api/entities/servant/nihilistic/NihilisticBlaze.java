@@ -16,6 +16,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticBlaze
 extends NihilitySummonedMobs {
@@ -46,13 +48,13 @@ extends NihilitySummonedMobs {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0, 0.6, 1.0));
         }
         if (this.level().isClientSide) {
-            if (this.random.nextInt(24) == 0 && !this.isSilent()) {
+            if (ThreadLocalRandom.current().nextFloat() < 0.04F && !this.isSilent()) {
                 this.level().playLocalSound(this.getX() + 0.5, this.getY() + 0.5, this.getZ() + 0.5,
-                        SoundEvents.BLAZE_BURN, this.getSoundSource(), 1.0F + this.random.nextFloat(),
-                        this.random.nextFloat() * 0.7F + 0.3F, false);
+                        SoundEvents.BLAZE_BURN, this.getSoundSource(), 1.0F + ThreadLocalRandom.current().nextFloat(),
+                        ThreadLocalRandom.current().nextFloat() * 0.7F + 0.3F, false);
             }
-            this.level().addParticle(NoixmodAPIParticleTypes.SMALL_FIRE.get(), this.getRandomX(0.5),
-                    this.getRandomY(), this.getRandomZ(0.5), 0.0, 0.0, 0.0);
+            this.level().addParticle(NoixmodAPIParticleTypes.SMALL_FIRE.get(), this.getRandomX(0.5D),
+                    this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -124,12 +126,16 @@ extends NihilitySummonedMobs {
         return 1.0F;
     }
 
+    public boolean requiresCustomPersistence() {
+        return this.getSpawnType() == MobSpawnType.STRUCTURE || super.requiresCustomPersistence();
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return NihilisticBlaze.createPathAttributes()
-                .add(Attributes.MAX_HEALTH, 30)
-                .add(Attributes.ARMOR, 4)
-                .add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.MOVEMENT_SPEED, 0.25)
-                .add(Attributes.FOLLOW_RANGE, 128).add(Attributes.KNOCKBACK_RESISTANCE, 0.35);
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.ARMOR, 4.0D)
+                .add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.FOLLOW_RANGE, 56.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.35D);
     }
 
     static {
@@ -142,8 +148,8 @@ extends NihilitySummonedMobs {
         private int attackTime;
         private int lastSeen;
 
-        public BlazeAttackGoal(NihilisticBlaze p_32247_) {
-            this.blaze = p_32247_;
+        public BlazeAttackGoal(NihilisticBlaze pEntity) {
+            this.blaze = pEntity;
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
@@ -167,56 +173,59 @@ extends NihilitySummonedMobs {
 
         public void tick() {
             --this.attackTime;
-            LivingEntity $$0 = this.blaze.getTarget();
-            if ($$0 != null) {
-                boolean $$1 = this.blaze.getSensing().hasLineOfSight($$0);
-                if ($$1) {
-                    this.lastSeen = 0;
-                } else {
-                    ++this.lastSeen;
+            LivingEntity target = this.blaze.getTarget();
+            if (target == null) {
+                return;
+            }
+            boolean $$1 = this.blaze.getSensing().hasLineOfSight(target);
+            if ($$1) {
+                this.lastSeen = 0;
+            } else {
+                ++this.lastSeen;
+            }
+            double $$2 = this.blaze.distanceToSqr(target);
+            if ($$2 < 4.0) {
+                if (!$$1) {
+                    return;
                 }
-                double $$2 = this.blaze.distanceToSqr($$0);
-                if ($$2 < 4.0) {
-                    if (!$$1) {
-                        return;
-                    }
-                    if (this.attackTime <= 0) {
-                        this.attackTime = 20;
-                        this.blaze.doHurtTarget($$0);
-                    }
-                    this.blaze.getMoveControl().setWantedPosition($$0.getX(), $$0.getY(), $$0.getZ(), 1.0D);
-                } else if ($$2 < this.getFollowDistance() * this.getFollowDistance() && $$1) {
-                    double $$3 = $$0.getX() - this.blaze.getX();
-                    double $$4 = $$0.getY(0.5D) - this.blaze.getY(0.5D);
-                    double $$5 = $$0.getZ() - this.blaze.getZ();
-                    if (this.attackTime <= 0) {
-                        ++this.attackStep;
-                        if (this.attackStep == 1) {
-                            this.attackTime = 60;
-                            this.blaze.setCharged(true);
-                        } else if (this.attackStep <= 4) {
-                            this.attackTime = 6;
-                        } else {
-                            this.attackTime = 100;
-                            this.attackStep = 0;
-                            this.blaze.setCharged(false);
-                        }
-                        if (this.attackStep > 1) {
-                            if (!this.blaze.isSilent()) {
-                                this.blaze.level().levelEvent(null, 1018, this.blaze.blockPosition(), 0);
-                            }
-                            for(int $$7 = 0; $$7 < 1; ++$$7) {
-                                NihilisticFireball $$8 = new NihilisticFireball(this.blaze.level(), this.blaze, $$3, $$4, $$5);
-                                $$8.setPos($$8.getX(), this.blaze.getY(0.5) + 0.5, $$8.getZ());
-                                $$8.setOwner(this.blaze.getOwner());
-                                this.blaze.level().addFreshEntity($$8);
-                            }
-                        }
-                    }
-                    this.blaze.getLookControl().setLookAt($$0, 10.0F, 10.0F);
-                } else if (this.lastSeen < 5) {
-                    this.blaze.getMoveControl().setWantedPosition($$0.getX(), $$0.getY(), $$0.getZ(), 1.0);
+                if (this.attackTime <= 0) {
+                    this.attackTime = 20;
+                    this.blaze.doHurtTarget(target);
                 }
+                this.blaze.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
+            } else if ($$2 < this.getFollowDistance() * this.getFollowDistance() && $$1) {
+                double $$3 = target.getX() - this.blaze.getX();
+                double $$4 = target.getY(0.5D) - this.blaze.getY(0.5D);
+                double $$5 = target.getZ() - this.blaze.getZ();
+                if (this.attackTime <= 0) {
+                    ++this.attackStep;
+                    if (this.attackStep == 1) {
+                        this.attackTime = 60;
+                        this.blaze.setCharged(true);
+                    } else if (this.attackStep <= 4) {
+                        this.attackTime = 6;
+                    } else {
+                        this.attackTime = 100;
+                        this.attackStep = 0;
+                        this.blaze.setCharged(false);
+                    }
+                    if (this.attackStep > 1) {
+                        if (!this.blaze.isSilent()) {
+                            this.blaze.level().levelEvent(null, 1018, this.blaze.blockPosition(), 0);
+                        }
+                        //for (int i = 0;i < 1;++i) {
+                            NihilisticFireball fireball = new NihilisticFireball(this.blaze.level(), this.blaze, $$3, $$4, $$5);
+                        fireball.setCanBeHit();
+                        fireball.setDamage(5.5F);
+                            fireball.setPos(fireball.getX(), this.blaze.getY(0.5) + 0.5, fireball.getZ());
+                            fireball.setOwner(this.blaze.getOwner());
+                            this.blaze.level().addFreshEntity(fireball);
+                        //}
+                    }
+                }
+                this.blaze.getLookControl().setLookAt(target, 10.0F, 10.0F);
+            } else if (this.lastSeen < 5) {
+                this.blaze.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0);
             }
         }
         private double getFollowDistance() {

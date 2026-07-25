@@ -103,6 +103,7 @@ implements ApiNihilisticBoss, IX, IFlagMob {
     public AnimationState trust1 = new AnimationState();
     public StarGuardian(EntityType<StarGuardian> type, Level level) {
         super(type, level);
+        this.xpReward = 9999;
         this.setPersistenceRequired();
         this.setLeftHanded(false);
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.STAR_SWORD.get()));
@@ -320,9 +321,9 @@ implements ApiNihilisticBoss, IX, IFlagMob {
             increaseAniTick();
             if (this.aniTickEquals(15)) {
                 groundSound();
-                if (!level().isClientSide) {
-                    List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(6, 0.5,
-                                    6), e -> MobUtils.canHurt(e, this));
+                if (!this.level().isClientSide) {
+                    List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, getBoundingBox()
+                            .inflate(6.0D, 0.5D, 6.0D), e -> MobUtils.canHurt(e, this));
                     if (!entities.isEmpty())
                         entities.forEach(e -> {
                             e.hurt(damageSources().magic(), 12F);

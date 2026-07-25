@@ -31,8 +31,8 @@ extends Item {
         return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
     }
 
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
-    {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel,
+                                List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(Component.translatable("info.noixmodapi.villager_amulet"));
     }
 }

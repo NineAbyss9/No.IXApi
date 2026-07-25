@@ -140,7 +140,7 @@ extends NihilitySummonedMobs {
     }
 
     protected float getSoundVolume() {
-        return 3.0f;
+        return 3.0F;
     }
 
     public void addAdditionalSaveData(CompoundTag $$0) {

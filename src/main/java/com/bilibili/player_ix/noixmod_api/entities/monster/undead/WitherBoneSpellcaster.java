@@ -9,8 +9,7 @@ import net.minecraft.world.level.Level;
 public class WitherBoneSpellcaster
 extends BoneSpellcaster
 {
-    public WitherBoneSpellcaster(EntityType<? extends WitherBoneSpellcaster> pEntityType, Level pLevel)
-    {
+    public WitherBoneSpellcaster(EntityType<? extends WitherBoneSpellcaster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 

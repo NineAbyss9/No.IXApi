@@ -46,6 +46,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Intruder
 extends APISpellcaster {
@@ -60,7 +61,7 @@ extends APISpellcaster {
     private static final EntityDataAccessor<Boolean> DATA_BOSS;
     public Intruder(EntityType<Intruder> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
-        this.xpReward = 15;
+        this.xpReward = 15 + ThreadLocalRandom.current().nextInt(0, 10);
         event = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED,
                 BossEvent.BossBarOverlay.NOTCHED_10);
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(NoixmodAPIItems.UNINVITED_SWORD.get()));
@@ -192,25 +193,39 @@ extends APISpellcaster {
         return super.isInvulnerableTo(p_20122_);
     }
 
-    public boolean hurt(DamageSource p_37849_, float p_37850_) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (this.hurtCooldown > 0 || this.escapeTicks > Maths.toTick(12)) {
-            return false;
-        } else {
-            if (p_37849_.is(DamageTypeTags.IS_FALL)) {
+            if (!pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            {
                 return false;
             }
-            if (p_37849_.is(DamageTypes.IN_WALL)) {
+            if (!pSource.is(DamageTypeTags.BYPASSES_RESISTANCE))
+            {
+                return false;
+            }
+            return super.hurt(pSource, pAmount);
+        } else {
+            if (pSource.is(DamageTypeTags.IS_FALL)) {
+                return false;
+            }
+            if (pSource.is(DamageTypes.IN_WALL)) {
                 return false;
             }
             ++this.hurtCount;
             this.hurtCooldown = 10;
-            return super.hurt(p_37849_, p_37850_);
+            return super.hurt(pSource, pAmount);
         }
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-       var var1 = Math.min(5F, p_21241_);
-        super.actuallyHurt(p_21240_, var1);
+    protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypeTags.BYPASSES_RESISTANCE) ||
+                pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+        {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
+       float var1 = Math.min(8.0F, pDamageAmount);
+        super.actuallyHurt(pDamageSource, var1);
     }
 
     protected void customServerAiStep() {
@@ -253,11 +268,6 @@ extends APISpellcaster {
 
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.isBoss();
-    }
-
-    public void tick() {
-        super.tick();
-
     }
 
     public void aiStep() {
@@ -398,11 +408,11 @@ extends APISpellcaster {
                 if ((this.mob.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0
                         && (this.pathedTargetX == 0.0 && this.pathedTargetY == 0.0 && this.pathedTargetZ == 0.0 ||
                         livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0 ||
-                        this.mob.getRandom().nextFloat() < 0.05F)) {
+                        ThreadLocalRandom.current().nextFloat() < 0.05F)) {
                     this.pathedTargetX = livingentity.getX();
                     this.pathedTargetY = livingentity.getY();
                     this.pathedTargetZ = livingentity.getZ();
-                    this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
+                    this.ticksUntilNextPathRecalculation = 4 + ThreadLocalRandom.current().nextInt(7);
                     if (d0 > 1024.0) {
                         this.ticksUntilNextPathRecalculation += 4;
                     } else if (d0 > 256.0) {
@@ -420,7 +430,7 @@ extends APISpellcaster {
             if (p_25558_ <= d0 && this.ticksUntilNextAttack <= 0) {
                 this.resetAttackCooldown();
                 MobUtils.healLiving(this.intruder, 1F);
-                if (!p_25557_.level().isClientSide()) {
+                if (!p_25557_.level().isClientSide) {
                     this.particle(p_25557_);
                 }
                 this.intruder.swing(InteractionHand.MAIN_HAND);

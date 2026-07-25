@@ -23,7 +23,6 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 
 public class CursedNihilisticEvoker
@@ -31,11 +30,6 @@ extends OwnableNihilist {
     public CursedNihilisticEvoker(EntityType<? extends CursedNihilisticEvoker> type, Level level) {
         super(type, level);
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
-    }
-
-    public CursedNihilisticEvoker(PlayMessages.SpawnEntity packet, Level world) {
-        this(NoixmodAPIEntities.CURSED_NIHILISTIC_EVOKER.get(), world);
-        packet.getEntity();
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -64,6 +64,7 @@ extends Apostle {
         this.targetSelector.addGoal(0, new ApiOwnerTargetGoal(this));
         this.targetSelector.addGoal(1, new OwnableMob.OwnableTargetGoal<>(this, false));
         this.targetSelector.addGoal(2, new OwnableMob.OwnerHurtTargetGoal<>(this));
+        this.targetSelector.addGoal(2, new OwnableMob.OwnableHurtByTargetGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

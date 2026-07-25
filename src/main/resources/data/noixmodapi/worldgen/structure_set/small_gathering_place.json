@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "noixmodapi:small_gathering_place",
+      "weight": 2
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 114514,
+    "spacing": 22,
+    "separation": 8,
+    "locate_offset": [0, 0, 0]
+  }
+}

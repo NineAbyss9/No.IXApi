@@ -30,7 +30,7 @@ import java.util.List;
 public class Superstitious extends SpellcasterNihilist implements ApiBoss {
     protected boolean hasClone;
     protected int hurtCooldown = 0;
-    public static final float DAMAGE_CAPE = 10F;
+    public static final float DAMAGE_CAP = 10F;
     protected OwnerSummon ownerSummon = new OwnerSummon(this);
     public Superstitious(EntityType<? extends Superstitious> type, Level world) {
         super(type, world);
@@ -100,7 +100,7 @@ public class Superstitious extends SpellcasterNihilist implements ApiBoss {
     protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
         if (this.hurtCooldown <= 0) {
             this.hurtCooldown = 40;
-            super.actuallyHurt(p_21240_, Math.min(p_21241_, DAMAGE_CAPE));
+            super.actuallyHurt(p_21240_, Math.min(p_21241_, DAMAGE_CAP));
         }
     }
 
@@ -163,7 +163,6 @@ public class Superstitious extends SpellcasterNihilist implements ApiBoss {
 
     private class SummonSpellGoal extends UseSpellGoalA {
 
-        @Override
         protected void castSpell() {
             SuperstitiousClone clone = new SuperstitiousClone(NoixmodAPIEntities.SUPERSTITIOUS_CLONE.get(), Superstitious.this.level());
             ownerSummon.integerSummon(clone, 1);
@@ -182,20 +181,13 @@ public class Superstitious extends SpellcasterNihilist implements ApiBoss {
 
         @Override
         public boolean canUse() {
-            if (clones().size() >= 3) {
-                return false;
-            }
             if (hasClone) {
                 return false;
             }
             return super.canUse();
         }
 
-        @Override
         public boolean canContinueToUse() {
-            if (clones().size() >= 3) {
-                return false;
-            }
             return super.canContinueToUse();
         }
 
@@ -214,11 +206,10 @@ public class Superstitious extends SpellcasterNihilist implements ApiBoss {
     private static class AttackGoal extends ApiMeleeAttackGoal {
         final Superstitious superstitious;
         public AttackGoal(Superstitious finder, double speed) {
-            super(finder, speed, Maths.square(3));
+            super(finder, speed, Maths.square(3.0D));
             this.superstitious = finder;
         }
 
-        @Override
         public boolean canUse() {
             if (!superstitious.clones().isEmpty()) {
                 return false;

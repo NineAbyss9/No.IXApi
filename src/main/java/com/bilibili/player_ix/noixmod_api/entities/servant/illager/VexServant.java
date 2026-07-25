@@ -1,6 +1,8 @@
 
 package com.bilibili.player_ix.noixmod_api.entities.servant.illager;
 
+import com.bilibili.player_ix.noixmod_api.api.entity.IVex;
+import com.bilibili.player_ix.noixmod_api.entities.servant.nether.NetherSoul;
 import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.IFlagMob;
 import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
@@ -28,7 +30,7 @@ import java.util.EnumSet;
 
 public class VexServant
 extends OwnableMob
-implements IFlagMob {
+implements IFlagMob, IVex {
     private static final EntityDataAccessor<Integer> DATA_FLAGS;
     private static final int TICKS_PER_FLAP = Mth.ceil(3.9269907F);
     public VexServant(EntityType<? extends VexServant> entityType, Level level) {
@@ -63,8 +65,8 @@ implements IFlagMob {
         }
     }
 
-    public void move(MoverType p_19973_, Vec3 p_19974_) {
-        super.move(p_19973_, p_19974_);
+    public void move(MoverType pType, Vec3 pPos) {
+        super.move(pType, pPos);
         this.checkInsideBlocks();
     }
 
@@ -110,7 +112,7 @@ implements IFlagMob {
         DATA_FLAGS = SynchedEntityData.defineId(VexServant.class, EntityDataSerializers.INT);
     }
 
-    public static class VexChargeAttackGoal<T extends Mob & IFlagMob> extends Goal {
+    public static class VexChargeAttackGoal<T extends Mob & IFlagMob & IVex> extends Goal {
         protected final T mob;
         public VexChargeAttackGoal(T pMob) {
             mob = pMob;
@@ -118,10 +120,10 @@ implements IFlagMob {
         }
 
         public boolean canUse() {
-            LivingEntity $$0 = mob.getTarget();
-            if ($$0 != null && $$0.isAlive() && !mob.getMoveControl().hasWanted() &&
+            LivingEntity target = mob.getTarget();
+            if (target != null && target.isAlive() && !mob.getMoveControl().hasWanted() &&
                     mob.getRandom().nextInt(reducedTickDelay(7)) == 0) {
-                return mob.distanceToSqr($$0) > 4.0;
+                return mob.distanceToSqr(target) > 4.0D;
             } else {
                 return false;
             }
@@ -136,14 +138,14 @@ implements IFlagMob {
             LivingEntity $$0 = mob.getTarget();
             if ($$0 != null) {
                 Vec3 $$1 = $$0.getEyePosition();
-                mob.getMoveControl().setWantedPosition($$1.x, $$1.y, $$1.z, 1.0);
+                mob.getMoveControl().setWantedPosition($$1.x, $$1.y, $$1.z, 1.0D);
             }
             mob.setFlag(1);
-            mob.playSound(SoundEvents.VEX_CHARGE, 1.0F, 1.0F);
+            mob.playSound(this.mob.getChargeSound(), 1.0F, 1.0F);
         }
 
         public void stop() {
-            mob.setFlag(0);
+            this.mob.resetFlag();
         }
 
         public boolean requiresUpdateEveryTick() {
@@ -151,17 +153,20 @@ implements IFlagMob {
         }
 
         public void tick() {
-            LivingEntity $$0 = mob.getTarget();
-            if ($$0 != null) {
-                if (mob.getBoundingBox().intersects($$0.getBoundingBox())) {
-                    mob.doHurtTarget($$0);
-                    mob.setFlag(0);
-                } else {
-                    double $$1 = mob.distanceToSqr($$0);
-                    if ($$1 < 9.0) {
-                        Vec3 $$2 = $$0.getEyePosition();
-                        mob.getMoveControl().setWantedPosition($$2.x, $$2.y, $$2.z, 1.0);
-                    }
+            LivingEntity target = mob.getTarget();
+            if (target == null) {
+                return;
+            }
+            if (this.mob.getBoundingBox().intersects(target.getBoundingBox())) {
+                this.mob.doHurtTarget(target);
+                if (!(this.mob instanceof NetherSoul)) {
+                    this.mob.setFlag(0);
+                }
+            } else {
+                double sqr = mob.distanceToSqr(target);
+                if (sqr < 9.0D) {
+                    Vec3 $$2 = target.getEyePosition();
+                    mob.getMoveControl().setWantedPosition($$2.x, $$2.y - 1.0D, $$2.z, 1.0D);
                 }
             }
         }

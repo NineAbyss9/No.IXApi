@@ -26,7 +26,6 @@ public class SuperstitiousClone extends OwnableNihilist {
         this.xpReward = 39;
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new OwnableMob.FollowOwnerGoal<>(this, 1, 6, 2, false, 24));
@@ -37,7 +36,6 @@ public class SuperstitiousClone extends OwnableNihilist {
         this.targetSelector.addGoal(2, new OwnableMob.OwnableTargetGoal<>(this, false));
     }
 
-    @Override
     public void tick() {
         if (this.hurtCooldown > 0) {
             --this.hurtCooldown;
@@ -65,10 +63,10 @@ public class SuperstitiousClone extends OwnableNihilist {
 
     @Override
     protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        float var = Superstitious.DAMAGE_CAPE;
+        float var = Superstitious.DAMAGE_CAP;
         if (this.hurtCooldown <= 0) {
             this.hurtCooldown = 40;
-            if (p_21241_ > Superstitious.DAMAGE_CAPE) {
+            if (p_21241_ > Superstitious.DAMAGE_CAP) {
                 super.actuallyHurt(p_21240_, var);
             } else {
                 super.actuallyHurt(p_21240_, p_21241_);
@@ -98,7 +96,6 @@ public class SuperstitiousClone extends OwnableNihilist {
         return super.doHurtTarget(p_21372_);
     }
 
-    @Override
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
         this.sendSystemMessage(Component.translatable("message.noixmodapi.destiny"));
         return super.killedEntity(p_216988_, p_216989_);

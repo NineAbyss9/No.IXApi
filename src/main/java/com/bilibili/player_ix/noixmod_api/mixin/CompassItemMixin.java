@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class CompassItemMixin {
 
     @Inject(method = "getSpawnPosition", at =
-            @At("RETURN"), cancellable = true)
+            @At("HEAD"), cancellable = true)
     private static void getSpawnPosition(Level p_220020_, CallbackInfoReturnable<GlobalPos> cir) {
         if (NoixmodAPIMainConfig.HorrorMode.get()) {
             cir.setReturnValue(null);

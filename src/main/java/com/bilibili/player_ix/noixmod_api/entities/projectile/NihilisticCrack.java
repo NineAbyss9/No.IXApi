@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticCrack
 extends OwnedEntity {
@@ -22,7 +23,7 @@ extends OwnedEntity {
     }
 
     public void baseTick() {
-        if (!level().isClientSide && firstTick) {
+        if (!this.level().isClientSide && firstTick) {
             ParticleUtil.sendParticles((ServerLevel)level(), NoixmodAPIParticleTypes.CRACK.get(), position(),
                     1, 0, 0, 0, 0);
         }
@@ -32,15 +33,16 @@ extends OwnedEntity {
     public void tick() {
         super.tick();
         if (tickCount % 20 == 0) {
-            List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(6, 0.3, 6),
+            List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, getBoundingBox()
+                            .inflate(6, 0.3, 6),
                     e-> MobUtils.canHurt(e, this));
             if (!entities.isEmpty()) {
                 entities.forEach(e->e.hurt(damageSources().indirectMagic(ownerOrThis(this)
                         , ownerOrThis(this)), 12.0F));
             }
         }
-        if (level().isClientSide && level().random.nextBoolean()) {
-            level().addParticle(NoixmodAPIParticleTypes.SUMMON_PARTICLE.get(), getRandomX(0.8),
+        if (this.level().isClientSide && ThreadLocalRandom.current().nextBoolean()) {
+            this.level().addParticle(NoixmodAPIParticleTypes.SUMMON_PARTICLE.get(), getRandomX(0.8),
                     getRandomY(), getRandomZ(0.8), 0, 0.1, 0);
         }
     }

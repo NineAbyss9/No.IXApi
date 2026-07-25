@@ -11,7 +11,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.EvokerFangs;
@@ -73,48 +72,40 @@ extends APISpellcaster {
 
     private class AttackSpellGoal extends UseSpellGoal {
         protected void castSpell() {
-            LivingEntity target = getTarget();
-            if (target != null) {
-                Level level = level();
-                for (int i = 0;i <5;i++) {
-                    EvokerFangs fangs = EntityType.EVOKER_FANGS.create(level);
-                    if (fangs==null)continue;
-                    Vec3 vec3;
-                    if (i == 0) {
-                        vec3 = Vec3.ZERO;
-                    } else if (i == 1) {
-                        vec3 = new Vec3(2, 0, 0);
-                    } else if (i == 2) {
-                        vec3 = new Vec3(0, 0, 2);
-                    } else if (i == 3) {
-                        vec3 = new Vec3(0, 0, -2);
-                    } else {
-                        vec3 = new Vec3(-2, 0, 0);
-                    }
-                    fangs.moveTo(target.position().add(vec3));
-                    fangs.setOwner(Abomination.this);
-                    level.addFreshEntity(fangs);
+            for (int i = 0;i <5;i++) {
+                EvokerFangs fangs = EntityType.EVOKER_FANGS.create(level());
+                if (fangs==null) continue;
+                Vec3 vec3;
+                if (i == 0) {
+                    vec3 = Vec3.ZERO;
+                } else if (i == 1) {
+                    vec3 = new Vec3(2, 0, 0);
+                } else if (i == 2) {
+                    vec3 = new Vec3(0, 0, 2);
+                } else if (i == 3) {
+                    vec3 = new Vec3(0, 0, -2);
+                } else {
+                    vec3 = new Vec3(-2, 0, 0);
                 }
+                fangs.moveTo(Abomination.this.getTarget().position().add(vec3));
+                fangs.setOwner(Abomination.this);
+                level().addFreshEntity(fangs);
             }
         }
 
-        @Override
         protected int getCastingTime() {
             return 30;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 200;
         }
 
         @Nullable
-        @Override
         protected SoundEvent getPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        @Override
         protected IllagerSpellType getSpellType() {
             return IllagerSpellType.ATTACK;
         }

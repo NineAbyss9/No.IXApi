@@ -4,6 +4,7 @@ package com.bilibili.player_ix.noixmod_api.item.weapon;
 import com.bilibili.player_ix.noixmod_api.util.EntityEventHandler;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,11 +18,14 @@ extends ApiAxe {
                 3, -3.0f, new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     }
 
-    public boolean hurtEnemy(ItemStack p_40994_, LivingEntity enemy, LivingEntity attacker) {
-        if (!enemy.level().isClientSide) {
-            EntityEventHandler.broadcastEntityEvent(enemy, 4);
-            enemy.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 40));
+    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+        if (!pTarget.level().isClientSide) {
+            EntityEventHandler.broadcastEntityEvent(pTarget, 4);
+            pTarget.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.TETANUS.get(), 40));
         }
-        return super.hurtEnemy(p_40994_, enemy, attacker);
+        pStack.hurtAndBreak(1, pAttacker, (p_41007_) -> {
+            p_41007_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        });
+        return true;
     }
 }

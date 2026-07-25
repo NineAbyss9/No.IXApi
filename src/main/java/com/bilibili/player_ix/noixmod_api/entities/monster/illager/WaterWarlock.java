@@ -49,7 +49,8 @@ implements Enemy {
         this.goalSelector.addGoal(2, new AttackSpellGoal());
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, LivingEntity.class, 10f));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 0.5f));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class,
+                false));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class,
                 false));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractGolem.class,
@@ -61,10 +62,10 @@ implements Enemy {
     }
 
     public void waterDamage() {
-        if (this.level() instanceof ServerLevel level) {
-            level.sendParticles(ParticleTypes.FALLING_WATER, this.getX(), this.getY() + 0.1, this.getZ(), 50,
-                    0, 0, 0,  this.random.nextGaussian() * 0.3);
-        }
+        //if (this.level() instanceof ServerLevel level) {
+            this.serverLevel().sendParticles(ParticleTypes.FALLING_WATER, this.getX(), this.getY() + 0.1, this.getZ(),
+                    50, 0, 0, 0,  0.2);
+        //}
         MobUtils.rangeHurt(6, 6, 6, this, this.damageSources()
                 .indirectMagic(this, this), 6f);
     }
@@ -106,22 +107,18 @@ implements Enemy {
             }
         }
 
-        @Override
         protected int getCastingTime() {
             return 80;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 400;
         }
 
-        @Override
         protected SoundEvent getPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_SUMMON;
         }
 
-        @Override
         protected IllagerSpellType getSpellType() {
             return IllagerSpellType.WATER;
         }
@@ -129,8 +126,6 @@ implements Enemy {
 
     private class AttackSpellGoal extends UseSpellGoal {
         WaterWarlock warlock = WaterWarlock.this;
-
-        @Override
         protected void castSpell() {
             LivingEntity $$0 = warlock.getTarget();
             assert $$0 != null;
@@ -188,22 +183,18 @@ implements Enemy {
             }
         }
 
-        @Override
         protected int getCastingTime() {
             return 40;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 120;
         }
 
-        @Override
         protected SoundEvent getPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        @Override
         protected IllagerSpellType getSpellType() {
             return IllagerSpellType.WATER;
         }
@@ -211,29 +202,23 @@ implements Enemy {
 
     private class DamageSpellGoal
     extends UseSpellGoal {
-
-        @Override
         protected void castSpell() {
             WaterWarlock.this.waterDamage();
         }
 
-        @Override
         protected int getCastingTime() {
             return 40;
         }
 
-        @Override
         protected int getCastingInterval() {
             return 140;
         }
 
         @Nullable
-        @Override
         protected SoundEvent getPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
 
-        @Override
         protected IllagerSpellType getSpellType() {
             return IllagerSpellType.WATER;
         }

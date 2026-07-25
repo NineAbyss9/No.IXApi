@@ -34,6 +34,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NihilisticEvoker
 extends SpellcasterNihilist
@@ -64,10 +65,10 @@ implements Enemy {
         if (this.healTicks > 0) {
             --this.healTicks;
             if (this.healTicks == 40) {
-                this.heal(3f);
+                this.heal(3.0F);
             }
             if (this.healTicks == 20) {
-                this.heal(4f);
+                this.heal(4.0F);
             }
         }
     }
@@ -95,7 +96,7 @@ implements Enemy {
     }
 
     private void makeParticle(Entity entity, ParticleOptions options) {
-        double d0 = random.nextGaussian() * 0.02;
+        double d0 = ThreadLocalRandom.current().nextGaussian() * 0.02;
         if (level().isClientSide) {
             for(int i = 0; i < 20; ++i) {
                 double d1 = random.nextGaussian() * 0.02;
@@ -125,20 +126,18 @@ implements Enemy {
 
         protected void castSpell() {
             LivingEntity lie = NihilisticEvoker.this.getTarget();
-            if (lie != null) {
-                for (int i = 0; i < 4; ++i) {
-                    Level level = NihilisticEvoker.this.level();
-                    EvokerFangs fangs = new EvokerFangs(EntityType.EVOKER_FANGS, level);
-                    fangs.moveTo(lie.getRandomX(1.5), lie.getY(), lie.getRandomZ(1.5));
-                    fangs.setOwner(NihilisticEvoker.this);
-                    level.addFreshEntity(fangs);
-                }
+            for (int i = 0;i < 4;++i) {
                 Level level = NihilisticEvoker.this.level();
                 EvokerFangs fangs = new EvokerFangs(EntityType.EVOKER_FANGS, level);
+                fangs.moveTo(lie.getRandomX(1.5), lie.getY(), lie.getRandomZ(1.5));
                 fangs.setOwner(NihilisticEvoker.this);
-                fangs.moveTo(lie.getRandomX(0.5), lie.getY(), lie.getRandomZ(0.5));
                 level.addFreshEntity(fangs);
             }
+            Level level = NihilisticEvoker.this.level();
+            EvokerFangs fangs = new EvokerFangs(EntityType.EVOKER_FANGS, level);
+            fangs.setOwner(NihilisticEvoker.this);
+            fangs.moveTo(lie.getRandomX(0.5), lie.getY(), lie.getRandomZ(0.5));
+            level.addFreshEntity(fangs);
             NihilisticEvoker.this.makeGroundParticle();
             MobUtils.push(4, 0.2, 4, NihilisticEvoker.this, 0, 1, 0);
             MobUtils.rangeHurt(4, 0.2, 4, NihilisticEvoker.this,
@@ -182,19 +181,20 @@ implements Enemy {
 
         @Override
         protected void castSpell() {
-            for (int i = 0;i < Maths.random.nextInt(4) + 2;++i) {
+            for (int i = 0;i < Maths.random.nextInt(3) + 2;++i) {
                 if (NihilisticEvoker.this.level() instanceof ServerLevel level) {
                     NihilisticServant servant = NoixmodAPIEntities.NIHILISTIC_SERVANT.get().create(level);
-                    if (servant != null) {
-                        BlockPos.MutableBlockPos pos = NihilisticEvoker.this.blockPosition().offset(Maths.randomInteger(3),
-                                0, Maths.randomInteger(3)).below().mutable();
-                        servant.moveTo(pos, 0, 0);
-                        servant.setOwner(NihilisticEvoker.this);
-                        servant.finalizeSpawn(level, level.getCurrentDifficultyAt(servant.blockPosition()),
-                                MobSpawnType.MOB_SUMMONED);
-                        level.addFreshEntity(servant);
-                        servant.spawnAnim();
+                    if (servant == null) {
+                        continue;
                     }
+                    BlockPos.MutableBlockPos pos = NihilisticEvoker.this.blockPosition().offset(Maths.randomInteger(3),
+                            0, Maths.randomInteger(3)).below().mutable();
+                    servant.moveTo(pos, 0, 0);
+                    servant.setOwner(NihilisticEvoker.this);
+                    servant.finalizeSpawn(level, level.getCurrentDifficultyAt(servant.blockPosition()),
+                            MobSpawnType.MOB_SUMMONED);
+                    level.addFreshEntity(servant);
+                    servant.spawnAnim();
                 }
             }
         }
@@ -225,7 +225,6 @@ implements Enemy {
         public HealSelfGoal() {
         }
 
-        @Override
         protected void castSpell() {
             NihilisticEvoker.this.heal(2f);
             NihilisticEvoker.this.healTicks = 60;
@@ -272,6 +271,9 @@ implements Enemy {
         protected void castSpell() {
             List<Nihilist> list = NihilisticEvoker.this.level().getEntitiesOfClass(Nihilist.class,
                     NihilisticEvoker.this.getBoundingBox().inflate(16));
+            if (list.isEmpty()) {
+                return;
+            }
             for (Nihilist nihilist : list) {
                 if (nihilist instanceof Ownable ownable) {
                     if (ownable.isHostile()) {

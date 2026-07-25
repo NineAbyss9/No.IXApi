@@ -42,8 +42,9 @@ implements IFlagMob
     {
         if (pKey.equals(DATA_FLAGS)) {
             if (this.level().isClientSide) {
-                if (this.getFlag() > 0)
-                    this.states.get(this.getFlag()).startIfStopped(tickCount);
+                int i = this.getFlag();
+                if (i > 0)
+                    this.states.get(i).startIfStopped(tickCount);
             }
         }
         super.onSyncedDataUpdated(pKey);

@@ -17,18 +17,15 @@ extends SpellcasterNihilist {
         this.bossEvent = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
     }
 
-    @Override
     public void tick() {
         super.tick();
     }
 
     @Nullable
-    @Override
     protected SoundEvent getCastingSoundEvent() {
         return null;
     }

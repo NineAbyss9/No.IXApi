@@ -33,11 +33,13 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.INFERNAL_IRON_ANVIL.get());
                 output.accept(NoixmodAPIItems.OMINOUS_HEAD.get());
                 output.accept(NoixmodAPIItems.SPIRIT_STONE_ORE.get());
+                output.accept(NoixmodAPIItems.VOID_BLOCK.get());
                 output.accept(NoixmodAPIItems.WORM_BLOCK.get());
                 output.accept(NoixmodAPIItems.WORM_DIRT_ITEM.get());
                 output.accept(NoixmodAPIItems.OMINOUS_BOTTLE.get());
                 output.accept(NoixmodAPIItems.BANNED_BOOK.get());
                 output.accept(NoixmodAPIItems.BLOOD_BOTTLE.get());
+                output.accept(NoixmodAPIItems.EXP_BOTTLE.get());
                 output.accept(NoixmodAPIItems.FRESH_SOUL.get());
                 output.accept(NoixmodAPIItems.HALO_OF_APOSTLE.get());
                 output.accept(NoixmodAPIItems.HEALING_DOLL.get());
@@ -48,7 +50,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.VILLAGER_AMULET.get());
                 output.accept(NoixmodAPIItems.WARDEN_DOLL.get());
                 output.accept(NoixmodAPIItems.WITHER_DOLL.get());
-                output.accept(NoixmodAPIItems.CROSS.get());
+                output.accept(NoixmodAPIItems.CROSS.get().getDefaultInstance());
                 output.accept(NoixmodAPIItems.COPPER_NUGGET.get());
                 output.accept(NoixmodAPIItems.GRAVE_AXE.get());
                 output.accept(NoixmodAPIItems.GRAVE_SWORD.get());
@@ -60,6 +62,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.SPIRIT_STONE.get());
                 output.accept(NoixmodAPIItems.WIND_ESSENCE.get());
                 output.accept(NoixmodAPIItems.WIND_SWORD.get());
+                output.accept(NoixmodAPIItems.WIND_HAMMER.get());
                 output.accept(NoixmodAPIItems.AXE_OF_HUNTER.get());
                 output.accept(NoixmodAPIItems.BONE_SWORD.get());
                 output.accept(NoixmodAPIItems.BOW_BOW.get());
@@ -68,6 +71,10 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.COPPER_PICKAXE.get());
                 output.accept(NoixmodAPIItems.COPPER_SHOVEL.get());
                 output.accept(NoixmodAPIItems.COPPER_SWORD.get());
+                output.accept(NoixmodAPIItems.COPPER_HELMET.get());
+                output.accept(NoixmodAPIItems.COPPER_CHESTPLATE.get());
+                output.accept(NoixmodAPIItems.COPPER_LEGGINGS.get());
+                output.accept(NoixmodAPIItems.COPPER_BOOTS.get());
                 output.accept(NoixmodAPIItems.DISCARD_ITEM.get());
                 output.accept(NoixmodAPIItems.NIHILISTIC_FIREBALL.get());
                 output.accept(NoixmodAPIItems.TELEPORTER.get());
@@ -92,6 +99,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.APOSTLE_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.ARMORER_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.BIOLOGIST_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.BONE_SPELLCASTER_EGG.get());
                 output.accept(NoixmodAPIItems.CULTIST_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.DEAD_ILLAGER_SKULL.get());
                 output.accept(NoixmodAPIItems.DETRACTOR_SPAWN_EGG.get());
@@ -120,6 +128,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.VILLAGER_EVOKER_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.VILLAGER_MASTER_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.VILLAGER_SPELLCASTER_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.WITHER_BONE_S_S_EGG.get());
                 output.accept(NoixmodAPIItems.WORM_MASTER_SPAWN_EGG.get());
             }).build());
     public static final RegistryObject<CreativeModeTab> API_SERVANT = REGISTRY.register(

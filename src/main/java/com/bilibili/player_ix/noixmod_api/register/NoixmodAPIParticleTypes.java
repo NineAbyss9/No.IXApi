@@ -42,7 +42,8 @@ public class NoixmodAPIParticleTypes {
     public static final RegistryObject<SimpleParticleType> SUMMON_PARTICLE;
     public static final RegistryObject<SimpleParticleType> WIND;
 
-    private NoixmodAPIParticleTypes() {}
+    private NoixmodAPIParticleTypes() {
+    }
 
     private static SimpleParticleType simpleParticleType() {
         return new SimpleParticleType(false);

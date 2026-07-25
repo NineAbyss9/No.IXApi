@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Spells {
-    public static final Map<String, ISpell> SPELL_REGISTRY = Maps.newHashMap();
+    public static final Map<String, SpellType> SPELL_REGISTRY = Maps.newHashMap();
     public static final SpellType CRACK = register("crack", CrackSpell::new);
     public static final SpellType CREEPER = register("creeper", CreeperSpell::new);
     public static final SpellType DROWNED = register("drowned", DrownedSpell::new);
@@ -54,7 +54,7 @@ public class Spells {
     }
 
     public static ISpell get(String name) {
-        return SPELL_REGISTRY.get(name);
+        return SPELL_REGISTRY.get(name).get();
     }
 
     public static boolean contains(String name) {
@@ -62,9 +62,11 @@ public class Spells {
     }
 
     private static SpellType register(String name, Supplier<ISpell> spell) {
-        if (!SPELL_REGISTRY.containsKey(name)) {
-            SPELL_REGISTRY.put(name, spell.get());
+        if (SPELL_REGISTRY.containsKey(name)) {
+            return SPELL_REGISTRY.get(name);
         }
-        return new SpellType(name, spell);
+        SpellType spellType = new SpellType(name, spell);
+        SPELL_REGISTRY.put(name, spellType);
+        return spellType;
     }
 }

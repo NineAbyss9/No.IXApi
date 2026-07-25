@@ -18,6 +18,6 @@ extends AbstractTouhouEntity
         return HorrorModeManager.horrorModeEnabled();
     }
 
-    /// Except 觉
+    /// Except
     public boolean canBeSeenByAnyone() {return false;}
 }

@@ -28,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 import org.NineAbyss9.util.pair.Pair;
 import org.slf4j.Logger;
 
@@ -38,9 +39,9 @@ public class HorrorModeManager {
     public static final boolean ENABLED = NoixmodAPIMainConfig.HorrorMode.get();
     public static final boolean ENABLED_SPAWN = NoixmodAPIMainConfig.SpawnHorror.get();
     private static final Logger LOGGER = LogUtils.getLogger();
+    private float apostleSummonChance = 0F;
     private int tickCount;
     private int apostleLookingTime = 0;
-    private float apostleSummonChance = 0F;
     private int spawnInterval;
     private static final Map<Integer, Integer> SPAWN_MAP =
             new LinkedHashMap<Integer, Integer>();
@@ -83,17 +84,32 @@ public class HorrorModeManager {
             if (this.apostleSummonChance >= 1F) {
                 this.apostleLookingTime = 99;
             }*/
-        if (pLevel.players().isEmpty()) return;
         if (tickCount % 1200 == 0) {
+            if (pLevel.players().isEmpty()) return;
             if ((random().nextFloat() < 0.005F)) {
                 Player randomPlayer = pLevel.getRandomPlayer();
-                for (BlockPos pos : BlockPos.betweenClosed(randomPlayer.blockPosition().offset(-4, -4, -4),
-                        randomPlayer.blockPosition().offset(4, 4, 4))) {
-                    BlockState state = pLevel.getBlockState(pos);
-                    if (!(state.getBlock() instanceof DoorBlock doorBlock)) {
-                        continue;
+                if (pLevel.getBiome(randomPlayer.blockPosition()).is(Tags.Biomes.IS_CAVE))
+                {
+                    if (randomPlayer.getY() <= pLevel.dimensionType().minY() + 100) {
+                        for (BlockPos pos : BlockPos.betweenClosed(randomPlayer.blockPosition().offset(-4, -4, -4),
+                                randomPlayer.blockPosition().offset(4, 4, 4))) {
+                            BlockState state = pLevel.getBlockState(pos);
+                            if (state.isAir()) {
+                                continue;
+                            }
+                            pLevel.destroyBlock(pos, true);
+                            break;
+                        }
                     }
-                    doorBlock.setOpen(randomPlayer, (ServerLevel)pLevel, state, pos, !doorBlock.isOpen(state));
+                } else {
+                    for (BlockPos pos : BlockPos.betweenClosed(randomPlayer.blockPosition().offset(-4, -4, -4),
+                            randomPlayer.blockPosition().offset(4, 4, 4))) {
+                        BlockState state = pLevel.getBlockState(pos);
+                        if (!(state.getBlock() instanceof DoorBlock doorBlock)) {
+                            continue;
+                        }
+                        doorBlock.setOpen(randomPlayer, pLevel, state, pos, !doorBlock.isOpen(state));
+                    }
                 }
                 if (this.spawnInterval > TRACKER_MAX_SPAWN_INTERVAL && this.shouldSpawnTracker()) {
                     var player = this.spawnTracker(pLevel);
@@ -101,8 +117,8 @@ public class HorrorModeManager {
                         LOGGER.warn("WTF?Can't spawn Tracker?");
                     } else {
                         player.connection.connection.send(
-                                new ClientboundSetActionBarTextPacket(Component.translatable("info.noixmodapi" +
-                                        ".tracker_look")));
+                                new ClientboundSetActionBarTextPacket(Component.translatable(
+                                        "info.noixmodapi.tracker_look")));
                         this.updateSpawnCache();
                     }
                     this.resetSpawnInterval();
@@ -146,9 +162,9 @@ public class HorrorModeManager {
                 this.removeAttackMobsTime = this.tickCount + Maths.toTick(15);
             }
             if (this.tickCount == removeAttackMobsTime) {
-                for (var id : attackableMobs.entrySet()) {
-                    var mob = (Mob)pLevel.getEntity(id.getKey());
-                    //if (!(entity instanceof Mob mob)) continue; Improve memory
+                for (Map.Entry<Integer, Pair<Goal, Goal>> id : attackableMobs.entrySet()) {
+                    Mob mob = (Mob)pLevel.getEntity(id.getKey());
+                    //if (!(entity instanceof Mob)) continue;
                     mob.goalSelector.removeGoal(id.getValue().left());
                     mob.targetSelector.removeGoal(id.getValue().right());
                 }

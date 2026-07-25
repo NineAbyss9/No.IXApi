@@ -47,7 +47,8 @@ public class NoixmodAPIAttributesConfig {
     }
 
     static {
-        builder.push("NoixmodAPIAttributesQuitTheGameToEnableChanges");
+        builder.push("NoixmodAPIAttributes");
+        comment("You need to quit the game to enable changes.");
         builder.push("Boss");
         builder.push("Nihilist");
         builder.push("Apostle");

@@ -17,14 +17,23 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BoneSpellcaster
 extends OwnableMob
@@ -36,6 +45,10 @@ implements ApiPoseMob, SpellCasterMob
     public BoneSpellcaster(EntityType<? extends BoneSpellcaster> pEntityType, Level pLevel)
     {
         super(pEntityType, pLevel);
+        if (pLevel.getDifficulty() == Difficulty.HARD)
+        {
+            this.populateDefaultEquipmentSlots(pLevel.random, pLevel.getCurrentDifficultyAt(this.blockPosition()));
+        }
         this.setHostile();
     }
 
@@ -67,10 +80,10 @@ implements ApiPoseMob, SpellCasterMob
             float $$4 = this.yBodyRot * ((float) Math.PI / 180) + Mth.cos((float) this.tickCount * 0.6662f) * 0.25f;
             float $$5 = Mth.cos($$4);
             float $$6 = Mth.sin($$4);
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + $$5 * 0.6,
-                    this.getY() + 1.8, this.getZ() + $$6 * 0.6, $$1, $$2, $$3);
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - $$5 * 0.6,
-                    this.getY() + 1.8, this.getZ() - $$6 * 0.6, $$1, $$2, $$3);
+            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + $$5 * 0.6D,
+                    this.getY() + 1.8D, this.getZ() + $$6 * 0.6D, $$1, $$2, $$3);
+            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - $$5 * 0.6D,
+                    this.getY() + 1.8D, this.getZ() - $$6 * 0.6D, $$1, $$2, $$3);
         }
     }
 
@@ -82,6 +95,55 @@ implements ApiPoseMob, SpellCasterMob
         }
     }
 
+    protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit)
+    {
+        if (this.mobData.getDifficultyInstance().isHard() || ThreadLocalRandom.current().nextBoolean())
+        {
+            this.spawnAtLocation(NoixmodAPIItems.BONE_STAFF);
+        }
+        for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+            if (equipmentslot == EquipmentSlot.MAINHAND) continue;
+            ItemStack itemstack = this.getItemBySlot(equipmentslot);
+            float f = this.getEquipmentDropChance(equipmentslot);
+            boolean flag = f > 1.0F;
+            if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack) &&
+                    (pRecentlyHit || flag) && Math.max(ThreadLocalRandom.current()
+                    .nextFloat() - (float)pLooting * 0.01F, 0.0F) < f) {
+                if (!flag && itemstack.isDamageableItem()) {
+                    itemstack.setDamageValue(itemstack.getMaxDamage() - ThreadLocalRandom.current().nextInt(1
+                            + ThreadLocalRandom.current().nextInt(Math.max(itemstack.getMaxDamage() - 3, 1))));
+                }
+                this.spawnAtLocation(itemstack);
+                this.setItemSlot(equipmentslot, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty)
+    {
+        float f = pRandom.nextFloat();
+        if (f > 0.75F) {
+            return;
+        }
+        this.setItemSlot(EquipmentSlot.HEAD, (pRandom.nextBoolean() ? Items.GOLDEN_HELMET
+                : Items.IRON_HELMET).getDefaultInstance());
+        f = pRandom.nextFloat();
+        if (f > 0.4F) {
+            return;
+        }
+        this.setItemSlot(EquipmentSlot.FEET, Items.IRON_BOOTS.getDefaultInstance());
+        f = pRandom.nextFloat();
+        if (f > 0.1F) {
+            return;
+        }
+        this.setItemSlot(EquipmentSlot.LEGS, Items.IRON_LEGGINGS.getDefaultInstance());
+        f = pRandom.nextFloat();
+        if (f > 0.05F) {
+            return;
+        }
+        this.setItemSlot(EquipmentSlot.CHEST, Items.IRON_CHESTPLATE.getDefaultInstance());
+    }
+
     protected OwnableMob getSummoned()
     {
         return NoixmodAPIEntities.SKELETON_SERVANT.get().create(this.level());
@@ -89,7 +151,7 @@ implements ApiPoseMob, SpellCasterMob
 
     public ApiPose getPoses()
     {
-        if (isCastingSpell()) return ApiPose.SPELL_CASTING;
+        if (this.isCastingSpell()) return ApiPose.SPELL_CASTING;
         return ApiPose.NATURAL;
     }
 
@@ -122,7 +184,6 @@ implements ApiPoseMob, SpellCasterMob
     {
         return this.getSpellTick() > 0;
     }
-
     public MobType getMobType()
     {
         return MobType.UNDEAD;
@@ -161,7 +222,7 @@ implements ApiPoseMob, SpellCasterMob
 
         protected void castSpell()
         {
-            for (int i = 0;i < 2 + java.util.concurrent.ThreadLocalRandom.current().nextInt(2);i++) {
+            for (int i = 0;i < 1 + java.util.concurrent.ThreadLocalRandom.current().nextInt(2);i++) {
                 var summoned = this.spellcaster.getSummoned();
                 summoned.setHostile(true);
                 this.spellcaster.ownerSummon.integerSummon(summoned, 3);

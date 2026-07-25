@@ -2,6 +2,12 @@
 package com.bilibili.player_ix.noixmod_api.entities.projectile;
 
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import org.NineAbyss9.math.AbyssMath;
 import org.NineAbyss9.util.Option;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIMobEffects;
@@ -26,11 +32,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.NineAbyss9.util.ValueHolder;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class NihilisticFireball
 extends AbstractHurtingProjectile
 implements Nihilistic {
     public double radius = 2D;
-    public float damage = 8f;
+    public float damage = 8.0F;
+    private static final EntityDataAccessor<Boolean> DATA_CAN_BE_HIT;
     public NihilisticFireball(EntityType<? extends NihilisticFireball> p_36833_, Level p_36834_) {
         super(p_36833_, p_36834_);
     }
@@ -41,6 +50,33 @@ implements Nihilistic {
 
     public NihilisticFireball(double v, double v1, double v2, double v3, double v4, double v5, Level level) {
         super(NoixmodAPIEntities.NIHILISTIC_FIREBALL.get(), v, v1, v2, v3, v4, v5, level);
+    }
+
+    protected void defineSynchedData()
+    {
+        super.defineSynchedData();
+        this.entityData.define(DATA_CAN_BE_HIT, false);
+    }
+
+    public boolean hurt(DamageSource pSource, float pAmount)
+    {
+        if (!(pSource.getEntity() instanceof Player player))
+        {
+            return false;
+        }
+        if (this.isInvulnerableTo(pSource)) {
+            return false;
+        }
+        this.markHurt();
+        if (!this.level().isClientSide) {
+            Vec3 vec3 = player.getLookAngle();
+            this.setDeltaMovement(vec3);
+            this.xPower = vec3.x * 0.1D;
+            this.yPower = vec3.y * 0.1D;
+            this.zPower = vec3.z * 0.1D;
+            this.setOwner(player);
+        }
+        return true;
     }
 
     public EntityType<?> getType() {
@@ -60,27 +96,33 @@ implements Nihilistic {
     }
 
     public boolean isPickable() {
-        return false;
+        return this.entityData.get(DATA_CAN_BE_HIT);
+    }
+
+    public void setCanBeHit()
+    {
+        this.entityData.set(DATA_CAN_BE_HIT, true);
     }
 
     public void tick() {
         super.tick();
         if (this.tickCount % 75 == 0) {
+            if (this.level().isClientSide) {
+                return;
+            }
             MobUtils.rangeHurt(4, 4, 4, this, this.getDs(), this.damage);
             this.playSound(SoundEvents.GENERIC_EXPLODE);
-            if (!level().isClientSide) {
-                ServerLevel world = (ServerLevel)this.level();
-                world.sendParticles(ParticleTypes.WITCH, this.getX(), this.getY() + 0.5, this.getZ(), 10,
-                        1, 1, 1, 0.1);
-                for (int i = 0; i < 2; ++i) {
-                    NihilisticFire fire = (NoixmodAPIEntities.NIHILISTIC_FIRE.get()).create(world);
-                    if (fire == null) continue;
-                    if (!(this.getOwner() instanceof LivingEntity)) break;
-                    fire.setOwner((LivingEntity)this.getOwner());
-                    fire.moveTo(this.getX() + this.random.nextDouble(), this.getY(), this.getZ() +
-                            this.random.nextDouble());
-                    world.addFreshEntity(fire);
-                }
+            ServerLevel world = (ServerLevel)this.level();
+            world.sendParticles(ParticleTypes.WITCH, this.getX(), this.getY() + 0.5, this.getZ(), 10,
+                    1, 1, 1, 0.1);
+            for (int i = 0; i < 2; ++i) {
+                NihilisticFire fire = (NoixmodAPIEntities.NIHILISTIC_FIRE.get()).create(world);
+                if (fire == null) continue;
+                if (!(this.getOwner() instanceof LivingEntity)) break;
+                fire.setOwner((LivingEntity)this.getOwner());
+                fire.moveTo(this.getX() + AbyssMath.trueOrFalse(1.0D), this.getY(), this.getZ() +
+                        AbyssMath.trueOrFalse(1.0D));
+                world.addFreshEntity(fire);
             }
             this.remove(RemovalReason.KILLED);
         }
@@ -102,25 +144,27 @@ implements Nihilistic {
         return this.damageSources().indirectMagic(ValueHolder.nullToOther(this.getOwner(), this), this.getOwner());
     }
 
-    public void onHit(HitResult p_37260_) {
-        super.onHit(p_37260_);
+    public void onHit(HitResult pResult) {
+        if (this.level().isClientSide) {
+            super.onHit(pResult);
+            return;
+        }
+        super.onHit(pResult);
         MobUtils.rangeHurt(4, 4, 4, this, this.getDs(), this.damage);
         this.playSound(SoundEvents.GENERIC_EXPLODE, 1f, 1f);
-        if (!this.level().isClientSide)
+        for (int i = 0;i < 2;++i)
         {
-            for (int i = 0;i < 2;++i)
-            {
-                NihilisticFire fire = (NoixmodAPIEntities.NIHILISTIC_FIRE.get()).create(this.level());
-                if (fire == null) continue;
-                if (!(this.getOwner() instanceof LivingEntity)) break;
-                fire.setOwner((LivingEntity)this.getOwner());
-                fire.moveTo(this.getX() + this.random.nextDouble(), this.getY(), this.getZ() +
-                        this.random.nextDouble());
-                this.level().addFreshEntity(fire);
-            }
-            double d = this.random.nextGaussian() * 0.1d;
-            WorldUtil.sendParticles(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this, 12, d);
+            NihilisticFire fire = (NoixmodAPIEntities.NIHILISTIC_FIRE.get()).create(this.level());
+            if (fire == null) continue;
+            if (!(this.getOwner() instanceof LivingEntity)) break;
+            fire.setOwner((LivingEntity)this.getOwner());
+            fire.moveTo(this.getX() + AbyssMath.trueOrFalse(1.0D), this.getY(), this.getZ() +
+                    AbyssMath.trueOrFalse(1.0D));
+            this.level().addFreshEntity(fire);
         }
+        double d = ThreadLocalRandom.current().nextGaussian() * 0.1d;
+        WorldUtil.sendParticles(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this, 12, d);
+        this.discard();
     }
 
     protected boolean canHitEntity(Entity pEntity) {
@@ -131,26 +175,30 @@ implements Nihilistic {
     }
 
     public void onHitEntity(EntityHitResult pResult) {
+        if (this.level().isClientSide) {
+            return;
+        }
         Entity entity = pResult.getEntity();
         if (entity instanceof LivingEntity living && MobUtils.canHurt(living, this)) {
             living.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.NIHILISTIC.get(), 40), living);
-            super.onHitEntity(pResult);
-            this.discard();
         }
     }
 
     public void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        this.discard();
     }
 
     protected ParticleOptions getTrailParticle() {
         return Option.of(NoixmodAPIParticleTypes.NIHILISTIC_FIRE.get()).ifOrElse(
-                level().random.nextFloat() <= 0.01, NoixmodAPIParticleTypes.DARK_SPELL.get());
+                ThreadLocalRandom.current().nextFloat() <= 0.01, NoixmodAPIParticleTypes.DARK_SPELL.get());
     }
 
     public void setMoveDown() {
         this.setNoGravity(false);
         this.setDeltaMovement(0d, 0d, 0d);
+    }
+
+    static {
+        DATA_CAN_BE_HIT = SynchedEntityData.defineId(NihilisticFireball.class, EntityDataSerializers.BOOLEAN);
     }
 }

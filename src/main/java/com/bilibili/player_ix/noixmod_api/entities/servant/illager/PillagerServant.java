@@ -43,8 +43,8 @@ implements ApiCrossbowAttackMob {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new ApiCrossbowAttackGoal<>(
-                this, 1.0, 12.0F) {
+        this.goalSelector.addGoal(3, new ApiCrossbowAttackGoal<>(this, 1.0, 12.0F
+        ){
             protected boolean likeArcher() {
                 return true;
             }

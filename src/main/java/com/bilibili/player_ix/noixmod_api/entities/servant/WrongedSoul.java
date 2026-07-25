@@ -12,7 +12,6 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import com.bilibili.player_ix.noixmod_api.util.ObjectUtil;
-import com.bilibili.player_ix.noixmod_api.util.WorldUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -267,7 +266,7 @@ implements IProjectile {
         MobUtils.rangeHurtAndFire(4, 0.25, 4, this, this.damageSources().indirectMagic(this,
                 this.getOwner()), this.damage, 2);
         if (!this.level().isClientSide) {
-            WorldUtil.getServerLevel(this).sendParticles(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this.getX(),
+            this.serverLevel().sendParticles(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this.getX(),
                     this.getY() + 0.25, this.getZ(), 50, d, d1, d2, 0.25);
         }
         this.discard();

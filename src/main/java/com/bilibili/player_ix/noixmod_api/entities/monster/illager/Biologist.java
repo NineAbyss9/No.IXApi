@@ -8,7 +8,6 @@ import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster.APISpellcaster;
 import com.bilibili.player_ix.noixmod_api.entities.servant.FreakySpider;
-import com.bilibili.player_ix.noixmod_api.entities.servant.RainbowphobiaPatients;
 import com.bilibili.player_ix.noixmod_api.entities.servant.nihilistic.NihilisticZombie;
 import com.bilibili.player_ix.noixmod_api.entities.servant.worm.FreakyWorm;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
@@ -207,8 +206,8 @@ implements RangedAttackMob,
                 this.makeExplode(this.getX(), this.getY(), this.getZ(), 0, 2f);
             } else if (summonNum <= 5) {
                 this.roar();
-            } else if (summonNum >= 9) {
-                RainbowphobiaPatients rainbow = NoixmodAPIEntities.RAINBOWPHOBIA_PATIENTS.get().create(this.level());
+            }/* else if (summonNum >= 9) {
+                RainbowphobiaPatient rainbow = NoixmodAPIEntities.RAINBOWPHOBIA_PATIENTS.get().create(this.level());
                 if (rainbow != null) {
                     rainbow.moveTo(x, y, z);
                     rainbow.setOwner(this);
@@ -224,7 +223,7 @@ implements RangedAttackMob,
                             null, null);
                     level.addFreshEntityWithPassengers(zombie);
                 }
-            } else if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 4) {
+            }*/ else if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 4) {
                 this.heal(5f);
                 this.roar();
             }

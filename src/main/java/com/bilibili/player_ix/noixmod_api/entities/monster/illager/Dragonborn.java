@@ -28,7 +28,6 @@ implements ApiIllagerBoss {
         super(p_32105_, p_32106_);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_BOSS_FLAGS, 0);

@@ -2,7 +2,7 @@
 package com.bilibili.player_ix.noixmod_api.entities.projectile.arrow;
 
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
-import com.github.NineAbyss9.ix_api.util.Maths;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -11,8 +11,12 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 
+import java.util.List;
+
 public class ArrowArrowEntity
 extends Arrow {
+    private static final List<Direction> HORIZONTAL_DIRECTIONS =
+            List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
     public ArrowArrowEntity(EntityType<? extends Arrow> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -41,9 +45,16 @@ extends Arrow {
 
     protected void onHit(HitResult p_37260_) {
         super.onHit(p_37260_);
-        for (int i = 0; i < 6; ++i) {
+        for (Direction direction : HORIZONTAL_DIRECTIONS) {
             Arrow arrow = new Arrow(EntityType.ARROW, this.level());
-            arrow.moveTo(this.blockPosition().offset(Maths.randomInt(2), 5, Maths.randomInt(2)),
+            arrow.moveTo(this.blockPosition().relative(direction).offset(0, 5, 0),
+                    0, 0);
+            arrow.setOwner(this.getOwner());
+            this.level().addFreshEntity(arrow);
+        }
+        for (Direction direction : HORIZONTAL_DIRECTIONS) {
+            Arrow arrow = new Arrow(EntityType.ARROW, this.level());
+            arrow.moveTo(this.blockPosition().relative(direction).relative(direction).offset(0, 5, 0),
                     0, 0);
             arrow.setOwner(this.getOwner());
             this.level().addFreshEntity(arrow);

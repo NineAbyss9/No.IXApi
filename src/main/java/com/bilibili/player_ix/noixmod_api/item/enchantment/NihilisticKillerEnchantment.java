@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class NihilisticKillerEnchantment extends Enchantment {
     public NihilisticKillerEnchantment() {
         super(Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.values());
@@ -47,9 +49,10 @@ public class NihilisticKillerEnchantment extends Enchantment {
     }
 
     public void doPostHurt(LivingEntity pTarget, Entity pAttacker, int pLevel) {
-        if (pAttacker instanceof LivingEntity $$3 && ApiMobType.isNihilistic($$3.getMobType())){
-            int $$4 = 20 + pTarget.getRandom().nextInt(10 * pLevel);
-            $$3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, $$4, 3));
+        if (!(pAttacker instanceof LivingEntity $$3) || !ApiMobType.isNihilistic($$3.getMobType())) {
+            return;
         }
+        $$3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+                20 + ThreadLocalRandom.current().nextInt(10 * pLevel), 3));
     }
 }

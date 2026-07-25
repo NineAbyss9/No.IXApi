@@ -16,7 +16,7 @@ extends TextureSheetParticle {
     }
 
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.TERRAIN_SHEET;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     public static record Provider(SpriteSet set) implements ParticleProvider<SimpleParticleType> {

@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.github.NineAbyss9.ix_api.api.mobs.OwnableMob.DEFAULT_LIFE_TICKS;
 
@@ -52,7 +53,7 @@ implements Nihilistic {
         super($$0, $$1);
         this.xpReward = this.isHostile() ? 5 : 0;
         this.moveControl = new FlyingVexMoveControl(this);
-        this.setDangerous(java.util.concurrent.ThreadLocalRandom.current().nextFloat() <= 0.05f);
+        this.setDangerous(ThreadLocalRandom.current().nextFloat() <= 0.05F);
     }
 
     protected void registerGoals() {
@@ -71,8 +72,8 @@ implements Nihilistic {
     }
 
     public void tick() {
-        super.tick();
         this.noPhysics = true;
+        super.tick();
         this.setNoGravity(true);
         if (this.getLifeTick() <= 0) {
             if (this.tickCount % 20 == 0) {
@@ -117,18 +118,27 @@ implements Nihilistic {
         this.setLifeTick(Maths.toTick(60) + Maths.toTick(this.getRandom().nextInt(5)));
     }
 
-    protected void populateDefaultEquipmentSlots(RandomSource p_217055_, DifficultyInstance p_217056_) {
-        if (p_217056_.getDifficulty().getId() > 1) {
-            if (p_217055_.nextFloat() <= 0.05F) {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
+    protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
+        if (pDifficulty.getDifficulty().getId() > 1) {
+            float f = pRandom.nextFloat();
+            if (f <= 0.03F) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, Items.DIAMOND_SWORD.getDefaultInstance());
+                return;
+            }
+            if (f <= 0.1F) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, Items.IRON_SWORD.getDefaultInstance());
+                return;
+            }
+            if (f <= 0.25F) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STONE_SWORD));
             }
         }
     }
 
-    protected void populateDefaultEquipmentEnchantments(RandomSource p_217063_, DifficultyInstance p_217064_) {
-        if (p_217064_.isHard()) {
-            if (p_217063_.nextBoolean()) {
-                this.getMainHandItem().enchant(Enchantments.SHARPNESS, p_217063_.nextInt(2) + 1);
+    protected void populateDefaultEquipmentEnchantments(RandomSource pRandom, DifficultyInstance pDifficulty) {
+        if (pDifficulty.isHard()) {
+            if (pRandom.nextBoolean()) {
+                this.getMainHandItem().enchant(Enchantments.SHARPNESS, pRandom.nextInt(2) + 1);
             }
         }
     }
@@ -207,11 +217,13 @@ implements Nihilistic {
             LivingEntity owner = NihilisticServant.this.getOwner();
             BlockPos pos = Objects.requireNonNullElse(owner, NihilisticServant.this).blockPosition();
             for (int i = 0; i < 3; ++i) {
-                BlockPos position = pos.offset(java.util.concurrent.ThreadLocalRandom.current().nextInt(15) - 7, java.util.concurrent.ThreadLocalRandom.current().nextInt(11) - 5,
-                        java.util.concurrent.ThreadLocalRandom.current().nextInt(15) - 7);
+                BlockPos position = pos.offset(ThreadLocalRandom.current().nextInt(15) - 7,
+                        ThreadLocalRandom.current().nextInt(11) - 5,
+                        ThreadLocalRandom.current().nextInt(15) - 7);
                 if (NihilisticServant.this.level().isEmptyBlock(position)) {
                     if (!NihilisticServant.this.moveControl.hasWanted()) {
-                        NihilisticServant.this.moveControl.setWantedPosition(position.getX(), position.getY(), position.getZ(), 0.25);
+                        NihilisticServant.this.moveControl.setWantedPosition(position.getX(), position.getY(), position.getZ(),
+                                0.25D);
                         if (NihilisticServant.this.getTarget() == null) {
                             NihilisticServant.this.lookControl.setLookAt(position.getX(), position.getY(), position.getZ());
                         }
@@ -222,15 +234,13 @@ implements Nihilistic {
         }
     }
 
-    private class NihilisticServantChargeAttackGoal extends Goal
-    {
+    private class NihilisticServantChargeAttackGoal extends Goal {
         public NihilisticServantChargeAttackGoal()
         {
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
-        public boolean canUse()
-        {
+        public boolean canUse() {
             LivingEntity $$0 = NihilisticServant.this.getTarget();
             if ($$0 != null && $$0.isAlive() && !NihilisticServant.this.getMoveControl().hasWanted() && NihilisticServant
                     .this.random.nextInt(reducedTickDelay(7)) == 0) {
@@ -246,12 +256,11 @@ implements Nihilistic {
                     .this.getTarget().isAlive();
         }
 
-        public void start()
-        {
+        public void start() {
             LivingEntity $$0 = NihilisticServant.this.getTarget();
             if ($$0 != null) {
                 Vec3 $$1 = $$0.getEyePosition();
-                NihilisticServant.this.moveControl.setWantedPosition($$1.x, $$1.y, $$1.z, 1.0);
+                NihilisticServant.this.moveControl.setWantedPosition($$1.x, $$1.y, $$1.z, 1.0D);
             }
             NihilisticServant.this.setAggressive(true);
         }

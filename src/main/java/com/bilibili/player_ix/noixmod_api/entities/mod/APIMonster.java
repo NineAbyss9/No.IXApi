@@ -30,9 +30,17 @@ extends Monster {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    public static boolean checkApiMonsterSpawnRulesIgnoreLight(EntityType<? extends Mob> type,
+                                                               ServerLevelAccessor accessor,
+                                                               MobSpawnType spawnType, BlockPos pos, RandomSource source) {
+        return accessor.getDifficulty() != Difficulty.PEACEFUL &&
+                Mob.checkMobSpawnRules(type, accessor, spawnType, pos, source);
+    }
+
+    /**Checks light and {@linkplain Difficulty}*/
     public static boolean checkAPIMonsterSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor accessor,
                                                     MobSpawnType spawnType, BlockPos pos, RandomSource source) {
-        return APIMonster.checkMobSpawnRules(type, accessor, spawnType, pos, source) && accessor.getDifficulty()
+        return Mob.checkMobSpawnRules(type, accessor, spawnType, pos, source) && accessor.getDifficulty()
                 != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(accessor, pos, source);
     }
 

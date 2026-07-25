@@ -2,6 +2,8 @@
 package com.bilibili.player_ix.noixmod_api.register;
 
 import com.bilibili.player_ix.noixmod_api.entities.servant.CreeperServant;
+import com.bilibili.player_ix.noixmod_api.item.armor.CopperArmor;
+import com.bilibili.player_ix.noixmod_api.item.block.VoidBlockItem;
 import com.bilibili.player_ix.noixmod_api.item.magic.*;
 import com.bilibili.player_ix.noixmod_api.register.data.ApiDataHelper;
 import com.github.NineAbyss9.ix_api.api.item.ApiSpawnEgg;
@@ -203,12 +205,25 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> UNINVITED_SWORD = REGISTRY.register("uninvited_sword",
             UninvitedSword::new);
     public static final RegistryObject<Item> WIND_SWORD = REGISTRY.register(sword("wind"), WindSword::new);
+    public static final Supplier<Item> WIND_HAMMER = item("wind_hammer", WindHammer::new);
 
     //Misc
     public static final RegistryObject<Item> VILLAGER_AMULET = REGISTRY.register("villager_amulet",
             VillagerAmulet::new);
+    public static final RegistryObject<Item> EXP_BOTTLE = item("exp_bottle",
+           () -> new ExpBottle(properties().stacksTo(1)));
 
     //Armor
+    public static final RegistryObject<Item> COPPER_BOOTS = armor("copper_boots",
+            () -> new CopperArmor(ArmorItem.Type.BOOTS));
+    public static final RegistryObject<Item> COPPER_CHESTPLATE = armor("copper_chestplate",
+            () -> new CopperArmor(ArmorItem.Type.CHESTPLATE));
+    public static final RegistryObject<Item> COPPER_HELMET = armor("copper_helmet",
+            () -> new CopperArmor(ArmorItem.Type.HELMET));
+    public static final RegistryObject<Item> COPPER_LEGGINGS = armor("copper_leggings",
+            CopperArmor.Leggings::new);
+
+
     public static final RegistryObject<Item> SPIRIT_STONE_BOOTS = REGISTRY.register("spirit_stone_boots",
             SpiritStoneArmor.Boots::new);
     public static final RegistryObject<Item> SPIRIT_STONE_CHESTPLATE = REGISTRY.register("spirit_stone_chestplate",
@@ -313,9 +328,12 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> BLOOD = blockToItem(NoixmodAPIBlocks.BLOOD);
     public static final RegistryObject<Item> CURSED_CHEST = blockToItem(NoixmodAPIBlocks.CURSED_CHEST);
     public static final RegistryObject<Item> INFERNAL_IRON_ANVIL = blockToItem(NoixmodAPIBlocks.INFERNAL_IRON_ANVIL);
+    public static final Supplier<Item> INFERNAL_IRON_BLOCK =
+            blockToItem(NoixmodAPIBlocks.INFERNAL_IRON_BLOCK);
     public static final RegistryObject<Item> SPIRIT_STONE_ORE = blockToItem(
-            NoixmodAPIBlocks.SPIRIT_STONE_ORE
-    );
+            NoixmodAPIBlocks.SPIRIT_STONE_ORE);
+    public static final RegistryObject<Item> VOID_BLOCK = REGISTRY.register("void_block",
+            VoidBlockItem::new);
 
     private NoixmodAPIItems() {}
 
@@ -325,6 +343,13 @@ public class NoixmodAPIItems {
             new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     public static RegistryObject<Item> item(String name, Supplier<? extends Item> supplier)
+    {
+        RegistryObject<Item> obj = REGISTRY.register(name, supplier);
+        ApiDataHelper.ITEMS.add(obj);
+        return obj;
+    }
+
+    public static RegistryObject<Item> armor(String name, Supplier<? extends ArmorItem> supplier)
     {
         RegistryObject<Item> obj = REGISTRY.register(name, supplier);
         ApiDataHelper.ITEMS.add(obj);

@@ -68,7 +68,8 @@ extends OwnableIllager {
                     discard();
                 else
                     servant.discard();
-                return InteractionResult.sidedSuccess(pPlayer.level().isClientSide);
+                return InteractionResult.sidedSuccess(pPlayer.level().isClientSide);//Do not reduce count because it
+                // is totem of undying
             } else if (stack.is(Items.CROSSBOW)) {
                 PillagerServant servant = NoixmodAPIEntities.PILLAGER_SERVANT.get().create(level());
                 copyTo(servant);

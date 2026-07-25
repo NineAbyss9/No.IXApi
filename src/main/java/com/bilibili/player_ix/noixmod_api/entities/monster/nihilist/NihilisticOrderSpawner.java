@@ -11,7 +11,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.npc.WanderingTraderSpawner;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -25,8 +24,6 @@ public class NihilisticOrderSpawner {
     private int tickDelay;
     private int spawnDelay;
     private int spawnChance;
-    @SuppressWarnings("unused")
-    private WanderingTraderSpawner spawner;
 
     public NihilisticOrderSpawner() {
     }

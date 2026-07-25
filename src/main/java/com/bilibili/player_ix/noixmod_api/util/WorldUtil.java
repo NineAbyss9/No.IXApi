@@ -49,9 +49,9 @@ public record WorldUtil(Entity entity) {
             if (hitResult.getDirection() == Direction.UP) {
                 BlockState hitBlock = mob.level().getBlockState(hitResult.getBlockPos());
                 if (hitBlock.getBlock() instanceof SlabBlock) {
-                    return hitResult.getBlockPos().getY() + 0.5625F;
+                    return hitResult.getBlockPos().getY() + 0.5625D;
                 } else {
-                    return hitResult.getBlockPos().getY() + 1.0625F;
+                    return hitResult.getBlockPos().getY() + 1.0625D;
                 }
             }
         }

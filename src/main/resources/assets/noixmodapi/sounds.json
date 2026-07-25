@@ -286,5 +286,44 @@
         "name": "noixmodapi:entities/apostle/glitch"
       }
     ]
+  },
+  "mace_smash_air": {
+    "subtitle": "subtitles.mace_smash",
+    "sounds": [
+      {
+        "name": "noixmodapi:items/mace/smash_air_1"
+      },
+      {
+        "name": "noixmodapi:items/mace/smash_air_2"
+      },
+      {
+        "name": "noixmodapi:items/mace/smash_air_3"
+      }
+      ]
+  },
+  "mace_smash_ground": {
+    "subtitle": "subtitles.mace_smash",
+    "sounds": [
+      {
+        "name": "noixmodapi:items/mace/smash_ground_1"
+      },
+      {
+        "name": "noixmodapi:items/mace/smash_ground_2"
+      },
+      {
+        "name": "noixmodapi:items/mace/smash_ground_3"
+      },
+      {
+        "name": "noixmodapi:items/mace/smash_ground_4"
+      }
+    ]
+  },
+  "mace_smash_ground_heavy": {
+    "subtitle": "subtitles.mace_smash",
+    "sounds": [
+      {
+        "name": "noixmodapi:items/mace/smash_ground_heavy"
+      }
+    ]
   }
 }

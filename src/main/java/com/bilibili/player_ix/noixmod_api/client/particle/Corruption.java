@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.client.particle;
 
+import io.netty.util.internal.ThreadLocalRandom;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -24,7 +25,7 @@ extends TextureSheetParticle {
         this.zd = this.zd * 0.01 + pZSpeed;
         this.gravity = -0.01F;
         this.quadSize = 0.2F;
-        this.lifetime = 25 + pLevel.random.nextInt(2);
+        this.lifetime = 25 + ThreadLocalRandom.current().nextInt(2);
     }
 
     public ParticleRenderType getRenderType() {

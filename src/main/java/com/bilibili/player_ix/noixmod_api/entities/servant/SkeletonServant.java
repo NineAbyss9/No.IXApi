@@ -16,6 +16,8 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class SkeletonServant
 extends AbstractSkeletonServant
 {
@@ -47,8 +49,8 @@ extends AbstractSkeletonServant
         double y = ownerSummon.projectileDouble(livingEntity)[1];
         double z = ownerSummon.projectileDouble(livingEntity)[2];
         arrow.shoot(x, y, z, 2F, 0.8F);
-        this.playSound(SoundEvents.SKELETON_SHOOT, 1.0f, 1.0f / (this.getRandom().nextFloat()
-                * 0.4f + 0.8f));
+        this.playSound(SoundEvents.SKELETON_SHOOT, 1.0f, 1.0f / (ThreadLocalRandom.current()
+                .nextFloat() * 0.4f + 0.8f));
         this.level().addFreshEntity(arrow);
     }
 

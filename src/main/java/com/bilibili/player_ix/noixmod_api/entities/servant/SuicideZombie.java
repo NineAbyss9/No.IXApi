@@ -5,7 +5,6 @@ import com.github.NineAbyss9.ix_api.api.mobs.OwnableMob;
 import com.github.NineAbyss9.ix_api.util.Maths;
 import com.bilibili.player_ix.noixmod_api.entities.ai.goal.ApiMeleeAttackGoal;
 import com.bilibili.player_ix.noixmod_api.entities.boss.EvokerIllager;
-import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.util.MobUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 
@@ -42,10 +40,6 @@ implements Enemy {
     public SuicideZombie(EntityType<? extends SuicideZombie> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TNT));
-    }
-
-    public SuicideZombie(PlayMessages.SpawnEntity entity, Level p_21684_) {
-        this(NoixmodAPIEntities.SUICIDE_ZOMBIE.get(), p_21684_);
     }
 
     public void tick() {

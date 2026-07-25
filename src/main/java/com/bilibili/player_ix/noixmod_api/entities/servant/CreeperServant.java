@@ -196,30 +196,32 @@ implements PowerableMob, ICreeper {
     }
 
     public void explodeCreeper() {
-        if (!this.level().isClientSide) {
-            float powered = this.isPowered() ? 2.0F : 1.0F;
-            this.dead = true;
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), this.explosionRadius
-                    * powered, Level.ExplosionInteraction.MOB);
-            this.discard();
-            this.spawnLingeringCloud();
+        if (this.level().isClientSide) {
+            return;
         }
+        float powered = this.isPowered() ? 2.0F : 1.0F;
+        this.dead = true;
+        this.level().explode(this, this.getX(), this.getY(), this.getZ(), this.explosionRadius
+                * powered, Level.ExplosionInteraction.MOB);
+        this.discard();
+        this.spawnLingeringCloud();
     }
 
     public void spawnLingeringCloud() {
         Collection<MobEffectInstance> $$0 = this.getActiveEffects();
-        if (!$$0.isEmpty()) {
-            AreaEffectCloud $$1 = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
-            $$1.setRadius(2.5F);
-            $$1.setRadiusOnUse(-0.5F);
-            $$1.setWaitTime(10);
-            $$1.setDuration($$1.getDuration() / 2);
-            $$1.setRadiusPerTick(-$$1.getRadius() / (float)$$1.getDuration());
-            for (MobEffectInstance $$2 : $$0) {
-                $$1.addEffect(new MobEffectInstance($$2));
-            }
-            this.level().addFreshEntity($$1);
+        if ($$0.isEmpty()) {
+            return;
         }
+        AreaEffectCloud $$1 = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
+        $$1.setRadius(2.5F);
+        $$1.setRadiusOnUse(-0.5F);
+        $$1.setWaitTime(10);
+        $$1.setDuration($$1.getDuration() / 2);
+        $$1.setRadiusPerTick(-$$1.getRadius() / (float)$$1.getDuration());
+        for (MobEffectInstance $$2 : $$0) {
+            $$1.addEffect(new MobEffectInstance($$2));
+        }
+        this.level().addFreshEntity($$1);
     }
 
     public boolean isIgnited() {

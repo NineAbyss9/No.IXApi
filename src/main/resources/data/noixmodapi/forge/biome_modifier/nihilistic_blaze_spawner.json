@@ -5,6 +5,6 @@
     "type": "noixmodapi:hostile_nihilistic_blaze",
     "minCount": 1,
     "maxCount": 1,
-    "weight": 10
+    "weight": 5
   }
 }
