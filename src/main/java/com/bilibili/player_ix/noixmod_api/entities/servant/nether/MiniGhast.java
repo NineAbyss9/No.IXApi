@@ -53,14 +53,14 @@ extends FlyingOwnable {
         this.entityData.define(CHARGING, false);
     }
 
-    public void travel(Vec3 p_20818_) {
+    public void travel(Vec3 pTravelVector) {
         if (this.isControlledByLocalInstance()) {
             if (this.isInWater()) {
-                this.moveRelative(0.02F, p_20818_);
+                this.moveRelative(0.02F, pTravelVector);
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.800000011920929));
             } else if (this.isInLava()) {
-                this.moveRelative(0.02F, p_20818_);
+                this.moveRelative(0.02F, pTravelVector);
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
             } else {
@@ -70,13 +70,13 @@ extends FlyingOwnable {
                     f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
                 }
                 float f1 = 0.16277137F / (f * f * f);
-                f = 0.91F;
+                /*f = 0.91F;
                 if (this.onGround()) {
                     f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
-                }
-                this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, p_20818_);
+                }*/
+                this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, pTravelVector);
                 this.move(MoverType.SELF, this.getDeltaMovement());
-                this.setDeltaMovement(this.getDeltaMovement().scale(f));
+                this.setDeltaMovement(this.getDeltaMovement().scale((double)f));
             }
         }
         this.calculateEntityAnimation(false);
@@ -132,8 +132,7 @@ extends FlyingOwnable {
         this.entityData.set(CHARGING, b);
     }
 
-    private static class ShootFireballGoal
-            extends Goal {
+    private static class ShootFireballGoal extends Goal {
         private final MiniGhast ghast;
         public int chargeTime;
 
@@ -141,35 +140,28 @@ extends FlyingOwnable {
             this.ghast = miniGhast;
         }
 
-        @Override
         public boolean requiresUpdateEveryTick() {
             return true;
         }
 
-        @Override
         public boolean canUse() {
             return this.ghast.getTarget() != null;
         }
 
-        @Override
         public void start() {
-            super.start();
             this.chargeTime = 0;
         }
 
-        @Override
         public void stop() {
-            super.stop();
             this.ghast.setCharging(false);
         }
 
-        @Override
         public void tick() {
-            LivingEntity $$0 = this.ghast.getTarget();
-            if ($$0 == null) {
+            LivingEntity target = this.ghast.getTarget();
+            if (target == null) {
                 return;
             }
-            if ($$0.distanceToSqr(this.ghast) < 4096.0D && this.ghast.hasLineOfSight($$0)) {
+            if (target.distanceToSqr(this.ghast) < 4096.0D && this.ghast.hasLineOfSight(target)) {
                 Level $$2 = this.ghast.level();
                 ++this.chargeTime;
                 if (this.chargeTime == 10 && !this.ghast.isSilent()) {
@@ -180,16 +172,13 @@ extends FlyingOwnable {
                         $$2.levelEvent(null, 1016, this.ghast.blockPosition(), 0);
                     }
                     this.chargeTime = -40;
-                    LivingEntity target = this.ghast.getTarget();
-                    if (target != null) {
-                        double d1 = target.getX() - this.ghast.getX();
-                        double d2 = target.getY(0.25) - this.ghast.getY(0.25);
-                        double d3 = target.getZ() - this.ghast.getZ();
-                        LittleFireball fireBall = new LittleFireball(this.ghast.level(), this.ghast, d1, d2, d3);
-                        fireBall.setPosRaw(fireBall.getX(), this.ghast.getY() + 0.25, fireBall.getZ());
-                        fireBall.setOwner(this.ghast);
-                        this.ghast.level().addFreshEntity(fireBall);
-                    }
+                    double d1 = target.getX() - this.ghast.getX();
+                    double d2 = target.getY(0.25) - this.ghast.getY(0.25);
+                    double d3 = target.getZ() - this.ghast.getZ();
+                    LittleFireball fireBall = new LittleFireball(this.ghast.level(), this.ghast, d1, d2, d3);
+                    fireBall.setPosRaw(fireBall.getX(), this.ghast.getY() + 0.2, fireBall.getZ());
+                    fireBall.setOwner(this.ghast);
+                    this.ghast.level().addFreshEntity(fireBall);
                 }
             } else if (this.chargeTime > 0) {
                 --this.chargeTime;

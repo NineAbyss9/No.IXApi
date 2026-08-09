@@ -57,6 +57,7 @@ implements InventoryCarrier, ApiNihilisticBoss {
         super(type, world);
         this.bossInfo = new ServerBossEvent(this.getDisplayName(),
                 BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+        this.xpReward = 249;
     }
 
     protected void defineSynchedData() {
@@ -146,49 +147,44 @@ implements InventoryCarrier, ApiNihilisticBoss {
         return super.isInvulnerableTo(p_20122_);
     }
 
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        pAmount = Math.min(DAMAGE_CAPE, pAmount);
-        return super.hurt(pSource, pAmount);
+    protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
+        pDamageAmount = Math.min(pDamageAmount, DAMAGE_CAPE);
+        super.actuallyHurt(pDamageSource, pDamageAmount);
     }
 
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        p_21241_ = Math.min(p_21241_, DAMAGE_CAPE);
-        super.actuallyHurt(p_21240_, p_21241_);
-    }
-
-    public void setHealth(float p_21154_) {
+    public void setHealth(float pHealth) {
         float health = this.getHealth();
-        float delta = p_21154_ - health;
+        float delta = pHealth - health;
         if (delta < 0) {
             if (this.hurtCooldown > 0) {
                 return;
             }
             this.hurtCooldown = 10;
             if (delta < -DAMAGE_CAPE) {
-                p_21154_ = health - 17f;
+                pHealth = health - 17f;
             }
         }
-        super.setHealth(p_21154_);
+        super.setHealth(pHealth);
     }
 
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
         return super.killedEntity(p_216988_, p_216989_);
     }
 
-    protected void dropAllDeathLoot(DamageSource p_21192_) {
-        Entity entity = p_21192_.getEntity();
-        int i = ForgeHooks.getLootingLevel(this, entity, p_21192_);
-        this.captureDrops(new ArrayList<>());
+    protected void dropAllDeathLoot(DamageSource pSource) {
+        Entity entity = pSource.getEntity();
+        int i = ForgeHooks.getLootingLevel(this, entity, pSource);
+        this.captureDrops(new ArrayList<ItemEntity>());
         boolean flag = this.lastHurtByPlayerTime > 0;
         if (this.shouldDropLoot() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-            this.dropFromLootTable(p_21192_, flag);
-            this.dropCustomDeathLoot(p_21192_, i, flag);
+            this.dropFromLootTable(pSource, flag);
+            this.dropCustomDeathLoot(pSource, i, flag);
         }
         this.dropOrGiveBackItems();
         this.dropExperience();
         @SuppressWarnings("ALL")
         Collection<ItemEntity> drops = this.captureDrops(null);
-        if (!ForgeHooks.onLivingDrops(this, p_21192_, drops, i, this.lastHurtByPlayerTime > 0)) {
+        if (!ForgeHooks.onLivingDrops(this, pSource, drops, i, this.lastHurtByPlayerTime > 0)) {
             drops.forEach((e) -> this.level().addFreshEntity(e));
         }
     }
@@ -290,12 +286,10 @@ implements InventoryCarrier, ApiNihilisticBoss {
     private class RandomSummonGoal extends UseSpellGoalA {
 
         protected void castSpell() {
-            if (!level().isClientSide) {
-                for (int i = 0;i < 7;i++) {
-                    OwnableMob ownableMob = this.getSummon(serverLevel());
-                    if (ownableMob != null) {
-                        EvilSummoner.this.getSummon().integerSummon(ownableMob, 4);
-                    }
+            for (int i = 0;i < 7;i++) {
+                OwnableMob ownableMob = this.getSummon(serverLevel());
+                if (ownableMob != null) {
+                    EvilSummoner.this.getSummon().integerSummon(ownableMob, 4);
                 }
             }
         }
@@ -358,10 +352,12 @@ implements InventoryCarrier, ApiNihilisticBoss {
             if (target != null) {
                 if (target instanceof Player carrier) {
                     Inventory container = carrier.getInventory();
-                    for (int i = 0; i < container.getContainerSize(); ++i) {
-                        if (this.canSteal(container.getItem(i))) {
-                            EvilSummoner.this.inventory.addItem(container.getItem(i));
-                            container.removeItem(i, container.getMaxStackSize());
+                    ItemStack cache;
+                    for (int i = 0;i < container.getContainerSize();++i) {
+                        cache = container.getItem(i);
+                        if (this.canSteal(cache)) {
+                            EvilSummoner.this.inventory.addItem(cache);
+                            container.removeItem(i, cache.getCount());
                         }
                     }
                 } else {
@@ -375,7 +371,11 @@ implements InventoryCarrier, ApiNihilisticBoss {
         }
 
         public boolean canUse() {
-            return super.canUse() && EvilSummoner.this.level().random.nextInt(9) ==0;
+            return super.canUse() && EvilSummoner.this.randomUtil.nextInt(9) ==0;
+        }
+
+        public boolean canContinueToUse() {
+            return super.canContinueToUse();
         }
 
         private boolean canSteal(ItemStack stack) {

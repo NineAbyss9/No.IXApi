@@ -21,17 +21,16 @@ extends ItemModelProvider
         super(output, NoixmodAPI.MOD_ID, existingFileHelper);
     }
 
-    protected void registerModels()
-    {
-        for (var obj : ApiDataHelper.ITEMS)
-        {
+    protected void registerModels() {
+        for (var obj : ApiDataHelper.ITEMS) {
             var item = obj.get();
             if (item instanceof SpawnEggItem) {
                 spawnEgg(item);
+            } else if (item instanceof Handed){
+                handed(obj, item);
             } else if (item instanceof Staff) {
                 staff(obj, item);
-            } else if (item instanceof RitualSupplies)
-            {
+            } else if (item instanceof RitualSupplies) {
                 ritualSupplies(obj);
             } else {
                 basic(obj.getId().getPath(), obj.getId().getPath());
@@ -44,6 +43,13 @@ extends ItemModelProvider
         getBuilder(modid + ":item/" + loc)
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc("item/" + texPath));
+    }
+
+    private void handed(RegistryObject<?> object, Item item)
+    {
+        getBuilder(regToString(item)).parent(new ModelFile.UncheckedModelFile(
+                mcLoc("item/handheld")
+        )).texture("layer0", NoixmodAPI.location("item/" + object.getId().getPath()));
     }
 
     private void staff(RegistryObject<?> object, Item item)
@@ -64,5 +70,9 @@ extends ItemModelProvider
 
     private String regToString(Item pItem) {
         return ForgeRegistries.ITEMS.getKey(pItem).toString();
+    }
+
+    public static interface Handed {
+
     }
 }

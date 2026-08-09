@@ -1,5 +1,5 @@
 
-package com.bilibili.player_ix.noixmod_api.magic.misc;
+package com.bilibili.player_ix.noixmod_api.magic.villager;
 
 import com.bilibili.player_ix.noixmod_api.entities.projectile.VillagerFangs;
 import com.bilibili.player_ix.noixmod_api.magic.Spell;
@@ -30,16 +30,15 @@ extends Spell
 
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster)
     {
-        var possibleTarget = MobUtils.getSingleTarget(pLevel, pCaster, 15.0D, 15.0D,
+        LivingEntity target = (LivingEntity)MobUtils.getSingleTarget(pLevel, pCaster, 15.0D, 15.0D,
                 entity -> entity instanceof LivingEntity && MobUtils.canHurt((LivingEntity)entity, pCaster));
-        LivingEntity $$0 = possibleTarget instanceof LivingEntity ? (LivingEntity)possibleTarget : null;
-        if ($$0 == null) {
+        if (target == null) {
             return;
         }
-        double $$1 = Math.min($$0.getY(), pCaster.getY());
-        double $$2 = Math.max($$0.getY(), pCaster.getY()) + 2.0;
-        float $$3 = (float)Mth.atan2($$0.getZ() - pCaster.getZ(), $$0.getX() - pCaster.getX());
-        if (pCaster.distanceToSqr($$0) < 9.0) {
+        double $$1 = Math.min(target.getY(), pCaster.getY());
+        double $$2 = Math.max(target.getY(), pCaster.getY()) + 2.0;
+        float $$3 = (float)Mth.atan2(target.getZ() - pCaster.getZ(), target.getX() - pCaster.getX());
+        if (pCaster.distanceToSqr(target) < 9.0) {
             for (int $$4 = 0;$$4 < 38;++$$4) {
                 float $$5 = $$3 + $$4 * Maths.CLOSER_PI * 0.4f;
                 this.createSpellEntity(pLevel, pCaster, pCaster.getX() + Mth.cos($$5) * 1.5, pCaster.getZ() +
@@ -53,13 +52,12 @@ extends Spell
             for (int $$6 = 0;$$6 < 8;++$$6) {
                 float $$7 = $$3 + $$6 * Maths.CLOSER_PI * 3.0f / 8.0f + 2.2566371f;
                 this.createSpellEntity(pLevel, pCaster, pCaster.getX() + Mth.cos($$7) * 3.0, pCaster.getZ() +
-                                Mth.sin($$7) * 3.0,
-                        $$1, $$2, $$7, 2);
+                                Mth.sin($$7) * 3.0, $$1, $$2, $$7, 2);
             }
             for (int $$6 = 0;$$6 < 11;++$$6) {
                 float $$7 = $$3 + (float)$$6 * (float)Math.PI * 4.0f / 8.0f + 3.2566371f;
-                this.createSpellEntity(pLevel, pCaster, pCaster.getX() + Mth.cos($$7) * 3.5, pCaster.getZ() + Mth.sin($$7) * 3.5,
-                        $$1, $$2, $$7, 3);
+                this.createSpellEntity(pLevel, pCaster, pCaster.getX() + Mth.cos($$7) * 3.5, pCaster.getZ() +
+                                Mth.sin($$7) * 3.5, $$1, $$2, $$7, 3);
             }
             for (int $$6 = 0;$$6 < 14;++$$6) {
                 float $$7 = $$3 + $$6 * Maths.CLOSER_PI * 5.0f / 8.0f + 4.2566371f;

@@ -228,12 +228,12 @@ public class ClientEvents {
         Entity entity = event.getEntity();
         if (entity.level().isClientSide) {
             if (entity instanceof ApostleBoss apostle && !apostle.isNoAi()) {
-                SoundEvent soundEvent = NoixmodAPISounds.APOSTLE_MUSIC.get();
-                playBossMusic(soundEvent, apostle);
+                //SoundEvent soundEvent = NoixmodAPISounds.APOSTLE_MUSIC.get();
+                //playBossMusic(soundEvent, apostle);
             }
             if (entity instanceof EvokerIllager illager && !illager.isNoAi()) {
-                SoundEvent soundEvent = NoixmodAPISounds.EI_MUSIC.get();
-                playBossMusic(soundEvent, illager);
+                //SoundEvent soundEvent = NoixmodAPISounds.EI_MUSIC.get();
+                //playBossMusic(soundEvent, illager);
             }
         }
     }

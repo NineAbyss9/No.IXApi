@@ -35,7 +35,7 @@ extends Spell
             Vec3 srcVec = new Vec3(pCaster.getX(), pCaster.getEyeY(), pCaster.getZ());
             Vec3 lookVec = pCaster.getViewVector(1.0F);
             Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
-            for (int i = 1; i < Math.floor(destVec.length()) + 7; ++i) {
+            for (int i = 1;i < Math.floor(destVec.length()) + 7;++i) {
                 Vec3 vector3d2 = srcVec.add(lookVec.scale(i));
                 pLevel.sendParticles(ParticleTypes.SONIC_BOOM, vector3d2.x, vector3d2.y, vector3d2.z, 1,
                         0.0D, 0.0D, 0.0D, 0.0D);

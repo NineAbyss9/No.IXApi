@@ -53,3 +53,14 @@ a bug about villager fighters
 1.4.1 : Fixed some bugs about NoixmodAPIEvents#onFinalizeSpawn,onLivingTarget,and some others.
 1.4.2 : Weakened bone spellcasters and skeleton servants, they are too strong As I delve deeper into the cave.
 Added : Heavy strike, pioneer enchantment, and some new recipes.
+1.4.4-preview : This is a preview version.If you find any bugs, please report it on my issue page.
+If I do not receive any bug reports, then this will be the update for version 1.4.4.
+Added : Wind hammer(like Mace);some new recipes;
+Silent ghosts will spawn in the dark;Nether souls will spawn in the nether(They can fly and they are hostile),
+use diamonds to tame them, and then, you can ride them;new structure : Small Gathering Place(In nether);
+some descriptions on items.Ritual Recipes can be viewed in Jei.
+Fixed : A bug that wither skeleton spellcasters can't spawn in the nether.Spirit stone ores are not ores.
+Infernal iron pickaxe can drop resources of block twice when it breaks, even the block doesn't have the tag "ores"
+Changes : Skeleton spellcasters can spawn with armors;
+added more mechanisms for Nihilistic withers, these make them easier to defeat;
+1.4.4 : Fixed : Wind hammer has no texture.

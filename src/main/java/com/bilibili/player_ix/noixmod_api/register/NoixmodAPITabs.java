@@ -104,6 +104,7 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.DEAD_ILLAGER_SKULL.get());
                 output.accept(NoixmodAPIItems.DETRACTOR_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.DRUNKENNESS_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.ENDER_SLIME.get());
                 output.accept(NoixmodAPIItems.EVIL_SUMMONER_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.EXORCIST_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.FLAGMAN_SPAWN_EGG.get());
@@ -119,9 +120,9 @@ public class NoixmodAPITabs {
                 output.accept(NoixmodAPIItems.PLATEAU_BEAST_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.PRIEST_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.SHADOW_WALKER_SPAWN_EGG.get());
+                output.accept(NoixmodAPIItems.SILENT_GHOST.get());
                 output.accept(NoixmodAPIItems.STAR_GUARDIAN_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.SUICIDE_ZOMBIE_SPAWN_EGG.get());
-                output.accept(NoixmodAPIItems.SUPERSTITIOUS_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.SWORD_CULTIST_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.TRUMPETER_SPAWN_EGG.get());
                 output.accept(NoixmodAPIItems.VAMPIRE_SPAWN_EGG.get());
@@ -168,16 +169,16 @@ public class NoixmodAPITabs {
                     .title(Component.translatable("item_group.noixmodapi.api_horrormode"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(NoixmodAPIItems.BLOOD.get());
-                        for (var obj : NoixmodAPIItems.HORROR_SPAWN_EGGS)
-                        {
+                        for (var obj : NoixmodAPIItems.HORROR_SPAWN_EGGS) {
                             pOutput.accept(obj.get());
                         }
                     }).withBackgroundLocation(NoixmodAPI.location("textures/gui/horror_tab.png")).build());
 
-    private NoixmodAPITabs() {}
+    private NoixmodAPITabs() {
+    }
 
     @SubscribeEvent
-    public static void buildTabContentsVanilla(BuildCreativeModeTabContentsEvent tabData) {
+    public static void addVanillaTabContents(BuildCreativeModeTabContentsEvent tabData) {
         if (tabData.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             tabData.accept(NoixmodAPIItems.DISCARD_ITEM.get());
         }

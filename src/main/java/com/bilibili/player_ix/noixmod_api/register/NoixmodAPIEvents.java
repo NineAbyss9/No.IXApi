@@ -95,8 +95,7 @@ public class NoixmodAPIEvents {
     @SubscribeEvent
     public static void onWorldLoad(LevelEvent.Load event) {
         LevelAccessor accessor = event.getLevel();
-        if (accessor.isClientSide()) return;
-        ServerLevel level = (ServerLevel)accessor;
+        if (!(accessor instanceof ServerLevel level)) return;
         HorrorModeSavedData.load(level);
         ApiSavedData.load(level);
         if (level.dimension() == Level.OVERWORLD) {

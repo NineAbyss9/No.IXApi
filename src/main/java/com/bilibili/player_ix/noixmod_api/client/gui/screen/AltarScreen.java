@@ -15,8 +15,8 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
             "noixmodapi:textures/gui/altar/background.png");
     private static final ResourceLocation HORROR = new ResourceLocation(
             "noixmodapi:textures/gui/altar/horror.png");
-    public AltarScreen(AltarMenu p_97741_, Inventory p_97742_, Component p_97743_) {
-        super(p_97741_, p_97742_, p_97743_);
+    public AltarScreen(AltarMenu menuIn, Inventory inventoryIn, Component nameIn) {
+        super(menuIn, inventoryIn, nameIn);
         this.imageWidth = 256;
         this.imageHeight = 256;
     }
@@ -31,10 +31,10 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
         ));*/
     }
 
-    public void render(GuiGraphics p_283479_, int mouseX, int mouseY, float tick) {
-        this.renderBackground(p_283479_);
-        super.render(p_283479_, mouseX, mouseY, tick);
-        this.renderTooltip(p_283479_, mouseX, mouseY);
+    public void render(GuiGraphics pGuiGraphics, int mouseX, int mouseY, float tick) {
+        this.renderBackground(pGuiGraphics);
+        super.render(pGuiGraphics, mouseX, mouseY, tick);
+        this.renderTooltip(pGuiGraphics, mouseX, mouseY);
     }
 
     protected void renderBg(GuiGraphics guiGraphics, float v, int x, int y) {

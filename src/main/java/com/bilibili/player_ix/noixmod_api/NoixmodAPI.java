@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api;
 
 import com.bilibili.player_ix.noixmod_api.client.ClientAgent;
 import com.bilibili.player_ix.noixmod_api.client.gui.ApiGuis;
+import com.bilibili.player_ix.noixmod_api.compat.*;
 import com.bilibili.player_ix.noixmod_api.config.*;
 import com.bilibili.player_ix.noixmod_api.network.ApiNetwork;
 import com.bilibili.player_ix.noixmod_api.register.*;
@@ -68,6 +69,7 @@ public class NoixmodAPI {
     private void commonSetUp(FMLCommonSetupEvent event) {
         ApiNetwork.register();
         NoixmodAPIEntities.init(event);
+        //ApiCompat.setup(event);
         //Cache.put(2013, (Decomposer<LevelAccessor, BlockPos, Integer>)ApiParticleUtil::spawnSmashAttackParticles);
     }
 
@@ -96,6 +98,10 @@ public class NoixmodAPI {
 
     public static ResourceLocation horror(String st) {
         return ResourceLocations.fromNamespaceAndPath(MOD_ID, "textures/entities/monsters/horror/" + st + ".png");
+    }
+
+    public static ResourceLocation gui(String st) {
+        return ResourceLocations.fromNamespaceAndPath(MOD_ID, "textures/gui/" + st + ".png");
     }
 
     /**Code from <a href="https://github.com/Polarice3/Goety-2/blob/1.20/src/main/java/com/Polarice3/Goety/Goety.java">link</a>*/

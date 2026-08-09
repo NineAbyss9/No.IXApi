@@ -19,6 +19,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Golem
 extends NihilitySummonedMobs
 implements ApiPoseMob {
@@ -33,11 +35,12 @@ implements ApiPoseMob {
         this.addBehaviorGoal(4, 0.6, 20f);
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnableTargetGoal<>(this, false));
+        this.addTargetGoal();
     }
 
     public void aiStep() {
         super.aiStep();
-        if (this.level().isClientSide && this.level().random.nextBoolean()) {
+        if (this.level().isClientSide && ThreadLocalRandom.current().nextBoolean()) {
             this.level().addParticle(NoixmodAPIParticleTypes.DARK_SPELL.get(),
                     this.getRandomX(1), this.getRandomY(), this.getRandomZ(1),
                     0, 0, 0);
@@ -53,11 +56,12 @@ implements ApiPoseMob {
         }
     }
 
-    public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
-        if (this.getOwner() != null) {
-            this.getOwner().heal(9f);
+    public boolean killedEntity(ServerLevel pLevel, LivingEntity pEntity) {
+        LivingEntity entity = this.getOwner();
+        if (entity != null) {
+            entity.heal(6.0F);
         }
-        return super.killedEntity(p_216988_, p_216989_);
+        return super.killedEntity(pLevel, pEntity);
     }
 
     protected SoundEvent getHurtSound(DamageSource p_21239_) {

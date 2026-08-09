@@ -3,6 +3,7 @@ package com.bilibili.player_ix.noixmod_api.item.magic;
 
 import com.bilibili.player_ix.noixmod_api.magic.ISpell;
 import com.bilibili.player_ix.noixmod_api.magic.Spells;
+import com.github.NineAbyss9.ix_api.api.APISpells;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +32,13 @@ extends Staff
         if (pLivingEntity instanceof Player player) {
             player.getCooldowns().addCooldown(this, 40);
         }
+    }
+
+    public float[] getSpellColor() {
+        double[] ds = APISpells.APISpell.RANGE.spellColor;
+        return new float[] {
+                (float)ds[0], (float)ds[1], (float)ds[2]
+        };
     }
 
     public void castSpell(ServerLevel pLevel, LivingEntity pCaster, int pUsedTime)

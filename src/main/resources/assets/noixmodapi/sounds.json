@@ -209,14 +209,6 @@
       }
     ]
   },
-  "ei_music": {
-    "subtitle": "subtitles.evoker_illager_music",
-    "sounds": [
-      {
-        "name": "noixmodapi:entities/ei_music"
-      }
-    ]
-  },
   "evoker_illager_death": {
     "subtitle": "subtitles.evoker_illager_death",
     "sounds": [
@@ -276,14 +268,6 @@
       },
       {
         "name": "noixmodapi:entities/evoker_illager_summon_fireball_1"
-      }
-    ]
-  },
-  "glitch": {
-    "subtitle": "subtitles.glitch",
-    "sounds": [
-      {
-        "name": "noixmodapi:entities/apostle/glitch"
       }
     ]
   },

@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -24,19 +25,17 @@ extends OwnedEntity {
         super(type, level);
     }
 
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_PARTICLE, 0);
     }
 
-    @Override
     public void tick() {
         super.tick();
         double randomX = this.getRandomX(0.8);
         double randomY = this.getRandomY();
         double randomZ = this.getRandomZ(0.8);
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide) {
             this.level().addParticle(this.getParticle(), randomX, randomY, randomZ,
                     Math.random() * 0.3, Math.random() * 0.3, Math.random() * 0.3);
         }
@@ -51,12 +50,10 @@ extends OwnedEntity {
         this.entityData.set(DATA_PARTICLE, integer);
     }
 
-    @Override
     public int getDefaultLifeTime() {
         return Maths.toTick(15);
     }
 
-    @Override
     public boolean hasLife() {
         return true;
     }
@@ -71,26 +68,29 @@ extends OwnedEntity {
     }
 
     public void summonRainArrow() {
-        if (this.getRainArrow() == null) {
+        Arrow rain_arrow = this.getRainArrow();
+        if (rain_arrow == null) {
             return;
         }
         double randomX = this.getRandomX(0.8);
         double randomY = this.getRandomY();
         double randomZ = this.getRandomZ(0.8);
-        Arrow arrow = (Arrow)this.getRainArrow().getType().create(this.level());
-        if (arrow != null) {
-            if (this.getOwner() != null) {
-                arrow.setOwner(this.getOwner());
-                arrow.setEffectsFromItem(this.getOwner().getMainHandItem());
-            }
-            arrow.setCritArrow(this.getRainArrow().isCritArrow());
-            if (arrow instanceof NihilisticArrow nihilisticArrow) {
-                nihilisticArrow.setFlag(true);
-            }
-            arrow.setBaseDamage(this.getRainArrow().getBaseDamage());
-            arrow.moveTo(randomX, randomY, randomZ);
-            this.level().addFreshEntity(arrow);
+        Arrow arrow = (Arrow)rain_arrow.getType().create(this.level());
+        if (arrow == null) {
+            return;
         }
+        LivingEntity owner = this.getOwner();
+        if (owner != null) {
+            arrow.setOwner(owner);
+            arrow.setEffectsFromItem(owner.getMainHandItem());
+        }
+        arrow.setCritArrow(this.getRainArrow().isCritArrow());
+        if (arrow instanceof NihilisticArrow nihilisticArrow) {
+            nihilisticArrow.setDiscardOnGround(true);
+        }
+        arrow.setBaseDamage(this.getRainArrow().getBaseDamage());
+        arrow.moveTo(randomX, randomY, randomZ);
+        this.level().addFreshEntity(arrow);
     }
 
     public SimpleParticleType getParticle() {

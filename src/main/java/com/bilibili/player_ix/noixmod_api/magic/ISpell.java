@@ -14,6 +14,9 @@ public interface ISpell {
 
     void castSpell(ServerLevel pLevel, LivingEntity pCaster);
 
+    default void castSpell(ServerLevel pLevel, LivingEntity pCaster, int pData) {
+    }
+
     @Nullable
     default CompoundTag getTag() {
         return null;

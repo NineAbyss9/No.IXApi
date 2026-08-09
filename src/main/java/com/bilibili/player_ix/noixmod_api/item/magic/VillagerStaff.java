@@ -5,13 +5,14 @@ import com.bilibili.player_ix.noixmod_api.magic.Spells;
 import com.github.NineAbyss9.ix_api.util.Colors;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 
 public class VillagerStaff
 extends Staff
 {
-    public VillagerStaff(Properties pProperties)
-    {
-        super(pProperties);
+    public VillagerStaff() {
+        super(new Item.Properties().rarity(Rarity.RARE).fireResistant());
     }
 
     public float[] getSpellColor()

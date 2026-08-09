@@ -25,7 +25,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.NineAbyss9.math.MathSupport;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /**Tracker class.A human-like who was looking at you.*/
 public class Tracker
@@ -41,9 +42,9 @@ extends AbstractHorrorMob {
     private static final EntityDataAccessor<Boolean> DATA_LOOKED;
     private static final EntityDataAccessor<Boolean> CAN_ATTACK;
     private static final EntityDataAccessor<Integer> DATA_TYPE;
-    public Tracker(EntityType<? extends Tracker> p_33002_, Level p_33003_) {
-        super(p_33002_, p_33003_);
-        this.actNameId = java.util.concurrent.ThreadLocalRandom.current().nextInt(4);
+    public Tracker(EntityType<? extends Tracker> pType, Level pLevel) {
+        super(pType, pLevel);
+        this.actNameId = ThreadLocalRandom.current().nextInt(4);
         this.actName = this.getActName(this.actNameId);
     }
 

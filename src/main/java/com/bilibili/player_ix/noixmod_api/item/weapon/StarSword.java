@@ -21,8 +21,8 @@ import java.util.List;
 
 public class StarSword extends ApiSword {
     public StarSword() {
-        super(0, 5F, 11, 9, 12, Ingredient.EMPTY, 1,
-                -2.3F, new Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1));
+        super(0, 5F, 8.0F, 9, 12, Ingredient.EMPTY, 1,
+                -2.4F, new Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1));
     }
 
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity player) {

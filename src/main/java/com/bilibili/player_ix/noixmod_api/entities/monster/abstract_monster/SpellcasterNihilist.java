@@ -145,10 +145,9 @@ implements SpellCasterMob {
         protected UseSpellGoalA() {
         }
 
-        @Override
         public boolean canUse() {
-            LivingEntity $$0 = SpellcasterNihilist.this.getTarget();
-            if (($$0 == null || !$$0.isAlive()) && this.needTarget()) {
+            LivingEntity target = SpellcasterNihilist.this.getTarget();
+            if ((target == null || !target.isAlive()) && this.needTarget()) {
                 return false;
             }
             if (SpellcasterNihilist.this.isCastingSpell()) {
@@ -157,7 +156,6 @@ implements SpellCasterMob {
             return SpellcasterNihilist.this.tickCount >= this.nextAttackTickCount;
         }
 
-        @Override
         public boolean canContinueToUse() {
             if (this.needTarget() && (SpellcasterNihilist.this.getTarget() == null ||
                     !SpellcasterNihilist.this.getTarget().isAlive())) {
@@ -166,7 +164,6 @@ implements SpellCasterMob {
             return this.attackWarmupDelay > 0;
         }
 
-        @Override
         public void start() {
             this.attackWarmupDelay = this.adjustedTickDelay(this.getCastWarmupTime());
             SpellcasterNihilist.this.setSpellTick(this.getCastingTime());

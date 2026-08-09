@@ -20,7 +20,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -126,10 +125,6 @@ implements Nihilistic {
             }
             this.remove(RemovalReason.KILLED);
         }
-    }
-
-    public boolean isInvulnerableTo(DamageSource p_20122_) {
-        return !p_20122_.is(DamageTypes.GENERIC_KILL);
     }
 
     public void setRadius(double radius) {

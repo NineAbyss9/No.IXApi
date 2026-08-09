@@ -23,6 +23,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class SwordCultist extends Nihilist implements Enemy {
     public SwordCultist(EntityType<SwordCultist> type, Level level) {
         super(type, level);
@@ -30,7 +32,6 @@ public class SwordCultist extends Nihilist implements Enemy {
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
     }
 
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new ApiMeleeAttackGoal(this, 1.2,
@@ -40,21 +41,20 @@ public class SwordCultist extends Nihilist implements Enemy {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Nihilist.class).setAlertOthers());
     }
 
-    @Override
     public void aiStep() {
         super.aiStep();
         if (this.tickCount % 90 == 0) {
             this.heal(1f);
         }
-        if (this.level().isClientSide) {
-            if (this.level().random.nextBoolean()) {
-                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5),
-                        this.getRandomY(), this.getRandomZ(0.8), 0, 0, 0);
-            }
+        if (!this.level().isClientSide) {
+            return;
+        }
+        if (ThreadLocalRandom.current().nextBoolean()) {
+            this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(0.5),
+                    this.getRandomY(), this.getRandomZ(0.8), 0, 0, 0);
         }
     }
 
-    @Override
     public boolean doHurtTarget(Entity p_21372_) {
         if (!p_21372_.level().isClientSide) {
             WorldUtil.sendParticles(NoixmodAPIParticleTypes.PURPLE_FLAME.get(), p_21372_,
@@ -63,9 +63,8 @@ public class SwordCultist extends Nihilist implements Enemy {
         return super.doHurtTarget(p_21372_);
     }
 
-    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        float damage = Math.min(10f, pAmount);
+        float damage = Math.min(15f, pAmount);
         if (this.getRandomUtil().nextInt(3) == 0) {
             if (!this.level().isClientSide) {
                 WorldUtil.sendParticles(NoixmodAPIParticleTypes.PURPLE_FLAME.get(),

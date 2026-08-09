@@ -8,6 +8,7 @@ import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIEntities;
 import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -27,28 +28,31 @@ implements IProjectile {
     }
 
     public void tick() {
-        if (this.level().isClientSide()) {
-            this.level().addParticle(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this.getRandomX(0.8), this.getRandomY(), this.getRandomZ(0.8), this.random.nextGaussian() * 0.3, this.random.nextGaussian() * 0.3, this.random.nextGaussian() * 0.3);
+        if (this.level().isClientSide) {
+            this.level().addParticle(NoixmodAPIParticleTypes.PURPLE_ATTACK.get(), this.getRandomX(0.8),
+                    this.getRandomY(), this.getRandomZ(0.8), this.random.nextGaussian() * 0.3,
+                    this.random.nextGaussian() * 0.3, this.random.nextGaussian() * 0.3);
         }
         super.tick();
     }
 
     public void summonRainArrow() {
+        LivingEntity owner = this.getOwner();
         for (int i = 0; i < 3; ++i) {
             NihilisticArrow arrow = new NihilisticArrow(NoixmodAPIEntities.NIHILISTIC_ARROW.get(), this.level());
-            arrow.setOwner(this.getOwner());
+            arrow.setOwner(owner);
             arrow.setDeltaMovement(new Vec3(0, -0.3, 0));
-            if (this.getOwner() != null) {
-                arrow.setEffectsFromItem(this.getOwner().getMainHandItem());
-                arrow.setEnchantmentEffectsFromEntity(this.getOwner(), 5f);
+            if (owner != null) {
+                arrow.setEffectsFromItem(owner.getMainHandItem());
+                arrow.setEnchantmentEffectsFromEntity(owner, 5f);
+                if (owner instanceof Apostle apostle) {
+                    arrow.setCritArrow(apostle.isInEnd());
+                    arrow.setBaseDamage(apostle.getArrowDamage());
+                } else {
+                    arrow.setCritArrow(this.random.nextFloat() <= 0.05f);
+                }
             }
-            if (this.getOwner() instanceof Apostle apostle) {
-                arrow.setCritArrow(apostle.isInEnd());
-                arrow.setBaseDamage(apostle.getArrowDamage());
-            } else {
-                arrow.setCritArrow(this.random.nextFloat() <= 0.05f);
-            }
-            arrow.setFlag(true);
+            arrow.setDiscardOnGround(true);
             arrow.moveTo(this.getRandomX(0.8), this.getRandomY(), this.getRandomZ(0.8));
             this.level().addFreshEntity(arrow);
         }

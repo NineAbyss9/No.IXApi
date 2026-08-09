@@ -187,7 +187,7 @@ implements IFlagMob, IVex {
         if (pEntity instanceof LivingEntity entity) {
             this.attackTick = 10;
             this.setFlag(2);
-            entity.setSecondsOnFire(6);
+            entity.setSecondsOnFire(5);
         }
         return super.doHurtTarget(pEntity);
     }
@@ -226,8 +226,8 @@ implements IFlagMob, IVex {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return NoixmodAPIAttributes.baseAttributes(3, 0.44004457064136, 0.2)
-                .add(Attributes.ARMOR, 4).add(Attributes.FOLLOW_RANGE, 70);
+        return NoixmodAPIAttributes.baseAttributes(3, 0.44004457064136, 0.5)
+                .add(Attributes.ARMOR, 4).add(Attributes.FOLLOW_RANGE, 56);
     }
 
     static {

@@ -5,12 +5,12 @@ import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
 import com.bilibili.player_ix.noixmod_api.network.packet.BossBarUpdatePacket;
 import com.bilibili.player_ix.noixmod_api.network.packet.ClientSmashParticlePacket;
 import com.bilibili.player_ix.noixmod_api.network.packet.InfernalAnvilRenameItemPacket;
-import com.google.common.base.Predicates;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import org.NineAbyss9.util.function.FunctionCollector;
 
 public class ApiNetwork {
     private static final String PROTOCOL = "noixapi_packet";
@@ -19,7 +19,7 @@ public class ApiNetwork {
 
     public static void register() {
         INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(NoixmodAPI.MOD_ID, "main"),
-                () -> PROTOCOL, Predicates.alwaysTrue(), Predicates.alwaysTrue()
+                () -> PROTOCOL, FunctionCollector.<String>alwaysTrue(), FunctionCollector.<String>alwaysTrue()
         );
         INSTANCE.registerMessage(nextId(), BossBarUpdatePacket.class, BossBarUpdatePacket::encode,
                 BossBarUpdatePacket::decode, BossBarUpdatePacket::handle

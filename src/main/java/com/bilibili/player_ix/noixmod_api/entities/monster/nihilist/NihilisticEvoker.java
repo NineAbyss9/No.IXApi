@@ -42,7 +42,7 @@ implements Enemy {
     public int healTicks;
     public NihilisticEvoker(EntityType<? extends SpellcasterNihilist> type, Level world) {
         super(type, world);
-        this.xpReward = 10;
+        this.xpReward = 15;
     }
 
     protected void registerGoals() {
@@ -73,7 +73,6 @@ implements Enemy {
         }
     }
 
-
     public boolean addEffect(MobEffectInstance p_147208_, @Nullable Entity p_147209_) {
         return false;
     }
@@ -98,7 +97,7 @@ implements Enemy {
     private void makeParticle(Entity entity, ParticleOptions options) {
         double d0 = ThreadLocalRandom.current().nextGaussian() * 0.02;
         if (level().isClientSide) {
-            for(int i = 0; i < 20; ++i) {
+            for (int i = 0;i < 20;++i) {
                 double d1 = random.nextGaussian() * 0.02;
                 double d2 = random.nextGaussian() * 0.02;
                 double d3 = 10.0;
@@ -142,7 +141,7 @@ implements Enemy {
             MobUtils.push(4, 0.2, 4, NihilisticEvoker.this, 0, 1, 0);
             MobUtils.rangeHurt(4, 0.2, 4, NihilisticEvoker.this,
                     NihilisticEvoker.this.damageSources().indirectMagic(NihilisticEvoker
-                            .this, null), 6f);
+                            .this, NihilisticEvoker.this), 6f);
         }
 
         @Override
@@ -178,14 +177,12 @@ implements Enemy {
 
     private class SummonSpellGoal
     extends UseSpellGoalA {
-
-        @Override
         protected void castSpell() {
-            for (int i = 0;i < Maths.random.nextInt(3) + 2;++i) {
+            for (int i = 0;i < ThreadLocalRandom.current().nextInt(3) + 2;++i) {
                 if (NihilisticEvoker.this.level() instanceof ServerLevel level) {
                     NihilisticServant servant = NoixmodAPIEntities.NIHILISTIC_SERVANT.get().create(level);
                     if (servant == null) {
-                        continue;
+                        return;
                     }
                     BlockPos.MutableBlockPos pos = NihilisticEvoker.this.blockPosition().offset(Maths.randomInteger(3),
                             0, Maths.randomInteger(3)).below().mutable();
@@ -253,7 +250,7 @@ implements Enemy {
 
         @Override
         public boolean canUse() {
-            if (NihilisticEvoker.this.getHealth() >= NihilisticEvoker.this.getMaxHealth() - 5) {
+            if (NihilisticEvoker.this.getHealth() >= NihilisticEvoker.this.getMaxHealth() - 5.0F) {
                 return false;
             }
             return super.canUse();
@@ -267,7 +264,6 @@ implements Enemy {
 
     private class HealCompanionSpellGoal
     extends UseSpellGoalA {
-        @Override
         protected void castSpell() {
             List<Nihilist> list = NihilisticEvoker.this.level().getEntitiesOfClass(Nihilist.class,
                     NihilisticEvoker.this.getBoundingBox().inflate(16));
@@ -277,11 +273,11 @@ implements Enemy {
             for (Nihilist nihilist : list) {
                 if (nihilist instanceof Ownable ownable) {
                     if (ownable.isHostile()) {
-                        nihilist.heal(6f);
+                        nihilist.heal(6.0F);
                         makeParticle(nihilist, ParticleTypes.HAPPY_VILLAGER);
                     }
                 } else {
-                    nihilist.heal(6f);
+                    nihilist.heal(6.0F);
                     makeParticle(nihilist, ParticleTypes.HAPPY_VILLAGER);
                 }
             }

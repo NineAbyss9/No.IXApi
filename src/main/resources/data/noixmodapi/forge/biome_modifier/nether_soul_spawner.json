@@ -5,6 +5,6 @@
     "type": "noixmodapi:nether_soul",
     "minCount": 1,
     "maxCount": 1,
-    "weight": 5
+    "weight": 3
   }
 }

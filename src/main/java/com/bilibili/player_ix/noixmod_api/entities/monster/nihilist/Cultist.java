@@ -106,6 +106,7 @@ implements Enemy {
     public void summonFireball(int var1, int var2, LivingEntity target) {
         double[] doubles = this.ownerSummon.projectileDouble(target);
         NihilisticFireball ball = new NihilisticFireball(this.level(), this, doubles[0], doubles[1], doubles[2]);
+        ball.setDamage(this.mobData.getDifficultyId() > 1 ? 6.5F : 4.0F);
         BlockPos pos = this.blockPosition().offset(var1, 2, var2);
         ball.moveTo(pos.getX(), pos.getY(), pos.getZ());
         this.level().addFreshEntity(ball);
@@ -132,7 +133,7 @@ implements Enemy {
     public static AttributeSupplier.Builder createAttributes() {
         return createPathAttributes().add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.MAX_HEALTH, 50).add(Attributes.ATTACK_DAMAGE, 5)
-                .add(Attributes.FOLLOW_RANGE, 120).add(Attributes.ARMOR, 0)
+                .add(Attributes.FOLLOW_RANGE, 56).add(Attributes.ARMOR, 0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
     }
 
@@ -164,21 +165,24 @@ implements Enemy {
 
     private abstract class CultistGoal
     extends UseSpellGoalA {
-
-        @Override
         public boolean canUse() {
             LivingEntity target = Cultist.this.getTarget();
             boolean flag = target instanceof Villager;
-            if (this.missionary()) return flag && super.canUse();
-             else return !flag && super.canUse();
+            if (this.missionary()) {
+                return flag && super.canUse();
+            } else {
+                return !flag && super.canUse();
+            }
         }
 
-        @Override
         public boolean canContinueToUse() {
             LivingEntity target = Cultist.this.getTarget();
             boolean flag = target instanceof Villager;
-            if (this.missionary()) return flag && super.canContinueToUse();
-             else return !flag && super.canContinueToUse();
+            if (this.missionary()) {
+                return flag && super.canContinueToUse();
+            } else {
+                return !flag && super.canContinueToUse();
+            }
         }
 
         protected boolean missionary() {
@@ -251,9 +255,16 @@ implements Enemy {
 
     private class SummonSpellGoal
     extends CultistGoal {
+        final boolean hard = Cultist.this.mobData.getDifficultyId() > 1;
         protected void castSpell() {
-            for (int i = 0; i < 3; ++i) {
-                Cultist.this.summon();
+            if (hard) {
+                for (int i = 0;i < 3; ++i) {
+                    Cultist.this.summon();
+                }
+            } else {
+                for (int i = 0;i < 2;++i) {
+                    Cultist.this.summon();
+                }
             }
         }
 
@@ -316,17 +327,19 @@ implements Enemy {
     private class TeleportSpellGoal
     extends CultistGoal {
         public boolean canUse() {
-            if (Cultist.this.getTarget() != null && Cultist.this.distanceToSqr(Cultist.this.getTarget()) > 6 * 6) {
+            LivingEntity target = Cultist.this.getTarget();
+            if (target == null) {
+                return false;
+            }
+            if (Cultist.this.distanceToSqr(target) > 6.0 * 6.0) {
                 return false;
             }
             return super.canUse();
         }
 
-        @Override
-        protected void castSpell()
-        {
-            serverLevel().sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), Cultist.this.getX(), Cultist.this.getY()
-                    + 0.5, Cultist.this.getZ(), 100, 0, 0, 0, 0.25);
+        protected void castSpell() {
+            serverLevel().sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), Cultist.this.getX(), Cultist.this
+                    .getY() + 0.5, Cultist.this.getZ(), 100, 0, 0, 0, 0.25);
             serverLevel().sendParticles(ParticleTypes.LARGE_SMOKE, Cultist.this.getX(), Cultist.this.getY() + 0.5,
                     Cultist.this.getZ(), 100, 0, 0, 0, 0.25);
             MobUtils.rangeHurt(6, 6, 6, Cultist.this, Cultist.this.damageSources()

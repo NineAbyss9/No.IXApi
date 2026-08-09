@@ -16,6 +16,7 @@ import com.bilibili.player_ix.noixmod_api.magic.nether.WitherSkeletonServantSpel
 import com.bilibili.player_ix.noixmod_api.magic.nihilistic.CrackSpell;
 import com.bilibili.player_ix.noixmod_api.magic.nihilistic.NihilisticRoarSpell;
 import com.bilibili.player_ix.noixmod_api.magic.nihilistic.NihilisticServantSpell;
+import com.bilibili.player_ix.noixmod_api.magic.villager.VillagerFangsSpell;
 import com.bilibili.player_ix.noixmod_api.magic.villager.VillagerGolemSpell;
 import com.google.common.collect.Maps;
 
@@ -44,6 +45,7 @@ public class Spells {
     public static final SpellType SONIC_BOOM = register("sonic_boom", SonicBoomSpell::new);
     public static final SpellType STRAY = register("stray", StraySpell::new);
     public static final SpellType TARGET_FANGS = register("target_fangs", TargetFangsSpell::new);
+    public static final SpellType THUNDER = register("thunder", ThunderSpell::new);
     public static final SpellType VAMPIRE = register("vampire", VampireSpell::new);
     public static final SpellType VEX_ARCHER = register("vex_archer", VexArcherSpell::new);
     public static final SpellType VILLAGER_FANGS = register("villager_fangs", VillagerFangsSpell::new);

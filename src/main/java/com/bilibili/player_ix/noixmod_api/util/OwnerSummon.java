@@ -78,7 +78,7 @@ public class OwnerSummon extends Summon {
     }
 
     public void moveTo(int x, int y, int z, Entity entity) {
-        entity.moveTo(this.getOwner().blockPosition().offset(x, y, z), 0, 0);
+        entity.moveTo(this.owner.blockPosition().offset(x, y, z), 0, 0);
     }
 
     public LivingEntity getOwner() {

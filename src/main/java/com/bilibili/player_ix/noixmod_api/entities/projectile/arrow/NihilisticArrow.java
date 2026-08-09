@@ -61,7 +61,7 @@ implements Nihilistic {
         }
     }
 
-    public void setFlag(boolean flag) {
+    public void setDiscardOnGround(boolean flag) {
         this.discardOnGround = flag;
     }
 
@@ -71,7 +71,7 @@ implements Nihilistic {
 
     public void makeHurt() {
         MobUtils.rangeHurt(2, 2, 2, this, NoixmodAPIDamageSource.nihilityOwner(this), 6);
-        if (!level().isClientSide) {
+        if (!this.level().isClientSide) {
             ServerLevel level = (ServerLevel)level();
             level.sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), this.getX(), this.getY(), this.getZ(),
                     15, 0, 0, 0, 0.25);
@@ -117,7 +117,7 @@ implements Nihilistic {
         }
     }
 
-    protected void onHitEntity(EntityHitResult p_36757_) {
+    protected void onHitEntity(EntityHitResult pResult) {
         if (!level().isClientSide) {
             ServerLevel level = (ServerLevel)this.level();
             double d = this.getX();
@@ -125,7 +125,7 @@ implements Nihilistic {
             double d2 = this.getZ();
             level.sendParticles(NoixmodAPIParticleTypes.DARK_SPELL.get(), d, d1, d2, 32, 0.25,
                     0.25, 0.25, 0.25);
-            if (p_36757_.getEntity() instanceof LivingEntity lie && !(lie instanceof IX)) {
+            if (pResult.getEntity() instanceof LivingEntity lie && !(lie instanceof IX)) {
                 if (MobUtils.canHurt(lie, this)) {
                     if (NoixmodAPIMainConfig.HorrorMode.get()) {
                         if (lie.isAlive()) {
@@ -134,20 +134,21 @@ implements Nihilistic {
                     }
                     lie.addEffect(new MobEffectInstance(NoixmodAPIMobEffects.NIHILISTIC.get(),
                             40, 0), lie);
-                    super.onHitEntity(p_36757_);
+                    super.onHitEntity(pResult);
                 }
             }
         }
     }
 
     public boolean killedEntity(ServerLevel level, LivingEntity lie) {
-        if (this.getOwner() != null && this.getOwner() instanceof LivingEntity living) {
-            if (this.getOwner() instanceof Apostle apostle) {
-                if (apostle.isSecondPhase()) apostle.heal(1f);
+        Entity owner = this.getOwner();
+        if (owner instanceof LivingEntity living) {
+            if (owner instanceof Apostle apostle) {
+                if (apostle.isSecondPhase()) apostle.heal(1.0F);
                 else return super.killedEntity(level, lie);
             }
             else {
-                living.heal(1);
+                living.heal(1.0F);
             }
         }
         return super.killedEntity(level, lie);

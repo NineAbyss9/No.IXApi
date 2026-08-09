@@ -2,7 +2,9 @@
 package com.bilibili.player_ix.noixmod_api.entities.monster.abstract_monster;
 
 import com.bilibili.player_ix.noixmod_api.config.NoixmodAPIMainConfig;
+import com.bilibili.player_ix.noixmod_api.register.NoixmodAPIItems;
 import com.bilibili.player_ix.noixmod_api.util.OwnerSummon;
+import com.github.NineAbyss9.ix_api.api.item.ItemStacks;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiMobType;
 import com.github.NineAbyss9.ix_api.api.mobs.ApiPathfinderMob;
 import com.github.NineAbyss9.ix_api.api.mobs.Nihilistic;
@@ -117,6 +119,11 @@ implements PowerableMob, Nihilistic
         if (!this.level().isClientSide) {
             WorldUtil.sendParticles(ParticleTypes.WITCH, this, 12, 2, 0, 2, 0);
         }
+    }
+
+    protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
+        this.spawnAtLocation(ItemStacks.ofRanged(NoixmodAPIItems.NIHILISTIC_ASH.get(), 3));
+        super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
     }
 
     public boolean isHorror() {

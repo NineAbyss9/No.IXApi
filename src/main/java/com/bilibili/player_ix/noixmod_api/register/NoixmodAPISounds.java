@@ -21,18 +21,16 @@ public class NoixmodAPISounds {
     public static final RegistryObject<SoundEvent> APOSTLE_HURT = REGISTRY.register("apostle_hurts", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "apostle_hurt")));
     public static final RegistryObject<SoundEvent> APOSTLE_HURT_HORROR = REGISTRY.register("apostle_hurt_horror", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "apostle_hurt_horror")));
     public static final RegistryObject<SoundEvent> APOSTLE_DEATH = REGISTRY.register("apostle_death", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "apostle_death")));
-    public static final RegistryObject<SoundEvent> APOSTLE_MUSIC = REGISTRY.register("apostle_music_or", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "apostle_music_or")));
+    //public static final RegistryObject<SoundEvent> APOSTLE_MUSIC = REGISTRY.register("apostle_music_or", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "apostle_music_or")));
     public static final RegistryObject<SoundEvent> CLAP;
     public static final RegistryObject<SoundEvent> CRY = REGISTRY.register("cry", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "cry")));
     public static final RegistryObject<SoundEvent> CULTIST_AMBIENT = REGISTRY.register("cultist_idle", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "cultist_idle")));
     public static final RegistryObject<SoundEvent> CULTIST_HURT = REGISTRY.register("cultist_hurt", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "cultist_hurt")));
     public static final RegistryObject<SoundEvent> CULTIST_DEATH = REGISTRY.register("cultist_death", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "cultist_death")));
-    public static final RegistryObject<SoundEvent> EI_MUSIC = REGISTRY.register("ei_music", ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "ei_music")));
     public static final RegistryObject<SoundEvent> EVOKER_ILLAGER_IDLE = REGISTRY.register("evoker_illager_idle", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "evoker_illager_idle")));
     public static final RegistryObject<SoundEvent> EVOKER_ILLAGER_HURT = REGISTRY.register("evoker_illager_hurts", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "evoker_illager_hurts")));
     public static final RegistryObject<SoundEvent> EVOKER_ILLAGER_DEATH = REGISTRY.register("evoker_illager_death", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "evoker_illager_death")));
     public static final RegistryObject<SoundEvent> EVOKER_ILLAGER_SHOOT_FIREBALL = REGISTRY.register("evoker_illager_shoot_fireball", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("noixmodapi", "evoker_illager_shoot_fireball")));
-    public static final RegistryObject<SoundEvent> PARTY_GLITCH;
 
     //Mace
     public static final Supplier<SoundEvent> MACE_SMASH_AIR;
@@ -54,7 +52,6 @@ public class NoixmodAPISounds {
 
     static {
         CLAP = register("clap");
-        PARTY_GLITCH = register("glitch");
         MACE_SMASH_AIR = register("mace_smash_air");
         MACE_SMASH_GROUND = register("mace_smash_ground");
         MACE_SMASH_GROUND_HEAVY = register("mace_smash_ground_heavy");

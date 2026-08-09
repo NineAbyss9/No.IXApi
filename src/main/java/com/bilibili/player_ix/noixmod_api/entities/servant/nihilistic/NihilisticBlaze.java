@@ -216,7 +216,7 @@ extends NihilitySummonedMobs {
                         //for (int i = 0;i < 1;++i) {
                             NihilisticFireball fireball = new NihilisticFireball(this.blaze.level(), this.blaze, $$3, $$4, $$5);
                         fireball.setCanBeHit();
-                        fireball.setDamage(5.5F);
+                        fireball.setDamage(blaze.mobData.getDifficultyId() > 1 ? 5.5F : 4.0F);
                             fireball.setPos(fireball.getX(), this.blaze.getY(0.5) + 0.5, fireball.getZ());
                             fireball.setOwner(this.blaze.getOwner());
                             this.blaze.level().addFreshEntity(fireball);

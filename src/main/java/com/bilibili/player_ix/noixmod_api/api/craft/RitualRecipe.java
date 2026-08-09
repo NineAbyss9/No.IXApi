@@ -54,7 +54,11 @@ public class RitualRecipe implements Recipe<CraftingContainer> {
         return this.group;
     }
 
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+    public ItemStack getResultItem(@Nullable RegistryAccess pRegistryAccess) {
+        return this.result;
+    }
+
+    public ItemStack getResultItem() {
         return this.result;
     }
 

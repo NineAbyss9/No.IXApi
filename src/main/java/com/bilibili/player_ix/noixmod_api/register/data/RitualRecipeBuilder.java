@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -100,10 +101,21 @@ implements RecipeBuilder {
                 .requirements(RequirementsStrategy.OR);
         pFinishedRecipeConsumer.accept(new Result(pRecipeId, this.result, this.count, this.group == null ? "" :
                 this.group, this.materials, this.advancement, pRecipeId
-                .withPrefix("recipes/" + this.category.getFolderName() + "/"), this.showNotification));
+                .withPrefix("recipes/" + this.category.getFolderName() + "/"),
+                determineBookCategory(this.category), this.showNotification));
+    }
+
+    public static CraftingBookCategory determineBookCategory(RecipeCategory pCategory) {
+        return switch (pCategory) {
+            case BUILDING_BLOCKS -> CraftingBookCategory.BUILDING;
+            case TOOLS, COMBAT -> CraftingBookCategory.EQUIPMENT;
+            case REDSTONE -> CraftingBookCategory.REDSTONE;
+            default -> CraftingBookCategory.MISC;
+        };
     }
 
     public static class Result implements FinishedRecipe {
+        private final CraftingBookCategory category;
         private final ResourceLocation id;
         private final Item result;
         private final int count;
@@ -115,7 +127,8 @@ implements RecipeBuilder {
 
         public Result(ResourceLocation pId, Item pResult, int pCount, String pGroup,
                       NonNullList<Ingredient> ingredients, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId,
-                      boolean pShowNotification) {
+                      CraftingBookCategory pCategory, boolean pShowNotification) {
+            this.category = pCategory;
             this.id = pId;
             this.result = pResult;
             this.count = pCount;
@@ -127,6 +140,7 @@ implements RecipeBuilder {
         }
 
         public void serializeRecipeData(JsonObject pJson) {
+            pJson.addProperty("category", this.category.getSerializedName());
             if (!this.group.isEmpty()) {
                 pJson.addProperty("group", this.group);
             }

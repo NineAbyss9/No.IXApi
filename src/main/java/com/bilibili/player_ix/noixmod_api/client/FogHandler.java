@@ -38,7 +38,7 @@ public class FogHandler {
         int light = Math.max(pLevel.getBrightness(LightLayer.BLOCK, pPlayer.blockPosition()),
                 pLevel.getBrightness(LightLayer.SKY, pPlayer.blockPosition()));
         factor += (1.0f - light / 15.0f) * 0.2f;
-        targetNear = 2.0F + (1.0f - factor) * 2.0f;
+        targetNear = 4.0F + (1.0f - factor) * 2.0f;
         targetFar = 8.0F + (1.0f - factor) * 10.0f;
         targetRed = 0.1f + factor * 0.8f;
         targetGreen = 0.05f + factor * 0.1f;
@@ -58,8 +58,8 @@ public class FogHandler {
         int light = Math.max(pLevel.getBrightness(LightLayer.BLOCK, pPlayer.blockPosition()),
                 pLevel.getBrightness(LightLayer.SKY, pPlayer.blockPosition()));
         factor += (1.0f - light / 15.0f) * 0.2f;
-        targetNear = 4.0F + (1.0f - factor) * 2.0F;
-        targetFar = 12.0F + (1.0f - factor) * 10.0F;
+        targetNear = 6.0F + (1.0f - factor) * 2.0F;
+        targetFar = 14.0F + (1.0f - factor) * 10.0F;
 
         targetRed = 0.92f;
         targetGreen = 0.9f;

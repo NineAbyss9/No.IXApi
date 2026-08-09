@@ -53,10 +53,18 @@ extends RecipeProvider {
                 getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT), "i i", "i i",
                 pWriter);
 
+        //block
+        shapedBlock9(RecipeCategory.DECORATIONS, NoixmodAPIItems.INFERNAL_IRON_BLOCK.get(),
+                NoixmodAPIItems.INFERNAL_IRON_INGOT.get(), pWriter);
+
         //Shapeless
         shapeless(RecipeCategory.COMBAT, NoixmodAPIItems.BOW_BOW.get(), Items.BOW, 2, pWriter);
         shapeless(RecipeCategory.TOOLS, NoixmodAPIItems.EXP_BOTTLE.get(), Items.EXPERIENCE_BOTTLE,
                 Items.EMERALD, pWriter);
+
+        //block to 9 items
+        shapelessBlockTo9Items(RecipeCategory.MISC, NoixmodAPIItems.INFERNAL_IRON_INGOT.get(),
+                NoixmodAPIItems.INFERNAL_IRON_BLOCK.get(), pWriter);
 
         //Ritual
         ritual(RecipeCategory.DECORATIONS, Items.WITHER_SKELETON_SKULL, 1,
@@ -88,6 +96,14 @@ extends RecipeProvider {
     }
 
     /**Single*/
+    public static void shapelessBlockTo9Items(RecipeCategory pRC, ItemLike pResult, ItemLike pMaterial,
+                                              Consumer<FinishedRecipe> pWriter)
+    {
+        ShapelessRecipeBuilder.shapeless(pRC, pResult, 9).requires(pMaterial)
+                .unlockedBy(getHasName(pResult), has(pMaterial)).save(pWriter,
+                        NoixmodAPI.location(pResult + "_shapeless"));
+    }
+
     public static void shapeless(RecipeCategory pRC, ItemLike pResult, ItemLike pMaterial, Consumer<FinishedRecipe> pWriter)
     {
         ShapelessRecipeBuilder.shapeless(pRC, pResult).requires(pMaterial)
@@ -150,6 +166,13 @@ extends RecipeProvider {
         ShapedRecipeBuilder.shaped(pC, pResult).define('i', pItem)
                 .define('x', pItem1).define('9', pItem2).pattern(pattern1).pattern(pattern2).pattern(pattern3)
                 .unlockedBy(cn, instance).save(pWriter);
+    }
+
+    public static void shapedBlock9(RecipeCategory pC, ItemLike pResult, ItemLike pMat,
+                                    Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(pC, pResult).define('i', pMat)
+                .pattern("iii").pattern("iii").pattern("iii")
+                .unlockedBy(getHasName(pMat), has(pMat)).save(pWriter);
     }
 
     public static Ingredient ing(ItemLike like) {

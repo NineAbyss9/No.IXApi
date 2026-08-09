@@ -91,14 +91,14 @@ public class NihilisticOrderSpawner {
                 mob.setTarget(player);
             }
         }
-        for (int i = 0;i < 2;i++) {
-            mob =NoixmodAPIEntities.SHADOW_WALKER.get().spawn(level, pos, MobSpawnType.EVENT);
+        //for (int i = 0;i < 2;i++) {
+            mob = NoixmodAPIEntities.SHADOW_WALKER.get().spawn(level, pos, MobSpawnType.EVENT);
             if (mob != null) {
                 mob.restrictTo(pos, 18);
                 mob.spawnAnim();
                 mob.setTarget(player);
             }
-        }
+        //}
     }
 
     private boolean hasEnoughSpace(Level pLevel, BlockPos pPos) {

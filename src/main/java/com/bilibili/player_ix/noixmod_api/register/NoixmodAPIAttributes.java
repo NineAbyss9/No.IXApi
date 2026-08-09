@@ -148,8 +148,7 @@ public class NoixmodAPIAttributes {
     public static AttributeSupplier.Builder createSwordCultistAttributes() {
         return NoixmodAPIAttributes.baseAttributes(5, 0.3, 0.5)
                 .add(Attributes.MAX_HEALTH, 26).add(Attributes.FOLLOW_RANGE, 52).add(
-                        Attributes.ARMOR, 2
-                );
+                        Attributes.ARMOR, 2);
     }
 
     public static AttributeSupplier.Builder createAmbusherAttributes() {

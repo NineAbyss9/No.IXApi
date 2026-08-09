@@ -1,6 +1,7 @@
 
 package com.bilibili.player_ix.noixmod_api.register;
 
+import com.bilibili.player_ix.noixmod_api.api.item.OwnableSpawnEgg;
 import com.bilibili.player_ix.noixmod_api.entities.servant.CreeperServant;
 import com.bilibili.player_ix.noixmod_api.item.armor.CopperArmor;
 import com.bilibili.player_ix.noixmod_api.item.block.VoidBlockItem;
@@ -8,6 +9,7 @@ import com.bilibili.player_ix.noixmod_api.item.magic.*;
 import com.bilibili.player_ix.noixmod_api.register.data.ApiDataHelper;
 import com.github.NineAbyss9.ix_api.api.item.ApiSpawnEgg;
 import com.github.NineAbyss9.ix_api.api.item.UseItem;
+import com.github.NineAbyss9.ix_api.api.mobs.Ownable;
 import net.minecraft.util.Mth;
 import org.NineAbyss9.annotation.PAMAreNonnullByDefault;
 import com.bilibili.player_ix.noixmod_api.NoixmodAPI;
@@ -54,18 +56,20 @@ public class NoixmodAPIItems {
             -10066330, -10092544);
     public static final RegistryObject<Item> ABYSS_SPAWN_EGG = spawnEggItem("abyss", NoixmodAPIEntities.ABYSS,
             -10092544, -10092544, Rarity.EPIC);
-    public static final RegistryObject<Item> AMBUSHER_SPAWN_EGG = spawnEggItem("ambusher", NoixmodAPIEntities.AMBUSHER,
+    public static final RegistryObject<Item> AMBUSHER_SPAWN_EGG = ownableSpawnEgg("ambusher", NoixmodAPIEntities.AMBUSHER,
             5651507, 12422002);
     public static final RegistryObject<Item> APOSTLE_SPAWN_EGG = REGISTRY.register("apostle_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.APOSTLE, 512, -10092442, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
-    public static final RegistryObject<Item> APOSTLE_SERVANT_SPAWN_EGG = REGISTRY.register("apostle_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.APOSTLE_SERVANT, 512, -10092442, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
-    public static final RegistryObject<Item> AQUATIC_WORM_SPAWN_EGG = REGISTRY.register("aquatic_worm_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.AQUATIC_WORM, -16777063, -16737895, new Item.Properties()));
-    public static final RegistryObject<Item> ARCHER_SERVANT_SPAWN_EGG = spawnEggItem("archer_servant",
+    public static final RegistryObject<Item> APOSTLE_SERVANT_SPAWN_EGG = ownableSpawnEgg(
+            "apostle_servant", NoixmodAPIEntities.APOSTLE_SERVANT, 512, -10092442);
+    public static final RegistryObject<Item> AQUATIC_WORM_SPAWN_EGG = ownableSpawnEgg(
+            "aquatic_worm", NoixmodAPIEntities.AQUATIC_WORM, -16777063, -16737895);
+    public static final RegistryObject<Item> ARCHER_SERVANT_SPAWN_EGG = ownableSpawnEgg("archer_servant",
             NoixmodAPIEntities.ARCHER_SERVANT, 5451574, 9804699);
     public static final RegistryObject<Item> ARMORER_SPAWN_EGG = REGISTRY.register("armorer_spawn_egg",
             ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.ARMORER, 9804699, 2580065, new Item.Properties()));
-    public static final RegistryObject<Item> BONE_SPELLCASTER_EGG = spawnEggItemWithData("bone_spellcaster",
+    public static final RegistryObject<Item> BONE_SPELLCASTER_EGG = ownableSpawnEgg("bone_spellcaster",
             NoixmodAPIEntities.BONE_SPELLCASTER, 12698049, 4802889);
-    public static final RegistryObject<Item> CREEPER_SERVANT_SPAWN_EGG = spawnEggItem("creeper_servant",
+    public static final RegistryObject<Item> CREEPER_SERVANT_SPAWN_EGG = ownableSpawnEgg("creeper_servant",
             NoixmodAPIEntities.CREEPER_SERVANT, 894731, 0);
     public static final RegistryObject<Item> CULTIST_SPAWN_EGG = REGISTRY.register("cultist_spawn_egg", ()->
             new ForgeSpawnEggItem(NoixmodAPIEntities.CULTIST, -10092442, -13434727,
@@ -74,53 +78,59 @@ public class NoixmodAPIItems {
             -10092442, -16777211);
     public static final RegistryObject<Item> DETRACTOR_SPAWN_EGG = spawnEggItem("detractor", NoixmodAPIEntities.DETRACTOR,
             -10092532, -16777211);
-    public static final RegistryObject<Item> DEAD_ILLAGER_SKULL = spawnEggItem("dead_illager_skull", NoixmodAPIEntities.DEAD_ILLAGER_SKULL,
-            12698049, 1001033);
-    public static final RegistryObject<Item> DROWNED_SERVANT_SPAWN_EGG = REGISTRY.register("drowned_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.DROWNED_SERVANT, 9433559, 7969893, new Item.Properties()));
-    public static final RegistryObject<Item> ELDER_G_S_E = apiSpawnEgg("elder_guardian_servant", NoixmodAPIEntities.ELDER_G_S,
+    public static final RegistryObject<Item> DEAD_ILLAGER_SKULL = ownableSpawnEgg("dead_illager_skull",
+            NoixmodAPIEntities.DEAD_ILLAGER_SKULL, 12698049, 1001033);
+    public static final RegistryObject<Item> DROWNED_SERVANT_SPAWN_EGG = ownableSpawnEgg("drowned_servant",
+           NoixmodAPIEntities.DROWNED_SERVANT, 9433559, 7969893);
+    public static final RegistryObject<Item> ELDER_G_S_E = ownableSpawnEgg("elder_guardian_servant", NoixmodAPIEntities.ELDER_G_S,
             13552826, 7632531);
+    public static final RegistryObject<Item> ENDER_SLIME = spawnEggItemWithData("ender_slime",
+            NoixmodAPIEntities.ENDER_SLIME, 1447446, 0);
     public static final RegistryObject<Item> EVIL_SUMMONER_SPAWN_EGG = spawnEggItem("evil_summoner", NoixmodAPIEntities.EVIL_SUMMONER,
             -10092442, -10092544, Rarity.RARE);
     public static final RegistryObject<Item> EVOKER_ILLAGER_SPAWN_EGG = REGISTRY.register("evoker_illager_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.EVOKER_ILLAGER, -13421773, -6710887, new Item.Properties().rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> EVOKER_SERVANT_SPAWN_EGG = spawnEggItem("evoker_servant", NoixmodAPIEntities.EVOKER_SERVANT,
+    public static final RegistryObject<Item> EVOKER_SERVANT_SPAWN_EGG = ownableSpawnEgg("evoker_servant", NoixmodAPIEntities.EVOKER_SERVANT,
             9804699, 1973274);
     public static final RegistryObject<Item> FLAGMAN_SPAWN_EGG = spawnEggItem("flagman", NoixmodAPIEntities.FLAGMAN,
             9804699, 2580065);
     public static final RegistryObject<Item> FREAKY_WORM_SPAWN_EGG = spawnEggItem("freaky_worm", NoixmodAPIEntities.FREAKY_WORM,
             13421773, -10092442);
-    public static final RegistryObject<Item> GUARDIAN_S_E = apiSpawnEgg("guardian_servant", NoixmodAPIEntities.GUARDIAN_S,
+    public static final RegistryObject<Item> GUARDIAN_S_E = ownableSpawnEgg("guardian_servant", NoixmodAPIEntities.GUARDIAN_S,
             5931634, 15826224);
     public static final RegistryObject<Item> HEAD_HUNTER_SPAWN_EGG = spawnEggItem("head_hunter", NoixmodAPIEntities.HEAD_HUNTER,
             10051367, 12623485, Rarity.RARE);
-    public static final RegistryObject<Item> HEALING_SPAWN_EGG = spawnEggItem("healling", NoixmodAPIEntities.HEALING,
+    public static final RegistryObject<Item> HEALING_SPAWN_EGG = ownableSpawnEgg("healling", NoixmodAPIEntities.HEALING,
             56063, 44543);
     public static final RegistryObject<Item> HEALING_DOLL = REGISTRY.register("healling_doll", HealingDoll::new);
     public static final RegistryObject<Item> INTRUDER_SPAWN_EGG = REGISTRY.register("intruder_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.INTRUDER, 9804677, 1973267, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> ENDERMAN_SERVANT_SPAWN_EGG = REGISTRY.register("enderman_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.ENDER_MAN_SERVANT,
-            1447446, 0, new Item.Properties()));
-    public static final RegistryObject<Item> LAVA_ZOMBIE_SERVANT_SPAWN_EGG = REGISTRY.register("lava_zombie_servant_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.LAVA_ZOMBIE_SERVANT, 12623485, 10051392, new Item.Properties()));
-    public static final RegistryObject<Item> NEO_ILLAGER_SPAWN_EGG = spawnEggItem("neo_illager",
+    public static final RegistryObject<Item> ENDERMAN_SERVANT_SPAWN_EGG = ownableSpawnEgg(
+            "enderman_servant", NoixmodAPIEntities.ENDER_MAN_SERVANT, 1447446, 0);
+    public static final RegistryObject<Item> LAVA_ZOMBIE_SERVANT_SPAWN_EGG = ownableSpawnEgg(
+            "lava_zombie_servant", NoixmodAPIEntities.LAVA_ZOMBIE_SERVANT, 12623485, 10051392);
+    public static final RegistryObject<Item> NEO_ILLAGER_SPAWN_EGG = ownableSpawnEgg("neo_illager",
             NoixmodAPIEntities.NEO_ILLAGER, 9804699, 2580065);
-    public static final RegistryObject<Item> NETHER_SOUL_SPAWN_EGG = spawnEggItem("nether_soul", NoixmodAPIEntities.NETHER_SOUL,
+    public static final RegistryObject<Item> NETHER_SOUL_SPAWN_EGG = ownableSpawnEgg("nether_soul", NoixmodAPIEntities.NETHER_SOUL,
             12623485, 10051300);
     //public static final RegistryObject<Item> NIHILITY_LORD_SPAWN_EGG = REGISTRY.init("nihility_lord_spawn_egg", () -> new ForgeSpawnEggItem(NoixmodAPIEntities.NIHILISTIC_LORD, -10092442, -13434727, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> NIHILISTIC_WITHER_BOSS_SPAWN_EGG = spawnEggItem("nihilistic_wither_boss", NoixmodAPIEntities.NIHILISTIC_WITHER_BOSS,
             1315860, 5075616, Rarity.RARE);
-    public static final RegistryObject<Item> NIHILISTIC_WITHER_SPAWN_EGG = spawnEggItem("nihilistic_wither", NoixmodAPIEntities.NIHILISTIC_WITHER,
-            1315860, 5075616, Rarity.RARE);
-    public static final RegistryObject<Item> PILLAGER_SERVANT_SPAWN_EGG = spawnEggItem("pillager_servant",
+    public static final RegistryObject<Item> NIHILISTIC_WITHER_SPAWN_EGG = ownableSpawnEgg("nihilistic_wither", NoixmodAPIEntities.NIHILISTIC_WITHER,
+            1315860, 5075616);
+    public static final RegistryObject<Item> PILLAGER_SERVANT_SPAWN_EGG = ownableSpawnEgg("pillager_servant",
             NoixmodAPIEntities.PILLAGER_SERVANT, 5451574, 9804699);
     public static final RegistryObject<Item> PRIEST_SPAWN_EGG = spawnEggItem("priest",
             NoixmodAPIEntities.PRIEST, -10092442, 0, Rarity.RARE);
     public static final RegistryObject<Item> SHADOW_WALKER_SPAWN_EGG = spawnEggItem("shadow_walker",
             NoixmodAPIEntities.SHADOW_WALKER, -10092442, -13434727, Rarity.UNCOMMON);
-    public static final RegistryObject<Item> SILVERFISH_SERVANT_SPAWN_EGG = spawnEggItem("silverfish_servant",
+    public static final RegistryObject<Item> SILENT_GHOST = spawnEggItemWithData("silent_ghost",
+            NoixmodAPIEntities.SILENT_GHOST, 0, 0);
+    public static final RegistryObject<Item> SILVERFISH_SERVANT_SPAWN_EGG = ownableSpawnEgg("silverfish_servant",
             NoixmodAPIEntities.SILVERFISH_SERVANT, 7237230, 3158064);
-    public static final RegistryObject<Item> SKELETON_SERVANT_SPAWN_EGG = spawnEggItemWithData("skeleton_servant",
+    public static final RegistryObject<Item> SKELETON_SERVANT_SPAWN_EGG = ownableSpawnEgg("skeleton_servant",
             NoixmodAPIEntities.SKELETON_SERVANT, 12698049, 4802889);
     public static final RegistryObject<Item> STAR_GUARDIAN_SPAWN_EGG = spawnEggItem("star_guardian", NoixmodAPIEntities.STAR_GUARDIAN,
             14283506, 1001033, Rarity.EPIC);
-    public static final RegistryObject<Item> SUICIDE_ZOMBIE_SPAWN_EGG = spawnEggItem("suicide_zombie", NoixmodAPIEntities.SUICIDE_ZOMBIE,
+    public static final RegistryObject<Item> SUICIDE_ZOMBIE_SPAWN_EGG = ownableSpawnEgg("suicide_zombie", NoixmodAPIEntities.SUICIDE_ZOMBIE,
             44975, 5075616);
     public static final RegistryObject<Item> SUPERSTITIOUS_SPAWN_EGG = spawnEggItem(
             "superstitious", NoixmodAPIEntities.SUPERSTITIOUS, -10092442, 12623485
@@ -133,27 +143,30 @@ public class NoixmodAPIItems {
             NoixmodAPIEntities.TRACKER, 0, 0);
     public static final RegistryObject<Item> TRUMPETER_SPAWN_EGG = REGISTRY.register("trumpeter_spawn_egg", () -> new ForgeSpawnEggItem(NoixmodAPIEntities.BUGLER, 9804699, 2580065, new Item.Properties()));
     public static final RegistryObject<Item> VAMPIRE_SERVANT_SPAWN_EGG =
-            spawnEggItem("vampire_servant", NoixmodAPIEntities.VAMPIRE_SERVANT, -10092544, -16777216);
+            ownableSpawnEgg("vampire_servant", NoixmodAPIEntities.VAMPIRE_SERVANT, -10092544, -16777216);
     public static final RegistryObject<Item> VAMPIRE_SOUL = REGISTRY.register("vampire_soul", VampireSoul::new);
     public static final RegistryObject<Item> VAMPIRE_SPAWN_EGG = REGISTRY.register("vampire_spawn_egg",
             ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.VAMPIRE, -10092544, -16777216, new Item.Properties()));
-    public static final RegistryObject<Item> VEX_ARCHER_SPAWN_EGG = spawnEggItem("vex_archer", NoixmodAPIEntities.VEX_ARCHER,
+    public static final RegistryObject<Item> VEX_ARCHER_SPAWN_EGG = ownableSpawnEgg("vex_archer", NoixmodAPIEntities.VEX_ARCHER,
             8032420, 15265265);
-    public static final RegistryObject<Item> VEX_SERVANT_SPAWN_EGG = spawnEggItem("vex_servant", NoixmodAPIEntities.VEX_SERVANT,
+    public static final RegistryObject<Item> VEX_SERVANT_SPAWN_EGG = ownableSpawnEgg("vex_servant", NoixmodAPIEntities.VEX_SERVANT,
             8032420, 15265265);
-    public static final RegistryObject<Item> VINDICATOR_SERVANT_SPAWN_EGG = spawnEggItem("vindicator_servant", NoixmodAPIEntities.VINDICATOR_SERVANT,
+    public static final RegistryObject<Item> VINDICATOR_SERVANT_SPAWN_EGG = ownableSpawnEgg("vindicator_servant", NoixmodAPIEntities.VINDICATOR_SERVANT,
             9804699, 2580065);
-    public static final RegistryObject<Item> VILLAGER_MASTER_SPAWN_EGG = REGISTRY.register("villager_master_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.VILLAGER_MASTER, -10066330, -6710887, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> VILLAGER_SPELLCASTER_SPAWN_EGG = REGISTRY.register("villager_spellcaster_spawn_egg", () -> new ForgeSpawnEggItem(NoixmodAPIEntities.VILLAGER_SPELLCASTER, -10066330, -6710887, new Item.Properties()));
-    public static final RegistryObject<Item> WARDEN_SERVANT_SPAWN_EGG = spawnEggItem("warden_servant", NoixmodAPIEntities.WARDEN_SERVANT,
+    public static final RegistryObject<Item> VILLAGER_MASTER_SPAWN_EGG = ownableSpawnEgg(
+            "villager_master", NoixmodAPIEntities.VILLAGER_MASTER, -10066330, -6710887);
+    public static final RegistryObject<Item> VILLAGER_SPELLCASTER_SPAWN_EGG = ownableSpawnEgg(
+            "villager_spellcaster", NoixmodAPIEntities.VILLAGER_SPELLCASTER,
+            -10066330, -6710887);
+    public static final RegistryObject<Item> WARDEN_SERVANT_SPAWN_EGG = ownableSpawnEgg("warden_servant", NoixmodAPIEntities.WARDEN_SERVANT,
             1001033, 3790560);
-    public static final RegistryObject<Item> WIND_ZOMBIE_SPAWN_EGG = spawnEggItem("wind_zombie", NoixmodAPIEntities.WIND_ZOMBIE,
+    public static final RegistryObject<Item> WIND_ZOMBIE_SPAWN_EGG = ownableSpawnEgg("wind_zombie", NoixmodAPIEntities.WIND_ZOMBIE,
             11506911, 9529055);
-    public static final RegistryObject<Item> WITHER_BONE_S_S_EGG = spawnEggItemWithData("wither_bone_spellcaster",
+    public static final RegistryObject<Item> WITHER_BONE_S_S_EGG = ownableSpawnEgg("wither_bone_spellcaster",
             NoixmodAPIEntities.WITHER_BONE_SPELLCASTER, 1315860, 4672845);
     public static final RegistryObject<Item> WORM_MASTER_SPAWN_EGG = spawnEggItem("worm_master", NoixmodAPIEntities.WORM_MASTER,
             -10066432, -16764160, Rarity.RARE);
-    public static final RegistryObject<Item> YETI_SPAWN_EGG = apiSpawnEgg("yeti", NoixmodAPIEntities.YETI, 5592575, 11184810);
+    public static final RegistryObject<Item> YETI_SPAWN_EGG = ownableSpawnEgg("yeti", NoixmodAPIEntities.YETI, 5592575, 11184810);
 
     //Ores
     public static final RegistryObject<Item> INFERNAL_IRON_INGOT = REGISTRY.register("infernal_iron_ingot", ()->
@@ -237,36 +250,36 @@ public class NoixmodAPIItems {
     public static final RegistryObject<Item> OMINOUS_BOTTLE = REGISTRY.register("ominous_bottle", OminousBottle::new);
 
     public static final RegistryObject<Item> OMINOUS_HORN = REGISTRY.register("ominous_horn", OminousHorn::new);
-    public static final RegistryObject<Item> VILLAGER_EVOKER_SPAWN_EGG = REGISTRY.register("villager_evoker_spawn_egg",
-            () -> new ForgeSpawnEggItem(NoixmodAPIEntities.VILLAGER_EVOKER, -10066330, -6710887, new Item.Properties()));
-    public static final RegistryObject<Item> NIHILISTIC_EVOKER_SPAWN_EGG = REGISTRY.register("nihilistic_evoker_spawn_egg",
-            () -> new ForgeSpawnEggItem(NoixmodAPIEntities.NIHILISTIC_EVOKER, -10092442, -13434727,
-                    properties()));
+    public static final RegistryObject<Item> VILLAGER_EVOKER_SPAWN_EGG = ownableSpawnEgg(
+            "villager_evoker", NoixmodAPIEntities.VILLAGER_EVOKER, -10066330, -6710887);
+    public static final RegistryObject<Item> NIHILISTIC_EVOKER_SPAWN_EGG = spawnEggItemWithData(
+            "nihilistic_evoker", NoixmodAPIEntities.NIHILISTIC_EVOKER, -10092442, -13434727);
     public static final RegistryObject<Item> PLATEAU_BEAST_SPAWN_EGG = REGISTRY.register("plateau_beast_spawn_egg",
             ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.PLATEAU_BEAST, 0xFFFFFF, 0xFFFFFF, properties()));
-    public static final RegistryObject<Item> NIHILISTIC_GHAST_SPAWN_EGG = REGISTRY.register("nihilistic_ghast_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.NIHILISTIC_GHAST, -10092442, -13434727, new Item.Properties()));
+    public static final RegistryObject<Item> NIHILISTIC_GHAST_SPAWN_EGG = ownableSpawnEgg(
+            "nihilistic_ghast", NoixmodAPIEntities.NIHILISTIC_GHAST, -10092442, -13434727);
     public static final RegistryObject<Item> BIOLOGIST_SPAWN_EGG = REGISTRY.register("biologist_spawn_egg", () -> new ForgeSpawnEggItem(NoixmodAPIEntities.BIOLOGIST, 0x272727, 0xDCDCDC, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> WORM_SPAWN_EGG = REGISTRY.register("worm_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.WORM, -10066432, -16764160, new Item.Properties()));
+    public static final RegistryObject<Item> WORM_SPAWN_EGG = ownableSpawnEgg(
+            "worm", NoixmodAPIEntities.WORM, -10066432, -16764160);
     public static final RegistryObject<Item> WORM_BLOCK = blockToItem(NoixmodAPIBlocks.WORM_BLOCK);
     public static final RegistryObject<Item> WORM_DIRT_ITEM = blockToItem("worm_dirt_item", NoixmodAPIBlocks.WORM_DIRT);
     public static final RegistryObject<Item> NIHILISTIC_FIREBALL = REGISTRY.register("nihilistic_fireball_item", NihilisticFireballItem::new);
     public static final RegistryObject<Item> TARGET_SELECTOR = REGISTRY.register("target_selector", TargetSelector::new);
-    public static final RegistryObject<Item> NIHILISTIC_BLAZE_SPAWN_EGG = REGISTRY.register("nihilistic_blaze_spawn_egg", ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.NIHILISTIC_BLAZE, -10092000, -13434727, new Item.Properties()));
+    public static final RegistryObject<Item> NIHILISTIC_BLAZE_SPAWN_EGG = ownableSpawnEgg(
+            "nihilistic_blaze", NoixmodAPIEntities.NIHILISTIC_BLAZE, -10092000, -13434727);
     public static final RegistryObject<Item> NIHILISTIC_DEATH_SPAWN_EGG = REGISTRY
             .register("nihilistic_death_spawn_egg", ()-> new ForgeSpawnEggItem(
                     NoixmodAPIEntities.NIHILISTIC_DEATH, -10092442, -13434727, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> NIHILISTIC_LORD_S_NOTE = REGISTRY.register(
             "s_note", StartItem::new
     );
-    public static final RegistryObject<Item> GIRL_GHOST_SPAWN_EGG = REGISTRY.register("girl_ghost_spawn_egg",
-            ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.GIRL_GHOST, 4547222,
-                    1001033, properties()));
+    public static final RegistryObject<Item> GIRL_GHOST_SPAWN_EGG = ownableSpawnEgg("girl_ghost",
+            NoixmodAPIEntities.GIRL_GHOST, 4547222, 1001033);
     public static final RegistryObject<Item> HUNTER_SPAWN_EGG = REGISTRY.register("hunter_spawn_egg",
             ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.HUNTER, 9804699, 10051367,
                     properties()));
-    public static final RegistryObject<Item> EXORCIST_SPAWN_EGG = REGISTRY.register("exorcist_spawn_egg",
-            ()-> new ForgeSpawnEggItem(NoixmodAPIEntities.EXORCIST, 5651507,
-                    12422002, properties()));
+    public static final RegistryObject<Item> EXORCIST_SPAWN_EGG = ownableSpawnEgg("exorcist",
+            NoixmodAPIEntities.EXORCIST, 5651507, 12422002);
     public static final RegistryObject<Item> WINE = REGISTRY.register("wine", Wine::new);
     public static final RegistryObject<Item> DRUNKENNESS_SPAWN_EGG = REGISTRY.register(
             "drunkenness_spawn_egg",
@@ -297,6 +310,8 @@ public class NoixmodAPIItems {
             = item("frost_staff", FrostStaff::new);
     public static final RegistryObject<Item> NIHILISTIC_STAFF
             = item("nihilistic_staff", NihilisticStaff::new);
+    public static final RegistryObject<Item> VILLAGER_STAFF
+            = item("villager_staff", VillagerStaff::new);
 
     //Ritual
     /// For index
@@ -374,9 +389,17 @@ public class NoixmodAPIItems {
     }
 
     public static RegistryObject<Item> spawnEggItemWithData(String path, Supplier<? extends EntityType<? extends Mob>>
-            supplier, int g, int b)
-    {
-        RegistryObject<Item> n = REGISTRY.register(path + spawnEgg(), ()-> new ApiSpawnEgg(supplier,
+            supplier, int g, int b) {
+        RegistryObject<Item> n = REGISTRY.register(path + spawnEgg(), () -> new ApiSpawnEgg(supplier,
+                g, b, properties()));
+        SPAWN_EGGS.add(n);
+        ApiDataHelper.ITEMS.add(n);
+        return n;
+    }
+
+    public static <T extends Mob & Ownable> RegistryObject<Item> ownableSpawnEgg(String path,
+                                                                                 Supplier<? extends EntityType<T>> mob, int g, int b) {
+        RegistryObject<Item> n = REGISTRY.register(path + spawnEgg(), () -> new OwnableSpawnEgg<T>(mob,
                 g, b, properties()));
         SPAWN_EGGS.add(n);
         ApiDataHelper.ITEMS.add(n);

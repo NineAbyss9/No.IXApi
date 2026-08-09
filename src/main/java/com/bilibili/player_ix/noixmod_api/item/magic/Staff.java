@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,19 +44,16 @@ extends Item {
         return UseAnim.BOW;
     }
 
-    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration)
-    {
-        if (pLevel.isClientSide) {
-            ParticleUtil.addParticle(pLevel, this.getParticleOptions(),
-                    pLivingEntity.position().add(0.0D, pLivingEntity.getBoundingBox().maxY + 0.1D, 0.0D),
-                    this.getSpellColor());
-        }
+    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
+        ParticleUtil.addParticle(pLevel, this.getParticleOptions(),
+                pLivingEntity.position().add(0.0D, 2.0D, 0.0D),
+                this.getSpellColor());
     }
 
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity)
     {
         if (!pLevel.isClientSide) {
-            this.castSpell((ServerLevel)pLevel, pLivingEntity, 40);
+            this.castSpell((ServerLevel)pLevel, pLivingEntity, this.getUseDuration(pStack));
         }
         if (pLivingEntity instanceof Player player) {
             player.getCooldowns().addCooldown(this, 40);
@@ -92,7 +90,8 @@ extends Item {
     }
 
     public void prepareSpellCasting(ServerLevel pLevel, LivingEntity pEntity) {
-        pEntity.playSound(SoundEvents.EVOKER_PREPARE_ATTACK);
+        pLevel.playSound(pEntity, pEntity.blockPosition(), SoundEvents.ILLUSIONER_CAST_SPELL, SoundSource.PLAYERS,
+                1.0F, 1.0F);
     }
 
     public abstract void castSpell(ServerLevel pLevel, LivingEntity pCaster, int pUsedTime);

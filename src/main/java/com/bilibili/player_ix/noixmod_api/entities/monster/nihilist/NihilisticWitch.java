@@ -56,9 +56,9 @@ implements RangedAttackMob, Enemy {
 
     protected void registerGoals() {
         this.healRaidersGoal = new NearestHealableRaiderTargetGoal<>(this, Nihilist.class,
-                false, entity -> true);
+                false, (entity) -> true);
         this.attackPlayersGoal = new NearestAttackableWitchTargetGoal<>(this, LivingEntity.class,
-                500, false, false, living -> MobUtils.canHurt(living, this));
+                500, false, false, (living) -> MobUtils.canHurt(living, this));
         super.registerGoals();
         OwnableMob.addBehaviorGoals(this, 3, 0.8F, 15F, true, false);
         this.targetSelector.addGoal(2, healRaidersGoal);
@@ -195,7 +195,8 @@ implements RangedAttackMob, Enemy {
         private static final int DEFAULT_COOLDOWN = 200;
         private int cooldown = 0;
 
-        public NearestHealableRaiderTargetGoal(Mob p_26087_, Class<T> p_26088_, boolean p_26089_, @Nullable Predicate<LivingEntity> p_26090_) {
+        public NearestHealableRaiderTargetGoal(Mob p_26087_, Class<T> p_26088_, boolean p_26089_,
+                                               @Nullable Predicate<LivingEntity> p_26090_) {
             super(p_26087_, p_26088_, 500, p_26089_, false, p_26090_);
         }
 
